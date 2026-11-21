@@ -1,0 +1,13 @@
+JARVIS - START HERE
+===================
+
+Needs: Windows 10/11, an NVIDIA graphics card (8 GB+), about 40 GB free, internet for the install.
+
+1. Unzip this folder somewhere simple, like C:\Jarvis  (right-click the ZIP > Extract All).
+2. Double-click INSTALL.bat. If Windows says "Windows protected your PC": More info > Run anyway.
+3. Type your name when it asks, then wait 20-40 minutes (big downloads). It ends with "[hello] OK".
+4. Double-click jarvis.bat, then say "Hey Jarvis" (or press Ctrl+Alt+J).
+
+No accounts or API keys needed. Everything runs on your own PC.
+Optional extras and your own API keys: see README.md (open it with Notepad).
+Stuck? Double-click INSTALL.bat again - it picks up where it left off.

@@ -24,13 +24,9 @@ This copy is a fresh install. It has no one else's memories, settings, keys or d
 
 ## Install (about 20–40 minutes, mostly downloads)
 
-1. **Get the folder.** Either clone it with Git, or download the ZIP and unzip it somewhere simple, such as `C:\Jarvis`. Avoid OneDrive folders.
-2. **Open PowerShell in that folder.** In File Explorer, open the folder, click the address bar, type `powershell`, and press Enter.
-3. **Run the installer:**
-
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File .\setup.ps1
-   ```
+1. **Unzip it somewhere simple,** such as `C:\Jarvis`. Right-click the ZIP → **Extract All**. Avoid Desktop/OneDrive folders.
+2. **Double-click `INSTALL.bat`** in that folder. If Windows shows "Windows protected your PC", click **More info** → **Run anyway**.
+3. Answer the two questions (your name, and how Jarvis should address you), then wait.
 
    It will:
    - install **Python 3.12** and **Ollama** with `winget` if they're missing (you may see a Windows "allow" prompt),
@@ -151,7 +147,7 @@ git pull
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
 ```
 
-If you used a ZIP: download the new ZIP and unzip it **over** your folder. Keep your `.env` and `data\`. Then run `setup.ps1` again.
+If you used a ZIP: download the new ZIP and unzip it **over** your folder. Keep your `.env` and `data\`. Then double-click `INSTALL.bat` again.
 
 Your `.env` and `data\` are never overwritten by an update or by re-running setup.
 
@@ -165,7 +161,7 @@ Your `.env` and `data\` are never overwritten by an update or by re-running setu
 - **It doesn't hear "Hey Jarvis".** Check that Windows has the right default microphone (Settings → System → Sound). You can also press **Ctrl+Alt+J** instead. To make the wake word easier to trigger, lower `WAKE_THRESHOLD` in `.env` (for example, to `0.4`).
 - **Very slow answers.** The model may be too big for your GPU. Try a smaller one: `ollama pull <name>`, then set every `qwen3.5:9b` in `.env` to that name.
 - **"CUDA" errors on start.** Set `WHISPER_DEVICE=cpu` and `WHISPER_MODEL=small` in `.env`.
-- **The installer stopped partway.** Run it again. It picks up where it left off.
+- **The installer stopped partway.** Double-click `INSTALL.bat` again. It picks up where it left off.
 
 ---
 
