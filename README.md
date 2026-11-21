@@ -1,5 +1,7 @@
 # J.A.R.V.I.S. — your own PC assistant
 
+**[⬇ Download Jarvis (ZIP)](https://github.com/Nielsen-218/jarvis-shared/archive/refs/heads/main.zip)**: unzip it, double-click `INSTALL.bat`, and you're done. No account needed.
+
 Jarvis is a voice assistant that runs **on your own Windows PC**. You talk to it ("Hey Jarvis…") and it talks back. It can open and close apps, read your screen, remember things you tell it, keep lists and reminders, check the weather, search the web, teach languages, coach workouts, plan meals, and more.
 
 The brain runs **locally on your graphics card** through a free program called Ollama, so it works with **no accounts and no API keys**. If you want, you can add your own Google Gemini or Anthropic Claude key later as an extra "smarter fallback". Those cost you money (or use your free tier), on your own account.
