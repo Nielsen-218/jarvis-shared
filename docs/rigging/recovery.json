@@ -1,0 +1,120 @@
+[
+  {
+    "case": "control_welded_clean",
+    "attempts": [
+      [
+        "armature_auto_direct",
+        true,
+        null
+      ]
+    ],
+    "final_method": "armature_auto_direct",
+    "skin_ok": true,
+    "pose_tests": "16/16",
+    "failing": [],
+    "verification": [
+      {
+        "strategy": "fit",
+        "skin_ok": true,
+        "pose_pass": "16/16",
+        "failing": []
+      }
+    ],
+    "chosen_strategy": "fit",
+    "detected_defect": false
+  },
+  {
+    "case": "A_disconnected_shells",
+    "attempts": [
+      [
+        "armature_auto_direct",
+        false,
+        null
+      ],
+      [
+        "armature_auto_via_proxy",
+        false,
+        null
+      ],
+      [
+        "armature_auto_via_voxel_weld_proxy",
+        true,
+        null
+      ]
+    ],
+    "final_method": "armature_auto_via_voxel_weld_proxy",
+    "skin_ok": true,
+    "pose_tests": "10/14",
+    "failing": [
+      "elbow.L",
+      "wrist.L",
+      "elbow.R",
+      "wrist.R"
+    ],
+    "verification": [
+      {
+        "strategy": "fit",
+        "skin_ok": true,
+        "pose_pass": "6/14",
+        "failing": [
+          "shoulder.L",
+          "elbow.L",
+          "wrist.L",
+          "hip.L",
+          "shoulder.R",
+          "elbow.R",
+          "wrist.R",
+          "hip.R"
+        ]
+      },
+      {
+        "strategy": "anatomical_proportions",
+        "skin_ok": true,
+        "pose_pass": "10/14",
+        "failing": [
+          "elbow.L",
+          "wrist.L",
+          "elbow.R",
+          "wrist.R"
+        ]
+      }
+    ],
+    "chosen_strategy": "anatomical_proportions",
+    "detected_defect": true
+  },
+  {
+    "case": "B_bad_landmarks",
+    "attempts": [
+      [
+        "armature_auto_direct",
+        true,
+        null
+      ]
+    ],
+    "final_method": "armature_auto_direct",
+    "skin_ok": true,
+    "pose_tests": "16/16",
+    "failing": [],
+    "verification": [
+      {
+        "strategy": "fit",
+        "skin_ok": true,
+        "pose_pass": "12/16",
+        "failing": [
+          "hip.L",
+          "ankle.L",
+          "hip.R",
+          "ankle.R"
+        ]
+      },
+      {
+        "strategy": "auto_fit_ignoring_overrides",
+        "skin_ok": true,
+        "pose_pass": "16/16",
+        "failing": []
+      }
+    ],
+    "chosen_strategy": "auto_fit_ignoring_overrides",
+    "detected_defect": true
+  }
+]

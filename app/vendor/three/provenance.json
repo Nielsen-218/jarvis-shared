@@ -1,0 +1,18 @@
+{
+  "source": "https://github.com/mrdoob/three.js",
+  "revision": "0af9729d0c143a86a1d725d6e2c3ad83301f3f34",
+  "version": "0.180.0",
+  "license": "MIT",
+  "sha256": {
+    "build/three.module.min.js": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6",
+    "build/three.core.min.js": "61ba0df005b05991361d040d8ff670e1aadfd0ce7aeebd1fdb0725957a8957de",
+    "LICENSE": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "examples/jsm/environments/RoomEnvironment.js": "8b463ffcff48824d4995cab6b3c768c0336563d75411014bbd8b70d3af92db23"
+  },
+  "upstream_sha256": {
+    "examples/jsm/environments/RoomEnvironment.js": "c20f0b4677f6128a138d7152b85cbef9091f4f45cdfa05adca04d40c1697c7ae"
+  },
+  "modifications": {
+    "RoomEnvironment.js": "Normalized leading space-before-tab indentation only."
+  }
+}

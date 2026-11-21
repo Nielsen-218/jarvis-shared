@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Signing: a keystore that never enters git. Its location and password live in a properties file OUTSIDE the repo
+// (default C:\Users\you\ECC\jarvis-backups\jarvis-link-signing\signing.properties; override with the environment
+// variable JARVIS_LINK_SIGNING). Keys: storeFile, storePassword, keyAlias, keyPassword.
+def signingFile = new File(System.getenv('JARVIS_LINK_SIGNING') ?: 'C:/Users/you/ECC/jarvis-backups/jarvis-link-signing/signing.properties')
+def signing = new Properties()
+if (signingFile.exists()) {
+    signingFile.withInputStream { signing.load(it) }
+}
+
+android {
+    namespace 'com.jarvis.link'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.jarvis.link'
+        minSdk 26
+        targetSdk 34
+        versionCode 3
+        versionName '1.2'
+    }
+
+    signingConfigs {
+        release {
+            if (signingFile.exists()) {
+                storeFile file(signing['storeFile'])
+                storePassword signing['storePassword']
+                keyAlias signing['keyAlias']
+                keyPassword signing['keyPassword']
+                enableV1Signing true
+                enableV2Signing true
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingFile.exists() ? signingConfigs.release : null
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+// gradlew --offline assembleRelease, then copy the signed APK to dist/JarvisLink.apk
+tasks.register('dist', Copy) {
+    dependsOn 'assembleRelease'
+    from(layout.buildDirectory.dir('outputs/apk/release')) {
+        include 'app-release.apk'
+        rename { 'JarvisLink.apk' }
+    }
+    into rootProject.file('dist')
+}

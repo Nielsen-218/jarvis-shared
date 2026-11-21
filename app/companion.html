@@ -1,0 +1,2621 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Jarvis</title>
+<!--
+  Living Desktop Companion — transparent 3D concept robot
+  served from the local app server and hosted inside a frameless,
+  transparent pywebview window.
+
+  What the shipped character is:
+
+  * The concept-board robot: a Hunyuan3D-generated, textured GLB (app/companion/models/robot/) skinned at load
+    time by a runtime skeleton (app/companion/rigs/robot-rig.json, built by scripts/build_companion_rig.py),
+    with eyelid and mouth overlay meshes for the face. If the model cannot load, the 2D concept sprite
+    (fallback-robot.png) is shown instead.
+  * Mouth motion follows actual playback amplitude (Python TTS output
+    level for main speech; Web Audio AnalyserNode RMS for in-browser
+    quips played through the shared <audio> element). It is NOT
+    phoneme / viseme lip-sync — the spec explicitly asks that these
+    two be distinguished.
+  * Three.js is vendored under /vendor/three with its MIT LICENSE;
+    this page never downloads a model or script from the internet.
+
+  Architecture (one module per concern, each importable from Node tests
+  that only need the pure JS logic):
+
+    behavior.js      state resolver, idle picker, scheduler, mouth
+                     stale timeout, event buffer, settings.
+    glb-adapter.js   loads the GLB, skins it (robot-skin.js) and adds the face (glb-face.js).
+    robot-skin.js    skeleton, skin weights and proxy-bone sync for the model.
+    glb-face.js      eyelids (blink / narrowed eyes) and the amplitude-driven mouth.
+    materials.js     live retinting from a profile.
+    animation.js     bone-targeting clip registry + per-frame driver.
+    voice-bridge.js  AnalyserNode wrapper for in-browser audio.
+    profiles.js      adapter registry + hot-swap entry point.
+-->
+<link rel="icon" href="/icons/icon-192.png">
+<script type="importmap">{
+  "imports": {
+    "three": "/vendor/three/three.module.min.js",
+    "three/addons/environments/RoomEnvironment.js": "/vendor/three/addons/environments/RoomEnvironment.js",
+    "three/addons/": "/vendor/three/addons/"
+  }
+}</script>
+<style>
+  /* A dark root color-scheme makes WebView2 composite transparent pixels onto #121212.
+     Keep the root light; the companion menu supplies its own dark colours. */
+  :root { color-scheme: light; }
+  /* Design tokens (docs/mission/research-companion-and-interface-design.md, decisions 5c-5g). Same names as the
+     research report, so a shared tokens.css can replace this block later. The overlay floats on the desktop, over
+     any wallpaper, so it always uses the dark set. */
+  :root {
+    --bg-0: #06080C; --bg-1: #0B0F16; --bg-2: #121823; --bg-3: #1A2330;
+    --line-1: rgba(164, 200, 230, 0.10); --line-2: rgba(164, 200, 230, 0.18);
+    --text-1: #E7EEF7; --text-2: #A3B1C4; --text-3: #6F7E92;
+    --accent: #5CC6E6; --accent-ink: #04161D; --accent-soft: rgba(92, 198, 230, 0.14);
+    --ok: #6DD5A0; --warn: #E9B350; --danger: #F07A84; --danger-soft: rgba(240, 122, 132, 0.14);
+    --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-lg: 20px;
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+    --r-1: 6px; --r-2: 10px; --r-3: 16px; --r-4: 24px; --r-pill: 999px;
+    --dur-instant: 80ms; --dur-fast: 150ms; --dur-base: 240ms; --dur-slow: 400ms; --dur-ambient: 3500ms;
+    --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+    --font-ui: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  @media (prefers-reduced-motion: reduce) { :root { --dur-base: 1ms; --dur-slow: 1ms; --dur-ambient: 0ms; } }
+  :root.reduced-motion { --dur-base: 1ms; --dur-slow: 1ms; --dur-ambient: 0ms; }
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; color: #cfe3f6;
+    -webkit-user-select: none; user-select: none; }
+  /* The robot's own box. The window is exactly this box until his menu opens; then the window grows to hold the
+     menu beside him and the stage keeps his size and screen position (core/presence.expand_layout). */
+  #menu .row {flex-wrap:wrap;}
+  #menu .scroll {overflow-x:hidden;}
+  #menu .home-controls label {display:block;margin:8px 0;}
+  #menu .home-controls input[type="range"] {display:block;width:95%;}
+  #menu .home-controls textarea {display:block;width:92%;min-height:55px;margin:8px 0;}
+  #scene-toolbar {display:none;position:fixed;top:6px;left:6px;right:6px;z-index:30;padding:6px;border-radius:8px;background:#112338;color:#dffaff;font-size:12px;gap:8px;align-items:center;}
+  .scene-open #scene-toolbar {display:flex;}
+  #stage.playground {background:radial-gradient(ellipse at bottom,#22384d,#0b1524);border-radius:16px;}
+  #stage { position: fixed; left: 0; top: 0; width: 100%; height: 100%; }
+  #scene, #fallback { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #fallback { display: none; }
+  .no-webgl #scene { display: none; }
+  .no-webgl #fallback { display: block; }
+  /* The whole stage takes pointer input, but the OS only delivers it where the host painted his hit mask (his
+     silhouette, see sampleHitMask): the colour key leaves every other pixel click-through, so the target is him,
+     not a rectangle. */
+  #hit { position: absolute; inset: 0; cursor: grab; touch-action: none; }
+  #hit.dragging { cursor: grabbing; }
+  #bubble { position: absolute; left: 4px; right: 4px; bottom: 4px; padding: 6px 10px;
+    background: rgba(5, 10, 18, 0.72); border-radius: 10px; font-size: 12px;
+    line-height: 1.3; opacity: 0; transition: opacity .2s ease; pointer-events: none;
+    max-height: 44%; overflow: hidden; text-overflow: ellipsis; }
+  /* Owner preference: the robot speaks; no subtitle overlay over his face. His words are captioned in the
+     overlay card BESIDE him instead (#overlay below); this box only keeps the text for diagnostics. */
+  #bubble, #bubble.on { display: none !important; }
+  .menu-open #bubble { display: none; }
+
+  /* ---- listening / thinking / speaking / result overlay, beside him (app/companion/overlay.js) ----
+     The host grows his window to hold this box next to him (the same call his menu uses); nothing in it takes the
+     mouse, so it is never in the hit mask and clicks pass through it to the desktop.
+     Colour-key trap: the window blends every half-transparent pixel with its near-black key colour, not with the
+     desktop. So the card's own outline is always fully opaque: it enters and leaves by a clip wipe, never by
+     fading, and has no outer shadow or glow. Fades happen only INSIDE the card, over its solid background. */
+  #overlay { position: fixed; left: 0; top: 0; width: 0; height: 0; pointer-events: none; visibility: hidden;
+    font-family: var(--font-ui); -webkit-font-smoothing: antialiased; }
+  #overlay.placed { visibility: visible; }
+  .ov-card { position: absolute; box-sizing: border-box; width: 372px; height: 108px; padding: 0 var(--s-4);
+    display: flex; align-items: center; gap: 14px; overflow: hidden;
+    background: var(--bg-1); border: 1px solid var(--line-2); border-radius: var(--r-3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    clip-path: inset(0 100% 0 0 round var(--r-3)); transform: translateX(-6px);
+    transition: clip-path var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out); }
+  #overlay[data-side="left"] .ov-card { clip-path: inset(0 0 0 100% round var(--r-3)); transform: translateX(6px); }
+  #overlay.on .ov-card { clip-path: inset(0 0 0 0 round var(--r-3)); transform: none; }
+  .ov-orb, .ov-body { opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  #overlay.on .ov-orb, #overlay.on .ov-body { opacity: 1; transition-delay: 90ms; }
+
+  /* the orb carries the state: a ring that follows the level, an orbiting arc while he thinks */
+  .ov-orb { position: relative; flex: 0 0 44px; height: 44px; --lvl: 0; }
+  .ov-orb i { position: absolute; left: 50%; top: 50%; border-radius: 50%; box-sizing: border-box; }
+  .ov-halo { width: 30px; height: 30px; margin: -15px 0 0 -15px; background: var(--accent-soft); opacity: 0;
+    transform: scale(calc(1 + var(--lvl) * 0.46)); transition: transform var(--dur-instant) linear, opacity var(--dur-base) var(--ease-out); }
+  .ov-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 2px solid var(--line-2);
+    transform: scale(calc(1 + var(--lvl) * 0.08));
+    transition: transform var(--dur-instant) linear, border-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out); }
+  .ov-arc { width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 2px solid transparent; border-top-color: var(--accent);
+    border-right-color: var(--accent); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  .ov-core { width: 10px; height: 10px; margin: -5px 0 0 -5px; background: var(--accent); opacity: .55;
+    transform: scale(calc(0.9 + var(--lvl) * 0.7));
+    transition: transform var(--dur-instant) linear, opacity var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out); }
+  #overlay[data-phase="listening"] .ov-ring { border-color: var(--accent); opacity: .8; }
+  #overlay[data-phase="listening"] .ov-halo { opacity: calc(0.35 + var(--lvl) * 0.65); }
+  #overlay[data-phase="listening"] .ov-core { opacity: 1; }
+  #overlay[data-phase="thinking"] .ov-arc { opacity: 1; animation: ov-orbit 2000ms linear infinite; }
+  #overlay[data-phase="thinking"] .ov-core { animation: ov-breathe var(--dur-ambient) var(--ease-in-out) infinite; }
+  #overlay[data-phase="speaking"] .ov-ring { border-color: var(--accent); opacity: .9; transform: scale(calc(1 + var(--lvl) * 0.06)); }
+  #overlay[data-phase="speaking"] .ov-halo { opacity: calc(0.2 + var(--lvl) * 0.8); }
+  #overlay[data-phase="speaking"] .ov-core { opacity: 1; }
+  #overlay[data-phase="result"] .ov-ring { opacity: .55; animation: ov-settle 320ms var(--ease-spring) 1; }
+  #overlay[data-phase="error"] .ov-ring { border-color: var(--danger); }
+  #overlay[data-phase="error"] .ov-core { background: var(--danger); opacity: 1; }
+  #overlay[data-phase="error"] .ov-orb { animation: ov-shake 240ms var(--ease-in-out) 1; }
+  @keyframes ov-orbit { to { transform: rotate(360deg); } }
+  @keyframes ov-breathe { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+  @keyframes ov-settle { 0% { transform: scale(1); } 55% { transform: scale(1.04); } 100% { transform: scale(1); } }
+  @keyframes ov-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+
+  .ov-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .ov-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); height: 20px; }
+  .ov-label { font-size: var(--fs-xs); line-height: 16px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-3); white-space: nowrap; transition: color var(--dur-base) var(--ease-out); }
+  #overlay[data-phase="listening"] .ov-label { color: var(--accent); }
+  #overlay[data-phase="error"] .ov-label { color: var(--danger); }
+  .ov-chip { max-width: 64%; padding: 2px var(--s-2); border-radius: var(--r-1); background: var(--accent-soft);
+    color: var(--accent); font-size: var(--fs-xs); line-height: 16px; font-weight: 500; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; opacity: 0; transform: translateY(2px);
+    transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out); }
+  .ov-chip.on { opacity: 1; transform: none; }
+  .ov-text { position: relative; height: 48px; overflow: hidden; font-size: var(--fs-md); line-height: 24px; font-weight: 400;
+    color: var(--text-1); letter-spacing: -0.003em; }
+  .ov-text[data-kind="heard"] { color: var(--text-2); }
+  .ov-lines { position: relative; transition: transform var(--dur-base) var(--ease-out); will-change: transform; }
+  .ov-lines .w { opacity: 0; transition: opacity 120ms var(--ease-out); }
+  .ov-lines .w.in { opacity: 1; }
+  .ov-hint { position: absolute; left: 0; top: 0; color: var(--text-3); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  .ov-text[data-kind="none"] .ov-hint { opacity: 1; }
+  /* one hairline of progress along the bottom edge while a turn is being worked on: no spinner */
+  .ov-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--line-1); opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out); overflow: hidden; }
+  .ov-progress::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 34%; background: var(--accent);
+    border-radius: 2px; transform: translateX(-110%); }
+  #overlay.busy .ov-progress { opacity: 1; }
+  #overlay.busy .ov-progress::after { animation: ov-slide 1600ms var(--ease-in-out) infinite; }
+  @keyframes ov-slide { 0% { transform: translateX(-110%); } 100% { transform: translateX(310%); } }
+  @media (prefers-reduced-motion: reduce) {
+    #overlay .ov-arc, #overlay .ov-core, #overlay .ov-ring, #overlay .ov-orb, #overlay .ov-progress::after { animation: none !important; }
+    #overlay.busy .ov-progress::after { transform: none; width: 100%; opacity: .5; }
+  }
+  .reduced-motion #overlay .ov-arc, .reduced-motion #overlay .ov-core, .reduced-motion #overlay .ov-ring,
+  .reduced-motion #overlay .ov-orb, .reduced-motion #overlay .ov-progress::after { animation: none !important; }
+  .reduced-motion #overlay.busy .ov-progress::after { transform: none; width: 100%; opacity: .5; }
+
+  /* ---- the holographic interaction menu ---- */
+  #menu { position: fixed; display: none; box-sizing: border-box; padding: 10px 11px 10px;
+    border-radius: 14px; overflow: hidden; color: #d8f3ff; font-size: 12px;
+    background: linear-gradient(160deg, rgba(7, 14, 30, .96), rgba(20, 8, 36, .96));
+    border: 1px solid rgba(0, 229, 255, .45);
+    box-shadow: 0 0 16px rgba(0, 229, 255, .22), inset 0 0 26px rgba(178, 0, 255, .14); }
+  #menu.open { display: flex; flex-direction: column; animation: holo-in .18s ease-out; }
+  #menu.closing { animation: holo-out .14s ease-in forwards; }
+  @keyframes holo-in { from { opacity: 0; transform: scale(.94) translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes holo-out { to { opacity: 0; transform: scale(.96) translateY(4px); } }
+  #menu::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background: repeating-linear-gradient(0deg, rgba(0, 229, 255, .045) 0 1px, transparent 1px 3px); }
+  .mhead { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .mhead b { font-size: 11px; letter-spacing: .14em; color: #7ef7ff; text-shadow: 0 0 6px rgba(0, 229, 255, .6); }
+  .mhead .sub { flex: 1; font-size: 10px; color: #b9a6ff; opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mbtn { font: inherit; color: inherit; background: rgba(0, 229, 255, .07); border: 1px solid rgba(0, 229, 255, .28);
+    border-radius: 9px; cursor: pointer; padding: 5px 8px; }
+  .mbtn:hover, .mbtn:focus-visible { background: rgba(0, 229, 255, .16); border-color: rgba(0, 229, 255, .7); outline: none;
+    box-shadow: 0 0 8px rgba(0, 229, 255, .35); }
+  .mbtn.icon { padding: 2px 7px; line-height: 1.2; }
+  .mbtn.gold { border-color: rgba(255, 200, 70, .55); background: rgba(255, 200, 70, .1); color: #ffe6a6; }
+  .mbtn.mag { border-color: rgba(255, 60, 200, .5); background: rgba(255, 60, 200, .1); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .tile { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 2px 7px; font-size: 11px; }
+  .tile .ic { font-size: 19px; filter: drop-shadow(0 0 4px rgba(0, 229, 255, .55)); }
+  .mfoot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 6px; }
+  .mview { display: flex; flex-direction: column; min-height: 0; flex: 1; gap: 6px; }
+  .scroll { overflow-y: auto; min-height: 0; flex: 1; padding-right: 2px; }
+  .scroll::-webkit-scrollbar { width: 6px; } .scroll::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, .3); border-radius: 3px; }
+  .minput { font: inherit; color: #e8fbff; background: rgba(0, 0, 0, .35); border: 1px solid rgba(0, 229, 255, .3);
+    border-radius: 8px; padding: 6px 8px; outline: none; min-width: 0; }
+  .minput:focus { border-color: rgba(0, 229, 255, .8); box-shadow: 0 0 6px rgba(0, 229, 255, .3); }
+  .chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .chip { font-size: 10px; padding: 2px 7px; border-radius: 999px; }
+  .chip.on { background: rgba(178, 0, 255, .3); border-color: rgba(220, 120, 255, .8); }
+  .skill { display: flex; align-items: flex-start; gap: 6px; width: 100%; text-align: left; margin-bottom: 4px; }
+  .skill .nm { font-weight: 600; color: #e9fbff; } .skill small { display: block; color: #9fc3d8; font-size: 10.5px; line-height: 1.25; }
+  .skill .st { margin-left: auto; font-size: 9.5px; color: #ffcf6e; white-space: nowrap; }
+  .fav { color: #ffd76e; cursor: pointer; background: none; border: 0; font-size: 13px; padding: 0 2px; }
+  .muted { color: #8fb0c6; font-size: 10.5px; }
+  .out { white-space: pre-wrap; background: rgba(0, 0, 0, .3); border-radius: 8px; padding: 7px 8px; font-size: 11.5px; line-height: 1.35; }
+  .out.err { border: 1px solid rgba(255, 90, 120, .6); color: #ffd3dc; }
+  .out img { max-width: 100%; border-radius: 6px; margin-top: 4px; }
+  .spin { display: inline-block; width: 10px; height: 10px; border: 2px solid rgba(0, 229, 255, .3); border-top-color: #00e5ff;
+    border-radius: 50%; animation: sp 0.8s linear infinite; vertical-align: -1px; margin-right: 5px; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .row { display: flex; gap: 6px; align-items: center; }
+  .toggle { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 2px; border-bottom: 1px solid rgba(0, 229, 255, .08); }
+  .toggle input { accent-color: #ff3cc8; }
+  .game { display: flex; gap: 7px; width: 100%; text-align: left; align-items: center; margin-bottom: 4px; }
+  .game small { display: block; font-size: 10.5px; line-height: 1.25; }
+  .game .best { margin-left: auto; color: #ffd76e; font-size: 10px; }
+  #sizebox { position: fixed; left: 8px; right: 8px; top: 24px; display: none; align-items: center; gap: 6px;
+    padding: 5px 8px; background: rgba(5, 10, 18, 0.82); border-radius: 10px; font-size: 11px; }
+  #sizebox.on { display: flex; }
+  #sizebox input { flex: 1; min-width: 0; accent-color: #00e5ff; }
+  #state-pill { display: none; position: fixed; top: 6px; left: 6px; font-size: 10px; opacity: .5;
+    background: rgba(5, 10, 18, .55); padding: 2px 6px; border-radius: 999px; letter-spacing: .04em; }
+</style>
+
+<div id="overlay" data-phase="hidden" data-side="right" role="status" aria-live="polite">
+  <div class="ov-card">
+    <div class="ov-orb" aria-hidden="true"><i class="ov-halo"></i><i class="ov-ring"></i><i class="ov-arc"></i><i class="ov-core"></i></div>
+    <div class="ov-body">
+      <div class="ov-head"><span class="ov-label"></span><span class="ov-chip"></span></div>
+      <div class="ov-text" data-kind="none"><div class="ov-hint"></div><div class="ov-lines"></div></div>
+    </div>
+    <i class="ov-progress" aria-hidden="true"></i>
+  </div>
+</div>
+<div id="stage">
+  <canvas id="scene"></canvas>
+  <canvas id="fallback"></canvas>
+  <div id="hit" role="button" tabindex="0" aria-label="Jarvis — click to poke him (he answers aloud), double-click to talk to him, right-click for his menu, hold to pick him up, drag or flick to move him"
+       title="Click: he answers · Double-click: talk · Right-click: menu · Hold: pick up · Drag or flick: move / throw"></div>
+  <div id="bubble"></div>
+</div>
+<div id="scene-toolbar" role="toolbar" aria-label="Companion scene"><span id="scene-label">Home</span><button id="scene-options" class="mbtn">Options</button><button id="scene-clear" class="mbtn" style="display:none">Clear drawing</button><button id="scene-exit" class="mbtn">Return to desktop · Esc</button></div>
+<audio id="quip" preload="auto" crossorigin="anonymous"></audio>
+<div id="state-pill">idle</div>
+<div id="sizebox"><input id="sizerange" type="range" min="50" max="400" step="10" aria-label="Companion size"><span id="sizelabel"></span></div>
+<div id="menu" role="dialog" aria-label="Jarvis menu"></div>
+
+<script type="module">
+import {
+  SCHEMA, IDLE, DEFAULTS,
+  validate, safeSettings, resolveState, isAmbient, seasonalTheme, timeGreeting, shouldSuggestBreak,
+  MoodModel, MOODS, activityBias,
+  IdlePicker, Scheduler, CompanionState, EventBuffer,
+} from "/companion/behavior.js";
+import { buildAdapterAsync, loadActiveProfile, retintActive } from "/companion/profiles.js";
+import { CLIPS, buildAnimator, resetBones, applyDemeanor } from "/companion/animation.js";
+import { AmplitudeMeter } from "/companion/voice-bridge.js";
+import { DEFAULT_PARAMS as THROW_PARAMS, launchState, stepThrow, releaseVelocity } from "/companion/throw-physics.js";
+import { textToVisemes, visemeAt, VISEME_SHAPES } from "/companion/viseme.js";
+import { GESTURE, Gesture, HoverIntent, Interaction, landingKind, dropReaction, travelPlan,
+  HITMASK, maskGrid, coverCells, hitCells, cellColors, maskBits, maskColors } from "/companion/interaction.js";
+import { createMenu } from "/companion/menu.js";
+import { buildHome, defaultHome } from "/companion/home.js";
+import { PerformanceBudget } from "/companion/performance-budget.js";
+import { buildPerformances } from "/companion/performances.js";
+import { buildDirectPlay } from "/companion/direct-play.js";
+import { SpeechSession } from "/companion/speech-session.js";
+import { POKE, PokeTracker, ClickGate, pickPoke, pickDouble } from "/companion/pokes.js";
+import { OverlayModel, overlayBox } from "/companion/overlay.js";
+
+const companion = new CompanionState();
+const picker = new IdlePicker({ reducedMotion: false });
+const mood = new MoodModel();   // decaying emotion model; biases idle behaviour + tilts expression
+const incoming = new EventBuffer();
+const bubbleEl = document.getElementById("bubble");
+const pill = document.getElementById("state-pill");
+const quipEl = document.getElementById("quip");
+const overlayModel = new OverlayModel();   // the listening / thinking / speaking card beside him (overlay.js)
+const localSpeech = new SpeechSession({ audio: quipEl,
+  generate: async text => { const a = API(); return a?.say ? a.say(String(text).slice(0,400)) : ""; },
+  onState: value => { incoming.put({ type: "state", value }); if (value !== "speaking") overlayModel.quipEnd(performance.now()); },
+  onLevel: value => { incoming.put({ type: "level", value, source: "companion-quip" }); if (overlayModel.local) overlayModel.level(value); },
+  onLine: (text, { silent }) => { overlayModel.quip(text, performance.now(), { silent }); },   // his own words, captioned beside him
+  onDrop: (text, why) => console.info("[companion] a reaction went unsaid (" + why + ")"),
+});
+const skillSpeechTokens = new WeakMap();
+
+const habitatCanvas = document.getElementById("scene");
+let habitat = null;
+let homeScene=null, homeState=defaultHome(), roomOpen=false, robotMount=null;
+let directPlay=null, directOpen=false, directPointer=null,directReactStart=0;
+let performances=null, performanceOpen=false, drawPointer=false;
+let lifeInfo=null,directorBusy=false;
+let boardSave=Promise.resolve();
+let sceneQueue=Promise.resolve();
+let performanceBudget=new PerformanceBudget(), budgetKey="";
+const robotOpacity=new Map();
+
+function leaveSurface() {
+  habitat = null; habitatCanvas.style.clipPath = "";
+  const a = API(); a?.companion_habitat?.("detach").catch(() => {});
+}
+function measuredSurfaceContact() {
+  if(!habitat || !activeAdapter?.rig?.real || !camera) return null;
+  const bones=activeAdapter.rig.real;
+  const key=habitat.edge==="left"?"wristL":habitat.edge==="right"?"wristR":habitat.edge==="top"?"wristL":"pelvis";
+  const bone=bones[key];if(!bone) return null;
+  const point=bone.getWorldPosition(new threeNS.Vector3()).project(camera);
+  return [(point.x+1)/2,(1-point.y)/2];
+}
+function surfaceClip() {
+  if (!habitat || habitat.kind !== "folder") { habitatCanvas.style.clipPath=""; return; }
+  const dpr=window.devicePixelRatio || 1, sw=stageSize().w, sh=stageSize().h;
+  const [left,top,w,h]=(habitat.clip || [0,0,0,0]).map(v=>v/dpr), right=left+w, bottom=top+h;
+  habitatCanvas.style.clipPath=`path(evenodd, "M0 0H${sw}V${sh}H0Z M${left} ${top}H${right}V${bottom}H${left}Z")`;
+}
+
+
+let threeNS = null;
+let renderer = null, scene = null, camera = null;
+let activeAdapter = null;   // { group, bones, materials, dispose, capabilities }
+let animator = null, facial = null;
+let currentIdle = null, idleStart = 0, hadWebGL = false;
+let profile = null;
+let meter = null;
+let envRT = null;
+const gpuInfo = { renderer: "", lost: 0, restored: 0 };
+
+// Physical interaction (Feature #154): when picked up he hangs from the cursor; a
+// fast flick-and-release throws him across the desktop with real physics.
+let held = false;            // being dragged by the cursor right now
+let heldDir = 0;             // recent drag direction (-1..1) for a lean / head-track
+let throwVisual = null;      // live throw state (x,y,vx,vy,angle,spin) while airborne, else null
+let throwRunning = false;    // a throw loop owns the window
+let landSquash = 0;          // 0..1 squash on floor impact, eased out during recovery
+let reactPose = null;        // {phase, dir, ...} while reacting to an app launch (run / kick / impact / comedy)
+let reacting = false;        // an app-reaction choreography owns the window
+let braceUntil = 0;          // a drag is hovering over him until this time (Feature #152)
+let lastDrop = null;         // {files:[{name,type,size}], saved, at} for diagnostics
+let wandering = false;       // he's taking a little walk about the desktop (idle "wander")
+let perching = false;        // he's perched on a screen edge (idle "perch")
+let flying = false, parkouring = false;   // airborne movement behaviours (idle "fly" / "parkour")
+let playing = false, playBall = null;     // he bats a little toy ball around (idle "play" — miniature life)
+let dozing = false, lastZzz = 0;   // he dozes off when the user has been away a while, wakes on activity
+let dozeSince = 0, lastWelcome = 0;
+let activeSince = 0, breakSuggested = false;   // proactive break reminder: continuous-activity tracking
+let visemeTimeline = null, visemeStart = 0, curViseme = null;   // text-estimated viseme lip-sync for the current spoken line
+
+// ---- Living Presence Engine: one interaction owner, mirrored to the host as a position lease ----
+const API = () => window.pywebview && window.pywebview.api;
+const ix = new Interaction({
+  onChange: (next, prev) => { lastTransition = { from: prev, to: next, at: Date.now() }; },
+  onLease: (kind, state, ms) => {
+    const a = API(); if (!a) return;
+    try { if (kind === "grant") a.interaction_lease && a.interaction_lease(state, ms); else a.interaction_release && a.interaction_release(state, ms); } catch {}
+  },
+});
+let lastTransition = null;
+let userActivity = "other";        // what the user is doing (core/presence.classify_activity, pushed by the host)
+let lookTarget = null;             // {x, y} in -1..1 around his head: where his eyes/head turn (hover / curiosity)
+let dockLevel = 0;                 // 0 normal, 1 compact + translucent, 2 peeking from the screen edge
+let lastLanding = null, lastDropKind = null;
+let gameNow = null;                // a panel mini-game in progress (he watches it)
+
+const scheduler = new Scheduler({
+  onFrame: frame,
+  requestFrame: requestAnimationFrame.bind(window),
+  cancelFrame: cancelAnimationFrame.bind(window),
+});
+
+// ---------------- WebGL boot ---------------- //
+async function tryLoadThreeAndRender() {
+  try { threeNS = await import("three"); }
+  catch (e) { console.warn("[companion] three.js import failed:", e); return false; }
+  try { await createWebGLRenderer(); return true; }
+  catch (e) {
+    console.warn("[companion] WebGL unavailable:", e);
+    try { renderer?.dispose?.(); } catch {}
+    renderer = scene = camera = activeAdapter = null;
+    return false;
+  }
+}
+
+async function createWebGLRenderer() {
+  const canvas = document.getElementById("scene");
+  // Alpha-ready context so the color-key fallback can punch through pure
+  // black pixels. See hud/app.py:_apply_colorkey_transparency.
+  const ctx = canvas.getContext("webgl2", { antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: "low-power" })
+          || canvas.getContext("webgl",  { antialias: true, alpha: true, premultipliedAlpha: true, powerPreference: "low-power" });
+  if (!ctx) throw new Error("no WebGL context");
+  try {                                                      // diagnostics: hardware or software rendering, losses
+    const dbg = ctx.getExtension("WEBGL_debug_renderer_info");
+    gpuInfo.renderer = String(dbg ? ctx.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : ctx.getParameter(ctx.RENDERER)).slice(0, 120);
+  } catch {}
+  canvas.addEventListener("webglcontextlost", () => { gpuInfo.lost += 1; });
+  canvas.addEventListener("webglcontextrestored", () => {   // a GPU reset: textures re-upload by themselves, but the
+    gpuInfo.restored += 1;                                   // studio lighting was RENDERED on the GPU — render it again
+    setTimeout(buildEnvironment, 50);                        // once three.js has re-initialised (else he stays dim)
+  });
+  renderer = new threeNS.WebGLRenderer({ canvas, context: ctx, alpha: true, antialias: true, premultipliedAlpha: true });
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, companion.settings.dpr_cap));
+  // ACES Filmic tone-mapping with calibrated exposure. Codex's prior pass:
+  // "FAIL: armor is blown-out pure white with lost seam/depth." The raw
+  // linear pipeline plus bright PMREM crushed white values to flat 1.0;
+  // ACES remaps the highlight range so ceramic shading / inset seams
+  // survive. SRGB output color-space matches browser compositing.
+  renderer.toneMapping = threeNS.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;   // the textured silver reads as silver at ~1.15 (0.85 greyed it)
+  if (threeNS.SRGBColorSpace) renderer.outputColorSpace = threeNS.SRGBColorSpace;
+
+  scene = new threeNS.Scene();
+  camera = new threeNS.PerspectiveCamera(32, 1, 0.1, 20);
+
+  // Studio environment: PMREM-prefiltered RoomEnvironment gives the white
+  // armor the bright specular reflections it needs to actually read white
+  // in reduced-gain color-key compositing (otherwise it dives into
+  // grey-tinted ambient). Vendored under /vendor/three/addons.
+  try {
+    roomEnvModule = await import("three/addons/environments/RoomEnvironment.js");
+    buildEnvironment();
+  } catch (e) {
+    console.warn("[companion] PMREM env unavailable:", e);
+  }
+
+  // Lights from the active profile — calibrated to ACES so highlights land
+  // in the readable range (the previous 2.4 / 1.1 / 0.8 values were tuned
+  // for raw linear output and crushed to flat white under ACES).
+  const l = (profile && profile.lights) || {};
+  const _hex = (h, d) => { const m = (h||"").match(/^#?([0-9a-f]{6})$/i); return m ? parseInt(m[1],16) : d; };
+  const key = new threeNS.DirectionalLight(_hex(l.key?.color, 0xffffff), l.key?.intensity ?? 1.1); key.position.set(2, 3, 4);
+  const rim = new threeNS.DirectionalLight(_hex(l.rim?.color, 0x7eccff), l.rim?.intensity ?? 0.55); rim.position.set(-3, 1, -2);
+  const fill = new threeNS.DirectionalLight(0xffe4b8, 0.25); fill.position.set(0, -1, 3);
+  const amb = new threeNS.AmbientLight(_hex(l.ambient?.color, 0xdce7f2), l.ambient?.intensity ?? 0.35);
+  scene.add(key); scene.add(rim); scene.add(fill); scene.add(amb);
+
+  // Build the robot via the adapter registry (profile.adapter_id). The GLB loads asynchronously; if it fails
+  // this throws, tryLoadThreeAndRender() reports no WebGL character and the 2D concept sprite is shown.
+  activeAdapter = await buildAdapterAsync(threeNS, profile);
+  robotMount=new threeNS.Group(); robotMount.add(activeAdapter.group); scene.add(robotMount);
+  homeScene=buildHome(threeNS); scene.add(homeScene.group);
+  homeScene.setState(homeState);
+  directPlay=buildDirectPlay(threeNS,{onScore: result => {
+    directReactStart=performance.now();idleStart=directReactStart;
+    document.getElementById("scene-label").textContent=`${result.kind} · ${result.score} catches / hits`;
+    mood.nudge("proud",.15);flashAccent(performance.now(),.6);lifeEvent("play","play");saveCollectible(result);
+    if(result.score===1) speakBubble(result.kind==="kick"?"Back to you, sir.":"Got it.");
+  }});
+  scene.add(directPlay.group);
+  performances=buildPerformances(threeNS);scene.add(performances.group);
+  animator = buildAnimator(activeAdapter.bones, { reducedMotion: companion.reducedMotion });
+  facial = activeAdapter.face;
+
+  resize();
+  fitCameraToRig();
+  window.addEventListener("resize", () => { resize(); fitCameraToRig(); maskPrev = null; maskAt = 0; maskSent = ""; });
+  hadWebGL = true;
+  document.documentElement.classList.remove("no-webgl");
+}
+
+// The studio environment (PMREM-prefiltered RoomEnvironment) — rebuilt after a WebGL context loss.
+let roomEnvModule = null;
+function buildEnvironment() {
+  if (!roomEnvModule || !renderer || !scene) return;
+  try {
+    const pmrem = new threeNS.PMREMGenerator(renderer);
+    const envTex = pmrem.fromScene(new roomEnvModule.RoomEnvironment(renderer), 0.04).texture;
+    pmrem.dispose();
+    if (envRT && envRT !== envTex) { try { envRT.dispose(); } catch {} }
+    scene.environment = envTex;
+    envRT = envTex;    // kept for disposal on hot-swap
+  } catch (e) { console.warn("[companion] PMREM env rebuild failed:", e); }
+}
+
+// Height of the rendered rig's silhouette in CSS pixels (projected bounding box), for diagnostics.
+function measureCharacterPx() {
+  try {
+    if (!activeAdapter || !camera || !threeNS) return null;
+    const box = new threeNS.Box3().setFromObject(activeAdapter.group);
+    let lo = Infinity, hi = -Infinity;
+    for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+      const v = new threeNS.Vector3(x, y, z).project(camera);
+      lo = Math.min(lo, v.y); hi = Math.max(hi, v.y);
+    }
+    return Math.round((hi - lo) / 2 * stageSize().h);
+  } catch { return null; }
+}
+
+// His box inside the window (the whole window until the menu opens beside him).
+const stageEl = document.getElementById("stage");
+function stageSize() {
+  return { w: stageEl.clientWidth || window.innerWidth, h: stageEl.clientHeight || window.innerHeight };
+}
+function resize() {
+  if (!renderer) return;
+  const { w, h } = stageSize();
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+
+function fitCameraToRig() {
+  if (!activeAdapter || !camera || !threeNS) return;
+  if (roomOpen && homeScene) {
+    const box=new threeNS.Box3().setFromObject(homeScene.group), size=new threeNS.Vector3(), center=new threeNS.Vector3();
+    box.getSize(size); box.getCenter(center);
+    const d=Math.max(size.y,size.x/Math.max(.5,camera.aspect)) / (2*Math.tan(camera.fov*Math.PI/360))*1.25;
+    camera.position.set(center.x+d*.35,center.y+d*.45,center.z+d);
+    camera.lookAt(center); camera.near=.01; camera.far=10; camera.updateProjectionMatrix(); return;
+  }
+  if (directOpen || performanceOpen) {
+    camera.position.set(0,performanceOpen?.3:.24,performanceOpen?1.9:1.6);camera.lookAt(0,performanceOpen?.3:.24,0);camera.near=.01;camera.far=10;camera.updateProjectionMatrix();return;
+  }
+  const box = new threeNS.Box3().setFromObject(activeAdapter.group);
+  const size = new threeNS.Vector3(); box.getSize(size);
+  const center = new threeNS.Vector3(); box.getCenter(center);
+  const fov = camera.fov * Math.PI / 180;
+  const aspect = camera.aspect || 1;
+  const fitH = (size.y / 2) / Math.tan(fov / 2);
+  const fitW = ((size.x / 2) / aspect) / Math.tan(fov / 2);
+  const dist = Math.max(fitH, fitW) * 1.22;
+  camera.position.set(center.x, center.y, dist);
+  camera.lookAt(center.x, center.y, 0);
+  camera.updateMatrixWorld(true); camera.updateProjectionMatrix();
+  // perspective makes the near parts (toes, claws) taller than the far ones: re-centre the box's projection vertically
+  let lo = Infinity, hi = -Infinity;
+  for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+    const v = new threeNS.Vector3(x, y, z).project(camera); lo = Math.min(lo, v.y); hi = Math.max(hi, v.y);
+  }
+  const dy = ((hi + lo) / 2) * dist * Math.tan(fov / 2);
+  camera.position.y += dy; camera.lookAt(center.x, center.y + dy, 0);
+  camera.near = Math.max(0.05, dist - size.length());
+  camera.far = dist + size.length() * 4;
+  camera.updateProjectionMatrix();
+}
+
+// ---------------- 2D fallback ---------------- //
+let fb = { ctx: null, canvas: null };
+function initFallback() {
+  fb.canvas = document.getElementById("fallback");
+  fb.ctx = fb.canvas.getContext("2d");
+  document.documentElement.classList.add("no-webgl");
+}
+const sprite = new Image(); sprite.src = "/companion/fallback-robot.png";
+function drawFallback(now, jaw) {
+  const c = fb.canvas, x = fb.ctx;
+  const { w, h } = stageSize();
+  c.width = w; c.height = h;
+  x.clearRect(0, 0, w, h);
+  if (!sprite.complete || !sprite.naturalWidth) return;
+  const bob = Math.sin(now / 1500) * 0.012, hgt = h * 0.86 * (1 + bob), wid = hgt * sprite.naturalWidth / sprite.naturalHeight;
+  x.drawImage(sprite, (w - wid) / 2, h - hgt - h * 0.07, wid, hgt);
+}
+
+// ---------------- Frame loop ---------------- //
+let lastFrame = 0;
+let renderCount = 0;   // actual processed/rendered frames (past the fps gate), for live per-state FPS measurement
+function frame(now) {
+  for (const ev of incoming.drain()) {
+    companion.applyEvent(ev);
+    if (ev.type === "state") pill.textContent = companion.mode;
+  }
+  const key=[companion.settings.dpr_cap,companion.settings.idle_fps,companion.settings.active_fps,window.devicePixelRatio].join(":");
+  if(key!==budgetKey) {
+    budgetKey=key;performanceBudget=new PerformanceBudget({baseDpr:Math.min(window.devicePixelRatio||1,companion.settings.dpr_cap),
+      idleFps:companion.settings.idle_fps,activeFps:companion.settings.active_fps});
+  }
+  const active=companion.active||directOpen||performanceOpen;
+  const cap=performanceBudget.snapshot();
+  const fps = active ? cap.activeFps : cap.idleFps;
+  const interval = 1000 / Math.max(5, fps);
+  if (now - lastFrame < interval) return;
+  const renderStart=performance.now();
+  const dt = Math.max(1 / 240, (now - lastFrame) / 1000);
+  lastFrame = now;
+  renderCount += 1;
+
+  // Local quips animate the mouth without cancelling the gesture that prompted them.
+  const visualMode = ((flying||parkouring||roomOpen||directOpen||performanceOpen) && companion.mode === "speaking") ? "idle" : companion.mode === "speaking" && !quipEl.paused ? "idle" : companion.mode;
+  companion.updateMouth(now, dt);
+  updateHover(now);
+
+  if (isAmbient(visualMode) && (roomOpen || directOpen || performanceOpen || ix.is("menu_open", "skill_running", "playing", "engaged", "held", "thrown", "drop_target"))) {
+    currentIdle = roomOpen ? homeScene?.activityPose().action : performanceOpen ? performances?.pose().action : directOpen ? (directPlay?.snapshot().kind === "kick" ? (now-directReactStart<450?"kick_trick":"kick_ready") : "catch_ready") : ix.is("playing") ? "look_around" : null;    // attentive (menu, skill, game) or someone has him in hand
+  } else if (isAmbient(visualMode)) {
+    if (habitat && !flying && !wandering && !parkouring && !perching) {
+      const calm = companion.reducedMotion || FOCUSED.has(userActivity);
+      currentIdle = habitat.pose === "ledge_sit" && !calm
+        ? ["ledge_sit", "ledge_cross", "ledge_lean"][Math.floor(now / 12000) % 3] : habitat.pose;
+      surfaceClip();
+    } else if (flying || parkouring || wandering || perching) {
+      currentIdle = flying ? "fly" : parkouring ? "parkour" : perching ? "perch" : "wander";
+    } else if (!currentIdle || now - idleStart > Math.max(1200, (CLIPS[currentIdle]?.duration || 0) * 1000)) {
+      const pick = picker.choose(now, idleBias(now));           // mood + what the user is doing tilt his pick
+      if (pick) {
+        currentIdle = pick; idleStart = now;
+        playfulCaption(pick, now);
+        if (pick === "wander") runWander();                    // a rare little walk about the desktop
+        else if (pick === "perch") runPerch();                 // climb to a screen edge and sit a while
+        else if (pick === "curious") { mood.nudge("curious", 0.3, now); runCurious(); }   // go investigate the cursor
+        else if (pick === "fly") runFly();                     // take to the air
+        else if (pick === "parkour") runParkour();             // hop across the desktop
+        else if (pick === "play") { mood.nudge("playful", 0.3, now); runPlay(); }          // bat a little toy ball around
+        else if (pick === "laugh") mood.nudge("happy", 0.4, now);
+        else if (pick === "dance") mood.nudge("happy", 0.3, now);
+        else if (pick === "yawn") mood.nudge("tired", 0.25, now);
+      }
+    }
+  } else {
+    currentIdle = null;
+  }
+
+  if (hadWebGL && activeAdapter) {
+    if (reactPose && reactPose.phase === "brace" && now > braceUntil && !reacting && !ix.is("drop_target")) reactPose = null;   // drag left without dropping
+    if (reactPose || throwVisual || held || dozing) hideProps();
+    if (reactPose) {
+      applyReactPose(reactPose, now);                        // run-up / kick / failed-kick comedy / catch
+      facial?.update(0, reactPose.sad ? "muted" : "working", now);
+    } else if (throwVisual) {
+      applyThrowPose(throwVisual, now);                     // airborne tumble / landing recovery
+      facial?.update(0, "error", now);                      // wide eyes while flying
+    } else if (held) {
+      applyHeldPose(now);                                   // dangling from the cursor
+      facial?.update(0, "listening", now);
+    } else if (dozing && !roomOpen && !directOpen && isAmbient(visualMode)) {
+      applyDozePose(now);                                   // asleep while the user is away
+      facial?.update(0, "muted", now);
+      if (now - lastZzz > 3400) { showBubble("z z z…"); lastZzz = now; }
+    } else {
+      activeAdapter.group.rotation.set(0, 0, 0);           // clear any leftover tumble/lean from a throw or hold
+      activeAdapter.group.scale.set(1, 1, 1);
+      animator?.play(visualMode, now, currentIdle, idleStart);
+      if (isAmbient(visualMode) && activeAdapter.bones) {   // mood shows as body language while idling
+        const d = mood.dominant(now);
+        if (d.mood !== "neutral") applyDemeanor(activeAdapter.bones, d.mood, d.intensity, mood.expression(now).bob, now);
+      }
+      applyLook(activeAdapter.bones, now);                    // eyes and head follow the cursor / turn to his menu
+      updateProps(now);                                       // the tiny book / hologram toy when he's using them
+      activeAdapter.updateAnimation?.(visualMode, now, currentIdle, companion.reducedMotion);
+      activeAdapter.sync?.();
+      // Viseme lip-sync while speaking (falls back to pure amplitude outside a line).
+      const vactive = visemeTimeline && companion.mode === "speaking" && (now - visemeStart) < visemeTimeline.total + 200;
+      curViseme = vactive ? visemeAt(visemeTimeline, now - visemeStart) : null;
+      const moodLid = isAmbient(visualMode) ? mood.expression(now).lid : 0;   // droopy when tired, narrowed when annoyed
+      facial?.update(companion.jaw, companion.mode, now, curViseme ? VISEME_SHAPES[curViseme] : null, moodLid);
+    }
+    if (roomOpen && homeScene) {
+      homeScene.update(now,companion.reducedMotion);
+      const p=homeScene.activityPose();
+      robotMount.position.set(...p.position);robotMount.rotation.set(...p.rotation);robotMount.scale.setScalar(.6);
+    } else if(robotMount) {robotMount.position.set(0,0,0);robotMount.rotation.set(0,0,0);robotMount.scale.setScalar(1);}
+    if(performanceOpen && performances) {
+      performances.update(now,dt,companion.reducedMotion);
+      const p=performances.pose();robotMount.position.set(...p.position);robotMount.rotation.set(...p.rotation);robotMount.scale.setScalar(p.scale);
+      setRobotOpacity(p.opacity ?? 1);
+      if(!performances.snapshot().active) closeScene();
+    }
+    if (directOpen && directPlay) {
+      scene.updateMatrixWorld(true);
+      const real=activeAdapter.rig?.real || activeAdapter.bones;
+      const target=name => real?.[name]?.getWorldPosition(new threeNS.Vector3());
+      directPlay.update(Math.min(dt,.1),{leftHand:target("wristL"),rightHand:target("wristR"),foot:target("ankleR"),reducedMotion:companion.reducedMotion});
+      const ball=directPlay.group.children[0];
+      if(ball) {const v=ball.getWorldPosition(new threeNS.Vector3()).project(camera);lookTarget={x:Math.max(-1,Math.min(1,v.x)),y:Math.max(-1,Math.min(1,-v.y))};}
+    }
+    activeAdapter.updateJetpack?.(now, flying && !held && !dozing, companion.reducedMotion);
+    renderer.render(scene, camera);
+    sampleHitMask(now, renderer.getContext());               // read back while the frame is still in the buffer
+  } else {
+    drawFallback(now, companion.jaw);
+    sampleHitMask(now, null);
+  }
+  const budget=performanceBudget.sample(performance.now()-renderStart,now,active);
+  if(renderer && Math.abs(renderer.getPixelRatio()-budget.dpr)>.02) renderer.setPixelRatio(budget.dpr);
+
+}
+
+// ---------------- Hit mask: only HE takes the mouse (Living Presence) ---------------- //
+// His window's colour key makes Windows treat every pixel of it as click-through, because WebView2 draws him on its
+// own layer, which that hit test never sees: a real click went straight through him to whatever was behind. A few
+// times a second the frame just rendered is read back at low resolution and his silhouette (interaction.hitCells:
+// fully covered, steady cells) goes to the host with his colour in each cell; it is painted into the window's
+// background, hidden behind him. Exactly those pixels then take the mouse — and file drops — while everything
+// around him stays click-through. Mid-flight, mid-kick, while carried (the pointer is captured anyway) or yielding,
+// nothing does.
+// His open menu takes the mouse too (the host knows its box), once its fade-in is over and until its fade-out
+// starts, so the mask never shows through a half-transparent panel.
+let maskAt = 0, maskSentAt = 0, maskPrev = null, maskSent = "", maskBuf = null, maskCells = 0;
+let maskSpec = null, panelHit = false;
+function maskSuppressed() {
+  return throwRunning || !!throwVisual || held || flying || parkouring || playing || ix.is("repositioning")
+    || (reacting && !(reactPose && (reactPose.phase === "settle" || reactPose.phase === "brace")))
+    || document.documentElement.classList.contains("yielding");
+}
+function sampleHitMask(now, gl) {
+  if (now - maskAt < HITMASK.EVERY_MS) return;
+  maskAt = now;
+  if (!API()) return;
+  maskSpec = null; maskCells = 0;
+  if (maskSuppressed()) { maskPrev = null; return sendHitMask(now); }
+  const { w, h } = stageSize();
+  const { cols, rows } = maskGrid(w, h);
+  let frameOf = null;                                         // [rgba, W, H, flipY]
+  try {
+    if (gl) {
+      const W = gl.drawingBufferWidth, H = gl.drawingBufferHeight;
+      if (!maskBuf || maskBuf.length !== W * H * 4) maskBuf = new Uint8Array(W * H * 4);
+      gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, maskBuf);
+      frameOf = [maskBuf, W, H, true];
+    } else if (fb.ctx && fb.canvas.width) {
+      frameOf = [fb.ctx.getImageData(0, 0, fb.canvas.width, fb.canvas.height).data, fb.canvas.width, fb.canvas.height, false];
+    }
+  } catch { frameOf = null; }
+  if (frameOf) {
+    const [px, W, H, flipY] = frameOf;
+    const solid = coverCells(px, W, H, cols, rows, flipY);
+    const cells = hitCells(solid, maskPrev);
+    maskPrev = solid;
+    const rects = [];
+    if(directOpen) {const r=stageEl.getBoundingClientRect();rects.push([r.left,r.top,r.width,r.height]);}
+    if(performanceOpen && performances.snapshot().name === "draw") {
+      const r=stageEl.getBoundingClientRect();
+      // Only the actual board catches drawing input. Painting the whole stage
+      // as a native hit target would put a dark rectangle behind the robot.
+      const a=new threeNS.Vector3(.30*.3,.30*.34,.30*.145).project(camera);
+      const b=new threeNS.Vector3(.30,.30*(.34+.62),.30*.145).project(camera);
+      rects.push([r.left+(a.x+1)*r.width/2,r.top+(1-b.y)*r.height/2,
+        (b.x-a.x)*r.width/2,(b.y-a.y)*r.height/2]);
+    }
+    const toolbar=document.getElementById("scene-toolbar");
+    if(roomOpen||directOpen||performanceOpen) {const r=toolbar.getBoundingClientRect();rects.push([r.left,r.top,r.width,r.height]);}                                           // his size slider takes the mouse while it's open
+    const sb = document.getElementById("sizebox");
+    if (sb && sb.classList.contains("on")) { const r = sb.getBoundingClientRect(); rects.push([r.left, r.top, r.width, r.height].map(Math.round)); }
+    maskCells = cells.reduce((n, v) => n + v, 0);
+    maskSpec = { cols, rows, w, h, dpr: window.devicePixelRatio || 1, bits: maskBits(cells, cols, rows),
+      colors: maskColors(cellColors(px, W, H, cols, rows, cells, flipY), cols, rows), rects };
+  }
+  sendHitMask(now);
+}
+function sendHitMask(now) {
+  const a = API();
+  if (!a || !a.companion_hitmask) return;
+  const spec = { ...(maskSpec || {}), panel: panelHit };
+  const key = JSON.stringify(spec);
+  if (key === maskSent && now - maskSentAt < HITMASK.REFRESH_MS) return;   // unchanged: resent now and then only
+  maskSent = key; maskSentAt = now;
+  try { a.companion_hitmask(spec); } catch {}
+}
+let panelTimer = 0;
+new MutationObserver(() => {                                  // the menu's open / closing classes drive panelHit
+  const m = document.getElementById("menu");
+  const showing = m.classList.contains("open") && !m.classList.contains("closing");
+  clearTimeout(panelTimer);
+  if (!showing) { if (panelHit) { panelHit = false; sendHitMask(performance.now()); } return; }
+  if (!panelHit) panelTimer = setTimeout(() => { panelHit = true; sendHitMask(performance.now()); }, 200);   // after holo-in
+}).observe(document.getElementById("menu"), { attributes: true, attributeFilter: ["class"] });
+
+// ---------------- Pick-up / throw visuals ---------------- //
+// Reset to a neutral upright pose, then overlay the special pose. Keeps the group's
+// own transform (position/scale) owned here, not by the animator.
+function _resetPose() {
+  const g = activeAdapter.group;
+  g.rotation.set(0, 0, 0);
+  g.scale.set(1, 1, 1);
+  const b = activeAdapter.bones;
+  // neutral-ish arms/legs so the tumble/hang reads clearly
+  if (b.shoulderL) b.shoulderL.rotation.set(0, 0, -0.25);
+  if (b.shoulderR) b.shoulderR.rotation.set(0, 0, 0.25);
+  activeAdapter.sync?.();
+}
+
+function applyDozePose(now) {
+  resetBones(activeAdapter.bones);
+  const g = activeAdapter.group, b = activeAdapter.bones;
+  g.rotation.set(0, 0, 0); g.scale.set(1, 1, 1);
+  if (b.root) b.root.position.y -= 0.05;                      // slumped down, sitting
+  if (b.hipL) b.hipL.rotation.x = 1.4; if (b.hipR) b.hipR.rotation.x = 1.4;
+  if (b.kneeL) b.kneeL.rotation.x = -1.0; if (b.kneeR) b.kneeR.rotation.x = -1.0;
+  if (b.head) b.head.rotation.x = 0.42 + Math.sin(now / 2200) * 0.05;   // head nodding off
+  if (b.shoulderL) b.shoulderL.rotation.set(0.2, 0, -0.12); if (b.shoulderR) b.shoulderR.rotation.set(0.2, 0, 0.12);
+  activeAdapter.sync?.();
+}
+
+// Held by the cursor: arms up to the hand that holds him, legs dangling on a little pendulum driven by how the
+// user swings him, head looking where he's being carried, and now and then a playful wriggle.
+let swing = 0, swingV = 0;
+function applyHeldPose(now) {
+  _resetPose();
+  const g = activeAdapter.group, b = activeAdapter.bones;
+  swingV += (heldDir * 0.7 - swing) * 0.16; swingV *= 0.9; swing += swingV;
+  const wriggle = (Math.floor(now / 2400) % 3 === 0) ? Math.sin(now / 55) * 0.22 : 0;
+  g.rotation.z = -swing * 0.45 + Math.sin(now / 260) * 0.04;
+  g.rotation.x = 0.1;
+  if (b.shoulderL) b.shoulderL.rotation.set(0, 0, -2.45 + wriggle * 0.4);
+  if (b.shoulderR) b.shoulderR.rotation.set(0, 0, 2.45 - wriggle * 0.4);
+  const legSwing = 0.18 + Math.min(0.5, Math.abs(swing));
+  if (b.hipL) b.hipL.rotation.x = 0.3 + Math.sin(now / 170) * legSwing + wriggle;
+  if (b.hipR) b.hipR.rotation.x = 0.3 + Math.sin(now / 170 + 1.4) * legSwing - wriggle;
+  if (b.kneeL) b.kneeL.rotation.x = -0.35 + Math.sin(now / 210) * 0.2;
+  if (b.kneeR) b.kneeR.rotation.x = -0.35 + Math.sin(now / 210 + 1) * 0.2;
+  if (b.head) { b.head.rotation.z = swing * 0.35; b.head.rotation.y = heldDir * 0.35; b.head.rotation.x = -0.12; }
+  activeAdapter.sync?.();
+}
+
+// ---------------- Living Presence: what he leans toward, where he looks, his little props ---------------- //
+const MOVING = new Set(["wander", "perch", "curious", "fly", "parkour"]);   // idles that walk the window somewhere
+function idleBias(now) {
+  const m = mood.bias(now);
+  const act = companion.settings.work_aware !== false ? activityBias(userActivity) : null;
+  const watched = ix.is("hovered", "curious", "docked");     // he's being approached: he stays put
+  return (name) => lifeBias(name) * m(name) * (act ? act(name) : 1) * (watched && MOVING.has(name) ? 0 : 1);
+}
+
+// Hover intent: the cursor settles on him -> he's approachable (lease: no relocation), greets once a while.
+const hover = new HoverIntent();
+function updateHover(now) {
+  const hv = hover.update(now);
+  if (!hv.changed) return;
+  if (hv.hovered && ix.is("ambient", "work_focus", "curious", "docked")) {
+    ix.set("hovered", now);
+    mood.nudge("happy", 0.15, now);
+    if (hv.greet && companion.settings.hover_greet !== false && !dozing) {
+      if (!ix.is("work_focus") && userActivity !== "coding" && userActivity !== "typing") { currentIdle = "wave"; idleStart = now; }
+      flashAccent(now, 0.5);
+    }
+  } else if (!hv.hovered && ix.is("hovered")) {
+    ix.rest(now); lookTarget = null;
+  }
+}
+
+// Eyes and head turn toward the cursor (hover / curiosity) or his open menu, eased so it never snaps.
+let lookX = 0, lookY = 0;
+function applyLook(bones, now) {
+  let tx = 0, ty = 0;
+  if (menu && menu.isOpen && menu.layout) tx = menu.layout.side === "left" ? -0.55 : 0.55;
+  else if (lookTarget && ix.is("hovered", "curious", "drop_target")) { tx = lookTarget.x; ty = lookTarget.y; }
+  lookX += (tx - lookX) * 0.18; lookY += (ty - lookY) * 0.18;
+  if (bones.head && (Math.abs(lookX) > 0.01 || Math.abs(lookY) > 0.01)) {
+    bones.head.rotation.y += Math.max(-0.6, Math.min(0.6, lookX * 0.6));
+    bones.head.rotation.x += Math.max(-0.3, Math.min(0.3, lookY * 0.3));
+    if (ix.is("hovered", "curious")) bones.head.rotation.z += -lookX * 0.12;   // a curious head tilt
+  }
+}
+
+// The tiny book and the hologram toy he plays with while the user works ("read" / "hologram" idles).
+let book = null, holo = null;
+function ensureProps() {
+  if (book || !threeNS || !scene) return;
+  book = new threeNS.Mesh(new threeNS.BoxGeometry(0.05, 0.034, 0.008),
+    new threeNS.MeshStandardMaterial({ color: 0x8a2be2, roughness: 0.6, emissive: 0x220044 }));
+  holo = new threeNS.Mesh(new threeNS.IcosahedronGeometry(0.016, 0),
+    new threeNS.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.85 }));
+  for (const p of [book, holo]) { p.frustumCulled = false; p.visible = false; (robotMount || scene).add(p); }
+}
+function hideProps() { if (book) book.visible = false; if (holo) holo.visible = false; }
+function updateProps(now) {
+  ensureProps();
+  if (!book) return;
+  const idle = isAmbient(companion.mode) ? currentIdle : null;
+  book.visible = idle === "read";
+  holo.visible = idle === "hologram" && !(roomOpen && homeState.activity === "cook");
+  if (book.visible) { book.position.set(0, 0.105, 0.06); book.rotation.set(-0.9, 0, 0); }
+  if (holo.visible) {
+    holo.position.set(0, 0.15 + Math.sin(now / 500) * 0.006, 0.065);
+    holo.rotation.set(now / 900, now / 600, 0);
+    holo.material.color.setHSL((now / 4000) % 1, 0.9, 0.6);   // cyan -> violet -> magenta -> gold
+  }
+}
+
+function applyThrowPose(st, now) {
+  _resetPose();
+  const g = activeAdapter.group, b = activeAdapter.bones;
+  g.rotation.z = st.angle;                                  // tumble in the screen plane
+  // tuck limbs in while spinning
+  if (b.shoulderL) b.shoulderL.rotation.z = -0.8;
+  if (b.shoulderR) b.shoulderR.rotation.z = 0.8;
+  if (b.hipL) b.hipL.rotation.x = 0.7;
+  if (b.hipR) b.hipR.rotation.x = 0.7;
+  if (landSquash > 0.001) {                                 // squash-and-stretch on impact / recovery
+    g.scale.set(1 + landSquash * 0.35, 1 - landSquash * 0.35, 1 + landSquash * 0.2);
+  }
+  activeAdapter.sync?.();
+}
+
+// ---------------- Event bubble + drag + click ---------------- //
+let bubbleTimer = null;
+const ANTICS = {
+  salute: ["Tiny officer reporting for duty.", "At your service. Dramatically."],
+  double_take: ["Did that pixel just move?", "Nothing suspicious. Probably."],
+  shuffle: ["Installing rhythm... success.", "These moves are locally hosted."],
+  fly: ["Gravity and I are taking a break.", "Jetpack check. Dignity optional."],
+};
+let lastAnticCaption = -Infinity;
+function playfulCaption(action, now = performance.now()) {
+  const lines = ANTICS[action];
+  if (companion.settings.proactive === false || !lines || now - lastAnticCaption < 45000 || FOCUSED.has(userActivity) || companion.mode !== "idle") return;
+  lastAnticCaption = now;
+  speakBubble(lines[Math.floor(Math.random() * lines.length)], { proactive: true });
+}
+
+function showBubble(text) {
+  bubbleEl.textContent = text; bubbleEl.classList.add("on");
+  clearTimeout(bubbleTimer);
+  bubbleTimer = setTimeout(() => bubbleEl.classList.remove("on"), 5200);
+}
+
+// A subtitle IS him talking: show it AND say it in his voice (local TTS via `say`, mouth driven by the quip audio).
+// `proactive` lines (a greeting, a break reminder) stay silent in the quiet hours and never interrupt; the short
+// reactions to what the user just did (a landing, a catch, a poke) always speak. Never used for the "z z z…" ticker.
+let lastSpokeAt = -1e9;
+const inQuietHours = () => { const h = new Date().getHours(); return h >= 22 || h < 7; };
+async function speakBubble(text, { proactive = false } = {}) {
+  showBubble(text); // diagnostic text only; subtitles remain disabled by owner preference
+  // Owner 2026-11-12: "stop jarvis from randomly speaking, it's annoying". Lines he did not ask for (antics, greetings,
+  // landings, break reminders) are never said aloud; only a poke or a real answer has a voice.
+  if (!text || proactive) return false;
+  // Context lines are skipped, never queued, when he or the main voice is busy: said late they make no sense. Only a
+  // real poke by the owner waits its turn (poke() -> SpeechSession.say).
+  if (localSpeech.active || !isAmbient(companion.mode) || performance.now()-lastSpokeAt<1000) return false;
+  lastSpokeAt=performance.now();
+  return localSpeech.speak(String(text).slice(0,400));
+}
+
+if (location.hash.includes("debug")) document.getElementById("state-pill").style.display = "block";   // state label is a developer aid
+
+// ---------------- Pointer: click, hold, drag, flick (Living Presence) ---------------- //
+// Every press ends in exactly one outcome (interaction.js Gesture): a click opens his menu — a slow, deliberate
+// click too, up to GESTURE.CLICK_MAX_MS; holding still picks him up; dragging carries him (only the drag moves the
+// window, nothing else may); a flick throws him. The press owns his position from pointerdown on (lease), and lost
+// capture, a deactivated window or an error always end it cleanly.
+const hit = document.getElementById("hit");
+const gesture = new Gesture();
+let holdTimer = 0, dragFrom = null, dragQueued = null, dragRaf = 0, liftOffset = 0, lastClickAt = -1e9;
+
+hit.addEventListener("pointerenter", () => hover.enter(performance.now()));
+hit.addEventListener("pointerleave", () => hover.leave(performance.now()));
+hit.addEventListener("pointerdown", (e) => {
+  if (e.button !== 0) return;
+  if(performanceOpen) {
+    if(performances.snapshot().name === "draw") {drawPointer=true;hit.setPointerCapture(e.pointerId);addDrawingPoint(e);}
+    else menu.open("antics");
+    return;
+  }
+  if (directOpen) { directPointer={x:e.clientX,y:e.clientY,point:scenePoint(e,.036),at:performance.now()}; hit.setPointerCapture(e.pointerId); return; }
+  if (roomOpen) { if(!menu.isOpen) menu.open("home"); return; }
+  if (throwRunning || (reacting && !ix.is("drop_target"))) return;      // not mid-flight or mid-kick
+  const t = performance.now();
+  gesture.down(e.screenX, e.screenY, t);
+  try { hit.setPointerCapture(e.pointerId); } catch {}
+  hit.classList.add("dragging");
+  if (!ix.is("menu_open", "skill_running")) ix.set("engaged", t);
+  clearTimeout(holdTimer);
+  holdTimer = setTimeout(() => { if (gesture.tick(performance.now()) === "hold") pickUp(); }, GESTURE.HOLD_MS + 15);
+});
+hit.addEventListener("pointermove", (e) => {
+  if(drawPointer) {addDrawingPoint(e);return;}
+  if (!gesture.active) { lookAtPointer(e); return; }
+  const r = gesture.move(e.screenX, e.screenY, performance.now());
+  if (r === "drag-start") startDrag(e.screenX, e.screenY);
+  if (r === "drag-start" || r === "drag") dragTo(e.screenX, e.screenY);
+});
+hit.addEventListener("pointerup", (e) => {
+  if(drawPointer) {drawPointer=false;saveDrawing();return;}
+  if (directOpen && directPointer) {
+    const p=directPointer;directPointer=null;
+    const k=Math.max(.06,(performance.now()-p.at)/1000), end=scenePoint(e,.036);
+    if(p.point && end) directPlay.launch({x:p.point.x,y:p.point.y,vx:(end.x-p.point.x)/k,vy:(end.y-p.point.y)/k});
+    return;
+  }
+  if (gesture.active) endPress(gesture.up(e.screenX, e.screenY, performance.now())); });
+hit.addEventListener("pointercancel", () => { directPointer=null;drawPointer=false;if (gesture.active) endPress(gesture.cancel()); });
+hit.addEventListener("lostpointercapture", () => { if (gesture.active) endPress(gesture.cancel()); });
+window.addEventListener("blur", () => { if (gesture.active && !gesture.dragging) endPress(gesture.cancel()); });
+hit.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && (roomOpen || directOpen || performanceOpen)) { closeScene(); return; }                     // keyboard: Enter/Space on him opens the menu
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); menu.toggle("main"); }
+});
+
+// A poke: he reacts with his body and SAYS a line (pokes.js picks it from the streak, the hour, his mood, what just
+// happened and what the owner is doing). If the main voice is busy the line waits its turn (SpeechSession.say).
+const pokes = new PokeTracker();
+const clickGate = new ClickGate({ windowMs: GESTURE.DOUBLE_MS, onSingle: () => poke(performance.now()), onDouble: (t) => doublePoke(t) });
+let recentEvent = null, recentAt = -1e9, lastPoke = null;
+function noteRecent(kind) { recentEvent = kind; recentAt = performance.now(); }
+function react(p, now) {
+  pokes.remember(p.raw);
+  mood.nudge(p.mood[0], p.mood[1]);
+  if (CLIPS[p.anim] && !companion.reducedMotion) { currentIdle = p.anim; idleStart = now; }
+  lastPoke = { text: p.text, category: p.category, tier: p.tier, anim: p.anim, streak: pokes.streak, at: Date.now() };
+  return localSpeech.say(p.text.slice(0, 400), { key: "poke" });
+}
+function poke(now = performance.now()) {
+  const d = mood.dominant();
+  const streak = pokes.poke(now);
+
+  return react(pickPoke({ streak, hour: new Date().getHours(), mood: { name: d.mood, intensity: d.intensity },
+    recent: now - recentAt < POKE.RECENT_MS ? recentEvent : null, activity: userActivity }, { avoid: pokes.said }), now);
+}
+// A double click asks him to LISTEN, exactly like the wake word or the hotkey (the host's listen()). The poke line
+// the first click started is cut short: the microphone opening is the answer. Without a host he says so instead.
+async function doublePoke(now = performance.now()) {
+  const a = API();
+  let ok = false;
+  if (a && a.listen) {
+    localSpeech.clearQueue("poke");
+    if (localSpeech.active) localSpeech.cancel();
+    try { ok = !!(await a.listen()); } catch {}
+  }
+  if (ok) { mood.nudge("curious", 0.3); if (CLIPS.salute && !companion.reducedMotion) { currentIdle = "salute"; idleStart = now; }
+    lastPoke = { text: "", category: "listen", tier: "double", anim: "salute", streak: pokes.streak, at: Date.now() }; return "listening"; }
+  return react(pickDouble({ avoid: pokes.said }), now);
+}
+
+function lookAtPointer(e) {
+  const { w, h } = stageSize();
+  lookTarget = { x: Math.max(-1, Math.min(1, (e.offsetX - w / 2) / (w / 2))), y: Math.max(-1, Math.min(1, (e.offsetY - h * 0.3) / (h / 2))) };
+}
+
+function pickUp() {
+  leaveSurface();                                          // held still long enough: he's lifted off his feet
+  clearTimeout(holdTimer);
+  if (menu.isOpen) menu.close();
+  held = true; ix.set("held");
+  lifeEvent("hold");
+  mood.nudge("playful", 0.25);
+  const a = API();
+  liftOffset = 8;
+  if (a && a.move_companion_fast) { try { a.move_companion_fast(window.screenX, window.screenY - liftOffset); } catch {} }
+}
+
+function startDrag(x, y) {
+  leaveSurface();
+  clearTimeout(holdTimer);
+  if (menu.isOpen) menu.close();
+  held = true; ix.set("held");
+  dragFrom = { wx: window.screenX, wy: window.screenY, px: x, py: y, lastX: x };
+}
+
+function dragTo(x, y) {
+  if (!dragFrom) return;
+  dragQueued = [Math.round(dragFrom.wx + x - dragFrom.px), Math.round(dragFrom.wy + y - dragFrom.py)];
+  heldDir += (Math.max(-1, Math.min(1, (x - dragFrom.lastX) / 10)) - heldDir) * 0.35;
+  dragFrom.lastX = x;
+  if (!dragRaf) dragRaf = requestAnimationFrame(flushDrag);  // at most one native move per frame
+}
+function flushDrag() {
+  dragRaf = 0;
+  const q = dragQueued, a = API();
+  dragQueued = null;
+  if (q && a && a.move_companion_fast) { try { a.move_companion_fast(q[0], q[1]); } catch {} }
+}
+
+async function endPress(res) {
+  clearTimeout(holdTimer);
+  hit.classList.remove("dragging");
+  const a = API();
+  if (dragRaf) { cancelAnimationFrame(dragRaf); dragRaf = 0; flushDrag(); }
+  held = false; heldDir = 0;
+  const drop = dragFrom; dragFrom = null;
+  if (res.kind === "click") {
+    const t = performance.now();
+    lastClickAt = t;
+    if (menu.isOpen) { clickGate.cancel(); await menu.close(); return; }   // a click on him with his menu open just puts it away
+    ix.rest();
+    clickGate.click(t);      // one click: he answers ALOUD once the double-click window has passed; two: he listens
+    return;
+  }
+  if (res.kind === "throw") { liftOffset = 0; runThrow(res.vx, res.vy); return; }
+  if (res.kind === "place" || (res.kind === "cancel" && res.dragging)) {
+    liftOffset = 0;                                          // where he's put down becomes his spot
+    if (drop && a && a.move_to) { try { await a.move_to(window.screenX, window.screenY); } catch {} }
+    await settleDown();
+    ix.rest();
+    return;
+  }
+  if (res.kind === "set-down" || (res.kind === "cancel" && res.held)) {
+    if (liftOffset && a && a.move_companion_fast) { try { await a.move_companion_fast(window.screenX, window.screenY + liftOffset); } catch {} }
+    liftOffset = 0;
+    await settleDown();
+    ix.rest();
+    return;
+  }
+  liftOffset = 0;
+  if (!menu.isOpen) ix.rest();
+}
+
+async function settleDown() {                                // a little squash as his feet touch down
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  reacting = true;
+  const t0 = performance.now();
+  while (performance.now() - t0 < 240) { await raf(); reactPose = { phase: "settle", k: (performance.now() - t0) / 240 }; }
+  reactPose = null; reacting = false;
+}
+
+// ---------------- Drag a file / app onto him (Feature #152) ---------------- //
+// Drops arrive on his silhouette (his hit mask; everything around him stays click-through, by design).
+// He braces while a drag hovers and "catches" on drop. The host gets each file's FULL path from the same drop
+// (hud/app.py _wire_dom_drop, window.__jarvisFullPathDrops) and opens a shortcut / files the rest; only without
+// that does the page hand over the bytes itself.
+window.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  try { e.dataTransfer.dropEffect = "copy"; } catch {}
+  if (!throwRunning && !reacting) { ix.set("drop_target"); reactPose = { phase: "brace" }; braceUntil = performance.now() + 250; }
+});
+window.addEventListener("dragleave", () => {
+  if (reactPose && reactPose.phase === "brace") braceUntil = 0;
+  if (ix.is("drop_target")) ix.rest();
+});
+window.addEventListener("drop", (e) => {
+  e.preventDefault();
+  const list = [...((e.dataTransfer && e.dataTransfer.files) || [])];
+  const meta = list.map((f) => ({ name: f.name, type: f.type, size: f.size }));
+  runCatch(meta, list[0] || null);
+});
+
+// A file or shortcut lands on him: a varied reaction (interaction.dropReaction) — catch, juggle, a baseball swing,
+// a toss, a finishing move, a portal or a kick for a shortcut, a struggle for something heavy, now and then a miss.
+const DROP_LINES = { catch: "Caught {n}!", juggle: "Juggling {n}…", swing: "{n} — out of the park!", toss: "Up it goes — got {n}.",
+  finisher: "{n}. Handled.", miss: "Whoops — got it on the second try. {n}.", struggle: "Oof. {n} is heavy.",
+  portal: "Through the portal: {n}.", kick: "{n} — kicked open!" };
+async function runCatch(meta, file) {
+  mood.nudge("happy", 0.4); mood.nudge("playful", 0.3);   // catching a dropped thing delights him
+  ix.set("drop_target");
+  reacting = true;
+  const kind = dropReaction(meta);
+  lastDropKind = kind;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const dur = { struggle: 1400, juggle: 1300, miss: 1300, finisher: 1100, portal: 1000 }[kind] || 800;
+  const t0 = performance.now();
+  while (performance.now() - t0 < dur) { await raf(); reactPose = { phase: "drop", kind, k: (performance.now() - t0) / dur }; }
+  reactPose = null; reacting = false;
+  ix.rest();
+  const name = meta[0] && meta[0].name;
+  lastDrop = { files: meta, saved: null, at: Date.now(), reaction: kind };
+  noteRecent("dropped");
+  if (name) speakBubble((DROP_LINES[kind] || "Caught {n}!").replace("{n}", name), { proactive: true });   // automatic: quiet at night
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || (file && window.__jarvisFullPathDrops)) return;   // the host already has it, by its real path
+  // read the first file and hand it to Jarvis (saved to data/dropped/)
+  if (file && api.save_dropped_file) {
+    try {
+      const dataUrl = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+      const saved = await api.save_dropped_file(String(name).slice(0, 180), String(dataUrl).slice(0, 8_000_000));
+      lastDrop.saved = saved || null;
+    } catch (err) { console.warn("[companion] drop save failed:", err); }
+  } else if (api.on_files_dropped) {
+    try { await api.on_files_dropped(JSON.stringify(meta)); } catch {}
+  }
+}
+
+// ---------------- Throw loop (Feature #154) ---------------- //
+async function runThrow(vx, vy) {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.companion_bounds || throwRunning) return;
+  if (menu.isOpen) await menu.close();
+  let bounds;
+  try { bounds = await api.companion_bounds(window.screenX, window.screenY); } catch { return; }
+  if (!bounds) return;
+  throwRunning = true;
+  ix.set("thrown");                                           // physics owns him until he has landed AND settled
+  let st = launchState(window.screenX, window.screenY, vx, vy, THROW_PARAMS);
+  const dir = vx >= 0 ? 1 : -1;
+  let impact = 0;
+  try {
+    throwVisual = st; landSquash = 0;
+    let last = performance.now();
+    const raf = () => new Promise((r) => requestAnimationFrame(r));
+    for (let guard = 0; guard < 1200 && !st.resting; guard++) {   // guard: never loop forever
+      await raf();
+      const now = performance.now();
+      const dt = (now - last) / 1000; last = now;
+      const wasAir = !st.onFloor, vyIn = st.vy;
+      st = stepThrow(st, dt, bounds, THROW_PARAMS);
+      if (st.onFloor && wasAir) impact = Math.max(impact, Math.abs(vyIn));
+      if (st.onFloor && wasAir && Math.abs(st.vy) > 120) landSquash = Math.min(1, Math.abs(st.vy) / 1200);
+      landSquash *= 0.82;
+      throwVisual = st;
+      try { await api.move_companion_fast(Math.round(st.x), Math.round(st.y)); } catch {}
+    }
+    await landingRecovery(st);
+    throwVisual = null; throwRunning = false; landSquash = 0;
+    const end = await landingReaction(st, impact, dir, bounds);   // superhero / faceplant / roll / cartwheel / jetpack...
+    try { await api.companion_settled(end.x, end.y); } catch {}
+  } finally {
+    throwVisual = null; throwRunning = false; landSquash = 0; reactPose = null; reacting = false;
+    ix.rest();                                                // releases "thrown" with a settle period before placement looks again
+  }
+}
+
+// After a throw lands, a reaction with personality, picked by how hard he hit (interaction.landingKind).
+const LAND_LINES = { faceplant: "Ow.", dizzy: "Whoa…", superhero: "Nailed it.", roll: "Tuck and roll!", cartwheel: "Ta-da!",
+  annoyed: "Really, sir?", invite: "Again! Again!", surprised: "Oh!", popup: "Hup!", jetpack: "Thrusters online." };
+const LAND_MS = { faceplant: 1500, superhero: 1200, roll: 1100, cartwheel: 1100, invite: 1700, surprised: 900, popup: 900,
+  dizzy: 1300, annoyed: 1200, jetpack: 1400 };
+async function landingReaction(st, impact = 0, dir = 1, bounds = null) {
+  const api = API();
+  let kind = landingKind(impact, st.bounces | 0);
+  if (kind === "superhero" && Math.random() < 0.3) kind = "jetpack";   // now and then he catches himself on his jets
+  lastLanding = { kind, impact: Math.round(impact), bounces: st.bounces | 0, at: Date.now() };
+  if (kind === "faceplant" || kind === "annoyed") mood.nudge("annoyed", 0.4);
+  else if (kind === "dizzy") mood.nudge("tired", 0.2);
+  else { mood.nudge("proud", 0.25); mood.nudge("playful", 0.3); }
+  noteRecent("landed");
+  if (Math.random() < 0.7) speakBubble(LAND_LINES[kind], { proactive: true });                            // automatic: quiet at night
+  reacting = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const clampX = (x) => bounds ? Math.max(bounds.left, Math.min(bounds.right, x)) : x;
+  const x0 = Math.round(st.x), y0 = Math.round(st.y), dur = LAND_MS[kind] || 1100, t0 = performance.now();
+  let x = x0;
+  for (;;) {
+    await raf(); const t = (performance.now() - t0) / dur; if (t >= 1) break;
+    reactPose = { phase: "land", kind, k: t, dir };
+    let dx = 0, dy = 0;
+    if (kind === "popup") dy = -Math.sin(Math.min(1, t * 1.6) * Math.PI) * 22;
+    else if (kind === "jetpack") { dy = -Math.sin(Math.min(1, t * 1.1) * Math.PI) * 38; flashAccent(performance.now(), 1); }
+    else if (kind === "roll") dx = dir * Math.min(1, t / 0.7) * 40;
+    else if (kind === "cartwheel") { dx = dir * Math.min(1, t / 0.8) * 34; dy = -Math.abs(Math.sin(t * Math.PI)) * 10; }
+    if (dx || dy) { x = Math.round(clampX(x0 + dx)); try { await api.move_companion_fast(x, Math.round(y0 + dy)); } catch {} }
+  }
+  reactPose = null; reacting = false;
+  try { await api.move_companion_fast(x, y0); } catch {}
+  return { x, y: y0 };
+}
+
+// ---------------- App-launch reaction (Feature #151): run up and kick ---------------- //
+const easeInOut = (k) => k * k * (3 - 2 * k);
+
+function applyReactPose(p, now) {
+  _resetPose();
+  const g = activeAdapter.group, b = activeAdapter.bones, s = p.dir || 1;
+  if (p.phase === "run") {
+    const cyc = Math.sin(now / 70);                          // fast leg pump
+    g.rotation.z = -s * 0.12; g.position && (g.rotation.x = 0.1);
+    if (b.hipL) b.hipL.rotation.x = cyc * 0.9;
+    if (b.hipR) b.hipR.rotation.x = -cyc * 0.9;
+    if (b.shoulderL) b.shoulderL.rotation.x = -cyc * 0.7;
+    if (b.shoulderR) b.shoulderR.rotation.x = cyc * 0.7;
+  } else if (p.phase === "kick") {
+    const k = easeInOut(Math.min(1, p.k || 0));
+    const leadHip = s > 0 ? b.hipR : b.hipL, leadKnee = s > 0 ? b.kneeR : b.kneeL;
+    const kind = p.kind || "front";
+    if (kind === "roundhouse") {                             // spinning horizontal kick
+      g.rotation.z = -s * k * 1.4;                           // whole body spins into it
+      if (leadHip) { leadHip.rotation.x = -0.6 * k; leadHip.rotation.z = -s * 1.2 * k; }
+      if (leadKnee) leadKnee.rotation.x = 0.3 * (1 - k);
+    } else if (kind === "flying") {                          // leg extended, airborne (window hops in runAppReact)
+      g.rotation.z = -s * 0.25; g.rotation.x = -0.25;
+      if (leadHip) leadHip.rotation.x = -1.7 * k;
+      if (leadKnee) leadKnee.rotation.x = 0.15 * (1 - k);
+      if (b.hipL && b.hipR) { (s > 0 ? b.hipL : b.hipR).rotation.x = 0.8; }   // trailing leg tucked
+    } else if (kind === "slide") {                           // low sliding kick
+      g.rotation.x = 0.55; g.position; g.scale.set(1.05, 0.8, 1);
+      if (leadHip) leadHip.rotation.x = -1.8 * k;             // front leg stretched out low
+      if (leadKnee) leadKnee.rotation.x = 0.1;
+      if (b.hipL && b.hipR) (s > 0 ? b.hipL : b.hipR).rotation.x = 1.0;
+    } else if (kind === "superhero") {                       // overhead smash coming down
+      g.rotation.x = 0.1 - (1 - k) * 0.4;                     // tips from a rear wind-up into a downward strike
+      if (leadHip) leadHip.rotation.x = -1.5 * k;
+      if (b.shoulderL) b.shoulderL.rotation.x = -2.0 * (1 - k); if (b.shoulderR) b.shoulderR.rotation.x = -2.0 * (1 - k);
+      flashAccent(now, k);
+    } else if (kind === "backflip") {                        // full tumble into the kick
+      g.rotation.z = -s * k * Math.PI * 2;
+      if (leadHip) leadHip.rotation.x = -1.2 * k;
+      if (b.hipL && b.hipR) (s > 0 ? b.hipL : b.hipR).rotation.x = 1.0;
+    } else if (kind === "axe") {                             // leg raises overhead then chops down
+      const up = Math.sin(Math.min(1, k) * Math.PI);
+      if (leadHip) leadHip.rotation.x = -2.6 * up;            // very high, straight down
+      if (leadKnee) leadKnee.rotation.x = 0.1;
+      g.rotation.z = -s * 0.1;
+    } else if (kind === "spinhook") {                        // half spin into a hooking heel
+      g.rotation.z = -s * k * Math.PI;
+      if (leadHip) { leadHip.rotation.x = -0.8 * k; leadHip.rotation.z = -s * 1.0 * k; }
+      if (leadKnee) leadKnee.rotation.x = 0.8 * (1 - k);
+    } else if (kind === "double") {                          // two rapid kicks
+      const beat = Math.abs(Math.sin(k * Math.PI * 2));
+      if (leadHip) leadHip.rotation.x = -1.4 * beat;
+      if (leadKnee) leadKnee.rotation.x = 0.6 * (1 - beat);
+      g.rotation.z = -s * 0.15;
+    } else if (kind === "scorpion") {                        // bends forward, back leg kicks up behind
+      g.rotation.x = 0.6;
+      const back = s > 0 ? b.hipL : b.hipR;
+      if (back) back.rotation.x = 1.8 * k;                    // trailing leg swings up behind
+      if (b.shoulderL) b.shoulderL.rotation.x = -0.8; if (b.shoulderR) b.shoulderR.rotation.x = -0.8;
+    } else {                                                 // front kick
+      g.rotation.z = -s * (0.15 + k * 0.1);
+      if (leadHip) leadHip.rotation.x = -1.4 * k;
+      if (leadKnee) leadKnee.rotation.x = 0.6 * (1 - k);
+    }
+    if (b.shoulderL) b.shoulderL.rotation.z = -0.7;
+    if (b.shoulderR) b.shoulderR.rotation.z = 0.7;
+  } else if (p.phase === "impact") {
+    g.scale.set(1.15, 0.9, 1.1);                             // brief squash on contact
+    const leadHip = s > 0 ? b.hipR : b.hipL;
+    if (leadHip) leadHip.rotation.x = -1.4;
+    flashAccent(now);
+  } else if (p.phase === "sit") {                            // comedy: landed on his bottom
+    g.rotation.x = -0.5; g.position; g.rotation.z = p.wob ? Math.sin(now / 90) * 0.1 : 0;
+    if (b.hipL) b.hipL.rotation.x = 1.2; if (b.hipR) b.hipR.rotation.x = 1.2;
+    if (b.shoulderL) b.shoulderL.rotation.z = -1.0; if (b.shoulderR) b.shoulderR.rotation.z = 1.0;
+  } else if (p.phase === "land") {                           // post-throw reaction
+    if (p.kind === "dizzy") {                                // sits, head lolling in circles
+      g.rotation.x = -0.4;
+      if (b.head) { b.head.rotation.z = Math.sin(now / 130) * 0.4; b.head.rotation.y = Math.cos(now / 130) * 0.4; }
+      if (b.hipL) b.hipL.rotation.x = 1.1; if (b.hipR) b.hipR.rotation.x = 1.1;
+      if (b.shoulderL) b.shoulderL.rotation.z = -0.9; if (b.shoulderR) b.shoulderR.rotation.z = 0.9;
+    } else if (p.kind === "annoyed") {                       // arms crossed, little shake, looks at the user
+      g.rotation.z = Math.sin(now / 70) * 0.03;
+      if (b.shoulderL) b.shoulderL.rotation.set(0.4, 0, -1.3); if (b.shoulderR) b.shoulderR.rotation.set(0.4, 0, 1.3);
+      if (b.head) b.head.rotation.x = -0.12; p.sad = true;
+    } else if (p.kind === "faceplant") {                     // face down on the floor, then pops up shaking his head
+      const k = p.k || 0, down = k < 0.55 ? 1 : Math.max(0, 1 - (k - 0.55) / 0.25);
+      g.rotation.x = 1.35 * down;
+      if (b.shoulderL) b.shoulderL.rotation.set(-2.6 * down, 0, -0.4); if (b.shoulderR) b.shoulderR.rotation.set(-2.6 * down, 0, 0.4);
+      if (b.head && k > 0.6) b.head.rotation.y = Math.sin(now / 60) * 0.35 * (1 - k);
+      p.sad = k < 0.6;
+    } else if (p.kind === "superhero" || p.kind === "jetpack") {   // three-point landing, then rises (jets: hovers back up)
+      const k = p.k || 0, crouch = p.kind === "jetpack" ? 0.3 : Math.max(0, 1 - Math.max(0, k - 0.6) / 0.4);
+      g.rotation.x = 0.25 * crouch;
+      if (b.hipL) b.hipL.rotation.x = 1.0 * crouch; if (b.hipR) b.hipR.rotation.x = 0.4 * crouch;
+      if (b.kneeL) b.kneeL.rotation.x = -1.2 * crouch; if (b.kneeR) b.kneeR.rotation.x = -1.4 * crouch;
+      if (b.shoulderR) b.shoulderR.rotation.set(0.9 * crouch, 0, 0.3);          // fist to the floor
+      if (b.shoulderL) b.shoulderL.rotation.set(-0.4 * crouch, 0, -1.2 * crouch);   // other arm swept back
+      if (b.head) b.head.rotation.x = -0.25 * crouch;
+      if (p.kind === "jetpack" && b.hipL && b.hipR) { b.hipL.rotation.x = -0.15; b.hipR.rotation.x = -0.15; }
+    } else if (p.kind === "roll") {                          // tuck and roll forward, then up
+      const k = p.k || 0, rolling = k < 0.7;
+      g.rotation.z = rolling ? -(p.dir || 1) * (k / 0.7) * Math.PI * 2 : 0;
+      if (rolling) { if (b.hipL) b.hipL.rotation.x = 1.4; if (b.hipR) b.hipR.rotation.x = 1.4;
+        if (b.kneeL) b.kneeL.rotation.x = -1.5; if (b.kneeR) b.kneeR.rotation.x = -1.5;
+        if (b.shoulderL) b.shoulderL.rotation.set(-1.2, 0, -0.3); if (b.shoulderR) b.shoulderR.rotation.set(-1.2, 0, 0.3); }
+      else if (b.shoulderL && b.shoulderR) { b.shoulderL.rotation.z = -1.6; b.shoulderR.rotation.z = 1.6; }
+    } else if (p.kind === "cartwheel") {                     // arms and legs out, wheeling sideways
+      const k = p.k || 0;
+      g.rotation.z = -(p.dir || 1) * Math.min(1, k / 0.8) * Math.PI * 2;
+      if (b.shoulderL) b.shoulderL.rotation.z = -2.5; if (b.shoulderR) b.shoulderR.rotation.z = 2.5;
+      if (b.hipL) b.hipL.rotation.z = -0.6; if (b.hipR) b.hipR.rotation.z = 0.6;
+    } else if (p.kind === "invite") {                        // "again!": bouncing, beckoning with one hand
+      g.rotation.z = Math.sin(now / 120) * 0.05;
+      if (b.shoulderR) b.shoulderR.rotation.set(-1.3, 0, 0.5);
+      if (b.elbowR) b.elbowR.rotation.x = -0.6 + Math.sin(now / 110) * 0.6;
+      if (b.head) b.head.rotation.z = 0.12;
+      flashAccent(now, 0.4);
+    } else if (p.kind === "surprised") {                     // arms flung up, head back
+      if (b.shoulderL) b.shoulderL.rotation.z = -2.1; if (b.shoulderR) b.shoulderR.rotation.z = 2.1;
+      if (b.head) b.head.rotation.x = -0.3;
+      g.scale.set(0.97, 1.05, 1);
+    } else {                                                 // popup: arms up, happy (window hops in landingReaction)
+      if (b.shoulderL) b.shoulderL.rotation.z = -2.0; if (b.shoulderR) b.shoulderR.rotation.z = 2.0;
+      flashAccent(now, 0.6);
+    }
+  } else if (p.phase === "brace") {                          // drag hovering over him: ready to catch
+    g.rotation.x = 0.08;
+    if (b.shoulderL) b.shoulderL.rotation.set(-1.0, 0, -0.45);
+    if (b.shoulderR) b.shoulderR.rotation.set(-1.0, 0, 0.45);
+    if (b.head) b.head.rotation.x = -0.12;
+  } else if (p.phase === "catch" || (p.phase === "drop" && p.kind === "catch")) {   // file dropped: grab it, little recoil
+    const k = Math.sin(Math.min(1, p.k || 0) * Math.PI);
+    g.scale.set(1 - 0.08 * k, 1 + 0.08 * k, 1);
+    if (b.shoulderL) b.shoulderL.rotation.set(-1.5 + k * 0.4, 0, -0.75);
+    if (b.shoulderR) b.shoulderR.rotation.set(-1.5 + k * 0.4, 0, 0.75);
+    flashAccent(now, 0.5);
+  } else if (p.phase === "drop") {                           // the other ways he receives a dropped file
+    const k = Math.min(1, p.k || 0), s = p.dir || 1;
+    if (p.kind === "juggle") {                               // hands bouncing up and down in turn
+      const q = Math.sin(now / 95);
+      if (b.shoulderL) b.shoulderL.rotation.set(-1.4 - q * 0.35, 0, -0.5);
+      if (b.shoulderR) b.shoulderR.rotation.set(-1.4 + q * 0.35, 0, 0.5);
+      if (b.head) b.head.rotation.x = -0.25 + Math.abs(q) * 0.1;
+    } else if (p.kind === "swing") {                         // a cartoon baseball swing
+      const sw = k < 0.4 ? -k / 0.4 : Math.min(1, (k - 0.4) / 0.2);
+      g.rotation.y = sw * 1.1;
+      if (b.shoulderL) b.shoulderL.rotation.set(-1.2, 0, -0.9 + sw * 0.9); if (b.shoulderR) b.shoulderR.rotation.set(-1.2, 0, 0.9 + sw * 0.4);
+      if (k > 0.6) flashAccent(now, 1);
+    } else if (p.kind === "toss" || p.kind === "finisher") {  // throws it up and catches it / spins into a pose
+      const up = Math.sin(k * Math.PI);
+      if (b.shoulderL) b.shoulderL.rotation.z = -1.0 - up * 1.2; if (b.shoulderR) b.shoulderR.rotation.z = 1.0 + up * 1.2;
+      if (p.kind === "finisher") { g.rotation.y = k * Math.PI * 2; if (k > 0.8) flashAccent(now, 1); }
+      if (b.head) b.head.rotation.x = -0.35 * up;
+    } else if (p.kind === "miss") {                          // it sails past: looks left, right, then grabs it
+      if (b.head) b.head.rotation.y = k < 0.7 ? Math.sin(now / 160) * 0.6 : 0;
+      if (k >= 0.7 && b.shoulderL && b.shoulderR) { b.shoulderL.rotation.set(-1.5, 0, -0.75); b.shoulderR.rotation.set(-1.5, 0, 0.75); }
+    } else if (p.kind === "struggle") {                      // a heavy file: knees buckle, arms straining
+      g.rotation.z = Math.sin(now / 50) * 0.04; g.scale.set(1.04, 0.95, 1);
+      if (b.shoulderL) b.shoulderL.rotation.z = -2.2; if (b.shoulderR) b.shoulderR.rotation.z = 2.2;
+      if (b.hipL) b.hipL.rotation.x = 0.5; if (b.hipR) b.hipR.rotation.x = 0.5;
+      if (b.kneeL) b.kneeL.rotation.x = -0.9; if (b.kneeR) b.kneeR.rotation.x = -0.9;
+      p.sad = true;
+    } else if (p.kind === "portal") {                        // hands out, a glowing portal swallows it
+      if (b.shoulderL) b.shoulderL.rotation.set(-1.4, 0, -0.3); if (b.shoulderR) b.shoulderR.rotation.set(-1.4, 0, 0.3);
+      g.rotation.y = Math.sin(now / 200) * 0.2;
+      flashAccent(now, 1);
+    } else if (p.kind === "kick") {                          // a shortcut gets kicked open
+      const leadHip = s > 0 ? b.hipR : b.hipL;
+      if (leadHip) leadHip.rotation.x = -1.5 * Math.sin(Math.min(1, k * 1.5) * Math.PI);
+      if (b.shoulderL) b.shoulderL.rotation.z = -0.7; if (b.shoulderR) b.shoulderR.rotation.z = 0.7;
+    }
+  } else if (p.phase === "settle") {                         // feet back on the ground after being held
+    const k = Math.sin(Math.min(1, p.k || 0) * Math.PI);
+    g.scale.set(1 + 0.08 * k, 1 - 0.08 * k, 1);
+  } else if (p.phase === "examine") {                        // running a skill: leans in, studying the screen
+    g.rotation.x = 0.08;
+    if (b.head) { b.head.rotation.x = 0.12; b.head.rotation.y = (p.dir || 1) * 0.35 + Math.sin(now / 700) * 0.12; }
+    if (b.shoulderR) b.shoulderR.rotation.z = 0.95; if (b.elbowR) b.elbowR.rotation.x = -1.45;   // hand to chin
+    flashAccent(now, 0.35);
+  } else if (p.phase === "teleport") {                       // folding into light, then back out
+    const s2 = Math.max(0.05, Math.abs(1 - 2 * Math.min(1, p.k || 0)));
+    g.scale.set(s2, 1 / Math.max(0.3, s2) * 0.6 + 0.4, s2);
+    flashAccent(now, 1);
+  } else if (p.phase === "play") {                           // batting a little toy ball
+    const bx = p.bx || 0;
+    if (b.head) { b.head.rotation.x = 0.3; b.head.rotation.y = bx * 4; }   // look down and toward the ball
+    g.rotation.z = -bx * 1.5;
+    if (p.kick) {                                            // a little kick toward the ball
+      const leadHip = bx < 0 ? b.hipL : b.hipR;
+      if (leadHip) leadHip.rotation.x = -1.0;
+    }
+  } else if (p.phase === "cheer") {                          // game win: arms up, bouncing
+    const q = Math.sin(now / 90);
+    g.rotation.z = q * 0.08;
+    if (b.shoulderL) b.shoulderL.rotation.z = -2.2 + q * 0.2;   // both arms raised
+    if (b.shoulderR) b.shoulderR.rotation.z = 2.2 - q * 0.2;
+    if (b.head) b.head.rotation.x = -0.15;
+    flashAccent(now, 0.8);
+  } else if (p.phase === "charge") {                         // comedy: power-up
+    const q = Math.sin(now / 40) * (p.k || 0);
+    g.scale.set(1 + 0.05 * (p.k || 0), 1 + 0.08 * (p.k || 0), 1);
+    g.rotation.z = q * 0.05;
+    if (b.shoulderL) b.shoulderL.rotation.z = -0.5; if (b.shoulderR) b.shoulderR.rotation.z = 0.5;
+    flashAccent(now, p.k || 0);
+  }
+  activeAdapter.sync?.();
+}
+
+// Pulse the glow materials brighter for an "impact / power-up" flash (unlit glow slots).
+function flashAccent(now, boost = 1) {
+  const mats = activeAdapter.materials || {};
+  for (const key of ["accentPrimary", "chestCore", "eyeGlow", "footGlow"]) {
+    const m = mats[key];
+    if (m && m.userData && m.userData.unlitGlow) {
+      const base = m.userData.glowHex, k = Math.min(1, (m.userData.glowIntensity || 1));
+      const pulse = 1 + 0.6 * boost * Math.abs(Math.sin(now / 60));
+      m.color.setHex(base).multiplyScalar(Math.min(1, k) * pulse > 1 ? 1 : Math.min(1, k) * pulse);
+    }
+  }
+}
+
+/** Run over to a newly launched window and kick it. target = a point on the new window. */
+async function runAppReact(tx, ty, opts = {}) {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || throwRunning || held || reacting || ix.owning || menu.isOpen) return;
+  ix.set("repositioning");                                   // the kick run owns his position (lease) until he's done
+  try { await runAppReactInner(api, tx, ty, opts); } finally { reacting = false; reactPose = null; ix.rest(); }
+}
+async function runAppReactInner(api, tx, ty, opts) {
+  reacting = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const w = window.innerWidth, h = window.innerHeight;
+  const startX = window.screenX, startY = window.screenY;
+  let b = null;
+  try { b = await api.companion_bounds(startX, startY); } catch {}
+  const clampX = (x) => b ? Math.max(b.left, Math.min(b.right, x)) : x;
+  const clampY = (y) => b ? Math.max(b.top, Math.min(b.bottom, y)) : y;
+  // stand just beside the target, on whichever side he's already on
+  const fromLeft = startX <= tx;
+  const standX = clampX(fromLeft ? tx - w - 16 : tx + 16);
+  const standY = clampY(ty - h / 2);
+  const dir = standX <= tx ? 1 : -1;                         // face toward the window
+
+  if (opts.comedy) {
+    mood.nudge("annoyed", 0.7);                                // a whiffed kick is extra annoying
+    await runFailedKick(startX, startY, standX, standY, dir, clampX, clampY); reacting = false; return;
+  }
+  mood.nudge("annoyed", 0.4); mood.nudge("proud", 0.2);        // kicking an intruding window: annoyed, a touch smug
+
+  const KICKS = ["front", "roundhouse", "flying", "slide", "superhero", "backflip", "axe", "spinhook", "double", "scorpion"];
+  const kind = opts.kind && KICKS.includes(opts.kind) ? opts.kind : KICKS[Math.floor(Math.random() * KICKS.length)];
+
+  // run
+  let t0 = performance.now(); const runMs = 650;
+  for (;;) {
+    await raf(); const k = Math.min(1, (performance.now() - t0) / runMs);
+    reactPose = { phase: "run", dir };
+    try { await api.move_companion_fast(Math.round(startX + (standX - startX) * easeInOut(k)),
+                                        Math.round(startY + (standY - startY) * easeInOut(k))); } catch {}
+    if (k >= 1) break;
+  }
+  // wind up + kick (a flying kick hops up and forward; a slide/front stay grounded)
+  t0 = performance.now(); const kickMs = 340;
+  for (;;) {
+    await raf(); const k = Math.min(1, (performance.now() - t0) / kickMs);
+    reactPose = { phase: "kick", dir, k, kind };
+    if (kind === "flying") {
+      const hop = Math.sin(k * Math.PI) * 34;                 // arc up then down during the kick
+      try { await api.move_companion_fast(standX + Math.round(dir * k * 10), Math.round(clampY(standY - hop))); } catch {}
+    } else if (kind === "superhero" || kind === "backflip") {
+      const hop = Math.sin(k * Math.PI) * 46;                 // a big leap
+      try { await api.move_companion_fast(standX, Math.round(clampY(standY - hop))); } catch {}
+    } else if (kind === "slide") {
+      try { await api.move_companion_fast(Math.round(standX + dir * k * 22), standY); } catch {}   // slides into it
+    }
+    if (k >= 1) break;
+  }
+  reactPose = { phase: "impact", dir, kind };
+  try { await api.move_companion_fast(standX, standY); } catch {}
+  await raf(); await new Promise((r) => setTimeout(r, 160));
+  reactPose = null; reacting = false;
+  try { await api.companion_settled(standX, standY); } catch {}
+}
+
+// Feature #151 comedy: confident run, failed kick, bounce onto his bottom, sulk, power up, revenge kick, victory.
+async function runFailedKick(startX, startY, standX, standY, dir, clampX, clampY) {
+  const api = window.pywebview && window.pywebview.api;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const moveTo = async (x, y) => { try { await api.move_companion_fast(Math.round(x), Math.round(y)); } catch {} };
+  const hold = async (ms, pose) => { const t0 = performance.now(); while (performance.now() - t0 < ms) { await raf(); reactPose = typeof pose === "function" ? pose((performance.now() - t0) / ms) : pose; } };
+  // 1. confidence (stretch at the start)
+  await hold(500, { phase: "charge", dir, k: 0.3 });
+  // 2. run in
+  let t0 = performance.now(); const runMs = 520;
+  for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / runMs);
+    reactPose = { phase: "run", dir };
+    await moveTo(startX + (standX - startX) * easeInOut(k), startY + (standY - startY) * easeInOut(k));
+    if (k >= 1) break; }
+  // 3. kick... and bounce back
+  await hold(220, (k) => ({ phase: "kick", dir, k }));
+  const backX = clampX(standX - dir * 180), backY = clampY(standY + 40);
+  t0 = performance.now(); const backMs = 360;
+  for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / backMs);
+    reactPose = { phase: "sit", dir, wob: false };
+    await moveTo(standX + (backX - standX) * k, standY + (backY - standY) * Math.sin(k * Math.PI)); // little arc
+    if (k >= 1) break; }
+  // 4. sulk on his bottom
+  await hold(900, { phase: "sit", dir, wob: true, sad: true });
+  // 5. power up
+  await hold(1100, (k) => ({ phase: "charge", dir, k }));
+  // 6. revenge sprint + big kick
+  t0 = performance.now(); const sprintMs = 360;
+  for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / sprintMs);
+    reactPose = { phase: "run", dir };
+    await moveTo(backX + (standX - backX) * easeInOut(k), backY + (standY - backY) * easeInOut(k));
+    if (k >= 1) break; }
+  await hold(260, (k) => ({ phase: "kick", dir, k }));
+  reactPose = { phase: "impact", dir };
+  await raf(); await new Promise((r) => setTimeout(r, 180));
+  // 7. victory
+  await hold(600, { phase: "charge", dir, k: 0.5 });
+  reactPose = null;
+  try { await api.companion_settled(standX, standY); } catch {}
+}
+
+// A rare little walk: he paces a few steps across the desktop and ambles back (autonomous "life").
+async function runWander() {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || wandering || throwRunning || held || reacting) return;
+  wandering = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const y0 = window.screenY;
+  let b = null; try { b = await api.companion_bounds(window.screenX, y0); } catch {}
+  const clampX = (x) => b ? Math.max(b.left, Math.min(b.right, x)) : x;
+  const dir = Math.random() < 0.5 ? -1 : 1;
+  const out = clampX(window.screenX + dir * (60 + Math.random() * 110));
+  for (const tx of [out, window.screenX]) {                    // amble out, then back home
+    const sx = window.screenX, t0 = performance.now(), ms = 1000;
+    for (;;) {
+      await raf(); const k = Math.min(1, (performance.now() - t0) / ms);
+      try { await api.move_companion_fast(Math.round(sx + (tx - sx) * k), y0); } catch {}
+      if (k >= 1 || !wandering) break;
+    }
+    await new Promise((r) => setTimeout(r, 300));
+    if (!wandering) break;
+  }
+  wandering = false;
+  try { await api.companion_settled(window.screenX, y0); } catch {}
+}
+
+// Miniature life: a little toy ball drops in and he bats it around for a few seconds, then it's gone.
+function ensureBall() {
+  if (playBall || !threeNS || !scene) return;
+  const geo = new threeNS.SphereGeometry(0.022, 16, 12);
+  const mat = new threeNS.MeshStandardMaterial({ color: 0x00e5ff, metalness: 0.2, roughness: 0.3, emissive: 0x00334d });
+  playBall = new threeNS.Mesh(geo, mat); playBall.frustumCulled = false; playBall.visible = false; scene.add(playBall);
+}
+async function runPlay() {
+  ensureBall();
+  if (!playBall || playing || wandering || flying || perching || throwRunning || held || reacting) return;
+  playing = true; playBall.visible = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const t0 = performance.now(), dur = 4500;
+  for (;;) {
+    await raf(); const e = performance.now() - t0; if (e > dur) break;
+    const bounce = Math.abs(Math.sin(e / 260)) * 0.07;       // the ball bounces
+    const bx = 0.055 * Math.sin(e / 650);                    // ...drifting side to side in front of him
+    playBall.position.set(bx, bounce, 0.055);
+    reactPose = { phase: "play", bx, kick: bounce < 0.012 };  // he looks at it and taps when it lands near
+  }
+  reactPose = null; playBall.visible = false; playing = false;
+}
+
+// Glide the window from its current spot to (tx, ty) over `ms`, arcing up by `arc` px mid-flight.
+async function glide(tx, ty, ms, arc = 0, keepGoing = () => true) {
+  const api = window.pywebview && window.pywebview.api;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const sx = window.screenX, sy = window.screenY, t0 = performance.now();
+  for (;;) {
+    await raf();
+    if (!keepGoing()) return false;
+    const k = Math.min(1, (performance.now() - t0) / ms);
+    const x = Math.round(sx + (tx - sx) * k), y = Math.round(sy + (ty - sy) * k - Math.sin(k * Math.PI) * arc);
+    try { await api.move_companion_fast(x, y); } catch {}
+    if (k >= 1) return true;
+  }
+}
+
+// ---------------- Relocation (Living Presence) ---------------- //
+// The host's placement engine (core/presence.plan_placement) decided he's in the way and where to go; he travels
+// there in character — a calm walk, hops, a jet-assisted flight or a teleport — holding the "repositioning" lease
+// so no other movement competes. Refused while anything else owns him; the host simply asks again later.
+const FOCUSED = new Set(["coding", "typing", "reading", "video", "meeting"]);
+const animateFor = async (ms, fn) => {
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const t0 = performance.now();
+  for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / ms); fn(k); if (k >= 1) break; }
+};
+async function runRelocate(msg) {
+  const a = API();
+  if (!a || !a.move_companion_fast || throwRunning || held || reacting || ix.owning || menu.isOpen
+      || wandering || flying || parkouring || perching || playing) return false;
+  ix.set("repositioning");
+  try {
+    const sx = window.screenX, sy = window.screenY, tx = msg.x | 0, ty = msg.y | 0;
+    const style = companion.reducedMotion ? "teleport" : (msg.style || "walk");
+    const plan = travelPlan(style, Math.hypot(tx - sx, ty - sy));
+    if (plan.fade) {
+      await animateFor(plan.ms / 2, (k) => { reactPose = { phase: "teleport", k: k / 2 }; });
+      try { await a.move_companion_fast(tx, ty); } catch {}
+      await animateFor(plan.ms / 2, (k) => { reactPose = { phase: "teleport", k: 0.5 + k / 2 }; });
+      reactPose = null;
+    } else {
+      if (style === "fly") flying = true; else if (style === "hop") parkouring = true; else wandering = true;
+      const pulse = style === "fly" ? setInterval(() => flashAccent(performance.now(), 0.8), 60) : 0;
+      try { if(!await glide(tx, ty, plan.ms, plan.arc,()=>!ix.is("suspended")&&!held)) return false; }
+      finally { clearInterval(pulse); flying = false; parkouring = false; wandering = false; }
+    }
+    await applyDock(msg.dock | 0);
+    try { await a.companion_settled(window.screenX, window.screenY); } catch {}
+    return true;
+  } finally {
+    reactPose = null;
+    ix.rest();
+  }
+}
+
+// Crowded desktop: dock 1 = a smaller, translucent version of him; 2 = also tucked mostly past the screen edge
+// (the host chose that spot). Dock 0 restores his saved size and full opacity.
+async function applyDock(level) {
+  const a = API();
+  if (level === dockLevel) return;
+  dockLevel = level;
+  try {
+    if (a && a.companion_alpha) await a.companion_alpha(level ? 0.6 : 1.0);
+    const base = companion.settings.character_px;
+    if (a && a.set_character_size) await a.set_character_size(level ? Math.max(50, Math.round(base * 0.7)) : base, false);
+  } catch {}
+  maskSent = "";
+  ix.setBase(level ? "docked" : (FOCUSED.has(userActivity) ? "work_focus" : "ambient"));
+}
+
+// What the user is doing (pushed by the host when it changes): calm and in place while they work.
+function setActivity(value) {
+  userActivity = value;
+  if (dockLevel) return;
+  ix.setBase(FOCUSED.has(value) && companion.settings.work_aware !== false ? "work_focus" : "ambient");
+  if (FOCUSED.has(value) && companion.settings.work_aware !== false) {
+    wandering = false; perching = false;                      // finish any stroll now: don't walk across their work
+    if (currentIdle && MOVING.has(currentIdle)) currentIdle = null;
+  }
+}
+
+// A panel mini-game: he watches while it runs (lease: placement leaves him be), cheers real wins.
+function onGame(msg) {
+  if (msg.phase === "start") { gameNow = msg.game || "game"; if (!ix.owning) ix.set("playing"); mood.nudge("playful", 0.4); }
+  else if (msg.phase === "win") { mood.nudge("proud", 0.5); }
+  else { gameNow = null; if (ix.is("playing")) ix.rest(); }
+}
+
+// Fly: rise up, glide across the desktop with a jetpack glow, then descend and return home.
+async function runFly(requested=false) {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || companion.reducedMotion || (!requested && !isAmbient(companion.mode)) || parkouring || playing || flying || wandering || perching || throwRunning || held || reacting) return;
+  flying = true; dozing = false;
+  playfulCaption("fly");
+  const home = window.screenX, y0 = window.screenY;
+  let b = null; try { b = await api.companion_bounds(home, y0); } catch {}
+  const clampX = (x) => b ? Math.max(b.left, Math.min(b.right, x)) : x;
+  const clampY = (y) => b ? Math.max(b.top, Math.min(b.bottom, y)) : y;
+  const dir = (b && home - b.left > b.right - home) ? -1 : 1;
+  const cruiseY = clampY(y0 - 150), across = clampX(home + dir * (160 + Math.random() * 160));
+  const pulse = setInterval(() => flashAccent(performance.now(), 0.8), 60);   // jetpack glow
+  const keepFlying = () => flying && !held && !throwRunning && !reacting && !menu.isOpen
+    && !companion.reducedMotion && !ix.is("suspended");
+  try {
+    if (!await glide(home, cruiseY, 650, 0, keepFlying)) return;
+    if (!await glide(across, cruiseY, 950, 40, keepFlying)) return;
+    if (!await glide(across, y0, 650, 0, keepFlying)) return;
+    await glide(home, y0, 900, 0, keepFlying);
+  } finally {
+    clearInterval(pulse); flying = false;
+    try { await api.companion_settled(window.screenX, window.screenY); } catch {}
+  }
+}
+
+// Parkour: a run of tucked hops across the desktop and back.
+async function runParkour() {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || parkouring || flying || wandering || perching || throwRunning || held || reacting) return;
+  parkouring = true;
+  const home = window.screenX, y0 = window.screenY;
+  let b = null; try { b = await api.companion_bounds(home, y0); } catch {}
+  const clampX = (x) => b ? Math.max(b.left, Math.min(b.right, x)) : x;
+  const dir = (b && home - b.left > b.right - home) ? -1 : 1;
+  let x = home;
+  for (let i = 0; i < 3; i++) { const nx = clampX(x + dir * 90); await glide(nx, y0, 450, 55); x = nx; await new Promise((r) => setTimeout(r, 120)); }
+  for (let i = 0; i < 3; i++) { const nx = clampX(x - dir * 90); await glide(nx, y0, 450, 55); x = nx; await new Promise((r) => setTimeout(r, 120)); }
+  parkouring = false;
+  try { await api.companion_settled(window.screenX, y0); } catch {}
+}
+
+// Notice the cursor and wander partway toward it to investigate, then amble home (curiosity).
+async function runCurious() {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || !api.cursor_pos || wandering || perching || throwRunning || held || reacting) return;
+  let c = null; try { c = await api.cursor_pos(); } catch {}
+  if (!c) return;
+  const y0 = window.screenY, home = window.screenX, myX = home + window.innerWidth / 2;
+  if (Math.abs(c[0] - myX) < 130) return;                      // already near the cursor — nothing to investigate
+  let b = null; try { b = await api.companion_bounds(home, y0); } catch {}
+  const clampX = (x) => b ? Math.max(b.left, Math.min(b.right, x)) : x;
+  const dir = c[0] > myX ? 1 : -1;
+  const target = clampX(home + dir * Math.min(170, Math.abs(c[0] - myX) - 70));
+  wandering = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const walkTo = async (tx) => { const sx = window.screenX, t0 = performance.now(), ms = 900;
+    for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / ms);
+      try { await api.move_companion_fast(Math.round(sx + (tx - sx) * k), y0); } catch {} if (k >= 1 || !wandering) break; } };
+  await walkTo(target);
+  const t0 = performance.now();                                // pause and peer at the cursor
+  while (performance.now() - t0 < 1200 && wandering) { currentIdle = "look_around"; await raf(); }
+  if (wandering) await walkTo(home);
+  wandering = false;
+  try { await api.companion_settled(window.screenX, y0); } catch {}
+}
+
+// Climb to the nearest left/right screen edge, perch and sit there a while, then amble back home.
+async function runPerch() {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || wandering || perching || throwRunning || held || reacting) return;
+  wandering = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const y0 = window.screenY, home = window.screenX;
+  let b = null; try { b = await api.companion_bounds(home, y0); } catch {}
+  if (!b) { wandering = false; return; }
+  const edge = (home - b.left) < (b.right - home) ? b.left : b.right;   // nearer side
+  const walkTo = async (tx) => {
+    const sx = window.screenX, t0 = performance.now(), ms = 1100;
+    for (;;) { await raf(); const k = Math.min(1, (performance.now() - t0) / ms);
+      try { await api.move_companion_fast(Math.round(sx + (tx - sx) * k), y0); } catch {}
+      if (k >= 1 || (!wandering && !perching)) break; }
+  };
+  await walkTo(edge);                                          // walk to the edge
+  if (wandering) {                                             // (the cursor coming to him stops the stroll)
+    perching = true;                                           // sit perched for a few seconds
+    const t0 = performance.now();
+    while (performance.now() - t0 < 3500 && perching) await raf();
+    if (perching) { perching = false; await walkTo(home); }    // amble home
+    perching = false;
+  }
+  wandering = false;
+  try { await api.companion_settled(window.screenX, y0); } catch {}
+}
+
+// A victory hop (3 little jumps, arms up) — the panel calls this when you win a game (Feature #153).
+async function runCelebrate() {
+  const api = window.pywebview && window.pywebview.api;
+  if (!api || !api.move_companion_fast || throwRunning || held || reacting) return;
+  mood.nudge("proud", 0.8); mood.nudge("happy", 0.4);   // a win makes him proud + happy
+  reacting = true;
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const x0 = window.screenX, y0 = window.screenY;
+  let b = null; try { b = await api.companion_bounds(x0, y0); } catch {}
+  const t0 = performance.now(), dur = 1400;
+  for (;;) {
+    await raf(); const t = (performance.now() - t0) / dur;
+    if (t >= 1) break;
+    const hop = Math.abs(Math.sin(t * Math.PI * 3)) * 26;
+    reactPose = { phase: "cheer" };
+    const y = b ? Math.max(b.top, y0 - hop) : y0 - hop;
+    try { await api.move_companion_fast(x0, Math.round(y)); } catch {}
+  }
+  reactPose = null; reacting = false;
+  try { await api.move_companion_fast(x0, y0); await api.companion_settled(x0, y0); } catch {}
+}
+
+// Ease the tumble angle upright with a final squash, so he "lands" rather than freezing mid-spin.
+async function landingRecovery(st) {
+  const raf = () => new Promise((r) => requestAnimationFrame(r));
+  const a0 = ((st.angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  const target = a0 > Math.PI ? Math.PI * 2 : 0;         // nearest upright
+  landSquash = Math.max(landSquash, 0.6);
+  for (let i = 0; i <= 14; i++) {
+    const k = i / 14;
+    st = { ...st, angle: a0 + (target - a0) * (k * k * (3 - 2 * k)) };
+    landSquash *= 0.8;
+    throwVisual = st;
+    await raf();
+  }
+}
+
+// ---------------- Size: right-click for a slider, Ctrl+wheel to nudge ---------------- //
+const sizebox = document.getElementById("sizebox");
+const sizerange = document.getElementById("sizerange");
+const sizelabel = document.getElementById("sizelabel");
+let sizeTimer = null;
+function paintSize(px) { sizerange.value = px; sizelabel.textContent = px + " px"; }
+function setCharacterSize(px) {
+  px = Math.max(50, Math.min(400, Math.round(px / 5) * 5));
+  paintSize(px); companion.settings.character_px = px;
+  clearTimeout(sizeTimer);
+  sizeTimer = setTimeout(async () => {
+    const api = window.pywebview && window.pywebview.api;
+    if (!api || !api.set_character_size) return;
+    try { const res = await api.set_character_size(px); if (res && res.layout) applyLayout(res.layout); } catch {}
+    maskSent = "";                                            // the host dropped his old outline: send the new one
+  }, 90);
+}
+sizerange.addEventListener("input", () => setCharacterSize(Number(sizerange.value)));
+hit.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  if (e.shiftKey) { paintSize(companion.settings.character_px); sizebox.classList.toggle("on"); return; }
+  if (roomOpen || directOpen || performanceOpen || throwRunning || held) return;
+  sizebox.classList.remove("on");
+  menu.toggle("main");                                     // his menu lives on right click (and Ctrl+Alt+K)
+});
+hit.addEventListener("wheel", (e) => {
+  if (!e.ctrlKey) return;
+  e.preventDefault(); setCharacterSize(companion.settings.character_px + (e.deltaY < 0 ? 10 : -10));
+}, { passive: false });
+
+// ---------------- Voice bridge: Web Audio quip -> level ---------------- //
+function initVoiceBridge() {
+  // The AmplitudeMeter needs a user-gesture-activated AudioContext on some
+  // browsers; it auto-resumes on `play`. ``onLevel`` enqueues the same
+  // {type:'level'} events the Python side sends via /control.
+  meter = new AmplitudeMeter(quipEl, {
+    onLevel: (v) => incoming.put({ type: "level", value: v, source: "companion-quip" }),
+    onEnd:   ()  => incoming.put({ type: "level", value: 0, source: "companion-quip" }),
+    gain: 2.4,
+  });
+  meter.attach();
+  // Panel-played quips arrive through the standard HUD queue as
+  // {type:"level", source:"panel-quip"} — hud/index.html posts them via
+  // Api.companion_level, which core/hud.level() arbitrates and routes.
+  // No cross-origin BroadcastChannel is involved.
+}
+
+/** Public: speak via the local server and drive the mouth with real
+ *  AnalyserNode amplitude. Not used by the Python state producer (which
+ *  pushes `level` events directly); invoked by any in-browser quip code. */
+window.companionSay = async function companionSay(text) {
+  return localSpeech.speak(String(text || "").slice(0,400));
+};
+
+// Home and direct toys share the character, scene, window and scheduler.
+async function loadHome() {
+  const r=await API()?.companion_home_state?.();
+  if(r?.ok) { homeState=r.state; homeScene?.setState(homeState); }
+  return homeState;
+}
+async function changeHome(patch) {
+  const r=await API()?.companion_home_state?.(patch);
+  if(r?.ok) {homeState=r.state;homeScene?.setState(homeState);fitCameraToRig();}
+  else if(r) speakBubble(r.reason);
+  return r;
+}
+function scheduleScene(action) {
+  sceneQueue=sceneQueue.catch(()=>{}).then(action);
+  return sceneQueue;
+}
+function openHome(patch=null) {return scheduleScene(()=>_openHome(patch));}
+function closeScene() {return scheduleScene(()=>_closeScene());}
+function openDirect(kind) {return scheduleScene(()=>_openDirect(kind));}
+function startPerformance(name) {return scheduleScene(()=>_startPerformance(name));}
+
+async function _openHome(patch=null) {
+  if(!homeScene || !API()?.companion_scene) return false;
+  if(menu.isOpen) await menu.close();
+  if(roomOpen) {await loadHome();if(patch)await changeHome(patch);dozing=false;ix.set("playing");fitCameraToRig();return true;}
+  await _closeScene(); leaveSurface(); await loadHome();
+  if(patch) await changeHome(patch);
+  document.documentElement.classList.add("scene-open");document.getElementById("scene-label").textContent="Home / Room";
+  roomOpen=true;dozing=false;homeScene.group.visible=true;ix.set("playing");
+  if(await API().companion_scene("home",window.devicePixelRatio||1) === false) {await _closeScene();return false;}
+  resize();fitCameraToRig();return true;
+}
+async function _closeScene() {
+  if(menu.isOpen && (roomOpen||directOpen||performanceOpen)) await menu.close();
+  if(!roomOpen && !directOpen && !performanceOpen) return;
+  document.documentElement.classList.remove("scene-open");stageEl.classList.remove("playground");
+  document.getElementById("scene-clear").style.display="none";
+  roomOpen=false;directOpen=false;performanceOpen=false;directPointer=null;drawPointer=false;
+  if(performances?.snapshot().name === "draw") await saveDrawing();
+  performances?.stop();setRobotOpacity(1);
+  if(homeScene) homeScene.group.visible=false;
+  directPlay?.stop();
+  if(robotMount) {robotMount.position.set(0,0,0);robotMount.rotation.set(0,0,0);robotMount.scale.setScalar(1);}
+  await API()?.companion_scene?.("");ix.rest();resize();fitCameraToRig();
+}
+async function _openDirect(kind) {
+  if(!directPlay || !API()?.companion_scene) return false;
+  if(menu.isOpen) await menu.close();
+  await _closeScene();leaveSurface();directPlay.start(kind);directOpen=true;
+  document.documentElement.classList.add("scene-open");stageEl.classList.add("playground");document.getElementById("scene-label").textContent="Drag to throw a ball · "+kind;dozing=false;ix.set("playing");
+  if(await API().companion_scene("play",window.devicePixelRatio||1) === false) {await _closeScene();return false;}
+  resize();fitCameraToRig();
+  return true;
+}
+function setRobotOpacity(value) {
+  if(!activeAdapter) return;
+  activeAdapter.group.traverse(o=>{
+    for(const m of (Array.isArray(o.material)?o.material:o.material?[o.material]:[])) {
+      if(!robotOpacity.has(m)) robotOpacity.set(m,{opacity:m.opacity,transparent:m.transparent});
+      const original=robotOpacity.get(m);m.opacity=original.opacity*value;m.transparent=value<1||original.transparent;
+    }
+  });
+}
+async function _startPerformance(name) {
+  if(!performances || !API()?.companion_scene) return false;
+  if(menu.isOpen) await menu.close();
+  await _closeScene();leaveSurface();
+  performances.start(name,performance.now());
+  if(name === "draw") {const saved=await API()?.companion_board?.();if(saved?.ok) performances.setDrawing(saved.state.points);}
+  performanceOpen=true;dozing=false;ix.set("playing");
+  document.getElementById("scene-clear").style.display=name === "draw"?"flex":"none";
+  document.documentElement.classList.add("scene-open");document.getElementById("scene-label").textContent=name.replaceAll("_"," ");
+  if(await API().companion_scene("performance",window.devicePixelRatio||1) === false) {await _closeScene();return false;}
+  resize();fitCameraToRig();
+  return true;
+}
+async function saveDrawing() {
+  if(!performances?.getDrawing) return;
+  const state={schema:1,points:performances.getDrawing()};
+  boardSave=boardSave.catch(()=>{}).then(()=>API()?.companion_board?.(state));
+  return boardSave;
+}
+function scenePoint(e,z) {
+  const r=stageEl.getBoundingClientRect();
+  const ray=new threeNS.Vector3((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2,.5).unproject(camera).sub(camera.position).normalize();
+  const t=(z-camera.position.z)/ray.z;
+  return t>=0?camera.position.clone().addScaledVector(ray,t):null;
+}
+function addDrawingPoint(e) {
+  const r=stageEl.getBoundingClientRect();
+  const v=new threeNS.Vector3((e.clientX-r.left)/r.width*2-1,1-(e.clientY-r.top)/r.height*2,.5).unproject(camera);
+  const ray=v.sub(camera.position).normalize(), t=(.30*.145-camera.position.z)/ray.z;
+  if(t<0) return;
+  const p=camera.position.clone().addScaledVector(ray,t),x=(p.x/.30-.3)/.7,y=(p.y/.30-.34)/.62;
+  if(x>=0&&x<=1&&y>=0&&y<=1) performances?.addPoint(x,y);
+}
+
+async function lifeEvent(kind="", action=null, surface_id=null) {
+  const r=await API()?.companion_life?.(kind,action,surface_id);
+  if(!r?.ok) return r;
+  lifeInfo=r;
+  if(r.mood && MOODS.includes(r.mood)) mood.nudge(r.mood,.2);
+  if(r.new_unlocks?.length) {
+    await loadHome();const owned=new Map(homeState.inventory.map(i=>[i.id,i]));
+    for(const item of r.new_unlocks) owned.set(item.id,item);
+    await changeHome({inventory:[...owned.values()].slice(-12)});
+  }
+  return r;
+}
+function lifeBias(name) {
+  const s=lifeInfo?.snapshot;if(!s) return 1;
+  const now=Date.now()/1000,c=s.last_correction;
+  if(c && !c.action && !c.surface_id && now-c.at<86400 && IDLE[name]?.big) return 0;
+  const p=s.actions[name];
+  if(p?.last_correction && now-p.last_correction<86400) return 0;
+  return p?(1+Math.min(10,p.good)/10)/(1+p.corrections*2):1;
+}
+setInterval(async()=>{
+  if(directorBusy || ix.owning || habitat || roomOpen || directOpen || performanceOpen || !isAmbient(companion.mode) || FOCUSED.has(userActivity)) return;
+  directorBusy=true;
+  try {
+    const d=new Date(),day=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    const r=await API()?.companion_director?.(day,d.getHours()*60+d.getMinutes());
+    if(!r?.ok || ix.owning || !isAmbient(companion.mode)) return;
+    const choice=r.decision;
+    if(choice.home) {if(!await openHome(choice.home)) return;}
+    else if(choice.action && CLIPS[choice.action]) {currentIdle=choice.action;idleStart=performance.now();}
+    if(choice.mood && MOODS.includes(choice.mood)) mood.nudge(choice.mood,.15);
+    if(choice.record) {
+      // Daily acknowledgements include local day/routine_time; the host validates them.
+      await API()?.companion_life_ack?.(choice.record);
+      await lifeEvent();
+    }
+  } finally {directorBusy=false;}
+},45000);
+
+async function saveCollectible(result) {
+  if(result.score!==3) return;
+  await loadHome();const id=`${result.kind}-first-three`;
+  if(homeState.inventory.some(i=>i.id===id)) return;
+  await changeHome({inventory:[...homeState.inventory,{id,kind:"badge",color:"#ffd166"}].slice(-12)});
+}
+window.addEventListener("keydown",e=>{if(e.key==="Escape" && !menu.isOpen && (roomOpen||directOpen||performanceOpen)) closeScene();});
+
+// ---------------- His menu (Living Presence) ---------------- //
+// Positioning the two boxes the host laid out (core/presence.expand_layout, CSS px): his stage keeps its size and
+// screen spot, the menu sits beside him. null = collapsed (the window is just him again).
+const menuEl = document.getElementById("menu");
+function applyLayout(lay) {
+  if (!lay) {
+    stageEl.removeAttribute("style");
+    menuEl.style.left = menuEl.style.top = menuEl.style.width = menuEl.style.height = "";
+  } else {
+    const [rx, ry, rw, rh] = lay.robot, [px, py, pw, ph] = lay.panel;
+    Object.assign(stageEl.style, { left: rx + "px", top: ry + "px", width: rw + "px", height: rh + "px" });
+    Object.assign(menuEl.style, { left: px + "px", top: py + "px", width: pw + "px", height: ph + "px" });
+  }
+  const toolbar=document.getElementById("scene-toolbar");
+  if(lay) Object.assign(toolbar.style,{left:(lay.robot[0]+6)+"px",top:(lay.robot[1]+6)+"px",width:Math.max(0,lay.robot[2]-24)+"px",right:"auto"});
+  else toolbar.removeAttribute("style");
+  resize(); fitCameraToRig();
+}
+
+async function apiCall(method, path, body) {
+  const a = API();
+  if (!a || !a.call) return { ok: false, data: { detail: "Jarvis's server isn't connected." } };
+  try { return await a.call(method, path, body ?? null); } catch (e) { return { ok: false, data: { detail: String(e) } }; }
+}
+
+// Play a reply from the server in his voice: the shared <audio> element drives his mouth (AmplitudeMeter), the
+// words drive the viseme shapes.
+async function sayAudio(url, text, token = undefined) {
+  if (token !== undefined && !localSpeech.current(token)) return false;
+  if (!url) { if (token !== undefined) localSpeech.finish(token); return false; }
+  if (text) { visemeTimeline=textToVisemes(text); visemeStart=performance.now(); }
+  return localSpeech.play(url, token);
+}
+
+const STATUS = { coding: "You're coding — I'll keep it down.", typing: "You're typing — I'm quiet.", reading: "Reading? I'll wait.",
+  video: "Enjoy the show.", meeting: "Quiet as a mouse.", browsing: "At your service, sir.", idle: "Here when you need me.",
+  away: "Welcome back, sir.", other: "At your service, sir." };
+
+let examining = false;
+const menu = createMenu({
+  el: menuEl,
+  api: API,
+  actions: {
+    applyLayout,
+    robotSize: () => ({ w: window.innerWidth, h: window.innerHeight }),
+    status: () => STATUS[userActivity] || STATUS.other,
+    settings: () => companion.settings,
+    loadHome,
+    life: () => lifeInfo,
+    quietToday: async () => {await lifeEvent("correction");await closeScene();currentIdle="read";idleStart=performance.now();},
+    homeState: () => homeState,
+    changeHome,
+    enterHome: openHome,
+    exitScene: closeScene,
+    roomOpen: () => roomOpen,
+    performances: () => performances?.names || [],
+    perform: startPerformance,
+    directOpen: () => directOpen,
+
+    habitat: async action => {
+      if(roomOpen||directOpen||performanceOpen) await closeScene();
+      const a=API(); if(!a?.companion_habitat) return {ok:false, reason:"Desktop host unavailable."};
+      if(menu.isOpen) await menu.close();
+      const result=await a.companion_habitat(action);
+      if(!result.ok) speakBubble(result.reason);
+      return result;
+    },
+    docked: () => dockLevel > 0,
+    bubble: (t) => speakBubble(t),
+    onOpen: () => { ix.set("menu_open"); currentIdle = null; },
+    onClose: () => { if(roomOpen||directOpen||performanceOpen) ix.set("playing"); else if (ix.is("menu_open", "skill_running")) ix.rest(); },
+    listen: async () => {
+      const token = localSpeech.begin("listening");
+      const a = API();
+      try {
+        const ok = !!(a?.listen && await a.listen());
+        if (!ok) localSpeech.finish(token);
+        return ok;
+      } catch { localSpeech.finish(token); return false; }
+    },
+    ask: async (text) => {
+      const token = localSpeech.begin("thinking");
+      if (token === null) return { ok: false, reply: "The microphone conversation is active." };
+      try {
+        const r = await apiCall("POST", "/api/chat", { text, speak: true });
+        if (!localSpeech.current(token)) return { ok: false, reply: "Request interrupted." };
+        if (!r.ok) { localSpeech.finish(token); return { ok: false, reply: r.data?.detail || "" }; }
+        await sayAudio(r.data.audio || "", r.data.reply || "", token);
+        return { ok: true, reply: r.data.reply || "" };
+      } catch { localSpeech.finish(token); return { ok: false, reply: "The request failed." }; }
+    },
+    runSkill: async (skill, args) => {
+      const token = localSpeech.begin("working");
+      if (token === null) return { ok: false, text: "The microphone conversation is active.", images: [] };
+      skillSpeechTokens.set(skill, token);
+      ix.set("skill_running");
+      examining = true;
+      reactPose = { phase: "examine", dir: menu.layout && menu.layout.side === "left" ? -1 : 1 };
+      let r;
+      try { r = await apiCall("POST", "/api/skills/run", { name: skill.name, args }); }
+      catch { r = { ok: false, data: { detail: "The skill request failed." } }; }
+      finally {
+        if (localSpeech.current(token)) {
+          examining = false; reactPose = null;
+          localSpeech.state(token, localSpeech.mainState);
+          if (ix.is("skill_running")) ix.set(menu.isOpen ? "menu_open" : ix.base);
+        }
+      }
+      const d = r.data || {};
+      const ok = !!(r.ok && d.ok);
+      // Do not count rejected validation or transport requests as executed skills.
+      if (r.ok && !d.invalid && (ok || (d.ok === false && d.seconds > 0))) {
+        Promise.resolve().then(() => lifeEvent(ok ? "skill_success" : "skill_fail")).catch(() => {});
+      }
+      if (localSpeech.current(token)) mood.nudge(ok ? "proud" : "annoyed", ok ? 0.25 : 0.2);
+      if (!ok || !d.text) localSpeech.finish(token);
+      return { ok, text: d.text || d.detail || (ok ? "" : "It didn't run."), images: d.images || [], seconds: d.seconds };
+    },
+    explain: async (skill, text) => {
+      // Reuse the run's generation; completion must not revive an interrupted run.
+      const token = skillSpeechTokens.has(skill) ? skillSpeechTokens.get(skill) : localSpeech.begin("thinking");
+      if (!localSpeech.current(token)) return null;
+      localSpeech.state(token, "thinking");
+      try {
+        const r = await apiCall("POST", "/api/skills/explain", { name: skill.name, title: skill.title, text: String(text).slice(0, 6000) });
+        if (!localSpeech.current(token)) return null;
+        if (!r.ok || !r.data) { localSpeech.finish(token); return null; }
+        await sayAudio(r.data.audio || "", r.data.reply || "", token);
+        return r.data.reply || null;
+      } catch { localSpeech.finish(token); return null; }
+    },
+    play: async (what) => {
+      if(roomOpen||directOpen||performanceOpen) await closeScene();
+      if (["catchtoy","juggletoy","kicktoy"].includes(what)) return openDirect({catchtoy:"catch",juggletoy:"juggle",kicktoy:"kick"}[what]);
+      if (what === "stoptoy") return closeScene();
+      if (what === "ball") { mood.nudge("playful", 0.4); runPlay(); }
+      else if (what === "jetpack") {
+        leaveSurface();
+        if (companion.reducedMotion) speakBubble("My thrusters are parked while reduced motion is on.");
+        else { dozing = false; mood.nudge("playful", 0.6); runFly(); }
+      }
+      else if (what === "surprise") { mood.nudge("playful", 0.6); currentIdle = ["salute", "double_take", "shuffle"][Math.floor(Math.random() * 3)]; idleStart = performance.now(); playfulCaption(currentIdle); }
+      else if (what === "dance") { mood.nudge("happy", 0.4); currentIdle = "dance"; idleStart = performance.now(); }
+      else if (what === "tossme") { const s = Math.random() < 0.5 ? -1 : 1; runThrow(s * (900 + Math.random() * 900), -900 - Math.random() * 700); }
+    },
+    setSize: (px) => setCharacterSize(px),
+    saveSetting: async (key, value) => {
+      const a = API(); if (!a || !a.save_companion_settings) return;
+      try {
+        const s = safeSettings(await a.save_companion_settings({ [key]: value }));
+        companion.settings = s;
+        companion.reducedMotion = s.reduced_motion || matchMedia("(prefers-reduced-motion: reduce)").matches;
+        picker.reducedMotion = companion.reducedMotion;
+        if (key === "work_aware") setActivity(userActivity);
+      } catch {}
+    },
+    yieldClicks: async (seconds) => {                           // the user needs what's under him: clicks pass through
+      const a = API(); let ok = false;
+      try { ok = a && a.companion_yield && (await a.companion_yield(seconds)); } catch {}
+      if (!ok) return;
+      document.documentElement.classList.add("yielding");
+      speakBubble(`Clicks go straight through me for ${seconds} s.`);
+      setTimeout(() => document.documentElement.classList.remove("yielding"), seconds * 1000);
+    },
+    dock: async (on) => { const a = API(); try { a && a.companion_dock && (await a.companion_dock(!!on)); } catch {} },
+    home: async () => { const a = API(); try { a && a.companion_home && (await a.companion_home()); } catch {} },
+  },
+});
+
+document.getElementById("scene-options").addEventListener("click",()=>menu.open(roomOpen?"home":performanceOpen?"antics":"play"));
+document.getElementById("scene-exit").addEventListener("click",()=>closeScene());
+document.getElementById("scene-clear").addEventListener("click",()=>{
+  if(performanceOpen && performances?.snapshot().name === "draw") {performances.clearDrawing();saveDrawing();}
+});
+
+async function runRobotAction(action) {
+  const rooms={sleep:"bedroom",wake:"bedroom",cook:"kitchen",workshop:"workshop",exercise:"fitness",read:"reading",pet:homeState.room};
+  if(action==="home") return openHome();
+  if(rooms[action]) return openHome({room:rooms[action],activity:action==="workshop"?"tinker":action,routines:{enabled:false}});
+  if(["taskbar","search","folder","window","favorite","leave"].includes(action)) {
+    await closeScene();leaveSurface();return API()?.companion_habitat?.(action);
+  }
+  if(action==="desktop") return closeScene();
+  if(action==="quiet") {await lifeEvent("correction");return closeScene();}
+  if(["catch","juggle","kick"].includes(action)) return openDirect(action);
+  if(action==="jetpack") {await closeScene();leaveSurface();return runFly(true);}
+  if(action==="dance") {currentIdle="dance";idleStart=performance.now();mood.nudge("playful",.4);}
+}
+
+// ---------------- The overlay card beside him: listening / thinking / speaking / result ---------------- //
+// overlay.js decides WHAT to show; this draws it. The host grows his window to hold a box beside him (the call his
+// menu uses) and the card sits in it. It never takes the mouse: the box is not in the hit mask (panelHit is the
+// menu's alone), so clicks pass through it to the desktop. It steps aside for his menu, his room and while he moves.
+const overlayEl = document.getElementById("overlay");
+const ov = { card: overlayEl.querySelector(".ov-card"), orb: overlayEl.querySelector(".ov-orb"), label: overlayEl.querySelector(".ov-label"),
+  chip: overlayEl.querySelector(".ov-chip"), text: overlayEl.querySelector(".ov-text"), lines: overlayEl.querySelector(".ov-lines"),
+  hint: overlayEl.querySelector(".ov-hint") };
+const OV_CARD = { cardW: 372, cardH: 108, gap: 10 };
+const OV_HINTS = { listening: "Go ahead, sir.", thinking: "One moment…", error: "I could not complete that, sir." };
+let ovPlaced = false, ovBusy = false, ovHost = false, ovSeq = -1, ovCount = -1, ovShown = -1, ovKind = "", ovLevel = -1, ovChip = "", ovDrawn = "";
+const ovSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+function overlayAllowed() {
+  return !menu.isOpen && !roomOpen && !directOpen && !performanceOpen && !held && !throwRunning && !reacting
+    && !wandering && !perching && !flying && !parkouring && !gesture.active && document.body.style.visibility !== "hidden";
+}
+async function placeOverlay() {
+  ovBusy = true;
+  try {
+    const r = stageEl.getBoundingClientRect();
+    const box = overlayBox(r.height, OV_CARD);
+    const a = API();
+    let lay = null;
+    if (a && a.companion_expand) { try { lay = await a.companion_expand(box.boxW, box.boxH, "", window.devicePixelRatio || 1, "overlay"); } catch {} }
+    if (!overlayAllowed()) {                                // his menu (or a drag) began while the host answered
+      if (lay && !menu.isOpen) { let mine = false; try { mine = await a.companion_collapse("overlay"); } catch {} if (mine && !menu.isOpen) applyLayout(null); }
+      return;
+    }
+    let left, top, side;
+    if (lay) {
+      ovHost = true; applyLayout(lay);
+      const [px, py, pw, ph] = lay.panel;
+      side = lay.side === "left" ? "left" : "right";
+      left = px + (side === "right" ? pw - box.cardW : 0); top = py + Math.max(0, ph - box.boxH) + box.cardTop;
+    } else {                                                // no host (a browser, the lab): beside him in the page
+      ovHost = false;
+      side = r.right + box.gap + box.cardW <= window.innerWidth || r.left < box.cardW + box.gap ? "right" : "left";
+      left = side === "right" ? r.right + box.gap : r.left - box.gap - box.cardW;
+      top = Math.max(0, Math.min(window.innerHeight - box.cardH, r.bottom - box.boxH + box.cardTop));
+    }
+    overlayEl.dataset.side = side;
+    Object.assign(ov.card.style, { left: Math.round(left) + "px", top: Math.round(top) + "px" });
+    overlayEl.classList.add("placed");
+    void ov.card.offsetWidth;                               // the wipe-in starts from the closed state
+    overlayEl.classList.add("on");
+    ovPlaced = true; maskSent = "";
+  } finally { ovBusy = false; }
+}
+async function unplaceOverlay(atOnce) {
+  ovBusy = true;
+  try {
+    overlayEl.classList.remove("on");
+    if (atOnce) overlayEl.classList.remove("placed"); else { await ovSleep(260); overlayEl.classList.remove("placed"); }
+    if (ovHost && !menu.isOpen) {                           // his menu owns the window now if it is open
+      const a = API();
+      let mine = false;
+      try { mine = !!(a && a.companion_collapse && (await a.companion_collapse("overlay"))); } catch {}
+      if (mine && !menu.isOpen) applyLayout(null);         // the host says the window was still the overlay's
+    }
+    ovHost = false; ovPlaced = false; maskSent = "";
+  } finally { ovBusy = false; }
+}
+function drawOverlay() {
+  const v = overlayModel.tick(performance.now());
+  const allowed = overlayAllowed(), want = v.visible && allowed;
+  if (want && !ovPlaced && !ovBusy) placeOverlay();
+  else if (!want && ovPlaced && !ovBusy) unplaceOverlay(!allowed);
+  if (!v.visible) return;                                   // on its way out: the last content stays during the wipe
+  if (overlayEl.dataset.phase !== v.phase) overlayEl.dataset.phase = v.phase;
+  const head = v.phase + "|" + v.label + "|" + v.busy;
+  if (head !== ovDrawn) {
+    ovDrawn = head; ov.label.textContent = v.label; ov.hint.textContent = OV_HINTS[v.phase] || "";
+    overlayEl.classList.toggle("busy", v.busy);
+  }
+  if (v.chip !== ovChip) { ovChip = v.chip; if (v.chip) ov.chip.textContent = v.chip; ov.chip.classList.toggle("on", !!v.chip); }
+  const lvl = Math.round(v.level * 50) / 50;
+  if (lvl !== ovLevel) { ovLevel = lvl; ov.orb.style.setProperty("--lvl", String(lvl)); }
+  if (v.seq !== ovSeq || v.words.length !== ovCount || v.text !== ovKind) {      // the text changed: rebuild its words
+    const keep = v.seq === ovSeq && v.text === ovKind ? ovCount : 0;                // a reply that grew keeps its words
+    if (!keep) ov.lines.textContent = "";
+    for (let i = Math.max(0, keep); i < v.words.length; i++) {
+      const s = document.createElement("span"); s.className = "w"; s.textContent = v.words[i] + " "; ov.lines.appendChild(s);
+    }
+    ovSeq = v.seq; ovCount = v.words.length; ovKind = v.text; ovShown = -1;
+    ov.text.dataset.kind = v.words.length ? v.text : "none";
+  }
+  if (v.shown !== ovShown) {
+    const spans = ov.lines.children;
+    for (let i = 0; i < spans.length; i++) spans[i].classList.toggle("in", i < v.shown);
+    ovShown = v.shown;
+    const last = v.shown > 0 ? spans[Math.min(v.shown, spans.length) - 1] : null;   // two lines stay; older ones scroll up
+    ov.lines.style.transform = "translateY(" + -(last ? Math.max(0, last.offsetTop - 24) : 0) + "px)";
+  }
+}
+setInterval(drawOverlay, 33);
+
+// ---------------- window.companion — the IPC endpoint ---------------- //
+window.companion = {
+  SCHEMA, IDLE,
+  version: SCHEMA,
+  state: companion,
+  scheduler,
+  picker,
+  _validate: validate,
+  _resolveState: resolveState,
+  _safeSettings: safeSettings,
+  _isAmbient: isAmbient,
+  _pickIdleAction(now) { return picker.choose(now); },
+  // read-only hooks for the harness / Character Studio (turnaround renders, diagnostics)
+  _adapter() { return activeAdapter; },
+  _three() { return { scene, camera, renderer }; },
+  _throw(vx, vy) { runThrow(Number(vx) || 0, Number(vy) || 0); return throwRunning; },   // harness: launch without a real flick
+  _appReact(tx, ty, comedy) { runAppReact(Number(tx) || 0, Number(ty) || 0, { comedy: !!comedy }); return reacting; },
+  _celebrate() { runCelebrate(); return reacting; },
+  _drop(name) { runCatch([{ name: String(name || "file"), type: "", size: 0 }], null); return true; },   // harness: simulate a drop
+  _wander() { runWander(); return wandering; },   // harness: trigger the walk-about
+  _doze(on) { dozing = !!on; return dozing; },    // harness: toggle the sleep state
+  accessory(kind) { try { activeAdapter && activeAdapter.setAccessory && activeAdapter.setAccessory(String(kind || "none")); } catch (e) {} return true; },   // Character Studio: live accessory swap
+  retint(matsJson) {                                         // Character Studio: live recolour without a reload
+    try {
+      const mats = typeof matsJson === "string" ? JSON.parse(matsJson) : (matsJson || {});
+      if (activeAdapter && activeAdapter.materials) retintActive(activeAdapter.materials, { materials: mats });
+    } catch (e) { console.warn("[companion] retint failed:", e); }
+    return true;
+  },
+  // poke / overlay hooks (diagnostics / tests): what a click and a double click do, and what the card shows
+  _poke() { return poke(performance.now()); },
+  _doublePoke() { return doublePoke(performance.now()); },
+  _lastPoke() { return lastPoke; },
+  _speech() { return { active: localSpeech.active, queued: localSpeech.queue.length, blocked: localSpeech.blocked(), trace: localSpeech.trace.slice(-12) }; },
+  _overlay() { const r = ov.card.getBoundingClientRect();
+    return { ...overlayModel.view(performance.now()), placed: ovPlaced, host: ovHost, side: overlayEl.dataset.side,
+      rect: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)] }; },
+  // Living Presence hooks (diagnostics / tests)
+  _interaction() { return { state: ix.state, base: ix.base, activity: userActivity, dock: dockLevel, menu: menu.isOpen ? menu.view : null }; },
+  _menu(view) { if (view) menu.open(String(view)); else menu.close(); return menu.isOpen; },
+  _relocate(x, y, style) { runRelocate({ x: Number(x) | 0, y: Number(y) | 0, style: String(style || "walk"), dock: 0 }); return true; },
+  init(info) { this._initInfo = info || {}; },
+  handle(msg) {
+    if(msg?.type === "companion_action") {runRobotAction(msg.action);return;}
+    if (msg?.type === "doing") { overlayModel.doing(String(msg.value || ""), performance.now()); return; }   // what a tool is busy with
+    if (msg?.type === "level" && !overlayModel.local) overlayModel.level(msg.value, performance.now());          // mic while listening, his voice while speaking
+    if (msg?.type === "line") overlayModel.line(msg.who, msg.text, performance.now());
+    if (msg?.type === "state") {
+      if (overlayModel.main === "speaking" && msg.value !== "speaking") noteRecent("spoke");
+      overlayModel.state(String(msg.value), performance.now());
+      localSpeech.setMainState(msg.value);
+      if (localSpeech.blocked() && examining) { examining = false; if (reactPose?.phase === "examine") reactPose = null; }
+    }
+    if (msg?.type === "hide") {clickGate.cancel();localSpeech.clearQueue();localSpeech.cancel(false);flying=false;parkouring=false;wandering=false;perching=false;closeScene();}
+    if (msg?.type === "surface") { habitat=msg.value || null; surfaceClip(); return; }
+    if (msg && msg.type === "activity") { setActivity(String(msg.value || "other")); return; }               // what the user is doing
+    if (msg && msg.type === "relocate") { runRelocate(msg).then(ok => { if(ok) {habitat=msg.habitat || null;if(habitat) lifeEvent("surface",null,habitat.surface_id);} }); return; }                                        // placement: go there
+    if (msg && msg.type === "menu") {                                                                         // Ctrl+Alt+K / tests
+      if (msg.action === "close") menu.close();
+      else if (msg.action === "open" || !menu.isOpen) menu.open(msg.view || "main");
+      else menu.close();
+      return;
+    }
+    if (msg && msg.type === "game") { if(msg.phase==="start" && (roomOpen||directOpen||performanceOpen)) closeScene().then(()=>onGame(msg)); else onGame(msg); return; }                                                 // panel mini-game
+    if (msg && msg.type === "throw") { runThrow(Number(msg.vx) || 0, Number(msg.vy) || 0); return; }   // launch (not buffered)
+    if (msg && msg.type === "appreact") {                                                               // run over and kick a new app window
+      const t = msg.target || [0, 0];
+      runAppReact(Number(t[0]) || 0, Number(t[1]) || 0, { comedy: !!msg.comedy });
+      return;
+    }
+    if (msg && msg.type === "celebrate") { runCelebrate(); return; }                                     // game win hop
+    if (msg && msg.type === "drop") { runCatch([{ name: String(msg.name || "file"), type: "", size: 0 }], null); return; }   // catch a (simulated) dropped file
+    if (msg && msg.type === "doze") { if (dozing && !msg.on) noteRecent("woke"); dozing = !!msg.on; return; }
+    if (msg && msg.type === "proactive") {                  // harness: exercise the proactive greeting / break path
+      if (msg.greet) speakBubble(timeGreeting(Number(msg.hour ?? new Date().getHours())), { proactive: true });
+      if (msg.longsession) activeSince = Date.now() - (51 * 60 * 1000);   // pretend ~51 min of continuous activity
+      return;
+    }
+    if (msg && msg.type === "mood") {                       // Jarvis/tests: nudge a mood (e.g. after good/bad news)
+      if (MOODS.includes(msg.value) && msg.value !== "neutral") mood.nudge(msg.value, Number(msg.amount ?? 0.6));
+      return;
+    }
+    if (msg && msg.type === "idle" && msg.value) {           // force a specific idle behaviour (Jarvis/tests)
+      currentIdle = msg.value; idleStart = performance.now();
+      if (msg.value === "wander") runWander();
+      else if (msg.value === "perch") runPerch();
+      else if (msg.value === "curious") runCurious();
+      else if (msg.value === "fly") runFly();
+      else if (msg.value === "parkour") runParkour();
+      else if (msg.value === "play") runPlay();
+      return;
+    }
+    if (!incoming.put(msg)) return;
+    if (msg && msg.type === "line" && msg.who === "jarvis" && typeof msg.text === "string") {
+      showBubble(msg.text);
+      visemeTimeline = textToVisemes(msg.text); visemeStart = performance.now();   // drive the mouth shapes from the words
+    }
+    if (msg && msg.type === "hide") {                         // hidden (a full-screen game...): nothing may take clicks
+      if (gesture.active) endPress(gesture.cancel());
+      if (menu.isOpen) menu.close();
+      document.body.style.visibility = "hidden"; scheduler.suspend(); ix.set("suspended");
+      maskSpec = null; maskPrev = null; panelHit = false; sendHitMask(performance.now());
+    }
+    else if (msg && msg.type === "show") {
+      document.body.style.visibility = "visible"; scheduler.resume();
+      if (ix.is("suspended")) {if(roomOpen) ix.set("playing");else ix.rest();}
+    }
+  },
+};
+window._run2DFallback_marker = "run2DFallback";
+
+// ---------------- Boot ---------------- //
+let bootCount = 0;
+async function boot() {
+  bootCount += 1;
+  initFallback();
+  const api = window.pywebview && window.pywebview.api;
+  if (api && api.load_companion_settings) {
+    try {
+      const s = await api.load_companion_settings();
+      const safe = safeSettings(s);
+      companion.settings = safe;
+      companion.reducedMotion = safe.reduced_motion || matchMedia("(prefers-reduced-motion: reduce)").matches;
+      picker.reducedMotion = companion.reducedMotion;
+    } catch {}
+  } else {
+    companion.reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    picker.reducedMotion = companion.reducedMotion;
+  }
+  profile = await loadActiveProfile();
+
+  const ok = await tryLoadThreeAndRender();
+  if (!ok) hadWebGL = false;
+
+  // Seasonal theme: if enabled and the profile isn't wearing something explicit, wear the season's accessory
+  // and greet by the calendar (Feature #27 — seasonal themes).
+  let greeted = false;
+  if (ok && activeAdapter && activeAdapter.setAccessory && companion.settings.seasonal !== false
+      && (!profile.accessory || profile.accessory === "none")) {
+    const theme = seasonalTheme(new Date().getMonth());
+    if (theme.accessory !== "none") {
+      activeAdapter.setAccessory(theme.accessory);
+      if (theme.greeting) { setTimeout(() => speakBubble(theme.greeting, { proactive: true }), 2200); greeted = true; }
+    }
+  }
+
+  // Proactive assistance (Feature #—, proactive task assistance): a time-of-day greeting at launch,
+  // then a gentle break reminder after a long continuous active stretch. Both gated by the `proactive`
+  // setting; the greeting defers to a seasonal one so they never clobber each other's bubble.
+  if (companion.settings.proactive !== false && !greeted) {
+    mood.nudge("happy", 0.3);                                   // a cheerful hello to start the session
+    setTimeout(() => speakBubble(timeGreeting(new Date().getHours()), { proactive: true }), 2600);
+  }
+
+  await loadHome();
+  await lifeEvent();
+  initVoiceBridge();
+  scheduler.start();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {localSpeech.cancel(false);closeScene();scheduler.suspend();}
+    else scheduler.resume();
+  });
+
+  // Diagnostics push (snapshot every ~1 s). Includes adapter capabilities
+  // and the bone contract so Codex / tests can see what the renderer has.
+  let _fpsFrames = renderCount, _fpsAt = performance.now();
+  setInterval(() => {
+    const api2 = window.pywebview && window.pywebview.api;
+    if (!api2 || !api2.push_renderer_snapshot) return;
+    const _nowF = performance.now(), _dt = (_nowF - _fpsAt) / 1000;   // measured RENDER rate (past the fps gate) over ~1 s
+    const fps = _dt > 0 ? Number(((renderCount - _fpsFrames) / _dt).toFixed(1)) : 0;
+    _fpsFrames = renderCount; _fpsAt = _nowF;
+    const snap = {
+      schema: SCHEMA,
+      mode: companion.mode,
+      jaw: Number(companion.jaw.toFixed(3)),
+      level: Number(companion.level.toFixed(3)),
+      last_level_at: companion.lastLevelAt | 0,
+      frames: scheduler.frames,
+      fps: fps,
+      running: scheduler.running,
+      suspended: scheduler.suspended,
+      had_webgl: hadWebGL,
+      boots: bootCount,
+      skinned_meshes: (() => { let n = 0; scene?.traverse((o) => { if (o.isSkinnedMesh) n += 1; }); return n; })(),   // one per material primitive (all share ONE skeleton); double-boot is caught by boots===1
+      size: [window.innerWidth, window.innerHeight],
+      character_px: companion.settings.character_px,
+      character_px_measured: measureCharacterPx(),
+      jaw_visible: !!(activeAdapter && activeAdapter.bones && activeAdapter.bones.mouthOpen && activeAdapter.bones.mouthOpen.visible),
+      transparent_native: !!(window.companion && window.companion._initInfo && window.companion._initInfo.transparent),
+      profile_id: profile ? profile.id : null,
+      adapter_id: profile ? profile.adapter_id : null,
+      model_id: profile ? profile.model_id : null,
+      capabilities: activeAdapter ? activeAdapter.capabilities : null,
+      material_slots: activeAdapter && activeAdapter.materials ? Object.keys(activeAdapter.materials) : [],
+      quip_meter: !!meter,
+      held: held,
+      throwing: throwRunning,
+      reacting: reacting,
+      react_phase: reactPose ? reactPose.phase : null,
+      react_kind: reactPose ? (reactPose.kind || null) : null,
+      last_drop: lastDrop,
+      viseme: curViseme,
+      playing: playing,
+      flying: flying,
+      reduced_motion: companion.reducedMotion,
+      habitat: habitat,
+      surface_contact: measuredSurfaceContact(),
+      home: {open:roomOpen,state:homeState},
+      direct_play: directPlay?.snapshot() || null,
+      performance: performances?.snapshot() || null,
+      speech_trace: localSpeech.trace.slice(-20),
+      performance_budget: performanceBudget.snapshot(),
+      life: lifeInfo ? {traits:lifeInfo.traits,counts:lifeInfo.snapshot?.counts} : null,
+      idle_action: currentIdle,
+      // Living Presence: the interaction state machine, what the user is doing, his menu (with clickable
+      // control positions in screen px, so a test can press a real button by name), docking, reactions.
+      interaction: ix.state, interaction_base: ix.base, transition: lastTransition, activity: userActivity,
+      hovered: hover.hovered, look: lookTarget ? { x: Number(lookTarget.x.toFixed(2)), y: Number(lookTarget.y.toFixed(2)) } : null,
+      menu: menu.isOpen ? { view: menu.view, side: menu.layout ? menu.layout.side : null, busy: menu.busy, controls: menu.rects() } : null,
+      dock: dockLevel, landing: lastLanding, drop_kind: lastDropKind, game: gameNow,
+      hitmask: { cells: maskCells, suppressed: maskSuppressed() }, gpu: gpuInfo,
+      window_rect: [window.screenX, window.screenY, window.innerWidth, window.innerHeight],
+      bubble: bubbleEl.classList.contains("on") ? bubbleEl.textContent : null,
+      mood: (() => { const d = mood.dominant(performance.now()); return { name: d.mood, intensity: Number(d.intensity.toFixed(3)) }; })(),
+      throw_state: throwVisual ? { x: Math.round(throwVisual.x), y: Math.round(throwVisual.y),
+        vx: Math.round(throwVisual.vx), vy: Math.round(throwVisual.vy),
+        resting: !!throwVisual.resting, bounces: throwVisual.bounces | 0 } : null,
+      ts: Date.now(),
+    };
+    try { api2.push_renderer_snapshot(JSON.stringify(snap)); } catch {}
+  }, 1000);
+
+  // Keep the host's position lease alive while an interaction lasts (it lapses on its own if this page dies).
+  setInterval(() => ix.renew(), 1000);
+
+  // Curiosity, and a file being dragged toward him. The cursor over his transparent surroundings never reaches the
+  // page (those pixels are click-through), so the host reports where it is a few times a second — only while he's
+  // visible and nobody's interacting with him. Bounded: one cheap call per 200 ms.
+  setInterval(async () => {
+    const a = API();
+    if (!a || !a.pointer_state || scheduler.suspended || document.hidden || menu.isOpen) return;
+    if (!ix.is("ambient", "work_focus", "curious", "docked", "drop_target")) return;
+    let s = null; try { s = await a.pointer_state(); } catch { return; }
+    if (!s) return;
+    const { w, h } = stageSize();
+    const cx = window.screenX + w / 2, cy = window.screenY + h * 0.35, dx = s.x - cx, dy = s.y - cy, d = Math.hypot(dx, dy);
+    if (s.dragging_file && d < GESTURE.CURIOUS_RADIUS) {          // someone is bringing him something: get ready
+      if (!ix.is("drop_target")) { ix.set("drop_target"); mood.nudge("curious", 0.3); }
+      reactPose = reacting ? reactPose : { phase: "brace" }; braceUntil = performance.now() + 400;
+      lookTarget = { x: Math.max(-1, Math.min(1, dx / 300)), y: Math.max(-1, Math.min(1, dy / 300)) };
+      return;
+    }
+    if (ix.is("drop_target") && !reacting) { ix.rest(); return; }
+    if (d < GESTURE.CURIOUS_RADIUS && !dozing) {
+      if (!ix.is("curious")) { ix.set("curious"); mood.nudge("curious", 0.15); }
+      if (wandering || perching) { wandering = false; perching = false; }   // stop a stroll: he waits to be reached
+      lookTarget = { x: Math.max(-1, Math.min(1, dx / 300)), y: Math.max(-1, Math.min(1, dy / 300)) };
+    } else if (ix.is("curious") && d > GESTURE.CURIOUS_RADIUS * 1.25) {
+      ix.rest(); lookTarget = null;
+    }
+  }, 200);
+
+  // Doze off when the user has been away a while; wake the moment they return.
+  setInterval(async () => {
+    const a = window.pywebview && window.pywebview.api;
+    if (!a || !a.idle_seconds || throwRunning || held || reacting || wandering || ix.owning) return;
+    let s = 0; try { s = await a.idle_seconds(); } catch { return; }
+    if (!dozing && !flying && !parkouring && !held && s > 30) { dozing = true; dozeSince = Date.now(); mood.nudge("tired", 0.6); }
+    else if (dozing && s < 2) {                                 // they're back: he looks up and stretches
+      dozing = false; mood.nudge("happy", 0.3);
+      currentIdle = "stretch"; idleStart = performance.now();
+      // a spoken-style hello only after a real absence, and not every time (no greeting spam)
+      if (Date.now() - dozeSince > 3 * 60000 && Date.now() - lastWelcome > 20 * 60000) { speakBubble("Oh — welcome back, sir.", { proactive: true }); lastWelcome = Date.now(); }
+    }
+
+    // Proactive break reminder: track one continuous active stretch; after ~50 min, suggest a break once.
+    // Going idle (>60 s away) resets the stretch so the next suggestion is fresh.
+    if (companion.settings.proactive !== false) {
+      if (s < 2) {
+        if (!activeSince) activeSince = Date.now();
+        if (!dozing && shouldSuggestBreak(Date.now() - activeSince, breakSuggested)) {
+          breakSuggested = true;
+          mood.nudge("tired", 0.5);
+          speakBubble("You've been at it nearly an hour, sir. A short break, perhaps?", { proactive: true });
+          currentIdle = "stretch"; idleStart = performance.now();   // a little stretch to go with it
+        }
+      } else if (s > 60) { activeSince = 0; breakSuggested = false; }
+    }
+  }, 3000);
+}
+
+// Boot EXACTLY once. Both triggers used to fire in the real window (pywebview injects itself after DOMContentLoaded),
+// which built two renderers + two render loops on one canvas: two robots drawn on top of each other, ~240 fps.
+let booted = false;
+const bootOnce = () => { if (booted) return; booted = true; boot(); };
+window.addEventListener("pywebviewready", bootOnce);
+window.addEventListener("DOMContentLoaded", () => {
+  if (window.pywebview && window.pywebview.api) bootOnce();
+  else setTimeout(bootOnce, 1500);               // plain browser (lab / tests): no pywebview is coming
+});
+</script>

@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "net.your-tailnet.jarvis",
+    "sha256_cert_fingerprints": ["REPLACE-WITH-YOUR-APP-SIGNING-CERT-SHA256"]
+  }
+}]

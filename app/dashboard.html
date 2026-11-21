@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J.A.R.V.I.S. · Command Center</title>
+<meta name="theme-color" content="#03070c">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:var(--bg-0); color:var(--text-1); font:400 var(--fs-sm)/1.45 var(--font-ui); min-height:100%; }
+  body { overflow-x:hidden; }
+  body::before { content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background:radial-gradient(70% 50% at 18% -5%, rgba(92,198,230,.06), transparent 60%), var(--bg-0); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  a { color:inherit; text-decoration:none; }
+  .wrap { max-width:1600px; margin:0 auto; padding:22px 26px 30px; display:grid; gap:16px;
+    grid-template-columns:repeat(12, 1fr); }
+  .card { background:var(--bg-1); border:1px solid var(--line-1); border-radius:var(--r-3); padding:var(--s-5); position:relative; overflow:hidden; }
+  .h { display:flex; align-items:center; gap:8px; font-size:var(--fs-xs); letter-spacing:.08em; color:var(--text-2); text-transform:uppercase; font-weight:500; margin-bottom:var(--s-4); }
+  .h svg { width:16px; height:16px; color:var(--text-3); }
+  .h .r { margin-left:auto; letter-spacing:0; text-transform:none; font-weight:500; color:var(--text-3); }
+  .h .r a { color:var(--accent); }
+  .muted { color:var(--text-2); } .faint { color:var(--text-3); }
+  .empty { color:var(--text-3); font-size:var(--fs-sm); padding:6px 0; }
+  .c12 { grid-column:span 12; } .c8 { grid-column:span 8; } .c6 { grid-column:span 6; } .c5 { grid-column:span 5; } .c4 { grid-column:span 4; } .c3 { grid-column:span 3; }
+
+  /* hero */
+  .hero { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:16px; padding:22px 24px; }
+  .clock { font:600 76px/.95 var(--font-display); letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--text-1); }
+  .clock small { font-size:26px; letter-spacing:0; margin-left:6px; color:var(--text-3); font-weight:500; }
+  .date { font-size:17px; color:var(--text-2); margin-top:8px; }
+  .greet { font-size:15px; margin-top:12px; color:var(--text-1); }
+  .jarvis { display:flex; align-items:center; gap:16px; border-left:1px solid var(--line-1); border-right:1px solid var(--line-1); padding:0 18px; }
+  .jarvis canvas { width:120px; height:120px; flex:none; }
+  .jarvis b { display:block; letter-spacing:.18em; color:var(--text-1); font:600 var(--fs-sm)/var(--lh-sm) var(--font-display); }
+  .jarvis .st { font-size:var(--fs-xs); letter-spacing:.08em; text-transform:uppercase; color:var(--text-2); margin-top:3px; }
+  .jarvis .said { margin-top:10px; font-size:var(--fs-sm); line-height:1.45; max-height:5.9em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; }
+  .jarvis .said .you { color:var(--warn); }
+  .wx { display:flex; align-items:center; gap:16px; padding-left:6px; }
+  .wx svg { width:74px; height:74px; flex:none; }
+  .wx .t { font:600 48px/1 var(--font-display); }
+  .wx .cond { font-size:16px; text-transform:capitalize; margin-top:4px; }
+  .wx .hl { color:var(--text-2); font-size:var(--fs-sm); margin-top:4px; }
+
+  /* lists */
+  .item { display:flex; gap:12px; align-items:flex-start; padding:9px 0; border-top:1px solid var(--line-1); }
+  .item:first-of-type { border-top:0; }
+  .item .tm { width:52px; flex:none; color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; }
+  .item .k { width:84px; flex:none; color:var(--text-3); font-size:var(--fs-xs); letter-spacing:.08em; text-transform:uppercase; padding-top:2px; }
+  .tag { display:inline-block; font-size:var(--fs-xs); letter-spacing:.1em; padding:2px 8px; border-radius:var(--r-pill); border:1px solid var(--line-2); color:var(--accent); margin-left:6px; vertical-align:2px; }
+  .tag.g { color:var(--ok); border-color:var(--ok); } .tag.a { color:var(--warn); border-color:var(--warn); }
+  .big { font-size:var(--fs-lg); font-weight:600; line-height:var(--lh-lg); letter-spacing:-.01em; }
+  .exs { display:grid; grid-template-columns:1fr auto; gap:4px 12px; margin-top:12px; font-size:var(--fs-sm); }
+  .exs span:nth-child(even) { color:var(--accent); font-variant-numeric:tabular-nums; text-align:right; }
+  .more { margin-top:10px; font-size:var(--fs-sm); color:var(--accent); display:inline-block; }
+
+  /* gauges */
+  .gauges { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
+  .g { text-align:center; }
+  .g svg { width:100%; max-width:108px; aspect-ratio:1; transform:rotate(-90deg); }
+  .g .v { margin-top:-72px; height:72px; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none; }
+  .g .v b { font-size:21px; font-variant-numeric:tabular-nums; }
+  .g .v small { font-size:var(--fs-xs); letter-spacing:.08em; color:var(--text-2); }
+  .g .l { margin-top:6px; font-size:var(--fs-xs); color:var(--text-2); }
+  .sysline { display:flex; justify-content:space-between; margin-top:14px; padding-top:10px; border-top:1px solid var(--line-1); font-size:var(--fs-sm); color:var(--text-2); }
+  .sysline b { color:var(--text-1); font-weight:600; }
+
+  /* homelab */
+  .bars { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:14px; }
+  .bar .t { display:flex; justify-content:space-between; font-size:var(--fs-sm); margin-bottom:5px; } .bar .t span { color:var(--text-2); }
+  .meter { height:7px; border-radius:7px; background:var(--line-1); overflow:hidden; }
+  .meter i { display:block; height:100%; border-radius:7px; background:var(--ok); transition:width var(--dur-slow) var(--ease-out); }
+  .meter i.warn { background:var(--warn); } .meter i.bad { background:var(--danger); }
+  .apps { display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:7px; }
+  .app { display:flex; align-items:center; gap:7px; font-size:var(--fs-sm); padding:6px 9px; min-width:0; border-radius:var(--r-2); background:var(--bg-2); border:1px solid var(--line-1); }
+  .app span:last-child { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--ok); flex:none; }
+  .dot.down { background:var(--danger); } .dot.warn { background:var(--warn); }
+
+  /* awareness */
+  .aw .line { font-size:var(--fs-sm); padding:5px 0; } .aw .line b { color:var(--accent); font-weight:600; margin-right:6px; } .aw .line time { color:var(--text-3); margin-right:8px; font-variant-numeric:tabular-nums; }
+  .pill { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-xs); font-weight:600; letter-spacing:.1em; padding:3px 10px; border-radius:var(--r-pill); border:1px solid var(--line-2); color:var(--text-2); }
+  .pill i { width:7px; height:7px; border-radius:50%; background:var(--text-3); } .pill.on { color:var(--ok); border-color:var(--ok); } .pill.on i { background:var(--ok); animation:pulse 1.4s infinite; }
+  @keyframes pulse { 50% { opacity:.3; } }
+
+  /* week, countdowns, media, lists, timers */
+  .wk { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .stat { padding:10px 12px; border-radius:var(--r-3); background:var(--bg-2); border:1px solid var(--line-1); }
+  .stat b { display:block; font-size:24px; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .stat small { color:var(--text-2); font-size:var(--fs-xs); }
+  .stat .d { font-size:var(--fs-xs); margin-top:2px; } .up { color:var(--ok); } .down { color:var(--warn); }
+  .cd { display:flex; align-items:center; gap:12px; padding:8px 0; border-top:1px solid var(--line-1); }
+  .cd:first-child { border-top:0; }
+  .cd .n { width:54px; flex:none; text-align:center; font-size:22px; font-weight:600; color:var(--accent); font-variant-numeric:tabular-nums; line-height:1; }
+  .cd .n small { display:block; font-size:var(--fs-xs); letter-spacing:.08em; color:var(--text-3); font-weight:600; margin-top:3px; }
+  .cd .t { flex:1; min-width:0; } .cd .t div { font-size:var(--fs-xs); color:var(--text-3); }
+  .x { color:var(--text-3); background:none; border:0; cursor:pointer; font-size:16px; padding:0 4px; }
+  .x:hover { color:var(--danger); }
+  .addrow { display:flex; gap:6px; margin-top:10px; }
+  .addrow input, .addrow select { flex:1; min-width:0; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-1); border-radius:var(--r-2); padding:7px 9px; font:inherit; font-size:var(--fs-sm); }
+  .addrow select { flex:none; width:auto; }
+  .addrow button, .mbtn { background:var(--bg-2); color:var(--text-1); border:1px solid var(--line-2); border-radius:var(--r-2); padding:7px 11px; font:inherit; font-weight:600; cursor:pointer; }
+  .mnow { display:flex; align-items:center; gap:12px; margin-bottom:12px; min-height:46px; }
+  .mnow .art { width:46px; height:46px; border-radius:var(--r-2); display:grid; place-items:center; flex:none;
+    background:var(--accent-soft); color:var(--accent); }
+  .mnow b { display:block; font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .mnow span { color:var(--text-2); font-size:var(--fs-sm); }
+  .mctl { display:flex; gap:8px; align-items:center; }
+  .mbtn { width:42px; height:38px; padding:0; display:grid; place-items:center; } .mbtn.play { width:52px; background:var(--accent); color:var(--accent-ink); border:0; }
+  .mbtn svg { width:18px; height:18px; }
+  .vol { display:flex; align-items:center; gap:10px; margin-top:12px; font-size:12px; color:var(--text-2); }
+  .vol input { flex:1; accent-color:var(--accent); }
+  .li { display:flex; align-items:center; gap:10px; padding:6px 0; font-size:var(--fs-sm); border-top:1px solid var(--line-1); cursor:pointer; }
+  .li:first-child { border-top:0; }
+  .li i { width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line-2); flex:none; }
+  .li:hover i { border-color:var(--ok); } .li.done { opacity:.4; text-decoration:line-through; }
+  .li span:nth-child(2) { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .li .tg { margin-left:auto; font-size:var(--fs-xs); color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+  .tmr { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--r-2); margin-top:8px; background:var(--warn-soft); border:1px solid var(--warn); }
+  .tmr b { font-variant-numeric:tabular-nums; margin-left:auto; } .tmr.focus { background:var(--accent-soft); border-color:var(--accent); }
+  .badgerow { display:flex; gap:5px; flex-wrap:wrap; margin-top:10px; }
+  .badgerow span { font-size:17px; filter:grayscale(1) opacity(.3); } .badgerow span.on { filter:none; }
+
+  /* quick actions + problems */
+  .quick { display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; }
+  .q { display:flex; flex-direction:column; align-items:center; gap:7px; padding:14px 6px; border-radius:var(--r-3); background:var(--bg-2); border:1px solid var(--line-1);
+    font-weight:600; font-size:var(--fs-sm); transition:.15s; }
+  .q svg { width:24px; height:24px; color:var(--accent); }
+  .q:hover { border-color:var(--line-2); transform:translateY(-2px); box-shadow:0 10px 26px var(--accent-soft); }
+  .alert { display:none; grid-column:span 12; padding:12px 16px; border-radius:var(--r-3); background:var(--danger-soft); border:1px solid var(--danger); color:#ffd1da; }
+  .alert.on { display:block; } .alert b { color:var(--danger); letter-spacing:.08em; font-size:var(--fs-xs); margin-right:8px; }
+  .foot { grid-column:span 12; text-align:center; color:var(--text-3); font-size:var(--fs-xs); letter-spacing:.08em; }
+  @media (max-width:1180px) { .c3 { grid-column:span 6; } .c4, .c5 { grid-column:span 6; } .c8 { grid-column:span 12; } .quick { grid-template-columns:repeat(4, 1fr); } }
+  @media (max-width:860px) { .hero { grid-template-columns:1fr; } .jarvis { border:0; padding:0; } .c3, .c4, .c5, .c6 { grid-column:span 12; } .clock { font-size:60px; } }
+  @media (prefers-reduced-motion: reduce) { .pill.on i { animation:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="alert" id="alert"></div>
+
+  <section class="card c12 hero">
+    <div><div class="clock" id="clock">--:--</div><div class="date" id="date"></div><div class="greet" id="greet"></div></div>
+    <div class="jarvis"><canvas id="orb" width="240" height="240"></canvas>
+      <div style="min-width:0"><b>J.A.R.V.I.S.</b><div class="st" id="jstate">Connecting…</div><div class="said" id="said"></div></div></div>
+    <div class="wx" id="wx"><div class="muted">Weather loading…</div></div>
+  </section>
+
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>Today<span class="r" id="todayCount"></span></div><div id="agenda"></div><div id="timers"></div><div id="notis"></div></section>
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg>Training<span class="r"><a href="/fitness.html">Trainer ›</a></span></div><div id="training"></div></section>
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 3-3 6s1 4 3 4v8"/></svg>Meals<span class="r"><a href="/kitchen.html">Kitchen ›</a></span></div><div id="meals"></div></section>
+
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>This PC<span class="r" id="gpuName"></span></div>
+    <div class="gauges" id="gauges"></div><div class="sysline" id="sysline"></div></section>
+  <section class="card c8"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/><path d="M7 6.5h.01M7 17.5h.01"/></svg>Homelab<span class="r" id="labSum"></span></div>
+    <div class="bars" id="labBars"></div><div class="apps" id="apps"></div></section>
+
+  <section class="card c5"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d='M3 3v18h18'/><path d='m7 15 4-4 3 3 5-6'/></svg>This week<span class="r" id="weekOf"></span></div><div id="weekly"></div></section>
+  <section class="card c3"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx='12' cy='13' r='8'/><path d='M12 9v4l2 2M9 2h6'/></svg>Countdowns</div><div id="countdowns"></div></section>
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx='12' cy='12' r='9'/><path d='m10 8 6 4-6 4z'/></svg>Media<span class="r" id="mediaApp"></span></div><div id="media"></div></section>
+
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d='M9 6h11M9 12h11M9 18h11'/><path d='m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2'/></svg>Lists<span class="r" id="listCount"></span></div><div id="lists"></div></section>
+  <section class="card c4 aw"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Today's conversations<span class="r"><a href="/memory.html">Memory ›</a></span></div><div id="aware"></div></section>
+  <section class="card c4"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Jarvis activity<span class="r" id="usageSum"></span></div><div id="activity"></div></section>
+
+  <section class="card c12"><div class="h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m13 2-9 12h8l-1 8 9-12h-8z"/></svg>Quick launch</div>
+    <div class="quick">
+      <a class="q" href="/fitness.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg>Trainer</a>
+      <a class="q" href="/kitchen.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 3-3 6s1 4 3 4v8"/></svg>Kitchen</a>
+      <a class="q" href="/wardrobe.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 7 6v3l-4 2 2 9h14l2-9-4-2V6z"/><path d="M9 6a3 3 0 0 0 6 0"/></svg>Wardrobe</a>
+      <a class="q" href="/wardrobe-3d.html#avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="7" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Avatar</a>
+      <a class="q" href="/teach.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Teach Jarvis</a>
+      <a class="q" href="/memory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Memory</a>
+      <a class="q" href="/eyes.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Eyes</a>
+      <a class="q" href="/pc.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>PC control</a>
+    </div></section>
+  <div class="foot" id="foot">J.A.R.V.I.S. Command Center</div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+// Icons: Lucide (lucide.dev, ISC licence), 24 grid, drawn with .ds-icon from design-system.css.
+const ICONS = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  dumbbell: '<path d="M6.5 6.5v11"/><path d="M17.5 6.5v11"/><path d="M3 9.5v5"/><path d="M21 9.5v5"/><path d="M6.5 12h11"/>',
+  chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-5"/><path d="M13 17V7"/><path d="M18 17v-8"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  sparkles: '<path d="M12 4l1.8 4.7L18.5 10.5l-4.7 1.8L12 17l-1.8-4.7L5.5 10.5l4.7-1.8z"/><path d="M19 3v4"/><path d="M17 5h4"/><path d="M5 17v4"/><path d="M3 19h4"/>',
+  flame: '<path d="M12 3c1 3 4 5 4 9a4 4 0 0 1-8 0c0-1.5.5-2.5 1.5-3.5C10 10 12 7 12 3z"/>',
+  music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>',
+};
+const icon = (name, size = "") => `<svg class="ds-icon ${size}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.sparkles}</svg>`;
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? { headers: { Authorization: `Bearer ${token}` } }
+    : { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+const S = { dash: null, sys: null, fit: null, kit: null, aware: null };
+const pretty = n => String(n || "").replace(/[_-]+/g, " ");
+// The HUD marks phone messages "📱 " (and "📱 Name: " on what the person said); show just the words.
+const clean = (t, who) => String(t || "").replace(who === "you" ? /^\u{1F4F1}\s*(?:[^:]{1,30}:\s)?/u : /^\u{1F4F1}\s*/u, "");
+
+/* ---- clock ---- */
+function tick() {
+  const d = new Date(), h = d.getHours();
+  $("#clock").innerHTML = `${d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).replace(/\s?([AP]M)/i, "<small>$1</small>")}`;
+  $("#date").textContent = d.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
+  const name = (S.me && S.me.title) || "sir";
+  $("#greet").textContent = h < 5 ? `Burning the midnight oil, ${name}.` : h < 12 ? `Good morning, ${name}.` : h < 17 ? `Good afternoon, ${name}.` : h < 22 ? `Good evening, ${name}.` : `Getting late, ${name}.`;
+}
+setInterval(tick, 1000); tick();
+
+/* ---- the orb (same family as the PC companion) ---- */
+const COLORS = { sleeping: [79,195,247], listening: [56,240,255], thinking: [255,179,0], speaking: [79,195,247], working: [255,179,0], muted: [255,107,107] };
+const LABELS = { sleeping: "Standing by", listening: "Listening", thinking: "Thinking", speaking: "Speaking", working: "Working on it", muted: "Mic muted" };
+let jstate = "sleeping"; const orb = $("#orb"), oc = orb.getContext("2d");
+function drawOrb(now) {
+  const t = now / 1000, W = orb.width, c = W / 2, [r, g, b] = COLORS[jstate] || COLORS.sleeping, col = a => `rgba(${r},${g},${b},${a})`;
+  const active = jstate !== "sleeping" && jstate !== "muted", pulse = .15 + .08 * Math.sin(t * 2) + (active ? .15 : 0);
+  oc.clearRect(0, 0, W, W);
+  const gl = oc.createRadialGradient(c, c, 4, c, c, c); gl.addColorStop(0, col(.5 + pulse * .4)); gl.addColorStop(.4, col(.14 + pulse * .2)); gl.addColorStop(1, col(0));
+  oc.fillStyle = gl; oc.beginPath(); oc.arc(c, c, c, 0, 7); oc.fill();
+  oc.fillStyle = col(.9); oc.beginPath(); oc.arc(c, c, 16 + pulse * 10, 0, 7); oc.fill();
+  oc.fillStyle = "rgba(255,255,255,.88)"; oc.beginPath(); oc.arc(c, c, 6 + pulse * 5, 0, 7); oc.fill();
+  const speed = jstate === "thinking" || jstate === "working" ? 3 : active ? 1.4 : .5;
+  [[42, 6, 1, .5], [62, 10, -.6, .35], [84, 3, .35, .6], [102, 24, -.2, .25]].forEach(([rad, segs, dir, a], i) => {
+    oc.strokeStyle = col(a + (active ? .25 : 0)); oc.lineWidth = i === 3 ? 2 : 4; const rot = t * dir * speed;
+    for (let s = 0; s < segs; s++) { const a0 = rot + s / segs * Math.PI * 2; oc.beginPath(); oc.arc(c, c, rad, a0, a0 + Math.PI * 2 / segs * (i === 3 ? .4 : .7)); oc.stroke(); }
+  });
+  requestAnimationFrame(drawOrb);
+}
+requestAnimationFrame(drawOrb);
+
+/* ---- weather ---- */
+function wxIcon(cond) {
+  const c = cond.toLowerCase(), st = 'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"';
+  if (/thunder|storm/.test(c)) return `<svg viewBox="0 0 64 64" style="color:#ffd54f" ${st}><path d="M20 40h26a10 10 0 0 0 0-20 14 14 0 0 0-27 3 9 9 0 0 0 1 17z"/><path d="m33 40-5 9h7l-4 9"/></svg>`;
+  if (/rain|drizzle|shower/.test(c)) return `<svg viewBox="0 0 64 64" style="color:#7fd3ff" ${st}><path d="M20 36h26a10 10 0 0 0 0-20 14 14 0 0 0-27 3 9 9 0 0 0 1 17z"/><path d="M24 44l-3 7M34 44l-3 7M44 44l-3 7"/></svg>`;
+  if (/snow/.test(c)) return `<svg viewBox="0 0 64 64" style="color:#e6f4ff" ${st}><path d="M20 36h26a10 10 0 0 0 0-20 14 14 0 0 0-27 3 9 9 0 0 0 1 17z"/><path d="M24 46h.01M34 50h.01M44 46h.01"/></svg>`;
+  if (/cloud|overcast|fog|mist/.test(c)) return `<svg viewBox="0 0 64 64" style="color:#b9d4ea" ${st}><path d="M18 44h30a11 11 0 0 0 0-22 15 15 0 0 0-29 3 10 10 0 0 0-1 19z"/></svg>`;
+  return `<svg viewBox="0 0 64 64" style="color:#ffc94d" ${st}><circle cx="32" cy="32" r="11"/><path d="M32 8v6M32 50v6M8 32h6M50 32h6M15 15l4 4M45 45l4 4M15 49l4-4M45 19l4-4"/></svg>`;
+}
+function renderWeather(w) {
+  if (!w || !w.now) { $("#wx").innerHTML = `<div class="muted">Set JARVIS_HOME_CITY for weather.</div>`; return; }
+  const now = w.now.split(" now: ")[1] || w.now, cond = (now.split(",")[0] || "").trim(), temp = (now.match(/(-?\d+)°F/) || [])[1];
+  const hi = (w.today.match(/high (-?\d+)°F/) || [])[1], lo = (w.today.match(/low (-?\d+)°F/) || [])[1], rain = (w.today.match(/(\d+)% chance/) || [])[1];
+  const place = (w.now.split(" now:")[0] || "").split(",")[0];
+  $("#wx").innerHTML = `${wxIcon(cond)}<div><div class="t">${temp ? temp + "°" : "—"}</div><div class="cond">${esc(cond)}</div>
+    <div class="hl">${hi ? `H ${hi}° · L ${lo}°` : ""}${rain ? ` · ${rain}% rain` : ""}${place ? ` · ${esc(place)}` : ""}</div></div>`;
+}
+
+/* ---- cards ---- */
+function renderDash(d) {
+  jstate = (d.jarvis && d.jarvis.state) || "sleeping";
+  $("#jstate").textContent = LABELS[jstate] || jstate;
+  const lines = (d.jarvis && d.jarvis.lines || []).slice(-2);
+  $("#said").innerHTML = lines.length ? lines.map(l => `<div class="${l.who === "you" ? "you" : ""}">${esc(clean(l.text, l.who))}</div>`).join("") : `<span class="faint">“Hey Jarvis” and I'm all yours.</span>`;
+  renderWeather(d.weather);
+  // agenda
+  const items = d.today || [];
+  $("#todayCount").textContent = items.length ? `${items.length} item${items.length > 1 ? "s" : ""}` : "";
+  $("#agenda").innerHTML = items.length ? items.map(x => { const [tm, ...rest] = String(x).split(" ");
+      return `<div class="item"><span class="tm">${esc(tm)}</span><span>${esc(rest.join(" "))}</span></div>`; }).join("")
+    : `<div class="big" style="font-size:16px">Clear schedule</div><div class="empty">No reminders today. Say “remind me at 5 to…” and it lands here.</div>`;
+  // homelab
+  const h = d.homelab || {}, apps = h.apps || [];
+  if (apps.length || h.disk) {
+    const up = apps.filter(a => a.up && a.healthy !== false).length;
+    $("#labSum").innerHTML = apps.length ? `<span style="color:${up === apps.length ? "var(--ok)" : "var(--warn)"}">${up}/${apps.length} up</span>` : "";
+    const cls = p => p > 90 ? "bad" : p > 75 ? "warn" : "";
+    const bars = [];
+    if (h.disk) bars.push(["Media drive", `${h.disk.free_gb} GB free`, h.disk.used_pct]);
+    if (h.pi) { bars.push(["Pi CPU", `${h.pi.cpu_pct}% · ${h.pi.temp_c}°C`, h.pi.cpu_pct]); bars.push(["Pi memory", `${h.pi.mem_pct}% · up ${h.pi.uptime_days} d`, h.pi.mem_pct]); }
+    $("#labBars").innerHTML = bars.map(([n, v, p]) => `<div class="bar"><div class="t">${n}<span>${esc(v)}</span></div><div class="meter"><i class="${cls(p)}" style="width:${Math.max(2, p)}%"></i></div></div>`).join("");
+    $("#apps").innerHTML = apps.map(a => `<div class="app" title="${esc(a.status || "")}"><span class="dot ${!a.up ? "down" : a.healthy === false ? "warn" : ""}"></span><span>${esc(pretty(a.name))}</span></div>`).join("");
+  } else { $("#labBars").innerHTML = ""; $("#apps").innerHTML = `<div class="empty">Homelab not configured or unreachable.</div>`; }
+  // problems
+  const probs = d.problems || [];
+  $("#alert").classList.toggle("on", probs.length > 0);
+  $("#alert").innerHTML = probs.map(p => `<div><b>ATTENTION</b>${esc(p)}</div>`).join("");
+  if (d.playing && d.playing.length) $("#foot").textContent = "Now playing: " + d.playing.map(p => `${p.series ? p.series + " · " : ""}${p.title} (${p.user})`).join(" · ");
+}
+function ring(pct, color, label, value, unit) {
+  const p = Math.max(0, Math.min(100, pct || 0)), C = 2 * Math.PI * 42;
+  return `<div class="g"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" stroke="var(--line-1)" stroke-width="9" fill="none"/>
+    <circle cx="50" cy="50" r="42" stroke="${color}" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - p / 100)}" style="transition:stroke-dashoffset .8s"/></svg>
+    <div class="v"><b>${value}</b><small>${unit}</small></div><div class="l">${label}</div></div>`;
+}
+function renderSys(s) {
+  if (!s) { $("#gauges").innerHTML = `<div class="empty" style="grid-column:span 4">PC stats are available on the PC.</div>`; return; }
+  const g = s.gpu || {};
+  $("#gpuName").textContent = g.name || "";
+  $("#gauges").innerHTML = ring(s.cpu_pct, s.cpu_pct > 85 ? "#F07A84" : "#5CC6E6", "CPU", s.cpu_pct, "%")
+    + ring(s.mem_pct, s.mem_pct > 85 ? "#F07A84" : "#5CC6E6", `Memory · ${s.mem_gb} GB`, s.mem_pct, "%")
+    + (g.name ? ring(g.util_pct, "#38f0ff", "GPU", g.util_pct, "%") + ring(100 * g.vram_used_gb / g.vram_gb, g.vram_used_gb / g.vram_gb > .9 ? "#E9B350" : "#6DD5A0", `VRAM · ${g.vram_gb} GB`, g.vram_used_gb, "GB") : "");
+  $("#sysline").innerHTML = `<span>GPU temp <b>${g.temp_c != null ? g.temp_c + "°C" : "—"}</b></span><span>System drive <b>${s.disk_free_gb ?? "—"} GB free</b></span><span>Up <b>${s.uptime_h < 48 ? s.uptime_h + " h" : Math.round(s.uptime_h / 24) + " days"}</b></span>`;
+}
+function renderTraining(f) {
+  const t = f && f.today, box = $("#training");
+  if (!f) { box.innerHTML = `<div class="empty">Trainer unavailable.</div>`; return; }
+  if (!t || !t.items || !t.items.length) { box.innerHTML = `<div class="big">${esc(t && t.title || "Rest day")}</div><div class="empty">${esc(t && t.why || "Recovery counts too.")}</div>`; return; }
+  const iso = new Date().toISOString().slice(0, 10), done = (f.workouts || []).some(w => String(w.date || "").startsWith(iso));
+  const name = it => (f.exercises && f.exercises[it.exercise] && f.exercises[it.exercise].name) || String(it.exercise).replace(/_/g, " ");
+  box.innerHTML = `<div class="big">${esc(t.title)}${done ? '<span class="tag g">DONE</span>' : '<span class="tag a">TO DO</span>'}</div>
+    <div class="muted" style="font-size:12.5px;margin-top:4px">Week ${esc(t.week)} · ${esc(t.focus || "")} · ${t.items.length} exercises</div>
+    <div class="exs">${t.items.slice(0, 5).map(it => `<span>${esc(name(it))}</span><span>${esc(it.sets)} × ${esc(it.reps)}</span>`).join("")}</div>
+    ${t.items.length > 5 ? `<div class="faint" style="font-size:12px;margin-top:6px">+ ${t.items.length - 5} more</div>` : ""}
+    <div class="faint" style="font-size:12px;margin-top:10px">${done ? "Logged. Excellent work." : "Start it from the companion: Workout, then Start, or say “start my workout on the screen”."}</div>`
+    + (f.achievements ? `<div class="badgerow" title="${f.achievements.earned}/${f.achievements.badges.length} badges · streak ${f.achievements.streak}">${f.achievements.badges.map(b => `<span class="${b.earned ? "on" : ""}" title="${esc(b.name)} — ${esc(b.desc)}${b.earned ? "" : " (" + Math.round(b.progress * 100) + "%)"}">${b.icon}</span>`).join("")}<span class="on" style="margin-left:auto;font-size:12.5px;color:var(--warn);filter:none">${icon("flame", "sm")} ${f.achievements.streak} streak</span></div>` : "");
+}
+function renderMeals(k) {
+  const box = $("#meals"), p = k && k.plan;
+  if (!p || !p.days || !p.days.length) { box.innerHTML = `<div class="empty">No meal plan yet — ask Jarvis to plan the week.</div>`; return; }
+  const wd = new Date().toLocaleDateString("en-US", { weekday: "short" }).toLowerCase();
+  const day = p.days.find(d => String(d.day).toLowerCase().startsWith(wd));
+  const start = /^\d{4}-\d\d-\d\d$/.test(p.week_of || "") ? new Date(p.week_of + "T00:00") : null, stale = start && Date.now() - start.getTime() > 7 * 864e5;
+  box.innerHTML = day ? (day.meals || []).map(m => `<div class="item"><span class="k">${esc(m.meal)}</span><span>${esc(m.recipe)}${m.note ? `<div class="faint" style="font-size:12px">${esc(m.note)}</div>` : ""}</span></div>`).join("")
+      + (stale ? `<div class="faint" style="font-size:12px;margin-top:6px">From last week's plan — ask Jarvis for a fresh one.</div>` : "")
+    : `<div class="empty">Nothing planned for today.</div>`;
+}
+function renderAware(a) {
+  const box = $("#aware");
+  if (!a) { box.innerHTML = `<div class="empty">Daily Awareness unavailable.</div>`; return; }
+  const s = a.session || {}, lines = (a.entries || []).slice(-5);
+  const on = s.state === "on";
+  box.innerHTML = `<div style="margin-bottom:8px"><span class="pill ${on ? "on" : ""}"><i></i>${on ? "ROOM LISTENING" : s.state === "paused" ? "PAUSED" : "CONVERSATIONS ONLY"}</span>
+      <span class="faint" style="margin-left:8px;font-size:12px">${(a.entries || []).length} lines in the last 24 h</span></div>`
+    + (lines.length ? lines.map(l => `<div class="line"><time>${new Date(l.t * 1000).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</time><b>${esc(l.who)}</b>${esc(String(l.text).slice(0, 140))}</div>`).join("")
+      : `<div class="empty">Nothing yet today. Ask me “what were we talking about at 8?” any time.</div>`);
+}
+function renderActivity(d) {
+  const lines = (d && d.jarvis && d.jarvis.lines) || [];
+  $("#activity").innerHTML = lines.length ? lines.slice(-6).reverse().map(l => `<div class="item"><span class="k" style="width:58px">${l.who === "you" ? "You" : l.who === "sys" ? "System" : "Jarvis"}</span><span style="font-size:13px">${esc(clean(l.text, l.who).slice(0, 180))}</span></div>`).join("")
+    : `<div class="empty">Quiet so far. The voice loop's latest exchanges appear here.</div>`;
+}
+
+/* ---- timers + focus (in the Today card) ---- */
+let TIMERS = [], FOCUS = { phase: "off" };
+const mmss = s => { s = Math.max(0, Math.round(s)); return s >= 3600 ? `${Math.floor(s / 3600)}:${String(Math.floor(s % 3600 / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}` : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+function paintTimers() {
+  const now = Date.now() / 1000, box = $("#timers"); if (!box) return;
+  TIMERS = TIMERS.filter(t => t.ends > now - 2);
+  const html = (FOCUS.phase !== "off" ? `<div class="tmr focus">${FOCUS.phase === "focus" ? "Focus block" : "Break"} · ${FOCUS.done + (FOCUS.phase === "focus" ? 1 : 0)}/${FOCUS.rounds}<b>${mmss(FOCUS.ends - now)}</b></div>` : "")
+    + TIMERS.map(t => `<div class="tmr">${icon("clock", "sm")} ${esc(t.label)}<b>${mmss(t.ends - now)}</b><button class="x" data-t="${esc(t.id)}" title="Cancel">×</button></div>`).join("");
+  if (box.dataset.h !== html) { box.dataset.h = html; box.innerHTML = html;
+    box.querySelectorAll("[data-t]").forEach(b => b.onclick = async () => { try { TIMERS = (await api("/api/timers/cancel", { which: b.dataset.t })).timers; paintTimers(); } catch (e) {} }); }
+}
+setInterval(paintTimers, 1000);
+async function loadTimers() {
+  try { TIMERS = (await api("/api/timers")).timers || []; } catch (e) {}
+  try { FOCUS = await api("/api/focus"); } catch (e) {}
+  paintTimers();
+}
+
+/* ---- this week ---- */
+function renderWeekly(w) {
+  const box = $("#weekly"); if (!w) { box.innerHTML = `<div class="empty">Weekly report unavailable.</div>`; return; }
+  $("#weekOf").textContent = "since " + new Date(w.week_of + "T12:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
+  const t = w.training || {}, n = w.nutrition || {}, m = w.money || {}, a = w.achievements || {};
+  const delta = (t.workouts ?? 0) - (t.last_week ?? 0);
+  const stat = (v, label, d) => `<div class="stat"><b>${v ?? "—"}</b><small>${label}</small>${d ? `<div class="d">${d}</div>` : ""}</div>`;
+  box.innerHTML = `<div class="wk">
+    ${stat(t.workouts, "workouts", t.last_week != null ? (delta === 0 ? `<span class="faint">same as last week</span>` : `<span class="${delta > 0 ? "up" : "down"}">${delta > 0 ? "+" : "−"}${Math.abs(delta)} vs last week</span>`) : "")}
+    ${stat(t.sets, "working sets", t.avg_rpe ? `effort ${t.avg_rpe}/10` : "")}
+    ${stat(a.streak, "day streak", a.best_streak ? `best ${a.best_streak}` : "")}
+    ${stat(n.avg_protein != null ? n.avg_protein + " g" : null, "protein / day", n.protein_target && n.days_logged ? `${n.days_on_target}/${n.days_logged} days on target` : n.days_logged ? `${n.days_logged} days logged` : "log food to track")}
+    ${stat(t.sleep != null ? t.sleep + " h" : null, "sleep / night", t.sleep == null ? "check in each morning" : "")}
+    ${stat(m.spent != null ? "$" + Math.round(m.spent) : null, "spent", m.entries ? `${m.entries} entries` : "")}</div>
+    <div class="faint" style="font-size:12px;margin-top:10px">${(w.jarvis && w.jarvis.conversations != null) ? `${w.jarvis.conversations} conversations with Jarvis · ` : ""}${w.homelab ? (w.homelab.problems ? `${w.homelab.problems} homelab problem(s)` : "homelab healthy") : ""}</div>`;
+}
+
+/* ---- countdowns ---- */
+function renderCountdowns(rows) {
+  const box = $("#countdowns");
+  box.innerHTML = (rows && rows.length ? rows.slice(0, 5).map(c => `<div class="cd"><div class="n">${c.days === 0 ? icon("sparkles", "lg") : c.days}<small>${c.days === 0 ? "TODAY" : c.days === 1 ? "DAY" : "DAYS"}</small></div>
+      <div class="t">${esc(c.title)}<div>${new Date(c.date + "T12:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}${c.source !== "custom" ? " · " + c.source : ""}</div></div>
+      ${c.source === "custom" ? `<button class="x" data-c="${esc(c.id)}" title="Remove">×</button>` : ""}</div>`).join("")
+    : `<div class="empty">Nothing coming up. Add a date below, or say “count down to my leave on…”.</div>`)
+    + `<form class="addrow" id="cdAdd"><input id="cdT" placeholder="Event" maxlength="60"><input id="cdD" type="date" style="flex:none;width:128px"><button>+</button></form>`;
+  box.querySelectorAll("[data-c]").forEach(b => b.onclick = async () => { try { renderCountdowns((await api("/api/countdowns/remove", { id: b.dataset.c })).countdowns); } catch (e) {} });
+  $("#cdAdd").onsubmit = async e => { e.preventDefault(); const title = $("#cdT").value.trim(), date = $("#cdD").value; if (!title || !date) return;
+    try { renderCountdowns((await api("/api/countdowns", { title, date })).countdowns); } catch (e) {} };
+}
+
+/* ---- media ---- */
+const MI = { prev: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM9.5 12 18 6v12z"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5v14l9-7zM14 5h3v14h-3zM19 5h3v14h-3z"/></svg>',
+  next: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>',
+  vol: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>' };
+let volT = null;
+function renderMedia(m) {
+  const box = $("#media");
+  if (!m || !m.available) { box.innerHTML = `<div class="empty">Media controls work on the PC.</div>`; $("#mediaApp").textContent = ""; return; }
+  const p = m.playing, jf = (S.dash && S.dash.playing || [])[0];
+  $("#mediaApp").textContent = p ? p.app : jf ? "Jellyfin" : "";
+  const title = p ? p.title : jf ? jf.title : "Nothing playing", sub = p ? (p.artist || p.app) : jf ? `${jf.series ? jf.series + " · " : ""}${jf.user}` : "Spotify, YouTube or Jellyfin show up here";
+  if (document.activeElement && document.activeElement.id === "vol") return;   // don't fight the slider
+  box.innerHTML = `<div class="mnow"><div class="art"${p || jf ? "" : ' style="color:var(--text-3);background:var(--bg-2)"'}>${icon("music")}</div><div style="min-width:0"><b>${esc(title)}</b><span>${esc(sub)}</span></div></div>
+    <div class="mctl"><button class="mbtn" data-a="previous" title="Previous">${MI.prev}</button><button class="mbtn play" data-a="play_pause" title="Play / pause">${MI.play}</button>
+      <button class="mbtn" data-a="next" title="Next">${MI.next}</button><button class="mbtn" data-a="mute" title="Mute" style="margin-left:auto;${m.muted ? "color:var(--danger)" : ""}">${MI.mute}</button></div>
+    <div class="vol">${MI.vol.replace("<svg", '<svg width="16" height="16"')}<input id="vol" type="range" min="0" max="100" value="${m.volume ?? 50}"><span id="volv">${m.volume ?? "—"}%</span></div>`;
+  box.querySelectorAll("[data-a]").forEach(b => b.onclick = async () => { try { renderMedia(await api("/api/media", { action: b.dataset.a })); } catch (e) {} });
+  $("#vol").oninput = e => { $("#volv").textContent = e.target.value + "%"; clearTimeout(volT);
+    volT = setTimeout(async () => { try { await api("/api/media", { volume: +e.target.value }); } catch (err) {} }, 180); };
+  $("#vol").onchange = () => $("#vol").blur();
+}
+
+/* ---- lists ---- */
+function renderLists(items) {
+  const box = $("#lists"), rows = (items || []).slice(0, 8), more = (items || []).length - rows.length;
+  $("#listCount").textContent = items && items.length ? `${items.length} open` : "";
+  box.innerHTML = (rows.length ? rows.map(i => `<div class="li" data-id="${esc(i.id)}"><i></i><span>${esc(i.text)}</span><span class="tg">${i.list === "shopping" ? "shop" : "to-do"}</span></div>`).join("")
+      : `<div class="empty">Lists are clear. Add something below, or say “add eggs to the shopping list”.</div>`)
+    + (more > 0 ? `<div class="faint" style="font-size:12px;padding:6px 0 0 26px">+ ${more} more — <a href="/kitchen.html" style="color:var(--accent)">see the shopping list</a></div>` : "")
+    + `<form class="addrow" id="liAdd"><input id="liT" placeholder="Add an item…" maxlength="200"><select id="liL"><option value="todo">To-do</option><option value="shopping">Shopping</option></select><button>+</button></form>`;
+  box.querySelectorAll(".li").forEach(el => el.onclick = async () => { el.classList.add("done");
+    try { setTimeout(async () => renderLists((await api("/api/lists/done", { ids: [el.dataset.id] })).items), 350); } catch (e) {} });
+  $("#liAdd").onsubmit = async e => { e.preventDefault(); const text = $("#liT").value.trim(); if (!text) return;
+    try { renderLists((await api("/api/lists/add", { text, list: $("#liL").value })).items); $("#liT").focus(); } catch (err) {} };
+}
+
+/* ---- refresh loops ---- */
+async function loadDash() { try { S.dash = await api("/api/dashboard"); renderDash(S.dash); renderActivity(S.dash); } catch (e) { $("#jstate").textContent = "Offline"; } }
+async function loadSys() { try { S.sys = await api("/api/system"); } catch (e) { S.sys = null; } renderSys(S.sys); }
+async function loadSlow() {
+  try { S.fit = await api("/api/fitness"); } catch (e) { S.fit = null; } renderTraining(S.fit);
+  try { S.kit = await api("/api/kitchen"); } catch (e) { S.kit = null; } renderMeals(S.kit);
+}
+async function loadExtra() {
+  try { renderWeekly(await api("/api/weekly")); } catch (e) { renderWeekly(null); }
+  try { renderCountdowns((await api("/api/countdowns")).countdowns); } catch (e) { renderCountdowns([]); }
+  try { renderLists((await api("/api/lists")).items); } catch (e) { renderLists([]); }
+}
+const NICON = { reminders: "clock", alerts: "alert", training: "dumbbell", weekly: "chart", missions: "target", jarvis: "sparkles" };
+function renderNotis(items) {
+  const box = $("#notis"); if (!box) return;
+  const rows = (items || []).slice(0, 4);
+  if (!rows.length) { box.innerHTML = ""; return; }
+  const ago = t => { const s = Date.now() / 1000 - t; return s < 3600 ? Math.max(1, Math.floor(s / 60)) + " min" : s < 86400 ? Math.floor(s / 3600) + " h" : new Date(t * 1000).toLocaleDateString([], { month: "short", day: "numeric" }); };
+  box.innerHTML = `<div class="h" style="margin:16px 0 6px">Recent notifications</div>` + rows.map(n => `<div class="item"><span style="width:22px;flex:none;color:var(--text-3)">${icon(NICON[n.category] || "sparkles", "sm")}</span>
+    <span style="flex:1;min-width:0"><b style="font-weight:600">${esc(n.title)}</b><div class="faint" style="font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(n.body)}</div></span><span class="faint" style="font-size:11.5px">${ago(n.t)}</span></div>`).join("");
+}
+async function loadNotis() { try { renderNotis((await api("/api/notifications")).items); } catch (e) {} }
+async function loadMedia() { try { renderMedia(await api("/api/media")); } catch (e) { renderMedia(null); } }
+async function loadAware() { try { S.aware = await api("/api/awareness"); } catch (e) { S.aware = null; } renderAware(S.aware); }
+(async () => {
+  if (!token) { document.body.innerHTML = `<div style="padding:40px;text-align:center;color:#7f9db5">Open the Command Center from Jarvis on the PC (tray, then Dashboard) or link this device first.</div>`; return; }
+  try { S.me = await api("/api/me"); tick(); } catch (e) {}
+  loadDash(); loadSys(); loadSlow(); loadAware(); loadExtra(); loadMedia(); loadTimers();
+  setInterval(loadDash, 4000); setInterval(loadSys, 5000); setInterval(loadAware, 60000); setInterval(loadSlow, 300000);
+  setInterval(loadExtra, 60000); setInterval(loadMedia, 3000); setInterval(loadTimers, 3000);
+  loadNotis(); setInterval(loadNotis, 30000);
+})();
+</script>
+</body>
+</html>

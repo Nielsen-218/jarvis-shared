@@ -1,0 +1,6673 @@
+[
+  {
+    "id": "pikliz",
+    "name": "Pikliz",
+    "english": "Spicy pickled cabbage slaw",
+    "cuisine": "Haitian",
+    "category": "sauce",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "1/4 cup per person, a jar keeps 3 weeks",
+    "active_min": 15,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.15,
+    "ingredients": [
+      {
+        "item": "green cabbage",
+        "qty": "1/2 head",
+        "grams": 450,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "2 large",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, red or orange",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet peppers",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "1.5 cups",
+        "grams": 360,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole cloves",
+        "qty": "4",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Shred the cabbage and carrots fine and slice the bell pepper thin.",
+      "Pack them into a clean quart jar with the sliced scotch bonnets and cloves.",
+      "Pour in vinegar and lime juice until covered, add salt, and press down.",
+      "Rest 24 hours in the fridge before serving; it gets better each day."
+    ],
+    "batch_tip": "Make one big jar on Sunday and use it all week on fried and grilled dishes.",
+    "leftovers": "Chop into scrambled eggs, a sandwich, or a rice bowl as a bright crunch.",
+    "macros": {
+      "kcal": 16,
+      "protein_g": 1,
+      "carbs_g": 3,
+      "fat_g": 0,
+      "fiber_g": 1,
+      "sodium_mg": 240
+    },
+    "tags": [
+      "no-cook",
+      "batch",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Serve the toddler plain cabbage and carrot rinsed of the brine; keep scotch bonnet away from fingers and mouth.",
+    "swap": "Use less vinegar-soaked salt: rinse the cabbage once before packing to cut sodium, and keep one jar milder with half the scotch bonnet.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of pikliz, shredded green cabbage, orange carrot and red and orange pepper slivers glistening in clear vinegar with a few red scotch bonnet slices, in a glass jar and a small bowl served family-style in a small ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "epis",
+    "name": "Epis",
+    "english": "Haitian green seasoning paste",
+    "cuisine": "Haitian",
+    "category": "sauce",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "2 tbsp per dish serving, a jar lasts 2 weeks",
+    "active_min": 15,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.12,
+    "ingredients": [
+      {
+        "item": "green bell pepper",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "1 bunch",
+        "grams": 100,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "flat-leaf parsley",
+        "qty": "1 bunch",
+        "grams": 60,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "1 head",
+        "grams": 50,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme leaves",
+        "qty": "1/4 cup",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1/4 cup",
+        "grams": 55,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "whole cloves",
+        "qty": "3",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Rough-chop the peppers, scallions, onion, and parsley.",
+      "Blend everything with the garlic, thyme, lime juice, oil, salt, and cloves into a coarse green paste.",
+      "Pack into a jar or an ice-cube tray; keep 2 weeks in the fridge or 3 months frozen."
+    ],
+    "batch_tip": "Freeze in ice-cube trays (1 cube is 2 tbsp) so every weeknight dish starts in seconds.",
+    "leftovers": "Stir a cube into leftover rice, soup, or eggs.",
+    "macros": {
+      "kcal": 43,
+      "protein_g": 1,
+      "carbs_g": 3,
+      "fat_g": 3,
+      "fiber_g": 1,
+      "sodium_mg": 330
+    },
+    "tags": [
+      "no-cook",
+      "batch",
+      "freezer",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Safe for the toddler as is; add salt only to the adult portions.",
+    "swap": "Use half the oil and a splash of water for the same flavor with less fat.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of green epis seasoning paste with flecks of parsley, scallion, bell pepper and thyme in a glass jar with a spoon, fresh parsley and garlic beside it served family-style in a small ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sos-ti-malice",
+    "name": "Sòs Ti Malis",
+    "english": "Spicy onion and lime sauce",
+    "cuisine": "Haitian",
+    "category": "sauce",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "1 tbsp over fried foods; makes 1 cup",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.2,
+    "ingredients": [
+      {
+        "item": "onion",
+        "qty": "1 large",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 135,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 9,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet pepper",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Slice the onion very thin and mince the garlic and scotch bonnet.",
+      "Warm the oil in a small pot, soften the onion and garlic 3 minutes, then add vinegar and lime juice.",
+      "Add the scotch bonnet and salt, simmer 3 minutes and serve warm over fried meat, fish, or plantains."
+    ],
+    "batch_tip": "Make a double batch; keeps 1 week in the fridge.",
+    "leftovers": "Spoon over eggs or rice bowls.",
+    "macros": {
+      "kcal": 26,
+      "protein_g": 0,
+      "carbs_g": 2,
+      "fat_g": 2,
+      "fiber_g": 0,
+      "sodium_mg": 90
+    },
+    "tags": [
+      "quick",
+      "budget"
+    ],
+    "toddler": "Skip this for the toddler; give plain onion-free portions of the main dish.",
+    "swap": "Use half the oil and a little more lime for a lighter sauce.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of a small bowl of ti malice sauce, glossy onions in a golden lime and oil sauce with red scotch bonnet pieces, beside crispy fried pork served family-style in a small ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "diri-blan",
+    "name": "Diri Blan",
+    "english": "Haitian white rice",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 5,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.3,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "water",
+        "qty": "3.5 cups",
+        "grams": 840,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "whole clove",
+        "qty": "1",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Rinse the rice in a pot until the water runs clear; drain.",
+      "Add water, oil, salt, and clove; bring to a boil uncovered until the water drops to the rice level.",
+      "Cover, turn to lowest heat 15 minutes, rest 5 minutes off the heat, then fluff."
+    ],
+    "batch_tip": "Cook a double batch and chill flat; it is ready for fried rice or boulet within 3 days.",
+    "leftovers": "Fried rice, rice croquettes, or reheated with bean sauce.",
+    "macros": {
+      "kcal": 300,
+      "protein_g": 5,
+      "carbs_g": 66,
+      "fat_g": 2,
+      "fiber_g": 1,
+      "sodium_mg": 150
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Plain rice is the toddler's best friend; spoon sauce on top and skip added salt.",
+    "swap": "Cook half rice, half cauliflower rice for rest days, or add 1 cup of beans for protein.",
+    "pairs_with": [
+      "pikliz",
+      "poul-nan-sos",
+      "sos-pwa"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of fluffy steamed long-grain white rice, each grain separate, mounded in a ceramic bowl with a fork served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "diri-kole-ak-pwa",
+    "name": "Diri Kole ak Pwa",
+    "english": "Rice cooked with red beans",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 20,
+    "total_min": 60,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "dried red kidney beans",
+        "qty": "1 cup",
+        "grams": 185,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "scotch bonnet pepper (whole, added last)",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Pressure-cook the soaked beans with a pinch of salt 20 minutes (or 60 minutes simmer); drain and keep 3.5 cups of the dark bean broth.",
+      "Heat oil in the pot, sizzle the epis, thyme, and bouillon 2 minutes, then add the rice and stir to coat.",
+      "Pour in the bean broth and beans, add the whole scotch bonnet on top and bring to a boil.",
+      "Cover tight, lowest heat 20 minutes, rest 5 minutes, then discard the pepper and fluff."
+    ],
+    "batch_tip": "Soak and cook 2 lb of beans on Sunday; the beans freeze in 2 cup bags.",
+    "leftovers": "Fried rice (diri-fri-restan) or rice croquettes (boulet-diri-restan).",
+    "macros": {
+      "kcal": 480,
+      "protein_g": 16,
+      "carbs_g": 90,
+      "fat_g": 6,
+      "fiber_g": 10,
+      "sodium_mg": 400
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "batch",
+      "training-day",
+      "toddler-ok"
+    ],
+    "toddler": "Remove the pepper first, mash a few beans with the rice, and leave out added salt for the toddler's bowl.",
+    "swap": "Stir in 1 cup of shredded leftover chicken per adult portion for a 40 g protein bowl.",
+    "pairs_with": [
+      "pikliz",
+      "poul-nan-sos",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of Haitian diri kole, rice cooked with dark red kidney beans, mottled maroon-brown grains, mounded in a ceramic bowl with a sprig of thyme served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bannann-peze",
+    "name": "Bannann Peze",
+    "english": "Twice-fried green plantains",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "3-4 pieces per adult; 1 for the toddler",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "green plantains",
+        "qty": "4",
+        "grams": 800,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil for frying",
+        "qty": "1.5 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "2 cloves",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Peel the plantains and cut into 1-inch rounds.",
+      "Fry at medium heat 3 minutes per side until pale gold, then lift out.",
+      "Press each piece flat with a plate or tostonera and dip quickly in salted garlic-lime water.",
+      "Return to the oil 2 minutes per side until crisp and golden, drain, and salt."
+    ],
+    "batch_tip": "Fry the first pass ahead and refrigerate; finish the second fry when serving.",
+    "leftovers": "Crush into eggs or use as the scoop for avocado.",
+    "macros": {
+      "kcal": 350,
+      "protein_g": 3,
+      "carbs_g": 55,
+      "fat_g": 13,
+      "fiber_g": 4,
+      "sodium_mg": 220
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Cut into small soft strips and skip the salt; one piece is a finger food.",
+    "swap": "Air-fry instead of deep-fry (see bannann-peze-air-fryer) and save 10 g fat per portion.",
+    "pairs_with": [
+      "griyo",
+      "pikliz",
+      "poul-fri",
+      "pwason-fri"
+    ],
+    "photo_prompt": "Haitian bannann peze (tostones): golden-yellow fried plantain discs, flattened, crisp deep-golden edges and a pale yellow inside, sprinkled with salt, stacked on an enamel plate, a small bowl of pikliz beside them"
+  },
+  {
+    "id": "akasan",
+    "name": "Akasan",
+    "english": "Warm spiced cornmeal drink",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.5,
+    "ingredients": [
+      {
+        "item": "fine yellow cornmeal",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "whole milk",
+        "qty": "3 cups",
+        "grams": 730,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "1/3 cup",
+        "grams": 65,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "1",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/4 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Whisk the cornmeal into 1 cup cold water until smooth.",
+      "Simmer the remaining water with the cinnamon and star anise 5 minutes, then pour in the cornmeal slurry stirring constantly.",
+      "Cook 8 minutes until thick, add milk, sugar, vanilla, and nutmeg, and simmer 5 more minutes.",
+      "Remove the spices and serve hot with bread or crackers."
+    ],
+    "batch_tip": "Make a pot for 2 mornings; it thickens in the fridge, loosen with milk.",
+    "leftovers": "Blend cold leftover akasan with fruit into akasan-shake-pwoteyin.",
+    "macros": {
+      "kcal": 280,
+      "protein_g": 8,
+      "carbs_g": 46,
+      "fat_g": 7,
+      "fiber_g": 2,
+      "sodium_mg": 90
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "quick"
+    ],
+    "toddler": "Serve warm, not hot; reduce sugar to 1 tsp in the toddler's cup.",
+    "swap": "Use low-fat milk and stir a scoop of whey in off the heat (akasan-pwoteyin).",
+    "pairs_with": [
+      "ze-brouye-ayisyen",
+      "pen-ak-ze-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of creamy pale-yellow akasan in a ceramic mug with cinnamon dusted on top and a cinnamon stick, beside a slice of toasted bread served family-style in a enamel plate with a ceramic mug on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "akasan-pwoteyin",
+    "name": "Akasan Pwoteyin",
+    "english": "High-protein akasan with whey",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup plain",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "fine yellow cornmeal",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "2% milk",
+        "qty": "3 cups",
+        "grams": 735,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "vanilla whey protein",
+        "qty": "4 scoops",
+        "grams": 120,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "1",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "sugar",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/4 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Whisk the cornmeal into 1 cup cold water until smooth.",
+      "Simmer the rest of the water with the cinnamon and star anise 5 minutes; add the slurry, stirring.",
+      "Cook 8 minutes until thick, add milk, sugar, and nutmeg, and heat 3 minutes.",
+      "Take off the heat, cool 2 minutes, then whisk in the whey (scoop per adult bowl) so it does not clump.",
+      "Remove the spices and serve; give the toddler their portion before adding whey."
+    ],
+    "batch_tip": "Cook the akasan base for 2 mornings; whisk in whey bowl by bowl.",
+    "leftovers": "Chill, blend with a banana and ice for a post-workout shake.",
+    "macros": {
+      "kcal": 360,
+      "protein_g": 33,
+      "carbs_g": 44,
+      "fat_g": 6,
+      "fiber_g": 2,
+      "sodium_mg": 160
+    },
+    "tags": [
+      "one-pot",
+      "post-workout",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Serve the toddler plain akasan (before whey), lightly sweetened.",
+    "swap": "Use skim milk and 1 tbsp less sugar for a rest-day version with 36 g protein.",
+    "pairs_with": [
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick creamy akasan in a wide ceramic mug dusted with cinnamon, steam rising, a cinnamon stick on the side, next to a boiled egg served family-style in a enamel plate with a ceramic mug on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "espageti-ak-sosis",
+    "name": "Espageti ak Sosis",
+    "english": "Haitian breakfast spaghetti with hot dogs",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.2,
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "turkey or beef hot dogs",
+        "qty": "8",
+        "grams": 400,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ketchup",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil the spaghetti in salted water until just tender, drain, and keep 1/2 cup pasta water.",
+      "Slice the hot dogs and fry them in oil 4 minutes until browned.",
+      "Add onion, pepper, and epis for 3 minutes, then the tomato paste and ketchup for 1 minute.",
+      "Toss in the spaghetti with a splash of pasta water until every strand is orange-red and glossy."
+    ],
+    "batch_tip": "Cook the pasta and sauce together for 2 breakfasts; reheats in 3 minutes.",
+    "leftovers": "Press leftovers into a frittata (frittata-espageti-restan).",
+    "macros": {
+      "kcal": 590,
+      "protein_g": 24,
+      "carbs_g": 78,
+      "fat_g": 20,
+      "fiber_g": 4,
+      "sodium_mg": 1050
+    },
+    "tags": [
+      "budget",
+      "toddler-ok",
+      "quick",
+      "scraps"
+    ],
+    "toddler": "Cut the hot dogs into tiny rounds (choking size) and keep the sauce plain for the toddler.",
+    "swap": "Use chicken sausage and whole-wheat spaghetti; add 4 scrambled eggs for 35 g protein.",
+    "pairs_with": [
+      "pikliz",
+      "ze-brouye-ayisyen"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of orange-red Haitian spaghetti with sliced browned hot dogs and strips of green and red bell pepper, a little pile of pikliz at the side served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "espageti-ak-ze",
+    "name": "Espageti ak Ze",
+    "english": "Haitian spaghetti with eggs",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "8",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "2 big handfuls",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil the spaghetti in salted water, drain, and keep a little pasta water.",
+      "Saute onion, pepper, and epis in oil 3 minutes, then stir in the tomato paste and the spinach until wilted.",
+      "Push the vegetables aside, scramble the eggs in the pan, then toss in the spaghetti with the pasta water.",
+      "Serve topped with a spoon of pikliz."
+    ],
+    "batch_tip": "Double the sauce base and freeze half in a flat bag.",
+    "leftovers": "Cold leftovers fry into a crisp spaghetti cake.",
+    "macros": {
+      "kcal": 545,
+      "protein_g": 25,
+      "carbs_g": 78,
+      "fat_g": 15,
+      "fiber_g": 5,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "budget",
+      "quick",
+      "toddler-ok",
+      "scraps"
+    ],
+    "toddler": "Chop everything small; no added salt or scotch bonnet for the toddler.",
+    "swap": "Use 6 whole eggs plus 6 egg whites for 38 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of tomato-tinted spaghetti mixed with soft yellow scrambled egg, green spinach and strips of bell pepper in a shallow ceramic bowl served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bannann-bouyi-ak-ze",
+    "name": "Bannann Bouyi ak Ze",
+    "english": "Boiled plantain with eggs",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 plantain + 2 eggs; toddler 1/2 plantain + 1 egg",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "green plantains",
+        "qty": "4",
+        "grams": 800,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "eggs",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "avocado",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "epis",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Slice the plantain skins lengthwise, cut each plantain in 3, and boil in salted water 20 minutes until soft.",
+      "While it boils, scramble the eggs with the epis in a little oil, or hard-boil them in the same pot.",
+      "Peel the plantain and serve with the eggs and sliced avocado."
+    ],
+    "batch_tip": "Boil all 4 plantains and keep 2 chilled for fried plantain tomorrow.",
+    "leftovers": "Slice the chilled plantain and pan-crisp it for tomorrow's breakfast.",
+    "macros": {
+      "kcal": 505,
+      "protein_g": 15,
+      "carbs_g": 57,
+      "fat_g": 24,
+      "fiber_g": 7,
+      "sodium_mg": 280
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "training-day",
+      "quick"
+    ],
+    "toddler": "Mash the plantain and egg together for the toddler; avocado is fine.",
+    "swap": "Use 1 whole egg plus 3 whites per adult and add a side of smoked turkey for 32 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of boiled green plantain cut into pieces beside soft scrambled eggs and sliced avocado on an enamel plate, a little salt flakes on top served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "labouyi-bannann",
+    "name": "Labouyi Bannann",
+    "english": "Plantain porridge",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "green plantains",
+        "qty": "3",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk",
+        "qty": "2 cups",
+        "grams": 490,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "1/4 cup",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Peel the plantains and blend with 2 cups of water into a smooth puree.",
+      "Simmer the remaining water with the cinnamon stick, strain in the plantain puree, and cook 12 minutes, stirring.",
+      "Add the milk, sugar, vanilla, nutmeg, and salt and simmer 5 minutes until thick and creamy."
+    ],
+    "batch_tip": "Make a pot for 2 days; thin with milk when reheating.",
+    "leftovers": "Cool and blend with a banana and peanut butter for a post-workout shake.",
+    "macros": {
+      "kcal": 305,
+      "protein_g": 6,
+      "carbs_g": 59,
+      "fat_g": 5,
+      "fiber_g": 3,
+      "sodium_mg": 110
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "training-day",
+      "quick"
+    ],
+    "toddler": "Perfect first food; cool it and cut the sugar to a teaspoon for the toddler.",
+    "swap": "Stir in a scoop of vanilla whey off the heat for 30 g protein.",
+    "pairs_with": [
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of smooth creamy beige plantain porridge in a ceramic bowl dusted with cinnamon and nutmeg, a cinnamon stick on the side served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "labouyi-mayi-moulen",
+    "name": "Labouyi Mayi Moulen",
+    "english": "Cornmeal breakfast porridge",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "yellow cornmeal",
+        "qty": "1.25 cups",
+        "grams": 175,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "whole milk",
+        "qty": "2 cups",
+        "grams": 490,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1/4 cup",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Boil the water with the salt and cinnamon.",
+      "Whisk the cornmeal into the milk, then pour into the boiling water, stirring until smooth.",
+      "Reduce to low and cook 15 minutes, stirring often, until thick, then stir in the sugar and vanilla."
+    ],
+    "batch_tip": "Cook a double pot and portion into bowls; reheat with a splash of milk.",
+    "leftovers": "Chill into a block, slice, and pan-fry for a quick lunch.",
+    "macros": {
+      "kcal": 265,
+      "protein_g": 7,
+      "carbs_g": 46,
+      "fat_g": 6,
+      "fiber_g": 3,
+      "sodium_mg": 100
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "quick"
+    ],
+    "toddler": "Serve warm with no added sugar; add mashed banana.",
+    "swap": "Cook with skim milk and stir in 2 scoops of whey off the heat for 32 g protein.",
+    "pairs_with": [
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick golden cornmeal porridge in a ceramic bowl with a swirl of brown sugar and cinnamon on top served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "chokola-peyi",
+    "name": "Chokola Peyi",
+    "english": "Haitian spiced hot chocolate",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups; toddler 1/2 cup",
+    "active_min": 5,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "Haitian cacao rounds or unsweetened cocoa",
+        "qty": "4 rounds or 1/3 cup",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "2% milk",
+        "qty": "3 cups",
+        "grams": 735,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "evaporated milk",
+        "qty": "1/2 cup",
+        "grams": 125,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "water",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "1/4 cup",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "1",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/4 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Simmer the water with the cinnamon, star anise, and cacao rounds (or cocoa) 8 minutes, whisking until smooth.",
+      "Add the milks, sugar, and nutmeg and heat without boiling 5 minutes.",
+      "Strain and serve hot with bread."
+    ],
+    "batch_tip": "Make a pot ahead; keeps 3 days chilled.",
+    "leftovers": "Serve cold over ice as an afternoon treat.",
+    "macros": {
+      "kcal": 230,
+      "protein_g": 10,
+      "carbs_g": 29,
+      "fat_g": 8,
+      "fiber_g": 2,
+      "sodium_mg": 120
+    },
+    "tags": [
+      "quick",
+      "toddler-ok",
+      "one-pot",
+      "budget"
+    ],
+    "toddler": "Serve warm (not hot), diluted half with milk and sweetened lightly, once a week at most.",
+    "swap": "Use skim milk and replace sugar with 2 tbsp honey for a lighter cup.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of dark chocolate-brown spiced hot chocolate in a ceramic mug with a cinnamon stick and a light milk foam, next to a slice of bread served family-style in a enamel plate with a ceramic mug on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pen-patat",
+    "name": "Pen Patat",
+    "english": "Sweet potato pudding",
+    "cuisine": "Haitian",
+    "category": "dessert",
+    "meals": [
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 piece, about 1/6 of the pan; toddler a small 1/12 piece",
+    "active_min": 20,
+    "total_min": 80,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "sweet potatoes",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "coconut milk, canned",
+        "qty": "1 can (13.5 oz)",
+        "grams": 400,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "evaporated milk",
+        "qty": "1/2 cup",
+        "grams": 125,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "butter",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "flour",
+        "qty": "1/4 cup",
+        "grams": 30,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and finely grate the sweet potatoes.",
+      "Stir in the coconut milk, evaporated milk, sugar, melted butter, flour, cinnamon, and vanilla.",
+      "Pour into a greased 9x13 pan and bake at 350F for 50-60 minutes until set and the top is dark.",
+      "Cool 20 minutes before cutting."
+    ],
+    "batch_tip": "Bake on Sunday; slices keep 4 days chilled.",
+    "leftovers": "Warm a slice with a spoon of Greek yogurt as a breakfast.",
+    "macros": {
+      "kcal": 390,
+      "protein_g": 5,
+      "carbs_g": 54,
+      "fat_g": 17,
+      "fiber_g": 5,
+      "sodium_mg": 80
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Soft and naturally sweet; give a small slice.",
+    "swap": "Cut sugar to 1/4 cup and fold in 1 scoop of whey for a post-workout bite.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of dense dark caramel sweet potato pudding cut into squares with a glossy top and cinnamon on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ze-brouye-ayisyen",
+    "name": "Ze Brouye Ayisyen",
+    "english": "Haitian-style scrambled eggs",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "Adults 3 eggs worth; toddler 1 egg worth",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "eggs",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "egg whites, carton",
+        "qty": "1 cup",
+        "grams": 245,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato",
+        "qty": "2",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Saute the onion, pepper, and epis in oil for 3 minutes, add chopped tomato for 2 more.",
+      "Whisk the eggs and egg whites, pour into the pan, and scramble slowly 3 minutes.",
+      "Serve with bread, bannann bouyi, or leftover rice."
+    ],
+    "batch_tip": "Pre-chop the vegetables Sunday so eggs take 10 minutes.",
+    "leftovers": "Stuff leftovers into a sandwich with pikliz.",
+    "macros": {
+      "kcal": 235,
+      "protein_g": 22,
+      "carbs_g": 5,
+      "fat_g": 14,
+      "fiber_g": 1,
+      "sodium_mg": 290
+    },
+    "tags": [
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Cook the toddler's portion first with no added salt; skip scotch bonnet.",
+    "swap": "Add 2 slices of turkey ham, chopped, per adult for 32 g protein.",
+    "pairs_with": [
+      "pikliz",
+      "bannann-peze",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of creamy scrambled eggs with red tomato pieces, green bell pepper and onion in a skillet-style ceramic dish with a thyme sprig served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "griyo",
+    "name": "Griyo",
+    "english": "Haitian fried pork",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz cooked pork; toddler 1.5 oz",
+    "active_min": 25,
+    "total_min": 75,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.3,
+    "ingredients": [
+      {
+        "item": "boneless pork shoulder",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sour oranges or 2 oranges + 2 limes",
+        "qty": "4",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "2 tsp",
+        "grams": 12,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cut the pork into 2-inch cubes, rub with epis, sour orange juice, salt, and thyme, and marinate 30 minutes (or overnight).",
+      "Pressure-cook pork with the marinade, onion, and 1 cup water 20 minutes (stovetop: 60 minutes simmer) until tender; reduce the liquid.",
+      "Fry the cubes in hot oil in batches 5 minutes per side until deep brown and crisp.",
+      "Toss with a little of the reduced juices and the scotch bonnet slices and serve at once."
+    ],
+    "batch_tip": "Marinate Sunday night; pressure-cook a double batch and freeze half before frying.",
+    "leftovers": "Use in sandwich-restan-pikliz or fried rice.",
+    "macros": {
+      "kcal": 480,
+      "protein_g": 44,
+      "carbs_g": 4,
+      "fat_g": 32,
+      "fiber_g": 1,
+      "sodium_mg": 650
+    },
+    "tags": [
+      "batch",
+      "high-protein"
+    ],
+    "toddler": "Cut small and shred the tender pieces; skip the scotch bonnet pieces and extra salt.",
+    "swap": "Bake instead of frying (griyo-o-four) to save about 12 g fat per portion.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "diri-kole-ak-pwa",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Haitian griot: a heap of irregular, rough bite-size chunks of fried pork shoulder, deep mahogany brown with crackly caramelized crispy edges and glistening, piled on an enamel plate with sour orange wedges, a small side of pikliz (shredded cabbage, carrot and red pepper in vinegar) and golden bannann peze plantain slices"
+  },
+  {
+    "id": "griyo-o-four",
+    "name": "Griyo o Four",
+    "english": "Baked high-protein griyo",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz cooked pork; toddler 1.5 oz",
+    "active_min": 20,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.2,
+    "ingredients": [
+      {
+        "item": "pork loin or tenderloin",
+        "qty": "2.5 lb",
+        "grams": 1130,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sour oranges or 2 oranges + 2 limes",
+        "qty": "4",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "2 tsp",
+        "grams": 12,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Cut the pork into 2-inch cubes and marinate with epis, sour orange juice, salt, and thyme 30 minutes or overnight.",
+      "Pressure-cook with the marinade and 1/2 cup water 12 minutes (or simmer 35); lift out and reduce the liquid to a glaze.",
+      "Toss the cubes in oil, spread on a sheet pan, and roast at 450F 15 minutes, turning once, until browned at the edges.",
+      "Toss with the glaze and a little scotch bonnet and serve."
+    ],
+    "batch_tip": "Double the batch and refrigerate cooked pork 4 days; re-crisp in the air fryer.",
+    "leftovers": "Sandwiches or rice bowls.",
+    "macros": {
+      "kcal": 345,
+      "protein_g": 50,
+      "carbs_g": 5,
+      "fat_g": 14,
+      "fiber_g": 1,
+      "sodium_mg": 620
+    },
+    "tags": [
+      "batch",
+      "high-protein"
+    ],
+    "toddler": "Shred the pork fine and keep the glaze plain.",
+    "swap": "Add 1 cup of cooked beans per adult for a 55 g protein training bowl.",
+    "pairs_with": [
+      "bannann-peze-air-fryer",
+      "pikliz",
+      "diri-kole-ak-pwa",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Haitian griot: a heap of irregular, rough bite-size chunks of fried pork shoulder, deep mahogany brown with crackly caramelized crispy edges and glistening, piled on an enamel plate with sour orange wedges, a small side of pikliz (shredded cabbage, carrot and red pepper in vinegar) and golden bannann peze plantain slices"
+  },
+  {
+    "id": "tasso-kabrit",
+    "name": "Taso Kabrit",
+    "english": "Fried marinated goat",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz cooked goat; toddler 1.5 oz",
+    "active_min": 25,
+    "total_min": 80,
+    "difficulty": 2,
+    "cost_per_serving_usd": 4.4,
+    "ingredients": [
+      {
+        "item": "goat stew meat, boneless",
+        "qty": "2.4 lb",
+        "grams": 1090,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 135,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "2 tsp",
+        "grams": 12,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1/3 cup",
+        "grams": 70,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Cut the goat in 1.5-inch cubes, wash with lime, and marinate with epis, salt, onion, and thyme for 30 minutes.",
+      "Pressure-cook with 1 cup water 30 minutes (stovetop: 90 minutes) until tender; reduce the liquid.",
+      "Fry the cubes in hot oil until crisp and brown, 4 minutes per side.",
+      "Toss with sòs ti malis or lime and the scotch bonnet slices."
+    ],
+    "batch_tip": "Cook and freeze the tender goat; fry only what is eaten that night.",
+    "leftovers": "Shred leftovers into rice or a kabrit sandwich.",
+    "macros": {
+      "kcal": 340,
+      "protein_g": 50,
+      "carbs_g": 3,
+      "fat_g": 14,
+      "fiber_g": 1,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "batch",
+      "high-protein"
+    ],
+    "toddler": "Shred small; omit the scotch bonnet and sauce.",
+    "swap": "Use turkey thigh (taso-kodenn) for a $2 cheaper plate with similar protein.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "sos-ti-malice",
+      "diri-blan"
+    ],
+    "photo_prompt": "Haitian taso kabrit: irregular chunks of fried goat meat, very dark brown and glazed with crispy caramelized edges and bits of bone, piled on an enamel plate with golden bannann peze plantain slices and pikliz"
+  },
+  {
+    "id": "tasso-kodenn",
+    "name": "Taso Kodenn",
+    "english": "Fried marinated turkey thigh",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz cooked turkey; toddler 1.5 oz",
+    "active_min": 20,
+    "total_min": 60,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.7,
+    "ingredients": [
+      {
+        "item": "boneless turkey thighs",
+        "qty": "2.4 lb",
+        "grams": 1090,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 135,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "2 tsp",
+        "grams": 12,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1/4 cup",
+        "grams": 55,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cut the turkey in 1.5-inch cubes, rinse with lime, and marinate with epis, salt, onion, and thyme 30 minutes.",
+      "Pressure-cook with 1/2 cup water 12 minutes (stovetop 35 minutes); reduce the liquid.",
+      "Fry the cubes in hot oil 3-4 minutes per side until crisp, or roast at 450F 15 minutes.",
+      "Serve with sòs ti malis."
+    ],
+    "batch_tip": "Marinate 2 trays at once and freeze one raw.",
+    "leftovers": "Chop into fried rice or a pikliz sandwich.",
+    "macros": {
+      "kcal": 360,
+      "protein_g": 46,
+      "carbs_g": 3,
+      "fat_g": 18,
+      "fiber_g": 1,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "high-protein"
+    ],
+    "toddler": "Shred small and skip the sauce.",
+    "swap": "Air-fry the cubes with 1 tsp oil for 6 g fat per portion.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "sos-ti-malice",
+      "diri-blan"
+    ],
+    "photo_prompt": "Haitian taso kodenn: chunks of fried turkey, golden-brown and crispy with glistening seasoned edges, piled on an enamel plate with golden bannann peze plantain slices, pikliz and a lime wedge"
+  },
+  {
+    "id": "poul-nan-sos",
+    "name": "Poul nan Sòs",
+    "english": "Chicken stewed in tomato-epis sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 thighs + 1/2 cup sauce; toddler 1/2 thigh",
+    "active_min": 20,
+    "total_min": 50,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "bone-in skinless chicken thighs",
+        "qty": "3.3 lb",
+        "grams": 1500,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Rinse the chicken with lime, rub with epis and bouillon, and marinate 30 minutes (or overnight).",
+      "Brown the chicken in the pot in oil 3 minutes per side, then add the onion and pepper and cook 2 minutes.",
+      "Stir in the tomato paste and 1.5 cups water, bring to a boil, cover, and cook 25 minutes (pressure: 8 minutes) until falling tender.",
+      "Add the whole scotch bonnet on top for the last 5 minutes and serve over rice."
+    ],
+    "batch_tip": "Marinate 2 trays Sunday; one cooks that night, one freezes raw.",
+    "leftovers": "Pull the meat for sandwiches or fried rice.",
+    "macros": {
+      "kcal": 350,
+      "protein_g": 44,
+      "carbs_g": 12,
+      "fat_g": 14,
+      "fiber_g": 3,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "high-protein",
+      "budget",
+      "rest-day"
+    ],
+    "toddler": "Take the toddler's portion out before the pepper goes in and shred the meat.",
+    "swap": "Use skinless breast pieces for 4 g less fat and 2 g more protein.",
+    "pairs_with": [
+      "diri-blan",
+      "diri-kole-ak-pwa",
+      "pikliz",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of chicken thighs in a rich red-orange tomato sauce with strips of green pepper and onion, glossy and thick, in a wide ceramic bowl beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "poul-fri",
+    "name": "Poul Fri",
+    "english": "Haitian fried chicken",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 pieces; toddler 1 small piece",
+    "active_min": 25,
+    "total_min": 60,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.7,
+    "ingredients": [
+      {
+        "item": "bone-in chicken drumsticks and thighs",
+        "qty": "3.5 lb",
+        "grams": 1600,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "flour",
+        "qty": "1/3 cup",
+        "grams": 40,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1.5 cups",
+        "grams": 300,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "2 tsp",
+        "grams": 12,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "black pepper",
+        "qty": "1 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Rinse the chicken with lime, rub well with epis, salt, and pepper, and marinate 30 minutes or overnight.",
+      "Simmer the chicken in its marinade with 1/2 cup water 15 minutes (pressure: 6 minutes) until just cooked.",
+      "Pat dry, dust lightly with flour, and fry in 350F oil 4 minutes per side until deep golden.",
+      "Rest on a rack and serve with pikliz and bannann peze."
+    ],
+    "batch_tip": "Pre-cook and chill; fry 20 minutes before dinner.",
+    "leftovers": "Chop for sandwiches or add to bouyon.",
+    "macros": {
+      "kcal": 445,
+      "protein_g": 40,
+      "carbs_g": 8,
+      "fat_g": 28,
+      "fiber_g": 1,
+      "sodium_mg": 620
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "high-protein"
+    ],
+    "toddler": "Remove the skin and shred; no pepper.",
+    "swap": "Air-fry at 400F for 22 minutes after the simmer step and save 12 g fat.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "diri-blan",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of crisp golden-brown fried chicken drumsticks and thighs on an enamel plate with plantain rounds and a heap of pikliz served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "poul-o-four-epis",
+    "name": "Poul o Four ak Epis",
+    "english": "Sheet-pan epis chicken with sweet potato",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 thighs + 1 cup vegetables; toddler 1/2 thigh",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.7,
+    "ingredients": [
+      {
+        "item": "bone-in skinless chicken thighs",
+        "qty": "3.3 lb",
+        "grams": 1500,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sweet potatoes",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "carrots",
+        "qty": "4",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Rub the chicken with epis, lime juice, and salt; marinate while the oven heats to 425F.",
+      "Cut sweet potatoes and carrots into 1-inch chunks and toss with oil and thyme on a sheet pan.",
+      "Nestle the chicken among the vegetables skin side up and roast 40 minutes, turning the vegetables once.",
+      "Serve with pikliz."
+    ],
+    "batch_tip": "Marinate in a zip bag Sunday and roast on the night; the pan is ready in 15 minutes of hands-on work.",
+    "leftovers": "Chop into diri-fri-restan or sandwich-restan-pikliz.",
+    "macros": {
+      "kcal": 520,
+      "protein_g": 44,
+      "carbs_g": 46,
+      "fat_g": 18,
+      "fiber_g": 6,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "budget",
+      "high-protein"
+    ],
+    "toddler": "Mash the sweet potato and shred the chicken; no pepper or salt added at the table.",
+    "swap": "Swap 1 lb of the sweet potato for broccoli on rest days.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of sheet pan of roasted chicken thighs with orange sweet potato chunks and carrots and sprigs of thyme, browned and glistening, in a shallow ceramic dish served family-style in a wide ceramic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "kabrit-nan-sos",
+    "name": "Kabrit nan Sòs",
+    "english": "Goat stewed in tomato sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 20,
+    "total_min": 70,
+    "difficulty": 2,
+    "cost_per_serving_usd": 4.4,
+    "ingredients": [
+      {
+        "item": "goat stew meat, boneless",
+        "qty": "2.4 lb",
+        "grams": 1090,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Rinse the goat with lime and marinate with epis 30 minutes.",
+      "Brown in oil 5 minutes, then add the onion, carrot, and tomato paste and cook 2 minutes.",
+      "Add 2 cups water, seal, and pressure-cook 30 minutes (stovetop: 90 minutes) until the meat falls apart.",
+      "Add the whole scotch bonnet for the last 5 minutes and serve over rice."
+    ],
+    "batch_tip": "Cook a double batch; the sauce tastes better on day 2.",
+    "leftovers": "Stir leftovers into bouyon or spoon over mayi moulen.",
+    "macros": {
+      "kcal": 365,
+      "protein_g": 48,
+      "carbs_g": 14,
+      "fat_g": 13,
+      "fiber_g": 3,
+      "sodium_mg": 590
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Shred small and remove the pepper first.",
+    "swap": "Replace half the goat with lean beef chuck to cut cost by $1.50 per portion.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark red-brown stewed goat pieces in a thick tomato-epis sauce with carrot coins in a ceramic bowl, beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "legim",
+    "name": "Legim",
+    "english": "Haitian stewed vegetable mash with beef",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups over rice; toddler 1/2 cup",
+    "active_min": 30,
+    "total_min": 75,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.1,
+    "ingredients": [
+      {
+        "item": "beef chuck cubes",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "eggplant",
+        "qty": "2 medium",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "chayote (militon)",
+        "qty": "2",
+        "grams": 450,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cabbage",
+        "qty": "1/4 head",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "1 bag (10 oz)",
+        "grams": 280,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Marinate the beef in epis 30 minutes and brown it in oil in the pressure cooker 5 minutes.",
+      "Add tomato paste and 2 cups water and cook 25 minutes until the beef is tender.",
+      "Add the chopped eggplant, chayote, carrot, and cabbage, then simmer 20 minutes with the lid on.",
+      "Stir in the spinach, mash the vegetables with a spoon, and simmer 10 minutes until it is a thick stew."
+    ],
+    "batch_tip": "Pressure-cook the beef Sunday; add vegetables as you cook.",
+    "leftovers": "Fold leftovers into an omelet or serve over fried rice.",
+    "macros": {
+      "kcal": 455,
+      "protein_g": 38,
+      "carbs_g": 22,
+      "fat_g": 24,
+      "fiber_g": 8,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "scraps",
+      "high-protein"
+    ],
+    "toddler": "Mash fully and keep spice out.",
+    "swap": "Use lean beef (see legim-bef-mens) for 10 g more protein.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick olive-green and brown legim of stewed eggplant, chayote, carrot and spinach with chunks of tender beef in a ceramic bowl beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "legim-bef-mens",
+    "name": "Legim Bèf Mens",
+    "english": "Lean-beef legim",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups over rice; toddler 1/2 cup",
+    "active_min": 25,
+    "total_min": 60,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.3,
+    "ingredients": [
+      {
+        "item": "93% lean ground beef",
+        "qty": "2.2 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "eggplant",
+        "qty": "2 medium",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "chayote (militon)",
+        "qty": "2",
+        "grams": 450,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "1 bag (10 oz)",
+        "grams": 280,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Brown the beef with epis and tomato paste in a large pot or pressure cooker 8 minutes, breaking it up.",
+      "Add the chopped eggplant, chayote, and carrot with 1 cup water and cook 15 minutes (pressure: 6 minutes).",
+      "Stir in the spinach, mash the vegetables with a spoon, and simmer 5 minutes; check salt at the end."
+    ],
+    "batch_tip": "Double the batch; it freezes well in 2-cup bags.",
+    "leftovers": "Pack over rice for lunches or fold into an omelet.",
+    "macros": {
+      "kcal": 415,
+      "protein_g": 48,
+      "carbs_g": 18,
+      "fat_g": 17,
+      "fiber_g": 8,
+      "sodium_mg": 590
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "high-protein",
+      "rest-day"
+    ],
+    "toddler": "Mash fully and leave out hot pepper.",
+    "swap": "Use 85% lean beef for richer flavor with 4 more g fat.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of chunky legim of ground beef with mashed eggplant, chayote and spinach, deep green-brown, in a ceramic bowl with a spoon beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "lalo",
+    "name": "Lalo",
+    "english": "Jute leaf stew with beef and smoked turkey",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups over rice; toddler 1/2 cup",
+    "active_min": 25,
+    "total_min": 85,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.6,
+    "ingredients": [
+      {
+        "item": "frozen jute leaves (lalo or molokhia)",
+        "qty": "2 packs (14 oz)",
+        "grams": 800,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "beef chuck cubes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "smoked turkey wings",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Marinate the beef in epis; pressure-cook it with the turkey wings and 3 cups water 25 minutes.",
+      "Add the thawed jute leaves and bouillon and simmer 30 minutes, stirring now and then, until it turns dark and silky.",
+      "Add the scotch bonnet whole for the last 10 minutes and serve over white rice."
+    ],
+    "batch_tip": "Freeze well; make a double batch.",
+    "leftovers": "Spoon leftovers over eggs or rice.",
+    "macros": {
+      "kcal": 405,
+      "protein_g": 40,
+      "carbs_g": 16,
+      "fat_g": 20,
+      "fiber_g": 6,
+      "sodium_mg": 780
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "high-protein"
+    ],
+    "toddler": "Shred the meat and skip the pepper; the greens are soft enough for a toddler.",
+    "swap": "Replace beef chuck with 93% lean beef for 6 g less fat.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark green silky lalo jute-leaf stew with pieces of beef and smoked turkey in a ceramic bowl, white rice beside it served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "diri-djon-djon",
+    "name": "Diri Djondjon",
+    "english": "Black mushroom rice",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 20,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "dried djon-djon mushrooms",
+        "qty": "1/2 cup",
+        "grams": 40,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "frozen green peas or lima beans",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bouillon cube",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Simmer the djon-djon in 4 cups water 15 minutes; strain, press the mushrooms, and keep 3.5 cups of the black broth.",
+      "Heat oil in the pot, add epis and bouillon for 2 minutes, then stir in the rice and peas.",
+      "Pour in the broth, add the whole pepper, and bring to a boil.",
+      "Cover on the lowest heat 20 minutes, rest 5, remove the pepper, and fluff."
+    ],
+    "batch_tip": "Make a double batch and portion for lunches.",
+    "leftovers": "Fry with eggs for breakfast.",
+    "macros": {
+      "kcal": 375,
+      "protein_g": 8,
+      "carbs_g": 70,
+      "fat_g": 7,
+      "fiber_g": 5,
+      "sodium_mg": 410
+    },
+    "tags": [
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "batch",
+      "budget"
+    ],
+    "toddler": "Remove the pepper first and skip salt in the toddler's bowl.",
+    "swap": "Fold in 1 cup of shredded chicken or shrimp per adult for 35 g protein.",
+    "pairs_with": [
+      "poul-nan-sos",
+      "pikliz",
+      "griyo",
+      "tasso-kodenn"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of grey-black fragrant djon-djon rice with green peas, each grain dark and separate, mounded in a ceramic bowl served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "diri-ak-sos-pwa",
+    "name": "Diri ak Sòs Pwa",
+    "english": "Rice with bean sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups rice + 1 cup sauce; toddler 1/2 cup + 1/3 cup",
+    "active_min": 20,
+    "total_min": 55,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "dried red or black beans",
+        "qty": "1.5 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Start the rice (see diri-blan) while the sauce cooks.",
+      "Pressure-cook the beans with the onion and bouillon 25 minutes (stovetop: 90 minutes) until soft.",
+      "Blend half the beans with their broth and return to the pot with epis sizzled in oil.",
+      "Add the whole scotch bonnet, simmer 10 minutes until thick, and serve over rice."
+    ],
+    "batch_tip": "Make the sauce in bulk; it freezes in 2-cup bags.",
+    "leftovers": "Turn leftover sauce into soup (soup-sos-pwa-restan).",
+    "macros": {
+      "kcal": 540,
+      "protein_g": 19,
+      "carbs_g": 100,
+      "fat_g": 7,
+      "fiber_g": 14,
+      "sodium_mg": 420
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "training-day",
+      "batch"
+    ],
+    "toddler": "Take out the pepper first and mash fully.",
+    "swap": "Top with a fried egg or shredded chicken for 40 g protein.",
+    "pairs_with": [
+      "pikliz",
+      "poul-nan-sos",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark reddish-brown bean sauce poured over mounded white rice in a ceramic bowl, a small spoon of pikliz on the side served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sos-pwa",
+    "name": "Sòs Pwa",
+    "english": "Haitian bean sauce",
+    "cuisine": "Haitian",
+    "category": "sauce",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/3 cup",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.7,
+    "ingredients": [
+      {
+        "item": "dried red or black beans",
+        "qty": "1.5 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 4,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Pressure-cook the beans with the onion, bouillon, and 5 cups water 25 minutes (stovetop: 90 minutes).",
+      "Blend half the beans with their liquid until creamy and return to the pot.",
+      "Fry the epis in oil 2 minutes, add to the pot with the thyme and the whole scotch bonnet, and simmer 10 minutes.",
+      "Serve over rice, mayi moulen, or with boiled plantain."
+    ],
+    "batch_tip": "Cook 2 lb of beans on Sunday; sauce freezes well.",
+    "leftovers": "Thin with broth into soup.",
+    "macros": {
+      "kcal": 270,
+      "protein_g": 14,
+      "carbs_g": 38,
+      "fat_g": 7,
+      "fiber_g": 11,
+      "sodium_mg": 380
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "freezer",
+      "batch",
+      "toddler-ok"
+    ],
+    "toddler": "Remove the pepper first and mash fully.",
+    "swap": "Stir in 8 oz of diced turkey ham or smoked turkey for 36 g protein.",
+    "pairs_with": [
+      "diri-blan",
+      "mayi-moulen-ak-sos-pwa",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick dark red-brown creamy bean sauce in a ceramic bowl with a swirl of oil and a thyme sprig on top served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "mayi-moulen-ak-sos-pwa",
+    "name": "Mayi Moulen ak Sòs Pwa",
+    "english": "Cornmeal with bean sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups mayi + 3/4 cup sauce; toddler 1/2 cup + 1/3 cup",
+    "active_min": 20,
+    "total_min": 50,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "yellow cornmeal",
+        "qty": "2 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "sòs pwa (see sos-pwa)",
+        "qty": "5 cups",
+        "grams": 1200,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "water",
+        "qty": "6 cups",
+        "grams": 1440,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "butter",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "avocado",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Boil the water with the salt.",
+      "Whisk in the cornmeal in a thin stream, stirring, then cook on low 25 minutes, stirring every few minutes, until it pulls from the pot.",
+      "Stir in the butter, spoon onto plates, and ladle the warm sòs pwa on top with avocado slices."
+    ],
+    "batch_tip": "Cook the sauce ahead; the cornmeal takes 30 minutes and no attention after the first 5.",
+    "leftovers": "Chill the mayi moulen, slice, and pan-fry for breakfast.",
+    "macros": {
+      "kcal": 575,
+      "protein_g": 19,
+      "carbs_g": 84,
+      "fat_g": 18,
+      "fiber_g": 12,
+      "sodium_mg": 360
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Soft and mild; mash the beans and add avocado.",
+    "swap": "Add 4 oz of shredded chicken per adult for 42 g protein.",
+    "pairs_with": [
+      "pikliz",
+      "poul-nan-sos"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of soft golden mayi moulen cornmeal mound under a pour of dark bean sauce with slices of green avocado, in a ceramic bowl served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pwason-gwo-sel",
+    "name": "Pwason Gwo Sèl",
+    "english": "Epis-rubbed salted fish",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 7 oz fillet; toddler 2 oz",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.8,
+    "ingredients": [
+      {
+        "item": "red snapper or tilapia fillets",
+        "qty": "2.2 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "coarse sea salt",
+        "qty": "1 tbsp",
+        "grams": 18,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 135,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Rub the fish with coarse salt and lime juice and rest 10 minutes; rinse lightly and pat dry.",
+      "Rub with epis, lay on a sheet pan with sliced onion, and drizzle with oil.",
+      "Roast at 425F 15 minutes (or pan-sear 4 minutes per side) until it flakes.",
+      "Serve with bannann peze, pikliz, and sòs ti malis."
+    ],
+    "batch_tip": "Marinate 2 trays and freeze one.",
+    "leftovers": "Flake into rice or eggs.",
+    "macros": {
+      "kcal": 285,
+      "protein_g": 44,
+      "carbs_g": 5,
+      "fat_g": 10,
+      "fiber_g": 1,
+      "sodium_mg": 540
+    },
+    "tags": [
+      "quick",
+      "high-protein",
+      "rest-day"
+    ],
+    "toddler": "Check carefully for bones; flake small and skip salt.",
+    "swap": "Use catfish for $1.50 less per portion.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "diri-blan",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of whole-looking golden roasted fish fillets with green epis, sliced onion and lime wedges on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pwason-fri",
+    "name": "Pwason Fri",
+    "english": "Haitian fried fish",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 7 oz fillet; toddler 2 oz",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.9,
+    "ingredients": [
+      {
+        "item": "red snapper or tilapia fillets",
+        "qty": "2.2 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 135,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "flour or cornmeal",
+        "qty": "1/3 cup",
+        "grams": 45,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 cup",
+        "grams": 200,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Rub the fish with lime juice, epis, and salt and rest 15 minutes.",
+      "Pat dry and dust lightly with flour or cornmeal.",
+      "Fry in 350F oil 3-4 minutes per side until crisp and golden.",
+      "Serve with bannann peze, pikliz, and sòs ti malis."
+    ],
+    "batch_tip": "Marinate in the morning for dinner.",
+    "leftovers": "Flake into sandwiches with pikliz.",
+    "macros": {
+      "kcal": 360,
+      "protein_g": 44,
+      "carbs_g": 10,
+      "fat_g": 16,
+      "fiber_g": 1,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "quick",
+      "high-protein"
+    ],
+    "toddler": "Remove skin and bones; give flaked fish only.",
+    "swap": "Air-fry with a spray of oil for 10 g less fat.",
+    "pairs_with": [
+      "bannann-peze",
+      "pikliz",
+      "diri-blan",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of crisp golden fried fish fillets with lime wedges on an enamel plate, beside plantain rounds and a mound of pikliz served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pwason-o-four",
+    "name": "Pwason o Four ak Sòs Krèyòl",
+    "english": "Baked fish in creole sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 7 oz fillet + 1/2 cup sauce; toddler 2 oz",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.9,
+    "ingredients": [
+      {
+        "item": "red snapper or tilapia fillets",
+        "qty": "2.2 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomato",
+        "qty": "4",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell peppers",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Slice the onion, peppers, and tomatoes and spread on a sheet pan with epis and oil.",
+      "Lay the fish on top, rub with lime juice and salt.",
+      "Roast at 425F 18 minutes; add the scotch bonnet for the last 5.",
+      "Spoon the vegetables over and serve with rice."
+    ],
+    "batch_tip": "Prep the vegetables the night before.",
+    "leftovers": "Flake into fried rice.",
+    "macros": {
+      "kcal": 320,
+      "protein_g": 44,
+      "carbs_g": 9,
+      "fat_g": 12,
+      "fiber_g": 3,
+      "sodium_mg": 440
+    },
+    "tags": [
+      "quick",
+      "one-pot",
+      "toddler-ok",
+      "high-protein",
+      "rest-day"
+    ],
+    "toddler": "Remove the fish first, flake, and skip the pepper.",
+    "swap": "Use cod for a firmer, cheaper fillet.",
+    "pairs_with": [
+      "diri-blan",
+      "bannann-peze",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of baked white fish fillets topped with a red and green tomato, pepper and onion creole sauce on a sheet pan style ceramic platter served family-style in a wide ceramic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "lanbi-nan-sos",
+    "name": "Lanbi nan Sòs",
+    "english": "Conch stewed in sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups; toddler 1/3 cup",
+    "active_min": 25,
+    "total_min": 70,
+    "difficulty": 2,
+    "cost_per_serving_usd": 6.0,
+    "ingredients": [
+      {
+        "item": "frozen cleaned conch (lambi)",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Thaw and rinse the conch with lime juice, then tenderize by pressure-cooking with water 25 minutes (stovetop: 90 minutes).",
+      "Drain, keeping 1 cup broth. Saute onion, pepper, and epis in oil, then add the tomato paste.",
+      "Add the conch and broth, simmer 15 minutes, adding the whole scotch bonnet for the last 5.",
+      "Serve over diri blan."
+    ],
+    "batch_tip": "Pressure-cook the conch early; it only needs a quick sauce on the night.",
+    "leftovers": "Chop leftovers into rice.",
+    "macros": {
+      "kcal": 310,
+      "protein_g": 48,
+      "carbs_g": 12,
+      "fat_g": 8,
+      "fiber_g": 2,
+      "sodium_mg": 690
+    },
+    "tags": [
+      "high-protein",
+      "one-pot"
+    ],
+    "toddler": "Chop very small and cook until soft; a tiny portion only.",
+    "swap": "Use calamari rings if conch is not available.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of tender slices of conch in a glossy red tomato sauce with green pepper strips in a ceramic bowl beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "aranso",
+    "name": "Aransò ak Bannann",
+    "english": "Smoked herring with boiled plantain",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "Adults 1/3 of herring + 1 plantain; toddler a small flake",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.2,
+    "ingredients": [
+      {
+        "item": "smoked herring (aransò sek)",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "green plantains",
+        "qty": "3",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "3 tbsp",
+        "grams": 42,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "black pepper",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Soak the herring in hot water 10 minutes, change the water, and flake the meat off the bones (remove all bones).",
+      "Boil the plantains in their skins 20 minutes.",
+      "Saute the onion and epis in oil 3 minutes, add the flaked herring and lime juice, and cook 5 minutes.",
+      "Serve with the peeled plantains and avocado."
+    ],
+    "batch_tip": "Soak and flake the herring ahead; it keeps 3 days.",
+    "leftovers": "Mix into rice or serve with mayi moulen.",
+    "macros": {
+      "kcal": 470,
+      "protein_g": 26,
+      "carbs_g": 44,
+      "fat_g": 21,
+      "fiber_g": 4,
+      "sodium_mg": 1500
+    },
+    "tags": [
+      "one-pot"
+    ],
+    "toddler": "Skip herring (very salty); plain plantain and avocado work.",
+    "swap": "Soak and rinse twice to cut sodium by a third; pair with fresh tomatoes.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of flaked golden-brown smoked herring cooked with onion beside boiled plantain pieces and avocado on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bouyon",
+    "name": "Bouyon",
+    "english": "Beef and root vegetable soup with dumplings",
+    "cuisine": "Haitian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 30,
+    "total_min": 90,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.0,
+    "ingredients": [
+      {
+        "item": "beef chuck cubes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "yams or malanga or sweet potato",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "plantain, green",
+        "qty": "1",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "1 bunch",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "flour",
+        "qty": "1.5 cups",
+        "grams": 190,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "6 sprigs",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Pressure-cook the beef with epis and 8 cups water for 25 minutes.",
+      "Add the cubed root vegetables, plantain, and carrots and cook 15 minutes.",
+      "Mix the flour with 1/2 cup water and a pinch of salt, roll into short noodles or dumplings, and drop them in.",
+      "Add the spinach and thyme and simmer 10 minutes until the dumplings float."
+    ],
+    "batch_tip": "Bouyon is the use-it-up soup: add any wilting vegetables.",
+    "leftovers": "Thin with water and freeze in bowls.",
+    "macros": {
+      "kcal": 455,
+      "protein_g": 30,
+      "carbs_g": 52,
+      "fat_g": 14,
+      "fiber_g": 8,
+      "sodium_mg": 650
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "scraps"
+    ],
+    "toddler": "Mash the vegetables and shred the beef.",
+    "swap": "Use 1 lb lean beef and add 2 cups white beans for 40 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of steaming orange-brown bouyon soup with chunks of beef, root vegetable pieces, small dumplings and green spinach in a wide ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "soup-joumou",
+    "name": "Soup Joumou",
+    "english": "Haitian independence pumpkin soup",
+    "cuisine": "Haitian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 35,
+    "total_min": 100,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.1,
+    "ingredients": [
+      {
+        "item": "calabaza or butternut squash",
+        "qty": "2.5 lb",
+        "grams": 1100,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "beef chuck cubes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "rigatoni or macaroni",
+        "qty": "8 oz",
+        "grams": 225,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cabbage",
+        "qty": "1/4 head",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "potatoes",
+        "qty": "2",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Pressure-cook the beef with epis and 8 cups water 25 minutes; add the squash chunks for the last 10 minutes.",
+      "Blend the squash with 2 cups of the broth and return the puree to the pot.",
+      "Add the carrots, cabbage, and potatoes and simmer 15 minutes, then the pasta for 10 minutes.",
+      "Add the whole scotch bonnet for the last 5 minutes and serve with bread."
+    ],
+    "batch_tip": "Make a huge pot on New Year's Day style; freezes well.",
+    "leftovers": "Puree leftovers into a smooth lunch soup.",
+    "macros": {
+      "kcal": 485,
+      "protein_g": 34,
+      "carbs_g": 56,
+      "fat_g": 14,
+      "fiber_g": 8,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok"
+    ],
+    "toddler": "Pull the toddler's bowl before the pepper; puree the vegetables fine.",
+    "swap": "Use 93% lean beef and whole-wheat pasta for 4 g less fat.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bright orange velvety soup joumou with chunks of beef, carrot, potato, cabbage and pasta in a wide ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "kalalou",
+    "name": "Kalalou ak Krevèt",
+    "english": "Okra stew with shrimp",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup over rice; toddler 1/3 cup",
+    "active_min": 25,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.2,
+    "ingredients": [
+      {
+        "item": "frozen okra",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "shrimp, peeled",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "smoked turkey wings or ham hock",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bouillon cubes",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Simmer the smoked turkey in 4 cups water 25 minutes (pressure: 12 minutes).",
+      "Add the okra, epis, and bouillon and cook 20 minutes, stirring, until thick and slippery.",
+      "Stir in the shrimp for the last 5 minutes and add the scotch bonnet whole for the last 3.",
+      "Serve over rice."
+    ],
+    "batch_tip": "Make the okra base ahead and add shrimp at the end.",
+    "leftovers": "Spoon over eggs.",
+    "macros": {
+      "kcal": 360,
+      "protein_g": 40,
+      "carbs_g": 14,
+      "fat_g": 16,
+      "fiber_g": 5,
+      "sodium_mg": 780
+    },
+    "tags": [
+      "high-protein",
+      "one-pot",
+      "rest-day"
+    ],
+    "toddler": "Chop the okra very fine; skip the pepper and salt.",
+    "swap": "Replace half the turkey with white fish for a lighter pot.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark green thick okra stew with pink shrimp and shreds of smoked turkey in a ceramic bowl beside white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "tchaka",
+    "name": "Tchaka",
+    "english": "Hominy, beans and squash stew",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 25,
+    "total_min": 90,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "dried hominy (maïs concassé)",
+        "qty": "1.5 cups",
+        "grams": 270,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "dried red beans",
+        "qty": "1 cup",
+        "grams": 185,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "smoked turkey wings",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "calabaza or butternut squash",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Pressure-cook the soaked hominy and beans with the smoked turkey and 8 cups water for 40 minutes.",
+      "Add the cubed squash and epis and cook 15 minutes until the squash has melted into the stew.",
+      "Add the scotch bonnet whole for the last 5 minutes and mash a few beans to thicken."
+    ],
+    "batch_tip": "Cook a huge pot on Sunday; it feeds 3 meals.",
+    "leftovers": "Reheat with a splash of water.",
+    "macros": {
+      "kcal": 510,
+      "protein_g": 30,
+      "carbs_g": 70,
+      "fat_g": 12,
+      "fiber_g": 14,
+      "sodium_mg": 720
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "toddler-ok",
+      "training-day",
+      "budget"
+    ],
+    "toddler": "Remove the pepper, shred the turkey, and mash.",
+    "swap": "Replace turkey with 1 lb of pork shoulder for 6 g more protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick golden-orange tchaka stew with white hominy kernels, red beans and squash and shreds of smoked turkey in a ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "akra",
+    "name": "Akra",
+    "english": "Malanga fritters",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "5 fritters per adult; toddler 2",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "malanga (or taro)",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 9,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1/2",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "flour",
+        "qty": "1/4 cup",
+        "grams": 30,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 cup",
+        "grams": 200,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Peel and finely grate the malanga.",
+      "Mix with epis, garlic, minced scotch bonnet (leave out for the toddler batch), flour, and salt.",
+      "Drop spoonfuls into 350F oil and fry 3 minutes per side until golden and crisp.",
+      "Drain and serve hot with sòs ti malis."
+    ],
+    "batch_tip": "Grate the malanga in a food processor in 5 minutes.",
+    "leftovers": "Reheat in an air fryer at 400F for 4 minutes.",
+    "macros": {
+      "kcal": 295,
+      "protein_g": 6,
+      "carbs_g": 50,
+      "fat_g": 8,
+      "fiber_g": 4,
+      "sodium_mg": 330
+    },
+    "tags": [
+      "budget",
+      "toddler-ok",
+      "quick"
+    ],
+    "toddler": "Make a no-pepper batch first and cut small.",
+    "swap": "Air-fry on a sheet pan with 1 tbsp oil and cut fat by 8 g.",
+    "pairs_with": [
+      "sos-ti-malice",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden crispy malanga fritters with a lacy craggy surface piled on an enamel plate beside a small bowl of orange-red dipping sauce served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "marinad",
+    "name": "Marinad",
+    "english": "Seasoned Haitian fritters",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "4 per adult; toddler 2",
+    "active_min": 20,
+    "total_min": 40,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.5,
+    "ingredients": [
+      {
+        "item": "all-purpose flour",
+        "qty": "3 cups",
+        "grams": 375,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "baking powder",
+        "qty": "2 tsp",
+        "grams": 8,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1/2",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1.5 cups",
+        "grams": 300,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Stir the flour, baking powder, salt, epis, and minced scotch bonnet with the water into a thick batter.",
+      "Rest 10 minutes.",
+      "Drop spoonfuls into 350F oil and fry 3 minutes per side until puffed and golden.",
+      "Drain on paper and serve hot with pikliz."
+    ],
+    "batch_tip": "Mix the batter the night before.",
+    "leftovers": "Re-crisp in the air fryer.",
+    "macros": {
+      "kcal": 370,
+      "protein_g": 8,
+      "carbs_g": 62,
+      "fat_g": 10,
+      "fiber_g": 2,
+      "sodium_mg": 400
+    },
+    "tags": [
+      "budget",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Cook a pepper-free portion first.",
+    "swap": "Bake spoonfuls on a sheet at 425F for 12 minutes to cut oil by 70%.",
+    "pairs_with": [
+      "pikliz",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of round puffy golden-brown marinad fritters stacked in a ceramic bowl beside a small bowl of pikliz served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pate-kode-vyann",
+    "name": "Pat Kòde ak Vyann",
+    "english": "Haitian beef patties",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "lunch",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "2 patties per adult; toddler 1/2",
+    "active_min": 35,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.6,
+    "ingredients": [
+      {
+        "item": "93% lean ground beef",
+        "qty": "1.25 lb",
+        "grams": 570,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "puff pastry sheets",
+        "qty": "2 sheets (17 oz)",
+        "grams": 480,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "egg",
+        "qty": "1",
+        "grams": 50,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1/2",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Brown the beef with the onion, epis, and tomato paste 8 minutes; season with the minced pepper and cool 10 minutes.",
+      "Cut each pastry sheet into 6 squares and spoon the filling in the middle.",
+      "Fold into triangles, seal with a fork, brush with egg, and bake at 400F for 22 minutes until puffed and golden.",
+      "Serve with pikliz."
+    ],
+    "batch_tip": "Freeze unbaked patties on a tray; bake from frozen in 28 minutes.",
+    "leftovers": "Reheat in the oven at 375F for 8 minutes.",
+    "macros": {
+      "kcal": 580,
+      "protein_g": 26,
+      "carbs_g": 36,
+      "fat_g": 37,
+      "fiber_g": 2,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Fill the toddler's patty without pepper.",
+    "swap": "Use a thin pie-dough or half the pastry (open-face triangle) to cut about 12 g fat per adult.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden flaky Haitian beef patties with crimped edges on an enamel plate beside a small bowl of pikliz, one broken open to show seasoned beef served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pate-kode-poul",
+    "name": "Pat Kòde ak Poul",
+    "english": "Haitian chicken patties",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "lunch",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "2 patties per adult; toddler 1/2",
+    "active_min": 35,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "chicken breast, ground or finely diced",
+        "qty": "1.25 lb",
+        "grams": 570,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "puff pastry sheets",
+        "qty": "2 sheets (17 oz)",
+        "grams": 480,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "egg",
+        "qty": "1",
+        "grams": 50,
+        "key": false,
+        "aisle": "dairy"
+      }
+    ],
+    "steps": [
+      "Saute the chicken with the onion, epis, and tomato paste 8 minutes until cooked; cool 10 minutes.",
+      "Cut each pastry sheet into 6 squares and add filling.",
+      "Fold into triangles, seal, brush with egg, and bake at 400F for 22 minutes.",
+      "Serve with pikliz."
+    ],
+    "batch_tip": "Freeze unbaked; bake from frozen.",
+    "leftovers": "Reheat at 375F.",
+    "macros": {
+      "kcal": 540,
+      "protein_g": 27,
+      "carbs_g": 36,
+      "fat_g": 32,
+      "fiber_g": 2,
+      "sodium_mg": 590
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "No pepper in the toddler's patty.",
+    "swap": "Use a thin pie-dough or half the pastry (open-face triangle) to cut about 12 g fat per adult.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden flaky triangular chicken patties on an enamel plate, one halved to show the seasoned chicken filling, with a small bowl of pikliz served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bannann-peze-air-fryer",
+    "name": "Bannann Peze Air Fryer",
+    "english": "Air-fried twice-cooked plantains",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "3-4 pieces per adult; 1 for the toddler",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "green plantains",
+        "qty": "4",
+        "grams": 800,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil spray or oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "2 cloves",
+        "grams": 6,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Peel the plantains and cut into 1-inch rounds; air-fry at 375F 8 minutes with a light oil spray.",
+      "Flatten each piece with a plate and dip in warm salted garlic-lime water.",
+      "Spray again and air-fry at 400F 8 minutes until golden and crisp, turning once.",
+      "Salt lightly and serve right away."
+    ],
+    "batch_tip": "Do the first fry on Sunday; the second takes 8 minutes.",
+    "leftovers": "Crush into eggs or serve cold with avocado.",
+    "macros": {
+      "kcal": 280,
+      "protein_g": 4,
+      "carbs_g": 55,
+      "fat_g": 5,
+      "fiber_g": 4,
+      "sodium_mg": 220
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Cut into soft strips, no salt.",
+    "swap": "Use only a spray of oil to cut another 3 g fat.",
+    "pairs_with": [
+      "griyo-o-four",
+      "pikliz",
+      "pwason-gwo-sel"
+    ],
+    "photo_prompt": "Air-fried tostones: golden-yellow flattened plantain discs with crisp light-brown edges, sprinkled with sea salt, on an enamel plate with a lime wedge and a small bowl of pikliz"
+  },
+  {
+    "id": "bol-poul-ak-pwa",
+    "name": "Bòl Poul ak Pwa",
+    "english": "Chicken and bean bowl",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 big bowl per adult; toddler 1/4 bowl",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.0,
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken breast",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "canned black beans",
+        "qty": "2 cans (15 oz)",
+        "grams": 850,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "long-grain white rice",
+        "qty": "1.5 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "avocado",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cook the rice (see diri-blan) while the chicken marinates in epis and lime 15 minutes.",
+      "Sear the chicken in oil 6 minutes per side (or bake at 425F 22 minutes) and slice.",
+      "Warm the beans with a spoon of epis and mash a few.",
+      "Build bowls: rice, beans, chicken, sliced avocado, and pikliz."
+    ],
+    "batch_tip": "Cook 3 lb of chicken at once for 6 bowls.",
+    "leftovers": "Chicken bowls pack into containers for 3 days.",
+    "macros": {
+      "kcal": 610,
+      "protein_g": 56,
+      "carbs_g": 72,
+      "fat_g": 11,
+      "fiber_g": 12,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "batch",
+      "post-workout",
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Mash the beans, shred the chicken, and leave off pikliz.",
+    "swap": "Swap the rice for 1/2 cup cooked and add 1/2 cup of extra beans on rest days.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bowl of sliced seared chicken breast over rice with black beans, sliced avocado and a spoon of pikliz, colourful and neat served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bol-pwason-ak-diri",
+    "name": "Bòl Pwason ak Diri",
+    "english": "Fish, rice and pikliz bowl",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "1 bowl per adult; toddler 1/4 bowl",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 3.0,
+    "ingredients": [
+      {
+        "item": "tilapia or cod fillets",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "long-grain white rice",
+        "qty": "1.5 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "avocado",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Start the rice (diri-blan) while the fish rests in epis and lime 10 minutes.",
+      "Sear or roast the fish at 425F 12 minutes until it flakes.",
+      "Flake into bowls over rice with avocado and a spoon of pikliz."
+    ],
+    "batch_tip": "Roast 2 trays of fish and keep for 2 days.",
+    "leftovers": "Flake cold fish into eggs.",
+    "macros": {
+      "kcal": 520,
+      "protein_g": 46,
+      "carbs_g": 52,
+      "fat_g": 14,
+      "fiber_g": 6,
+      "sodium_mg": 440
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "quick",
+      "high-protein"
+    ],
+    "toddler": "Check fish for bones and flake small.",
+    "swap": "Use half rice, half beans for 8 g more fiber.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bowl of flaked white fish over rice with avocado slices and pikliz on top, bright and tidy served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "krevet-nan-sos",
+    "name": "Krevèt nan Sòs",
+    "english": "Shrimp in creole sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups; toddler 1/3 cup",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 4.3,
+    "ingredients": [
+      {
+        "item": "raw shrimp, peeled",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "bell peppers",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Marinate the shrimp in epis and lime 10 minutes.",
+      "Saute the onion and peppers in oil 4 minutes, add tomato paste and 1 cup water, and simmer 8 minutes.",
+      "Add the shrimp and the whole scotch bonnet and cook 4 minutes until pink; do not overcook.",
+      "Serve over rice."
+    ],
+    "batch_tip": "Make the sauce ahead; add shrimp at the end.",
+    "leftovers": "Spoon over eggs or rice.",
+    "macros": {
+      "kcal": 280,
+      "protein_g": 40,
+      "carbs_g": 12,
+      "fat_g": 8,
+      "fiber_g": 3,
+      "sodium_mg": 760
+    },
+    "tags": [
+      "high-protein",
+      "quick",
+      "one-pot",
+      "toddler-ok",
+      "rest-day"
+    ],
+    "toddler": "Remove the pepper, chop the shrimp small.",
+    "swap": "Buy frozen shrimp on sale to cut cost by $1.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pink shrimp in a glossy red creole sauce with green pepper strips in a ceramic bowl over white rice served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "poul-ak-nwa",
+    "name": "Poul ak Nwa",
+    "english": "Chicken with cashews",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups; toddler 1/3 cup",
+    "active_min": 25,
+    "total_min": 45,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.5,
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken thighs",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "raw cashews",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Marinate the chicken in epis 15 minutes; toast the cashews in a dry pan 3 minutes.",
+      "Brown the chicken in oil 6 minutes, add onion and pepper 2 minutes, then tomato paste and 1 cup water.",
+      "Simmer 15 minutes, add the cashews, and cook 5 minutes until the sauce is glossy."
+    ],
+    "batch_tip": "Toast the cashews on Sunday.",
+    "leftovers": "Over rice for lunches.",
+    "macros": {
+      "kcal": 485,
+      "protein_g": 44,
+      "carbs_g": 14,
+      "fat_g": 28,
+      "fiber_g": 3,
+      "sodium_mg": 540
+    },
+    "tags": [
+      "one-pot",
+      "toddler-ok",
+      "batch",
+      "high-protein"
+    ],
+    "toddler": "Chop the cashews fine or grind them; no whole nuts for the toddler.",
+    "swap": "Use chicken breast for 6 g less fat.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden-brown chicken pieces with whole cashews and green pepper strips in a tomato-orange sauce in a ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bannann-fri-dous",
+    "name": "Bannann Fri Dous",
+    "english": "Fried sweet ripe plantains",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 ripe plantain per adult; toddler 1/3",
+    "active_min": 5,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "very ripe plantains",
+        "qty": "4",
+        "grams": 800,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1/3 cup",
+        "grams": 70,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Peel the plantains and cut into thick diagonal slices.",
+      "Fry in hot oil 2 minutes per side until deeply caramelized.",
+      "Drain and sprinkle with a pinch of salt."
+    ],
+    "batch_tip": "Ripe plantains keep a week; fry only what you will eat.",
+    "leftovers": "Mash into pancakes with an egg.",
+    "macros": {
+      "kcal": 325,
+      "protein_g": 3,
+      "carbs_g": 56,
+      "fat_g": 10,
+      "fiber_g": 4,
+      "sodium_mg": 15
+    },
+    "tags": [
+      "quick",
+      "budget",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Soft and sweet; finger food.",
+    "swap": "Bake on a sheet at 425F with 1 tbsp oil.",
+    "pairs_with": [
+      "poul-nan-sos",
+      "griyo",
+      "diri-kole-ak-pwa"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark caramelised golden-brown slices of fried ripe plantain on an enamel plate, glossy and soft served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ze-bouyi-ak-pikliz",
+    "name": "Ze Bouyi ak Pikliz",
+    "english": "Boiled eggs with pikliz",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack",
+      "breakfast",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "3 eggs per adult; toddler 1",
+    "active_min": 5,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "eggs",
+        "qty": "14",
+        "grams": 700,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "pikliz",
+        "qty": "1 cup",
+        "grams": 200,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "black pepper",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Cover the eggs with cold water, bring to a boil, cover, and turn off the heat for 10 minutes.",
+      "Cool in cold water and peel.",
+      "Serve with pikliz on the side."
+    ],
+    "batch_tip": "Boil 14 eggs Sunday; they keep 5 days.",
+    "leftovers": "Chop into sandwiches.",
+    "macros": {
+      "kcal": 220,
+      "protein_g": 20,
+      "carbs_g": 3,
+      "fat_g": 14,
+      "fiber_g": 1,
+      "sodium_mg": 260
+    },
+    "tags": [
+      "no-cook",
+      "quick",
+      "toddler-ok",
+      "budget",
+      "post-workout",
+      "rest-day"
+    ],
+    "toddler": "Offer 1 egg only, mashed, no pikliz.",
+    "swap": "Use 2 whole eggs and 3 whites to cut fat by 5 g.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of halved boiled eggs with bright yolks beside a little mound of pikliz on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "diri-fri-restan",
+    "name": "Diri Fri Restan",
+    "english": "Leftover diri kole fried rice",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 10,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "leftover cooked diri kole or white rice",
+        "qty": "6 cups",
+        "grams": 950,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "4",
+        "grams": 200,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "leftover cooked chicken or pork, diced",
+        "qty": "1.5 cups",
+        "grams": 220,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "frozen peas and carrots",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": false,
+        "aisle": "frozen"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat the oil in a wide pan, stir-fry the epis and peas and carrots 2 minutes.",
+      "Push aside, scramble the eggs, then add the diced meat and rice and fry 6 minutes until hot and slightly crisp.",
+      "Season to taste and serve with pikliz."
+    ],
+    "batch_tip": "Use rice that has been refrigerated overnight so it fries instead of steams.",
+    "leftovers": "Pack into a thermos for lunch.",
+    "macros": {
+      "kcal": 585,
+      "protein_g": 28,
+      "carbs_g": 78,
+      "fat_g": 18,
+      "fiber_g": 5,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "scraps",
+      "budget",
+      "quick",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Offer rice and egg with soft vegetables; no pepper.",
+    "swap": "Add 4 oz of extra chicken per adult for 40 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden fried rice with bits of egg, diced chicken and peas and carrots tossed with epis flecks, in a wide ceramic bowl served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "omelet-legim-restan",
+    "name": "Omelèt Legim Restan",
+    "english": "Leftover legim omelet",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "1/4 of a skillet omelet per adult; toddler a small slice",
+    "active_min": 10,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "eggs",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "leftover legim",
+        "qty": "2 cups",
+        "grams": 450,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "egg whites",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "epis",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cheese, shredded",
+        "qty": "1/2 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "dairy"
+      }
+    ],
+    "steps": [
+      "Whisk the eggs and whites with the epis.",
+      "Warm the legim in an oiled skillet 3 minutes.",
+      "Pour the eggs over, cover, and cook on low 8 minutes until set; top with cheese.",
+      "Slice into wedges."
+    ],
+    "batch_tip": "Keep any legim at the end of the week for this.",
+    "leftovers": "Cold slices pack into lunches.",
+    "macros": {
+      "kcal": 310,
+      "protein_g": 23,
+      "carbs_g": 10,
+      "fat_g": 20,
+      "fiber_g": 4,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "scraps",
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Give a soft wedge with no pepper.",
+    "swap": "Skip the cheese and add 2 more egg whites for 4 g less fat.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of round golden skillet omelet cut in wedges with dark green and brown legim visible inside, on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bouyon-bout-legim",
+    "name": "Bouyon Bout Legim",
+    "english": "Vegetable-end soup",
+    "cuisine": "Haitian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "vegetable ends and scraps (carrot tops, cabbage cores, squash skins)",
+        "qty": "4 cups",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "canned or leftover beans",
+        "qty": "2 cups",
+        "grams": 340,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "pasta shells or elbow",
+        "qty": "1 cup",
+        "grams": 100,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "potatoes",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bouillon cube",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 4,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Simmer the vegetable ends with epis, bouillon, and 8 cups water 20 minutes; strain out the scraps.",
+      "Add the cubed potato and beans and simmer 10 minutes.",
+      "Add the pasta for 8 minutes and serve with bread."
+    ],
+    "batch_tip": "Keep a bag of vegetable ends in the freezer all week for this.",
+    "leftovers": "Freeze in single bowls.",
+    "macros": {
+      "kcal": 275,
+      "protein_g": 11,
+      "carbs_g": 49,
+      "fat_g": 4,
+      "fiber_g": 8,
+      "sodium_mg": 580
+    },
+    "tags": [
+      "scraps",
+      "budget",
+      "one-pot",
+      "freezer",
+      "toddler-ok"
+    ],
+    "toddler": "Blend part of the soup and cut the pasta small.",
+    "swap": "Add 1 cup of leftover shredded chicken per adult for 38 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of steaming golden vegetable soup with beans, small pasta shells and diced potato in a wide ceramic bowl with a thyme sprig served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sandwich-restan-pikliz",
+    "name": "Sandwich Restan ak Pikliz",
+    "english": "Leftover meat and pikliz sandwich",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "1 sandwich per adult; toddler 1/4 plain",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.9,
+    "ingredients": [
+      {
+        "item": "leftover griyo, chicken, or turkey",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sandwich rolls or Haitian bread",
+        "qty": "4",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "pikliz",
+        "qty": "1 cup",
+        "grams": 200,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "avocado",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "mayonnaise",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Warm the meat in a pan 3 minutes with a splash of water.",
+      "Split and toast the rolls and spread with avocado and mayonnaise.",
+      "Pile the meat and pikliz inside and press together."
+    ],
+    "batch_tip": "Pack the meat and pikliz separately for work lunches.",
+    "leftovers": "Wrap in foil and warm.",
+    "macros": {
+      "kcal": 585,
+      "protein_g": 48,
+      "carbs_g": 44,
+      "fat_g": 24,
+      "fiber_g": 5,
+      "sodium_mg": 740
+    },
+    "tags": [
+      "scraps",
+      "quick",
+      "high-protein"
+    ],
+    "toddler": "Offer shredded meat and soft bread without pikliz.",
+    "swap": "Use whole-wheat rolls and light mayo.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of toasted roll stuffed with shredded browned meat, avocado and pikliz cut in half on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "boulet-diri-restan",
+    "name": "Boulèt Diri Restan",
+    "english": "Leftover rice croquettes",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "4 croquettes per adult; toddler 2",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "leftover cooked rice",
+        "qty": "4 cups",
+        "grams": 640,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "2",
+        "grams": 100,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "grated cheese",
+        "qty": "1/2 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "epis",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "breadcrumbs",
+        "qty": "1/2 cup",
+        "grams": 55,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "oil spray or oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Mix the rice, eggs, cheese, and epis well and shape into 20 small balls.",
+      "Roll in breadcrumbs and spray lightly with oil.",
+      "Bake at 425F 20 minutes, turning once, or air-fry at 400F 10 minutes."
+    ],
+    "batch_tip": "Freeze unbaked on a tray.",
+    "leftovers": "Reheat in the toaster oven.",
+    "macros": {
+      "kcal": 320,
+      "protein_g": 11,
+      "carbs_g": 49,
+      "fat_g": 9,
+      "fiber_g": 3,
+      "sodium_mg": 460
+    },
+    "tags": [
+      "scraps",
+      "budget",
+      "freezer",
+      "toddler-ok"
+    ],
+    "toddler": "Soft inside and finger food; no pepper.",
+    "swap": "Add 1 scoop of unflavored whey to the mix for +10 g protein.",
+    "pairs_with": [
+      "pikliz",
+      "sos-ti-malice"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden baked rice croquette balls with a crisp breadcrumb crust stacked on an enamel plate beside a little bowl of sauce served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "soup-sos-pwa-restan",
+    "name": "Soup Sòs Pwa Restan",
+    "english": "Leftover bean-sauce soup",
+    "cuisine": "Haitian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "leftover sòs pwa",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "smoked sausage or turkey sausage",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "pasta",
+        "qty": "1 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "carrots",
+        "qty": "2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "2 handfuls",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "water or broth",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Slice the sausage and brown it 3 minutes.",
+      "Add the sòs pwa, the broth, the carrots, and the pasta and simmer 10 minutes.",
+      "Add the spinach for 2 minutes and serve."
+    ],
+    "batch_tip": "Any bean sauce leftover becomes soup the next day.",
+    "leftovers": "Freeze single bowls.",
+    "macros": {
+      "kcal": 455,
+      "protein_g": 28,
+      "carbs_g": 50,
+      "fat_g": 16,
+      "fiber_g": 12,
+      "sodium_mg": 780
+    },
+    "tags": [
+      "scraps",
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "quick"
+    ],
+    "toddler": "Cut the sausage small and puree some beans.",
+    "swap": "Use all turkey sausage for lower fat.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick red-brown bean soup with sausage slices, small pasta and spinach in a wide ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "frittata-espageti-restan",
+    "name": "Frittata Espageti Restan",
+    "english": "Leftover spaghetti frittata",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "1 big wedge per adult; toddler a small slice",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "leftover cooked spaghetti",
+        "qty": "4 cups",
+        "grams": 600,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "8",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "spinach",
+        "qty": "2 handfuls",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cheese, shredded",
+        "qty": "1/2 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Whisk the eggs with the epis and stir in the spaghetti and spinach.",
+      "Pour into an oiled oven-safe skillet, top with cheese, and cook on low 6 minutes.",
+      "Bake at 400F 12 minutes until set and golden; slice into wedges."
+    ],
+    "batch_tip": "Use after a spaghetti breakfast or dinner.",
+    "leftovers": "Slices keep 3 days.",
+    "macros": {
+      "kcal": 400,
+      "protein_g": 23,
+      "carbs_g": 41,
+      "fat_g": 16,
+      "fiber_g": 3,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "scraps",
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Cut into small bites.",
+    "swap": "Use 6 eggs plus 6 whites for 36 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of round golden frittata made from spaghetti and egg with visible strands and spinach, cut into wedges on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "akasan-shake-pwoteyin",
+    "name": "Akasan Shake Pwoteyin",
+    "english": "Akasan protein shake",
+    "cuisine": "Haitian",
+    "category": "shake",
+    "meals": [
+      "post-workout",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "1 big 16 oz glass per adult",
+    "active_min": 5,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.3,
+    "ingredients": [
+      {
+        "item": "cooled akasan",
+        "qty": "3 cups",
+        "grams": 700,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vanilla whey protein",
+        "qty": "4 scoops",
+        "grams": 120,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "banana",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "milk",
+        "qty": "2 cups",
+        "grams": 490,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "ice",
+        "qty": "2 cups",
+        "grams": 280,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Blend the cooled akasan with milk, bananas, whey, and ice until smooth.",
+      "Pour into 4 tall glasses and give the toddler a half cup of plain akasan."
+    ],
+    "batch_tip": "Make a pot of akasan ahead and chill it.",
+    "leftovers": "Drink within a day.",
+    "macros": {
+      "kcal": 405,
+      "protein_g": 32,
+      "carbs_g": 54,
+      "fat_g": 7,
+      "fiber_g": 3,
+      "sodium_mg": 190
+    },
+    "tags": [
+      "post-workout",
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Offer a cup of plain cooled akasan.",
+    "swap": "Use skim milk for 2 g less fat.",
+    "pairs_with": [
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of creamy pale-yellow akasan protein shake in a tall glass with a cinnamon dusting, a banana beside it served family-style in a tall clear glass on a wooden table on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "mamba-bannann-shake",
+    "name": "Mamba Bannann Shake",
+    "english": "Peanut butter banana shake",
+    "cuisine": "Haitian",
+    "category": "shake",
+    "meals": [
+      "post-workout",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 big 16 oz glass per adult",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.2,
+    "ingredients": [
+      {
+        "item": "peanut butter (mamba)",
+        "qty": "4 tbsp",
+        "grams": 64,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "banana",
+        "qty": "3",
+        "grams": 360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "vanilla whey protein",
+        "qty": "4 scoops",
+        "grams": 120,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "milk",
+        "qty": "3 cups",
+        "grams": 735,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "oats",
+        "qty": "1/2 cup",
+        "grams": 45,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Blend everything until smooth, adding ice if you like it thick.",
+      "Pour into glasses."
+    ],
+    "batch_tip": "Freeze peeled bananas for a thick shake.",
+    "leftovers": "Drink within a day.",
+    "macros": {
+      "kcal": 440,
+      "protein_g": 37,
+      "carbs_g": 42,
+      "fat_g": 14,
+      "fiber_g": 5,
+      "sodium_mg": 230
+    },
+    "tags": [
+      "post-workout",
+      "quick",
+      "no-cook",
+      "budget",
+      "high-protein"
+    ],
+    "toddler": "Thin the toddler's portion with milk and skip whey.",
+    "swap": "Use powdered peanut butter to cut fat by 8 g.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of thick pale-brown peanut banana shake in a tall glass with a banana slice and a dusting of cinnamon on top served family-style in a tall clear glass on a wooden table on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ji-papay",
+    "name": "Ji Papay",
+    "english": "Papaya juice shake",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "post-workout",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 large glass per adult",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "ripe papaya",
+        "qty": "1 large",
+        "grams": 800,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "plain Greek yogurt",
+        "qty": "3 cups",
+        "grams": 680,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "vanilla whey protein",
+        "qty": "2 scoops",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ice",
+        "qty": "2 cups",
+        "grams": 280,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and seed the papaya and blend with yogurt, whey, lime juice, honey, and ice until smooth.",
+      "Serve cold right away."
+    ],
+    "batch_tip": "Freeze papaya chunks to blend later.",
+    "leftovers": "Drink within a day.",
+    "macros": {
+      "kcal": 310,
+      "protein_g": 29,
+      "carbs_g": 40,
+      "fat_g": 4,
+      "fiber_g": 4,
+      "sodium_mg": 95
+    },
+    "tags": [
+      "post-workout",
+      "quick",
+      "budget",
+      "no-cook"
+    ],
+    "toddler": "Offer a few ripe papaya cubes and a small sip of the shake; skip the honey in the toddler's share.",
+    "swap": "Use nonfat yogurt for lower fat.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of bright orange papaya yogurt shake in a tall glass with a lime wedge on the rim, a papaya half beside it served family-style in a tall clear glass on a wooden table on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ji-grenadia",
+    "name": "Ji Grenadia",
+    "english": "Passion fruit protein drink",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "post-workout",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 large glass per adult",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.4,
+    "ingredients": [
+      {
+        "item": "frozen passion fruit pulp",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "vanilla whey protein",
+        "qty": "4 scoops",
+        "grams": 120,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "banana",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ice",
+        "qty": "2 cups",
+        "grams": 280,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Blend the pulp with the bananas, water, sugar, whey, and ice until frothy.",
+      "Strain if you dislike the seeds and serve cold."
+    ],
+    "batch_tip": "Keep frozen pulp on hand.",
+    "leftovers": "Drink within a day.",
+    "macros": {
+      "kcal": 250,
+      "protein_g": 25,
+      "carbs_g": 35,
+      "fat_g": 1,
+      "fiber_g": 3,
+      "sodium_mg": 130
+    },
+    "tags": [
+      "post-workout",
+      "quick",
+      "no-cook",
+      "budget"
+    ],
+    "toddler": "Offer a few sips of the unsweetened juice without whey.",
+    "swap": "Use stevia in place of the sugar.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of pale golden-orange passion fruit drink with fruit seeds in a tall glass with ice, a halved passion fruit beside it served family-style in a tall clear glass on a wooden table on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "kasav-ak-mamba",
+    "name": "Kasav ak Mamba",
+    "english": "Cassava bread with peanut butter",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "1 large piece per adult; toddler 1/4",
+    "active_min": 5,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "cassava bread (kasav)",
+        "qty": "4 pieces",
+        "grams": 320,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "peanut butter (mamba)",
+        "qty": "6 tbsp",
+        "grams": 96,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "banana",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Warm the kasav 1 minute in a toaster oven.",
+      "Spread with peanut butter, top with banana slices, and drizzle with honey."
+    ],
+    "batch_tip": "Buy kasav in bulk from a Haitian or Latin grocery; it keeps for weeks.",
+    "leftovers": "Pack for pre-workout.",
+    "macros": {
+      "kcal": 445,
+      "protein_g": 7,
+      "carbs_g": 80,
+      "fat_g": 11,
+      "fiber_g": 6,
+      "sodium_mg": 150
+    },
+    "tags": [
+      "pre-workout",
+      "no-cook",
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Offer small pieces with thin peanut butter spread; no honey.",
+    "swap": "Use powdered peanut butter for less fat.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of crisp pale kasav flatbread spread with peanut butter and banana slices on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "tablet-pistach",
+    "name": "Tablèt Pistach",
+    "english": "Haitian peanut brittle",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "2 small pieces (about 1/12 of the tray)",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "roasted peanuts",
+        "qty": "3 cups",
+        "grams": 435,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1.5 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "grated ginger",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "water",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil the sugar, water, and ginger 6 minutes until thick and amber.",
+      "Stir in the peanuts and pour onto a greased tray.",
+      "Cut into pieces while warm and cool until hard."
+    ],
+    "batch_tip": "Make a tray for the week.",
+    "leftovers": "Keeps 2 weeks in a tin.",
+    "macros": {
+      "kcal": 320,
+      "protein_g": 9,
+      "carbs_g": 31,
+      "fat_g": 18,
+      "fiber_g": 3,
+      "sodium_mg": 20
+    },
+    "tags": [
+      "budget",
+      "batch",
+      "quick"
+    ],
+    "toddler": "Whole nuts are a choking risk; skip for the toddler.",
+    "swap": "Use half the sugar for a softer, less sweet bar.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of pieces of amber peanut brittle with whole peanuts set in glossy caramel on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pen-ak-ze-pikliz",
+    "name": "Pen ak Ze ak Pikliz",
+    "english": "Egg sandwich with pikliz",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "1 sandwich per adult; toddler half, no pikliz",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "sandwich rolls",
+        "qty": "4",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "8",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "pikliz",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "avocado",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Fry the eggs with the epis in oil until set.",
+      "Toast the rolls and layer with avocado, eggs, and pikliz.",
+      "Press and cut in half."
+    ],
+    "batch_tip": "Boil eggs Sunday for a no-cook version.",
+    "leftovers": "Wrap for a snack.",
+    "macros": {
+      "kcal": 385,
+      "protein_g": 18,
+      "carbs_g": 40,
+      "fat_g": 17,
+      "fiber_g": 6,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "quick",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Egg and avocado only, soft bread.",
+    "swap": "Add 2 slices turkey ham for 30 g protein.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of toasted roll with golden egg, green avocado and pikliz, cut in half on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "mayi-moulen-ak-pwason",
+    "name": "Mayi Moulen ak Pwason",
+    "english": "Cornmeal with fish sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups mayi + 1 fillet; toddler 1/2 cup + 2 oz",
+    "active_min": 25,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.7,
+    "ingredients": [
+      {
+        "item": "yellow cornmeal",
+        "qty": "2 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "tilapia or snapper fillets",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "water",
+        "qty": "6 cups",
+        "grams": 1440,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Make the mayi moulen as in mayi-moulen-ak-sos-pwa and keep warm.",
+      "Saute the onion and epis, add the tomato paste and 1 cup water, simmer 5 minutes.",
+      "Lay the fish in the sauce, cover, and cook 8 minutes; flake lightly.",
+      "Serve the fish and sauce over the mayi."
+    ],
+    "batch_tip": "Make double mayi moulen and slice and fry it the next day.",
+    "leftovers": "Flake into scrambled eggs.",
+    "macros": {
+      "kcal": 535,
+      "protein_g": 46,
+      "carbs_g": 54,
+      "fat_g": 15,
+      "fiber_g": 7,
+      "sodium_mg": 490
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Flake the fish small and check for bones.",
+    "swap": "Use cod for a cheaper plate.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of mound of golden mayi moulen topped with flaked white fish in a red tomato sauce in a ceramic bowl served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bouyon-pwason",
+    "name": "Bouyon Pwason",
+    "english": "Fish and plantain soup",
+    "cuisine": "Haitian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 25,
+    "total_min": 45,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.2,
+    "ingredients": [
+      {
+        "item": "white fish fillets (cod, snapper)",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "green plantain",
+        "qty": "2",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "potatoes",
+        "qty": "2",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "carrots",
+        "qty": "2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "spinach",
+        "qty": "1 bunch",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Simmer the plantain, potato, and carrot in 8 cups water with epis 15 minutes.",
+      "Add the fish pieces and spinach and cook 8 minutes; add the whole scotch bonnet for the last 5.",
+      "Finish with lime juice and serve."
+    ],
+    "batch_tip": "Add any wilting vegetables.",
+    "leftovers": "Reheat gently, do not boil.",
+    "macros": {
+      "kcal": 440,
+      "protein_g": 42,
+      "carbs_g": 48,
+      "fat_g": 9,
+      "fiber_g": 5,
+      "sodium_mg": 540
+    },
+    "tags": [
+      "one-pot",
+      "toddler-ok",
+      "high-protein",
+      "rest-day"
+    ],
+    "toddler": "Remove bones and the pepper and mash gently.",
+    "swap": "Use catfish to cut cost.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of light golden fish soup with white fish chunks, plantain, potato, carrot and green spinach in a wide ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bef-nan-sos",
+    "name": "Bèf nan Sòs",
+    "english": "Beef stewed in tomato sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 1/2 cup",
+    "active_min": 20,
+    "total_min": 60,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.2,
+    "ingredients": [
+      {
+        "item": "beef chuck cubes",
+        "qty": "2.2 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "potatoes",
+        "qty": "2",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Marinate the beef in epis 30 minutes, then brown it in oil 5 minutes.",
+      "Add the onion, tomato paste, carrots, potatoes, and 2 cups water and pressure-cook 25 minutes (stovetop: 90 minutes).",
+      "Finish by uncovering and thickening for 5 minutes."
+    ],
+    "batch_tip": "Make a double batch; it freezes well.",
+    "leftovers": "Over rice or in a sandwich.",
+    "macros": {
+      "kcal": 465,
+      "protein_g": 42,
+      "carbs_g": 25,
+      "fat_g": 22,
+      "fiber_g": 4,
+      "sodium_mg": 600
+    },
+    "tags": [
+      "one-pot",
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Shred the beef and mash the vegetables.",
+    "swap": "Use round steak for 6 g less fat.",
+    "pairs_with": [
+      "diri-blan",
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of chunks of tender beef with carrots and potato in a red-brown tomato sauce in a ceramic bowl served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bol-bef-bannann",
+    "name": "Bòl Bèf ak Bannann",
+    "english": "Lean beef, beans and plantain bowl",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 bowl per adult; toddler 1/4",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.2,
+    "ingredients": [
+      {
+        "item": "93% lean ground beef",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "canned red beans",
+        "qty": "2 cans (15 oz)",
+        "grams": 850,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "ripe plantains",
+        "qty": "3",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Brown the beef with epis and tomato paste 8 minutes.",
+      "Warm the beans with a spoon of epis.",
+      "Slice the plantains and air-fry or pan-fry in a little oil until caramelized.",
+      "Build bowls with beef, beans, plantain, and a spoon of pikliz."
+    ],
+    "batch_tip": "Cook the beef on Sunday for 3 bowls.",
+    "leftovers": "Pack for lunches.",
+    "macros": {
+      "kcal": 650,
+      "protein_g": 52,
+      "carbs_g": 70,
+      "fat_g": 18,
+      "fiber_g": 12,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "batch",
+      "post-workout",
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Mash the beans; plantain is a finger food.",
+    "swap": "Use ground turkey to cut fat by 6 g.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bowl of seasoned ground beef with red beans and golden fried sweet plantain slices and a spoon of pikliz served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pen-ak-mamba-bannann",
+    "name": "Pen ak Mamba ak Bannann",
+    "english": "Peanut butter banana toast",
+    "cuisine": "Haitian",
+    "category": "snack",
+    "meals": [
+      "pre-workout",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "2 slices per adult; toddler 1/2 slice",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "whole-wheat bread",
+        "qty": "8 slices",
+        "grams": 280,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "peanut butter (mamba)",
+        "qty": "6 tbsp",
+        "grams": 96,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bananas",
+        "qty": "3",
+        "grams": 360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Toast the bread.",
+      "Spread with peanut butter, top with banana slices, and finish with honey and cinnamon."
+    ],
+    "batch_tip": "Slice bananas in the lunchbox the night before.",
+    "leftovers": "Pack for pre-workout.",
+    "macros": {
+      "kcal": 390,
+      "protein_g": 14,
+      "carbs_g": 56,
+      "fat_g": 12,
+      "fiber_g": 8,
+      "sodium_mg": 380
+    },
+    "tags": [
+      "pre-workout",
+      "no-cook",
+      "quick",
+      "budget",
+      "toddler-ok"
+    ],
+    "toddler": "Offer small fingers of toast with thin peanut butter; no honey.",
+    "swap": "Use powdered peanut butter for less fat.",
+    "pairs_with": [],
+    "photo_prompt": "Appetizing overhead food photograph of two slices of toasted bread with peanut butter and sliced banana and a little honey on an enamel plate served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  }
+]

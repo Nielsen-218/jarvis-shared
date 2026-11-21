@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Jarvis — Character Studio</title>
+<!--
+  Character Studio (Feature #27): a live 3D preview of the companion with controls to recolour his glow
+  (eyes, accent, chest reactor, mouth), tint his armour, and resize him — then save it as a named appearance
+  profile and apply it to the running companion. Appearance is cosmetic-only (core/companion_profile.py):
+  changing it never touches the brain, voice or memory. Opened as its own window via Api.open_studio().
+
+  Honest scope: the shipped robot carries a BAKED texture, so "armour tint" multiplies the silver rather than
+  repainting it. The eyes, chest core and ear modules are separate per-part material slots (built by
+  scripts/split_companion_materials.py) that recolour fully and independently via their emissive glow.
+  Free-form geometry sculpting / clothing design is not built (accessories cover wearables).
+-->
+<script type="importmap">{ "imports": {
+  "three": "/vendor/three/three.module.min.js",
+  "three/addons/environments/RoomEnvironment.js": "/vendor/three/addons/environments/RoomEnvironment.js",
+  "three/addons/": "/vendor/three/addons/" } }</script>
+<style>
+  :root { --bg:#070b12; --panel:rgba(14,24,38,.9); --line:rgba(94,180,255,.18); --cyan:#38f0ff; --text:#dceefb; --muted:#80a0bd; }
+  * { box-sizing:border-box; } html,body { margin:0; height:100%; background:var(--bg); color:var(--text); font:13px/1.5 "Segoe UI",system-ui,sans-serif; }
+  #wrap { display:flex; height:100%; }
+  #stage { flex:1; position:relative; min-width:0; background:radial-gradient(70% 60% at 50% 35%, #0e1826, #070b12); }
+  #c { width:100%; height:100%; display:block; cursor:grab; } #c:active { cursor:grabbing; }
+  #hint { position:absolute; bottom:10px; left:0; right:0; text-align:center; color:var(--muted); font-size:11px; pointer-events:none; }
+  #panel { width:300px; flex:none; background:var(--panel); border-left:1px solid var(--line); padding:16px; overflow-y:auto; }
+  h1 { font-size:13px; letter-spacing:.18em; color:var(--cyan); text-transform:uppercase; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:11px; margin-bottom:14px; }
+  h2 { font-size:10.5px; letter-spacing:.16em; color:var(--muted); text-transform:uppercase; margin:16px 0 8px; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:7px 0; }
+  .row label { flex:1; }
+  input[type=color] { width:40px; height:26px; border:1px solid var(--line); border-radius:7px; background:none; padding:0; }
+  input[type=range] { flex:1; accent-color:var(--cyan); }
+  select, input[type=text] { width:100%; background:#0a1420; color:var(--text); border:1px solid var(--line); border-radius:9px; padding:8px; }
+  button { font:inherit; color:#00131f; background:linear-gradient(135deg,var(--cyan),#9d7bff); border:0; border-radius:10px; padding:9px 12px; font-weight:700; cursor:pointer; width:100%; margin-top:8px; }
+  button.ghost { background:#13263a; color:var(--text); border:1px solid var(--line); }
+  .val { color:var(--cyan); font-variant-numeric:tabular-nums; min-width:44px; text-align:right; }
+  #swatches { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:6px 0 4px; }
+  .sw { aspect-ratio:1; border-radius:8px; border:1px solid var(--line); cursor:pointer; }
+  .sw:hover { outline:2px solid var(--cyan); }
+  #msg { margin-top:10px; font-size:11px; color:var(--cyan); min-height:16px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage"><canvas id="c"></canvas><div id="hint">drag to rotate · scroll to zoom</div></div>
+  <div id="panel">
+    <h1>Character Studio</h1>
+    <div class="sub">Appearance only — never his brain, voice or memory.</div>
+
+    <h2>Build</h2>
+    <div class="sub" style="margin:0 0 8px">Sculpted body shapes (free-form mesh edits, not just bone scaling).</div>
+    <select id="build">
+      <option value="/companion/models/neon-sentinel/neon-sentinel.glb">Neon Sentinel</option>
+      <option value="/companion/models/robot/robot-lod1-multimat.glb">Standard</option>
+      <option value="/companion/models/robot/robot-lod1-rounder.glb">Rounder</option>
+      <option value="/companion/models/robot/robot-lod1-lean.glb">Lean</option>
+    </select>
+
+    <h2>Colour</h2>
+    <div class="sub" style="margin:0 0 8px">The armour carries a baked texture (overall tint); the eyes, chest core and ear modules are separate glow parts you can recolour independently.</div>
+    <div id="swatches"></div>
+    <div class="row"><label>Armour tint</label><input type="color" id="col_shell_light" value="#e4e9f1"></div>
+    <div class="row"><label>Eyes</label><input type="color" id="col_eye_glow" value="#ff36ce"></div>
+    <div class="row"><label>Chest core</label><input type="color" id="col_chest_core" value="#00e5ff"></div>
+    <div class="row"><label>Ear modules</label><input type="color" id="col_accent_primary" value="#00e5ff"></div>
+
+    <h2>Accessory</h2>
+    <select id="accessory">
+      <option value="none">None</option><option value="tophat">Top hat</option><option value="partyhat">Party hat</option>
+      <option value="halo">Halo</option><option value="cap">Cap</option><option value="sunglasses">Sunglasses</option><option value="bowtie">Bow tie</option>
+    </select>
+
+    <h2>Size</h2>
+    <div class="row"><label>Height</label><input type="range" id="size" min="50" max="400" step="5" value="75"><span class="val" id="size_v">75px</span></div>
+
+    <h2>Proportions</h2>
+    <div class="row"><label>Head</label><input type="range" id="prop_head_scale" min="0.6" max="1.5" step="0.05" value="1"><span class="val" id="prop_head_scale_v">1.0×</span></div>
+    <div class="row"><label>Body</label><input type="range" id="prop_body_scale" min="0.6" max="1.5" step="0.05" value="1"><span class="val" id="prop_body_scale_v">1.0×</span></div>
+    <div class="row"><label>Arms</label><input type="range" id="prop_arm_length" min="0.6" max="1.5" step="0.05" value="1"><span class="val" id="prop_arm_length_v">1.0×</span></div>
+    <div class="row"><label>Legs</label><input type="range" id="prop_leg_length" min="0.6" max="1.5" step="0.05" value="1"><span class="val" id="prop_leg_length_v">1.0×</span></div>
+
+    <h2>Profile</h2>
+    <select id="profiles"></select>
+    <input type="text" id="pname" placeholder="Name this look (e.g. Cyan Jarvis)" style="margin-top:8px">
+    <button id="save">Save profile</button>
+    <button id="apply" class="ghost">Apply to Jarvis now</button>
+    <button id="reset" class="ghost">Reset to default</button>
+    <div id="msg"></div>
+  </div>
+</div>
+
+<script type="module">
+import * as T from "three";
+import { buildAdapterAsync } from "/companion/profiles.js";
+import { retintMaterials } from "/companion/materials.js";
+
+const api = () => (window.pywebview && window.pywebview.api) || null;
+const msg = (t) => { document.getElementById("msg").textContent = t || ""; };
+const SLOTS = ["shell_light"];
+
+// ---- 3D preview ----
+const canvas = document.getElementById("c");
+const renderer = new T.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.toneMapping = T.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15; renderer.outputColorSpace = T.SRGBColorSpace;
+renderer.setClearColor(0x0a1018, 1);
+const scene = new T.Scene();
+const camera = new T.PerspectiveCamera(32, 1, 0.05, 20);
+const roomMod = await import("three/addons/environments/RoomEnvironment.js");
+scene.environment = new T.PMREMGenerator(renderer).fromScene(new roomMod.RoomEnvironment(renderer), 0.04).texture;
+scene.add(new T.AmbientLight(0xdce7f2, 0.4));
+const key = new T.DirectionalLight(0xffffff, 1.1); key.position.set(2, 3, 4); scene.add(key);
+const rim = new T.DirectionalLight(0x7eccff, 0.55); rim.position.set(-3, 1, -2); scene.add(rim);
+
+let adapter = null, yaw = 0.5, pitch = 0, dist = 0.55, center = new T.Vector3();
+function refit() { if (!adapter) return; adapter.group.updateMatrixWorld(true); const box = new T.Box3().setFromObject(adapter.group); box.getCenter(center); dist = box.getSize(new T.Vector3()).length() * 1.1; }
+function resize() {
+  const r = canvas.getBoundingClientRect(); const d = window.devicePixelRatio || 1;
+  renderer.setSize(r.width, r.height, false); canvas.width = r.width * d; canvas.height = r.height * d;
+  camera.aspect = r.width / Math.max(1, r.height); camera.updateProjectionMatrix();
+}
+function frame() {
+  adapter?.updateAnimation?.("idle", performance.now());
+  adapter?.sync?.();
+  camera.position.set(center.x + Math.sin(yaw) * Math.cos(pitch) * dist,
+                      center.y + Math.sin(pitch) * dist,
+                      center.z + Math.cos(yaw) * Math.cos(pitch) * dist);
+  camera.lookAt(center); renderer.render(scene, camera); requestAnimationFrame(frame);
+}
+new ResizeObserver(resize).observe(canvas);
+
+const base = { id: "studio", adapter_id: "glb-model-v1", model_id: "robot-lod1-multimat",
+               model_url: "/companion/models/robot/robot-lod1-multimat.glb",
+               rig_url: "/companion/rigs/robot-rig.json",
+               materials: { eye_glow: { color: "#ff36ce", emissive: 1.0 }, chest_core: { color: "#00e5ff", emissive: 1.1 },
+                            accent_primary: { color: "#00e5ff", emissive: 0.9 } }, proportions: {} };
+const GLOW_EMISSIVE = { eye_glow: 1.0, chest_core: 1.1, accent_primary: 0.9 };
+async function loadModel() {
+  if (adapter) { try { adapter.dispose(); } catch {} scene.remove(adapter.group); }
+  adapter = await buildAdapterAsync(T, base);
+  scene.add(adapter.group);
+  refit();
+  resize(); applyColors(); applyProps();
+}
+
+// ---- controls -> live retint ----
+function currentMaterials() {
+  const mats = { shell_light: { color: document.getElementById("col_shell_light").value } };
+  for (const slot of ["eye_glow", "chest_core", "accent_primary"]) {
+    mats[slot] = { color: document.getElementById("col_" + slot).value, emissive: GLOW_EMISSIVE[slot] };
+  }
+  return mats;
+}
+function applyColors() { if (adapter) retintMaterials(adapter.materials, currentMaterials()); }
+
+for (const slot of ["shell_light", "eye_glow", "chest_core", "accent_primary"]) {
+  document.getElementById("col_" + slot).addEventListener("input", applyColors);
+}
+
+// ---- proportions (live geometry editing) ----
+const PROP_KEYS = ["head_scale", "body_scale", "arm_length", "leg_length"];
+function currentProportions() {
+  const p = {};
+  for (const k of PROP_KEYS) p[k] = +document.getElementById("prop_" + k).value;
+  return p;
+}
+function applyProps() {
+  for (const k of PROP_KEYS) document.getElementById("prop_" + k + "_v").textContent = (+document.getElementById("prop_" + k).value).toFixed(2) + "×";
+  if (adapter && adapter.setProportions) adapter.setProportions(currentProportions());
+}
+for (const k of PROP_KEYS) document.getElementById("prop_" + k).addEventListener("input", applyProps);
+
+// ---- build (sculpted body shape) -> reload the model ----
+document.getElementById("build").addEventListener("change", async (e) => {
+  base.model_url = e.target.value;
+  base.model_id = e.target.value.split("/").pop().replace(".glb", "");
+  base.rig_url = base.model_id === "neon-sentinel" ? null : "/companion/rigs/robot-rig.json";
+  await loadModel();          // rebuild the adapter on the new mesh, then re-apply the look
+});
+document.getElementById("accessory").addEventListener("change", (e) => { if (adapter && adapter.setAccessory) { adapter.setAccessory(e.target.value); refit(); } });
+const PRESETS = { "Silver": "#e4e9f1", "Midnight": "#3a5cff", "Crimson": "#ff4d5e", "Gold": "#ffcf4d", "Emerald": "#35e59b", "Violet": "#b06bff" };
+const sw = document.getElementById("swatches");
+sw.innerHTML = Object.entries(PRESETS).map(([n, c]) => `<div class="sw" title="${n}" data-c="${c}" style="background:${c}"></div>`).join("");
+sw.querySelectorAll(".sw").forEach((el) => el.onclick = () => { document.getElementById("col_shell_light").value = el.dataset.c; applyColors(); msg(el.title); });
+document.getElementById("size").addEventListener("input", (e) => {
+  document.getElementById("size_v").textContent = e.target.value + "px";
+  const a = api(); if (a && a.set_character_size) { try { a.set_character_size(+e.target.value); } catch {} }
+});
+
+// ---- orbit ----
+let drag = null;
+canvas.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY }; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener("pointermove", (e) => { if (!drag) return; yaw -= (e.clientX - drag.x) * 0.01; pitch = Math.max(-1.2, Math.min(1.2, pitch + (e.clientY - drag.y) * 0.01)); drag = { x: e.clientX, y: e.clientY }; });
+canvas.addEventListener("pointerup", () => { drag = null; });
+canvas.addEventListener("wheel", (e) => { e.preventDefault(); dist = Math.max(0.2, Math.min(2.0, dist * (1 + Math.sign(e.deltaY) * 0.1))); }, { passive: false });
+
+// ---- profiles ----
+function profileFromControls(id, name) {
+  return { ...base, schema_version: 1, id, name: name || id, model_id: base.model_id || "robot-lod1-multimat", adapter_id: "glb-model-v1",
+           model_url: base.model_url, rig_url: base.rig_url, materials: currentMaterials(),
+           accessory: document.getElementById("accessory").value, proportions: currentProportions() };
+}
+async function setControlsFromProfile(p) {
+  if (p && p.model_url) {
+    const sel = document.getElementById("build");
+    if (![...sel.options].some((o) => o.value === p.model_url)) sel.add(new Option(p.name || p.model_id, p.model_url));
+    Object.assign(base, p);
+    sel.value = p.model_url;
+    await loadModel();
+  }
+  const m = (p && p.materials) || {};
+  for (const slot of ["shell_light", "eye_glow", "chest_core", "accent_primary"]) {
+    if (m[slot] && m[slot].color) document.getElementById("col_" + slot).value = m[slot].color;
+  }
+  const acc = (p && p.accessory) || "none"; document.getElementById("accessory").value = acc; if (adapter && adapter.setAccessory) adapter.setAccessory(acc);
+  const pr = (p && p.proportions) || {};
+  for (const k of PROP_KEYS) document.getElementById("prop_" + k).value = pr[k] != null ? pr[k] : 1;
+  applyColors(); applyProps();
+}
+async function refreshProfiles() {
+  const a = api(); const sel = document.getElementById("profiles");
+  if (!a || !a.list_companion_profiles) { sel.innerHTML = "<option>(standalone preview)</option>"; return; }
+  try {
+    const list = await a.list_companion_profiles();
+    sel.innerHTML = (list || []).map((p) => `<option value="${p.id}">${p.name || p.id}</option>`).join("");
+    const current = (list || []).find(p => p.id === base.id) || (list || []).find(p => p.model_url === base.model_url);
+    if (current) sel.value = current.id;
+  } catch { sel.innerHTML = ""; }
+}
+document.getElementById("profiles").addEventListener("change", async (e) => {
+  const a = api(); if (!a || !a.load_companion_profile) return;
+  try { const p = await a.load_companion_profile(e.target.value); await setControlsFromProfile(p); msg("Loaded " + (p.name || p.id)); } catch (e) { msg("Load failed: " + e); }
+});
+document.getElementById("save").addEventListener("click", async () => {
+  const a = api(); if (!a || !a.save_companion_profile) return msg("Preview only — open from Jarvis to save.");
+  const name = (document.getElementById("pname").value || "custom").trim();
+  const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 32) || "custom";
+  try { const r = await a.save_companion_profile(profileFromControls(id, name)); msg(r && r.error ? r.error : "Saved “" + name + "”."); await refreshProfiles(); }
+  catch (e) { msg("Save failed: " + e); }
+});
+document.getElementById("apply").addEventListener("click", async () => {
+  const a = api(); if (!a) return msg("Preview only — open from Jarvis to apply.");
+  try {
+    if (!a.apply_companion_profile) return msg("Restart Jarvis to enable model switching.");
+    const result = await a.apply_companion_profile(profileFromControls("default", base.name || "My Jarvis"));
+    if (result?.error) return msg(result.error);
+    msg("Applied to Jarvis. ✨");
+  } catch (e) { msg("Apply failed: " + e); }
+});
+document.getElementById("reset").addEventListener("click", () => {
+  document.getElementById("col_shell_light").value = "#e4e9f1"; applyColors(); msg("Reset to silver.");
+});
+
+const active = api()?.load_companion_profile ? await api().load_companion_profile() : null;
+if (active && !active.error) await setControlsFromProfile(active); else await loadModel();
+await refreshProfiles();
+frame();
+window._studio = { currentMaterials, setControlsFromProfile, adapter: () => adapter };   // for tests
+</script>
+</body>
+</html>

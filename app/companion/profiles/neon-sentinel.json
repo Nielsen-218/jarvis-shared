@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "neon-sentinel",
+  "name": "Neon Sentinel",
+  "model_id": "neon-sentinel",
+  "adapter_id": "glb-model-v1",
+  "model_url": "/companion/models/neon-sentinel/neon-sentinel.glb",
+  "rig_url": null,
+  "proportions": {
+    "head_scale": 1.0,
+    "body_scale": 1.0,
+    "arm_length": 1.0,
+    "leg_length": 1.0,
+    "overall_scale": 1.0
+  },
+  "materials": {
+    "shell_light": {
+      "color": "#e4e9f1",
+      "metalness": 0.5,
+      "roughness": 0.32
+    },
+    "shell_dark": {
+      "color": "#242735",
+      "metalness": 0.55,
+      "roughness": 0.35
+    },
+    "face_screen": {
+      "color": "#080c17",
+      "metalness": 0.1,
+      "roughness": 0.08
+    },
+    "eye_glow": {
+      "color": "#ff36ce",
+      "emissive": 1.0
+    },
+    "mouth_glow": {
+      "color": "#00e5ff",
+      "emissive": 0.9
+    },
+    "accent_primary": {
+      "color": "#00e5ff",
+      "emissive": 0.9
+    },
+    "accent_secondary": {
+      "color": "#2f6be0",
+      "emissive": 0.3
+    },
+    "chest_core": {
+      "color": "#00e5ff",
+      "emissive": 1.1
+    },
+    "joint_dark": {
+      "color": "#1a1d28",
+      "metalness": 0.5,
+      "roughness": 0.55
+    },
+    "foot_glow": {
+      "color": "#00e5ff",
+      "emissive": 0.8
+    }
+  },
+  "lights": {
+    "key": {
+      "color": "#ffffff",
+      "intensity": 1.1
+    },
+    "rim": {
+      "color": "#7eccff",
+      "intensity": 0.55
+    },
+    "ambient": {
+      "color": "#dce7f2",
+      "intensity": 0.35
+    }
+  },
+  "animation_preset": "idle",
+  "accessory": "none",
+  "accessories": [],
+  "created_at": null,
+  "updated_at": null
+}

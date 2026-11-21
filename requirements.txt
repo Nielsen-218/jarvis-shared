@@ -1,0 +1,43 @@
+anthropic
+mcp==2.3.0  # existing reviewed MCP runtime; research imports it only when used
+certifi>=2026.10.23
+python-dotenv
+numpy
+sounddevice
+openwakeword
+faster-whisper
+edge-tts>=7.3.1  # older clients send a stale Edge version and get HTTP 403
+miniaudio
+pyttsx3
+psutil
+rapidfuzz
+pillow
+opencv-python<5
+diffusers
+transformers
+accelerate
+torch  # install with: pip install torch --index-url https://download.pytorch.org/whl/cu128
+pycaw
+pyperclip
+pytest
+pywebview
+pystray
+keyboard
+pyautogui
+speechbrain
+sentencepiece
+fastapi
+uvicorn
+python-multipart
+pywebpush
+pyflakes
+pint
+pypdf>=6.21.4,<7
+fonttools
+kokoro>=0.9
+soundfile
+lameenc
+rapidocr-onnxruntime  # free local OCR (CPU, offline models) for screen reading
+pywinauto; platform_system == "Windows"  # Windows UI Automation: read/click real UI elements
+pynput; platform_system == "Windows"  # "watch me": the owner's own clicks and keys while he shows Jarvis a task (core/demonstrate)
+rembg==2.0.59

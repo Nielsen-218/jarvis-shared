@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JARVIS · Calendar</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 620px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  [hidden] { display: none !important; }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); align-content: start; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); overflow-wrap: anywhere; }
+  .step { display: flex; gap: var(--s-3); align-items: center; }
+  .num { flex: 0 0 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 600 var(--fs-sm)/1 var(--font-display);
+    background: var(--accent-soft); color: var(--accent); }
+  .step.done .num { background: var(--ok-soft); color: var(--ok); }
+  .step h2 { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; }
+  .tasks { display: grid; gap: var(--s-2); padding: 0; list-style: none; }
+  .tasks li { display: grid; gap: var(--s-1); padding: var(--s-3); border: 1px solid var(--line-1); border-radius: var(--r-2); background: var(--bg-1); }
+  .tasks b { font-weight: 600; }
+  .ds-btn.wide { width: 100%; }
+  .err { color: var(--danger); font-size: var(--fs-sm); }
+  .ok-big { font: 600 var(--fs-xl)/var(--lh-xl) var(--font-display); color: var(--ok); }
+  #events { display: grid; gap: var(--s-1); padding-left: var(--s-4); }
+  code { font: 400 var(--fs-xs)/var(--lh-sm) var(--font-mono); color: var(--text-1); }
+</style>
+</head>
+<body class="ds">
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Calendar</h1>
+  <span id="badge" class="ds-badge" role="status">Checking…</span>
+</header>
+<main>
+  <p id="loading" class="sub">Checking your Google Calendar link…</p>
+
+  <section class="ds-card" id="done" hidden>
+    <p class="ok-big">Connected</p>
+    <p class="sub">Jarvis can read your Google Calendar and add, move or cancel events. Try: “Jarvis, what’s on my calendar today?” or “put dentist on Friday at 3”.</p>
+    <div><b>Today</b><ul id="events"></ul></div>
+    <button class="ds-btn danger" id="disconnect">Disconnect</button>
+  </section>
+
+  <section class="ds-card" id="s1" hidden>
+    <div class="step"><span class="num">1</span><h2>Make Jarvis’s Google key</h2></div>
+    <p class="sub">One time only, about 3 minutes. Each button opens Google. Do what it says, then come back here and tap the next one.</p>
+    <ol class="tasks">
+      <li><b>A. Turn on Google Calendar</b><span class="sub">Sign in. If it asks for a project, tap Create and call it Jarvis. Tap Next, then Enable.</span>
+        <a class="ds-btn" target="_blank" rel="noopener" href="https://console.cloud.google.com/flows/enableapi?apiid=calendar-json.googleapis.com">Open step A</a></li>
+      <li><b>B. Name the app</b><span class="sub">Tap Get started. App name: <code>Jarvis</code>. Pick your email. Audience: External. Contact email: yours. Tick “I agree”, then Create.</span>
+        <a class="ds-btn" target="_blank" rel="noopener" href="https://console.cloud.google.com/auth/overview/create">Open step B</a></li>
+      <li><b>C. Publish it</b><span class="sub">Tap Publish app, then Confirm. Without this Google signs Jarvis out every 7 days.</span>
+        <a class="ds-btn" target="_blank" rel="noopener" href="https://console.cloud.google.com/auth/audience">Open step C</a></li>
+      <li><b>D. Make the key</b><span class="sub">Application type: <b>Desktop app</b>. Name: <code>Jarvis</code>. Tap Create. A box shows the Client ID and Client secret: copy each into step 2 below.</span>
+        <a class="ds-btn" target="_blank" rel="noopener" href="https://console.cloud.google.com/auth/clients/create">Open step D</a></li>
+    </ol>
+  </section>
+
+  <section class="ds-card" id="s2" hidden>
+    <div class="step"><span class="num">2</span><h2>Paste the key</h2></div>
+    <form id="keyform">
+      <div class="ds-field"><label for="cid">Client ID</label><input class="ds-input" id="cid" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="…apps.googleusercontent.com" maxlength="4000" required></div>
+      <div class="ds-field"><label for="csecret">Client secret</label><input class="ds-input" id="csecret" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="GOCSPX-…" maxlength="300"></div>
+      <button class="ds-btn primary wide" id="savekey">Save key</button>
+    </form>
+  </section>
+
+  <section class="ds-card" id="s3" hidden>
+    <div class="step"><span class="num">3</span><h2>Connect and Allow</h2></div>
+    <p class="sub">Pick your Google account. Google warns “hasn’t verified this app” because it’s your own private app: tap <b>Advanced</b>, then <b>Go to Jarvis</b>, then <b>Continue</b>.</p>
+    <button class="ds-btn primary wide" id="connect">Connect Google Calendar</button>
+    <p class="sub" id="rekey"><a href="#" id="changekey">Use a different Google key</a></p>
+  </section>
+
+  <section class="ds-card" id="s4" hidden>
+    <div class="step"><span class="num">4</span><h2>Paste the last page back</h2></div>
+    <p class="sub">After you Allow, Google opens a page that won’t load (its address starts with 127.0.0.1). That’s expected. Tap the address bar, copy the whole address, come back here and paste it. On the PC this step finishes by itself.</p>
+    <form id="finishform">
+      <div class="ds-field"><label for="back">Address from that page</label><input class="ds-input" id="back" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="http://127.0.0.1:…/?state=…&amp;code=…" maxlength="4000" required></div>
+      <button class="ds-btn primary wide">Finish</button>
+    </form>
+  </section>
+
+  <p class="err" id="msg" role="alert" hidden></p>
+</main>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let started = false, poll = null, ownerKeyOpen = false;
+
+async function api(path, body) {
+  const opt = { headers: { Authorization: "Bearer " + token } };
+  if (body !== undefined) { opt.method = "POST"; opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+  const r = await fetch(path, opt);
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : (typeof j.detail === "string" && j.detail) || "Jarvis couldn't do that (error " + r.status + ").");
+  return j;
+}
+function say(text) { const m = $("#msg"); m.textContent = text || ""; m.hidden = !text; }
+function show(id, on) { $(id).hidden = !on; }
+
+function render(st) {
+  $("#loading").hidden = true;
+  $("#badge").textContent = st.connected ? "Connected" : "Not connected";
+  show("#done", st.connected);
+  if (st.pending) started = true;
+  const noKey = !st.connected && !st.has_client;
+  const needKey = !st.connected && st.can_set_key && (!st.has_client || ownerKeyOpen);
+  show("#s1", needKey); show("#s2", needKey);
+  show("#s3", !st.connected && !needKey && st.has_client);
+  show("#rekey", !!st.can_set_key);
+  show("#s4", !st.connected && !needKey && st.has_client && started);
+  if (noKey && !st.can_set_key) say("Ask the owner to set up the Google key in Calendar first, then come back.");
+  if (st.error) { say(st.error); stopPoll(); started = false; show("#s4", false); }
+  if (st.connected) { stopPoll(); say(""); loadToday(); }
+}
+async function refresh() {
+  if (!token) { $("#loading").textContent = "Open Jarvis on this phone and link it first, then come back here."; $("#badge").textContent = "Not linked"; return; }
+  try { render(await api("/api/calendar/link")); } catch (e) { $("#loading").hidden = true; say(e.message); }
+}
+async function loadToday() {
+  const ul = $("#events"); ul.textContent = "";
+  try {
+    const j = await api("/api/calendar/today");
+    const list = j.events.length ? j.events : ["Nothing on the calendar today."];
+    for (const t of list) { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); }
+  } catch (e) { const li = document.createElement("li"); li.textContent = e.message; ul.appendChild(li); }
+}
+function stopPoll() { if (poll) { clearInterval(poll); poll = null; } }
+
+$("#keyform").addEventListener("submit", async ev => {
+  ev.preventDefault(); say("");
+  const raw = $("#cid").value.trim();
+  const body = raw.startsWith("{") ? { json: raw } : { client_id: raw, client_secret: $("#csecret").value.trim() };
+  try { ownerKeyOpen = false; render(await api("/api/calendar/link/key", body)); $("#csecret").value = ""; }
+  catch (e) { ownerKeyOpen = true; say(e.message); }
+});
+$("#changekey").addEventListener("click", ev => { ev.preventDefault(); ownerKeyOpen = true; show("#s1", true); show("#s2", true); show("#s3", false); show("#s4", false); });
+$("#connect").addEventListener("click", async () => {
+  say("");
+  const w = window.open("", "_blank");          // opened inside the tap, so the phone doesn't block it
+  try {
+    const { url } = await api("/api/calendar/link/start", {});
+    started = true; show("#s4", true);
+    if (w) w.location.href = url; else location.href = url;
+    stopPoll(); let n = 0;
+    poll = setInterval(async () => { if (++n > 300) return stopPoll(); try { render(await api("/api/calendar/link")); } catch (e) {} }, 3000);
+  } catch (e) { if (w) w.close(); say(e.message); }
+});
+$("#finishform").addEventListener("submit", async ev => {
+  ev.preventDefault(); say("");
+  try { render(await api("/api/calendar/link/finish", { url: $("#back").value.trim() })); $("#back").value = ""; }
+  catch (e) { say(e.message); }
+});
+$("#disconnect").addEventListener("click", async () => {
+  try { started = false; render(await api("/api/calendar/link/disconnect", {})); } catch (e) { say(e.message); }
+});
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+refresh();
+</script>
+</body>
+</html>

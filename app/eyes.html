@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Jarvis Eyes</title>
+<meta name="theme-color" content="#000">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<style>
+  :root { --cyan:#38f0ff; --violet:#a06bff; --magenta:#ff5cf0; --green:#4ce39a; --amber:#ffb547; --red:#ff5a6e;
+          --ink:#eaf6ff; --dim:#9fb3cc; --faint:#6b7d96; --glass:rgba(8,12,22,.78); --line:rgba(140,190,255,.18);
+          --grad:linear-gradient(120deg,var(--cyan),var(--violet) 60%,var(--magenta));
+          --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px); }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; background:#000; color:var(--ink); font:15px/1.45 -apple-system,"Segoe UI",Roboto,system-ui,sans-serif; overflow:hidden; }
+  button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+  #view { position:fixed; inset:0; width:100%; height:100%; object-fit:cover; background:#000; }
+
+  .top { position:fixed; top:0; left:0; right:0; z-index:6; display:flex; justify-content:space-between; align-items:center;
+         padding:calc(8px + var(--safe-t)) 14px 6px; background:linear-gradient(#000c,#0000); }
+  .top a, .top .icon { color:#fff; font-size:26px; text-decoration:none; width:40px; text-align:center; opacity:.92; }
+  .top b { letter-spacing:.24em; font-size:12.5px; font-weight:800; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .modes { position:fixed; top:calc(52px + var(--safe-t)); left:50%; transform:translateX(-50%); z-index:6; display:flex; gap:3px;
+           background:rgba(5,8,14,.66); border:1px solid var(--line); border-radius:999px; padding:4px; backdrop-filter:blur(8px); }
+  .modes button { font:700 10.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.16em; color:var(--dim); padding:8px 15px; border-radius:999px; }
+  .modes button.on { background:var(--grad); color:#03121c; }
+
+  .rec { position:fixed; top:calc(96px + var(--safe-t)); left:50%; transform:translateX(-50%); z-index:6; display:none;
+         background:#000a; color:var(--red); font-weight:700; padding:4px 12px; border-radius:20px; }
+  .rec.on { display:block; }
+  .rec i { display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--red); margin-right:6px; animation:blink 1s infinite; }
+  @keyframes blink { 50% { opacity:.2; } }
+  .hint { position:fixed; left:0; right:0; top:46%; text-align:center; color:#ffffffb3; z-index:2; padding:0 28px; font-size:14.5px; text-shadow:0 1px 8px #000; }
+
+  /* step card (engineer mode, during a build) */
+  .step { position:fixed; left:12px; right:12px; top:calc(98px + var(--safe-t)); z-index:5; display:none; max-height:40vh; overflow:auto;
+          background:var(--glass); border:1px solid var(--line); border-radius:18px; padding:13px 15px 12px; backdrop-filter:blur(12px); }
+  .step.on { display:block; }
+  .step .row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .step .num { font:800 10.5px/1 ui-monospace,monospace; letter-spacing:.16em; color:var(--cyan); }
+  .badge { font:800 9.5px/1 ui-monospace,monospace; letter-spacing:.12em; padding:4px 7px; border-radius:6px; }
+  .badge.verified { background:#4ce39a22; color:var(--green); border:1px solid #4ce39a55; }
+  .badge.check { background:#ffb54722; color:var(--amber); border:1px solid #ffb54755; }
+  .badge.safety { background:#ff5a6e22; color:var(--red); border:1px solid #ff5a6e66; }
+  .step h3 { font-size:17px; margin:2px 0 4px; }
+  .step p { color:#dbe8f7; font-size:14.5px; }
+  .must { margin-top:8px; font-size:12.5px; color:var(--dim); }
+  .must li { margin:3px 0 0 18px; }
+  .ctl { display:flex; gap:8px; margin-top:10px; }
+  .ctl button { flex:1; padding:8px 0; border-radius:11px; border:1px solid var(--line); background:#ffffff0d; font-size:13px; font-weight:600; color:var(--dim); }
+  .ctl button.end { flex:.7; color:#ffb3bd; }
+  .banner { border-radius:12px; padding:9px 11px; font-size:13px; margin:0 0 8px; line-height:1.4; }
+  .banner.caution { background:#ffb5471a; border:1px solid #ffb54755; color:#ffd9a0; }
+  .banner.stop { background:#ff5a6e1f; border:1px solid #ff5a6e77; color:#ffc2ca; font-weight:600; }
+
+  /* plain Eyes reply bubble */
+  #reply { position:fixed; left:12px; right:12px; bottom:calc(158px + var(--safe-b)); z-index:4; max-height:40vh; overflow:auto;
+           background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:16px; padding:13px 16px;
+           font-size:15.5px; line-height:1.5; display:none; white-space:pre-wrap; }
+  #reply.on { display:block; }
+  .who { color:var(--cyan); font:800 10.5px/1 ui-monospace,monospace; letter-spacing:.16em; margin-bottom:7px; }
+
+  /* result sheet (engineer: identify / check) */
+  .sheet { position:fixed; left:0; right:0; bottom:0; z-index:8; max-height:86vh; overflow:auto; display:none;
+           background:linear-gradient(#0b1220f2,#05080ef7); border-top:1px solid var(--line); border-radius:22px 22px 0 0;
+           padding:12px 16px calc(18px + var(--safe-b)); backdrop-filter:blur(14px); box-shadow:0 -12px 40px #000a; }
+  .sheet.on { display:block; animation:up .22s ease-out; }
+  @keyframes up { from { transform:translateY(30px); opacity:.4; } }
+  .grab { width:42px; height:4px; border-radius:4px; background:#ffffff33; margin:0 auto 8px; }
+  .sheethead { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .sheethead span { font:800 10.5px/1 ui-monospace,monospace; letter-spacing:.18em; color:var(--cyan); }
+  .shut { width:32px; height:32px; border-radius:50%; background:#ffffff14; font-size:16px; color:var(--dim); }
+  .evidence { list-style:none; margin:2px 0 10px; }
+  .evidence li { position:relative; padding:3px 0 3px 16px; font-size:13.5px; color:#cfdcec; }
+  .evidence li::before { content:""; position:absolute; left:3px; top:11px; width:6px; height:6px; border-radius:50%; background:var(--cyan); }
+  .shot { position:relative; border-radius:14px; overflow:hidden; background:#000; margin-bottom:12px; }
+  .shot img { display:block; width:100%; max-height:46vh; object-fit:contain; }
+  .box { position:absolute; border:2px solid var(--magenta); border-radius:4px; pointer-events:none; }
+  .box.main { border-color:var(--cyan); box-shadow:0 0 0 1px #0007, 0 0 14px #38f0ff55; }
+  .box span { position:absolute; left:-2px; bottom:100%; margin-bottom:2px; white-space:nowrap; font:700 10.5px/1 system-ui,sans-serif;
+              padding:3px 6px; border-radius:5px; background:#05080ef0; color:var(--magenta); max-width:70vw; overflow:hidden; text-overflow:ellipsis; }
+  .box.main span { color:var(--cyan); }
+  .box.low span { top:100%; bottom:auto; margin:2px 0 0; }
+  .box.right span { left:auto; right:-2px; }   /* labels near the right edge grow leftwards, not off the photo */
+  .box.bare span { display:none; }
+  .title { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:4px; }
+  .title h2 { font-size:21px; letter-spacing:.01em; }
+  .conf { font:800 9.5px/1 ui-monospace,monospace; letter-spacing:.12em; padding:5px 8px; border-radius:7px; }
+  .conf.high { background:#4ce39a22; color:var(--green); } .conf.medium { background:#ffb54722; color:var(--amber); }
+  .conf.low { background:#ff5a6e22; color:var(--red); }
+  .does { color:#dbe8f7; margin-bottom:10px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; }
+  .chip { font-size:12px; padding:5px 9px; border-radius:999px; background:#ffffff0f; border:1px solid var(--line); color:var(--dim); }
+  .chip.mark { font-family:ui-monospace,monospace; color:#cfe9ff; }
+  .lbl { font:700 10px/1 ui-monospace,monospace; letter-spacing:.16em; color:var(--faint); margin:8px 0 6px; }
+  .note { color:var(--dim); font-size:13.5px; margin-bottom:6px; }
+  .verdict { display:flex; align-items:center; gap:10px; font-size:19px; font-weight:800; margin-bottom:8px; }
+  .verdict i { font-style:normal; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:17px; }
+  .v-done i { background:#4ce39a2a; color:var(--green); } .v-not_yet i { background:#ff5a6e26; color:var(--red); }
+  .v-cant_tell i { background:#ffb5472a; color:var(--amber); }
+  .reqs { list-style:none; margin:2px 0 10px; }
+  .reqs li { display:flex; gap:9px; padding:7px 0; border-top:1px solid #ffffff10; font-size:14px; }
+  .reqs li b { flex:none; width:20px; text-align:center; }
+  .reqs .yes b { color:var(--green); } .reqs .no b { color:var(--red); } .reqs .unclear b { color:var(--amber); }
+  .reqs small { display:block; color:var(--faint); font-size:12.5px; margin-top:2px; }
+  .say { color:#cfdcec; font-size:14px; margin-bottom:12px; }
+  .acts { display:flex; gap:9px; }
+  .acts button { flex:1; padding:12px 0; border-radius:13px; font-weight:700; font-size:14px; border:1px solid var(--line); background:#ffffff0d; }
+  .acts button.primary { background:var(--grad); color:#03121c; border-color:transparent; }
+
+  .dock { position:fixed; left:0; right:0; bottom:0; z-index:3; padding:10px 18px calc(14px + var(--safe-b)); background:linear-gradient(#0000,#000d 42%); }
+  .askrow { position:relative; margin-bottom:12px; }
+  #ask { width:100%; background:#ffffff16; border:1px solid #ffffff2a; color:#fff; border-radius:22px; padding:12px 16px; font:inherit; }
+  #ask::placeholder { color:#ffffff80; }
+  #go { position:absolute; right:5px; top:5px; bottom:5px; padding:0 15px; border-radius:18px; background:var(--grad); color:#03121c; font-weight:800; font-size:13px; display:none; }
+  #go.on { display:block; }
+  .bar { display:flex; align-items:center; justify-content:space-between; }
+  .shutter { width:76px; height:76px; border-radius:50%; background:#fff; border:5px solid #ffffff55; flex:none; transition:transform .1s; }
+  .shutter:active { transform:scale(.93); }
+  .eng .shutter { background:radial-gradient(circle at 50% 45%, #fff 0 52%, #38f0ff 53% 100%); border-color:#38f0ff66; }
+  .side { width:60px; display:flex; justify-content:center; }
+  .vid { width:58px; height:58px; border-radius:50%; background:#ffffff1a; border:2px solid #ffffff44; color:#fff; font-size:24px; }
+  .vid.on { background:var(--red); border-color:var(--red); }
+  .caption { text-align:center; font:700 10px/1 ui-monospace,monospace; letter-spacing:.14em; color:#ffffffa0; margin-top:8px; min-height:10px; }
+  .busy { position:fixed; inset:0; z-index:9; display:none; align-items:center; justify-content:center; flex-direction:column; gap:12px;
+          background:#000a; font-size:15px; color:var(--dim); }
+  .busy.on { display:flex; }
+  .spin { width:30px; height:30px; border:3px solid #ffffff22; border-top-color:var(--cyan); border-radius:50%; animation:sp .8s linear infinite; }
+  @keyframes sp { to { transform:rotate(360deg); } }
+  .eng #video { display:none; }
+</style>
+</head>
+<body>
+<video id="view" autoplay muted playsinline></video>
+<div class="top"><a href="/" aria-label="Back">‹</a><b>J.A.R.V.I.S · EYES</b><button class="icon" id="flip" aria-label="Flip camera">⟲</button></div>
+<div class="modes" id="modes"><button data-m="eyes">EYES</button><button data-m="eng">ENGINEER</button></div>
+<div class="rec" id="rec"><i></i><span id="rectime">0:00</span></div>
+<div class="hint" id="hint"></div>
+<div class="step" id="step"></div>
+<div id="reply"><div class="who">JARVIS</div><div id="replytext"></div></div>
+<div class="sheet" id="sheet"></div>
+<div class="dock">
+  <div class="askrow"><input id="ask" autocomplete="off"><button id="go">Start build</button></div>
+  <div class="bar">
+    <div class="side"></div>
+    <button class="shutter" id="shot" aria-label="Take photo"></button>
+    <div class="side"><button class="vid" id="video" aria-label="Record video">🎥</button></div>
+  </div>
+  <div class="caption" id="caption"></div>
+</div>
+<div class="busy" id="busy"><div class="spin"></div><div id="busytxt">Looking…</div></div>
+<audio id="player" playsinline></audio>
+<script>
+const $ = s => document.querySelector(s);
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+const token = localStorage.getItem("jarvis_token");
+const view = $("#view"), player = $("#player");
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+let stream = null, facing = "environment", recording = false, frames = [], timer = null, recStart = 0, capInt = null;
+let mode = "eyes", project = null, lastPhoto = null;
+try { mode = localStorage.getItem("eyes_mode") === "eng" ? "eng" : "eyes"; } catch (e) {}
+
+async function startCamera() {
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 1920 } }, audio: false });
+    view.srcObject = stream;
+  } catch (e) { stream = null; $("#hint").textContent = "Camera unavailable — allow camera access, or tap the shutter to pick a photo."; }
+}
+let picked = null;   // a photo from the gallery, used when the camera isn't available
+function frame(maxSide = 1280, q = 0.86) {
+  const src = view.videoWidth ? view : picked; if (!src) return null;
+  const w = src.videoWidth || src.naturalWidth, h = src.videoHeight || src.naturalHeight;
+  const scale = Math.min(1, maxSide / Math.max(w, h));
+  const cv = document.createElement("canvas"); cv.width = Math.round(w * scale); cv.height = Math.round(h * scale);
+  cv.getContext("2d").drawImage(src, 0, 0, cv.width, cv.height);
+  return cv.toDataURL("image/jpeg", q);
+}
+function busy(on, text) { $("#busytxt").textContent = text || "Looking…"; $("#busy").classList.toggle("on", on); }
+function play(audio) { if (audio) { player.src = audio; player.play().catch(() => {}); } }
+async function post(path, body) {
+  const r = await fetch(path, { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) throw new Error(j.detail || `Jarvis returned ${r.status}`);
+  return j;
+}
+
+// ---- plain Eyes ---------------------------------------------------------------------------------
+function showReply(text) { $("#replytext").textContent = text || "…"; $("#reply").classList.add("on"); }
+async function eyesAsk(images) {
+  if (!token) return showReply("Open the Jarvis app and link this phone first.");
+  busy(true); $("#hint").style.display = "none";
+  try { const j = await post("/api/eyes", { images, text: $("#ask").value.trim(), speak: true }); showReply(j.reply || "No answer."); play(j.audio); }
+  catch (e) { showReply(e.message); }
+  busy(false);
+}
+function startRec() {
+  recording = true; frames = []; recStart = Date.now(); $("#rec").classList.add("on"); $("#video").classList.add("on");
+  const grab = () => { if (frames.length < 8) { const f = frame(900, 0.72); if (f) frames.push(f); } };
+  grab(); capInt = setInterval(grab, 1300);
+  timer = setInterval(() => { const s = Math.floor((Date.now() - recStart) / 1000); $("#rectime").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); if (s >= 10) stopRec(); }, 250);
+}
+function stopRec() {
+  if (!recording) return;
+  recording = false; clearInterval(capInt); clearInterval(timer); $("#rec").classList.remove("on"); $("#video").classList.remove("on");
+  if (frames.length) eyesAsk(frames);
+}
+
+// ---- Engineer -----------------------------------------------------------------------------------
+function boxesHtml(boxes) {
+  const parts = boxes.some(b => !b.main && b.box);
+  return boxes.filter(b => b.box).map(b => {
+    const [x0, y0, x1, y1] = b.box;
+    const cls = ["box", b.main && "main", y0 < 0.07 && "low", x0 > 0.5 && "right",
+                 b.main && parts && "bare"].filter(Boolean).join(" ");   // the title already names the main item
+    return `<div class="${cls}" style="left:${x0 * 100}%;top:${y0 * 100}%;width:${(x1 - x0) * 100}%;height:${(y1 - y0) * 100}%"><span>${esc(b.label)}</span></div>`;
+  }).join("");
+}
+// Part numbers (letters AND digits: ATMEGA328P, LM7805, HC-SR04) are evidence; logo words OCR mangles aren't.
+const partNumber = t => /[A-Za-z]/.test(t) && /\d/.test(t) && t.replace(/[^A-Za-z0-9]/g, "").length >= 4;
+function photoHtml(src, boxes) { return `<div class="shot"><img src="${src}" alt="Your photo">${boxesHtml(boxes)}</div>`; }
+function banner(s) { return s && s.level && s.level !== "none" ? `<div class="banner ${s.level}">${esc(s.message)}</div>` : ""; }
+// The overlay is positioned over the image's own box, so wait for it to lay out (object-fit: contain).
+function fitBoxes() {
+  document.querySelectorAll(".shot").forEach(shot => {
+    const img = shot.querySelector("img"); if (!img.naturalWidth) return;
+    const W = shot.clientWidth, H = img.clientHeight, r = Math.min(W / img.naturalWidth, H / img.naturalHeight);
+    const w = img.naturalWidth * r, h = img.naturalHeight * r, ox = (W - w) / 2, oy = (H - h) / 2;
+    shot.querySelectorAll(".box").forEach(b => {
+      const f = k => parseFloat(b.dataset[k] ?? (b.dataset[k] = parseFloat(b.style[k]) / 100));
+      b.style.left = ox + f("left") * w + "px"; b.style.top = oy + f("top") * h + "px";
+      b.style.width = f("width") * w + "px"; b.style.height = f("height") * h + "px";
+    });
+    // Labels must not sit on top of each other: a label overlapping an earlier one flips below its box.
+    const placed = [];
+    shot.querySelectorAll(".box:not(.bare) span").forEach(s => {
+      const hit = r => placed.some(p => r.left < p.right && r.right > p.left && r.top < p.bottom && r.bottom > p.top);
+      if (hit(s.getBoundingClientRect())) s.parentElement.classList.toggle("low");
+      placed.push(s.getBoundingClientRect());
+    });
+  });
+}
+function openSheet(html, heading = "WHAT I SEE") {
+  $("#sheet").innerHTML = `<div class="grab"></div><div class="sheethead"><span>${esc(heading)}</span>`
+    + `<button class="shut" id="closeSheet" aria-label="Close">✕</button></div>${html}`;
+  $("#sheet").classList.add("on"); $("#closeSheet").onclick = closeSheet; $("#hint").style.display = "none";
+  $("#sheet").querySelectorAll("img").forEach(i => i.complete ? fitBoxes() : (i.onload = fitBoxes));
+}
+function closeSheet() { $("#sheet").classList.remove("on"); updateChrome(); }
+
+function showIdentify(j, photo) {
+  const boxes = [{ label: j.item, box: j.box, main: true }, ...(j.parts || []).map(p => ({ label: p.label, box: p.box }))];
+  const marks = (j.markings || []).filter(m => partNumber(m.text)).slice(0, 8)
+    .map(m => `<span class="chip mark">${esc(m.text)}</span>`).join("");
+  const ev = (j.evidence || []).slice(0, 5).map(e => `<li>${esc(e)}</li>`).join("");
+  const unsure = j.confidence !== "high" && (j.uncertain_about || j.better_photo)
+    ? `<div class="lbl">NOT SURE</div><div class="note">${esc([j.uncertain_about, j.better_photo].filter(Boolean).join(" · "))}</div>` : "";
+  openSheet(`${photoHtml(photo, boxes)}
+    <div class="title"><h2>${esc(j.item)}</h2><span class="conf ${j.confidence}">${esc((j.confidence || "").toUpperCase())} CONFIDENCE</span></div>
+    <div class="does">${esc(j.what_it_does)}</div>${banner(j.safety)}
+    ${ev ? `<div class="lbl">WHAT GAVE IT AWAY</div><ul class="evidence">${ev}</ul>` : ""}
+    ${marks ? `<div class="lbl">PART NUMBERS I READ</div><div class="chips">${marks}</div>` : ""}${unsure}
+    <div class="acts"><button id="again">📸 Retake</button><button class="primary" id="buildWith">Build with this →</button></div>`);
+  $("#again").onclick = () => { closeSheet(); };
+  $("#buildWith").onclick = () => { closeSheet(); lastPhoto = photo; $("#ask").value = ""; $("#ask").placeholder = `What do you want to build with this ${j.item}?`; $("#ask").focus(); };
+}
+function showCheck(j, photo) {
+  const label = { done: "Looks right", not_yet: "Not yet", cant_tell: "Can't tell" }[j.verdict];
+  const icon = { done: "✓", not_yet: "✕", cant_tell: "?" }[j.verdict];
+  const reqs = (j.results || []).map(r => `<li class="${r.met}"><b>${{ yes: "✓", no: "✕", unclear: "?" }[r.met]}</b><div>${esc(r.requirement)}${r.note ? `<small>${esc(r.note)}</small>` : ""}</div></li>`).join("");
+  const boxes = j.issue ? [{ label: j.issue.label, box: j.issue.box, main: true }] : [];
+  const p = j.project;
+  const next = j.verdict === "done" ? (p && p.finished ? "Finish" : "Next step →") : "📸 Try again";
+  openSheet(`${photoHtml(photo, boxes)}<div class="verdict v-${j.verdict}"><i>${icon}</i>${label}</div>
+    <div class="lbl">PHOTO MUST SHOW</div><ul class="reqs">${reqs}</ul>
+    ${j.verdict === "done" ? `<div class="say">${esc(j.reply)}</div>` : ""}
+    <div class="acts"><button class="primary" id="next">${next}</button></div>`,
+    `STEP ${p ? (j.verdict === "done" ? p.index : p.index + 1) : 1} CHECK`);   // a pass has already advanced
+  $("#next").onclick = closeSheet;
+}
+function renderStep() {
+  const el = $("#step");
+  if (mode !== "eng" || !project) { el.classList.remove("on"); return; }
+  if (project.finished) {
+    el.innerHTML = `<div class="row"><span class="num">BUILD COMPLETE</span></div><h3>${esc(project.title)} 🎉</h3>
+      <p>Every step checked. Start another build any time.</p><div class="ctl"><button class="end" id="endB">Close</button></div>`;
+  } else {
+    const s = project.step, src = project.source;
+    const badge = src === "verified" ? `<span class="badge verified">VERIFIED WIRING</span>` : src === "safety"
+      ? `<span class="badge safety">SAFETY FIRST</span>` : `<span class="badge check">DOUBLE-CHECK PINS</span>`;
+    const must = (Array.isArray(s.check) ? s.check : [s.check]).map(c => `<li>${esc(c)}</li>`).join("");
+    const sb = project.safety && (project.safety.level === "stop" || project.index === 0) ? banner(project.safety) : "";
+    el.innerHTML = `${sb}
+      <div class="row"><span class="num">STEP ${project.index + 1} / ${project.total}</span>${badge}</div>
+      <h3>${esc(s.title)}</h3><p>${esc(s.instruction)}</p>
+      <div class="must">Photo must show:<ul>${must}</ul></div>
+      <div class="ctl"><button id="backB">‹ Back</button><button id="skipB">Skip</button><button class="end" id="endB">End</button></div>`;
+    $("#backB").onclick = () => control("back"); $("#skipB").onclick = () => control("skip");
+  }
+  $("#endB").onclick = () => control("stop");
+  el.classList.add("on");
+}
+async function eng(body, busyText, photo) {
+  if (!token) { openSheet(`<div class="say">Open the Jarvis app and link this phone first.</div>`); return null; }
+  busy(true, busyText);
+  try {
+    const j = await post("/api/eng", { ...body, speak: true });
+    if ("project" in j) project = j.project; renderStep(); updateChrome(); play(j.audio);
+    return j;
+  } catch (e) { openSheet(`${photo ? photoHtml(photo, []) : ""}<div class="say">${esc(e.message)}</div>`); return null; }
+  finally { busy(false); }
+}
+async function control(action) { const j = await eng({ action }, action === "stop" ? "Closing…" : "One sec…"); if (j && action === "stop") lastPhoto = null; }
+async function engShoot() {
+  const photo = frame(); if (!photo) return;
+  if (project && !project.finished) {
+    const j = await eng({ action: "check", image: photo }, "Checking this step…", photo); if (j) showCheck(j, photo);
+  } else {
+    const j = await eng({ action: "identify", image: photo, question: $("#ask").value.trim() }, "Identifying…", photo); if (j) showIdentify(j, photo);
+  }
+}
+async function startBuild() {
+  const goal = $("#ask").value.trim(); if (!goal) return;
+  const j = await eng({ action: "start", goal, ...(lastPhoto ? { image: lastPhoto } : {}) }, "Planning your build…");
+  if (j) { $("#ask").value = ""; lastPhoto = null; $("#go").classList.remove("on"); }
+}
+
+// ---- mode + chrome ------------------------------------------------------------------------------
+function updateChrome() {
+  const e = mode === "eng";
+  document.body.classList.toggle("eng", e);
+  $("#modes").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.m === mode));
+  const building = e && project && !project.finished;
+  $("#ask").placeholder = !e ? "Ask about what you see… (optional)" : building ? "Optional note about this step…"
+    : lastPhoto ? $("#ask").placeholder : "What are you building? e.g. blink an LED";
+  $("#go").classList.toggle("on", e && !building && !!$("#ask").value.trim());
+  $("#caption").textContent = !e ? "PHOTO · OR TAP 🎥 FOR A SHORT VIDEO" : building ? "CHECK MY WORK · STILL PHOTO" : "WHAT AM I HOLDING? · STILL PHOTO";
+  $("#hint").textContent = !e ? "Point at anything — tap the shutter for a photo"
+    : building ? "Do the step, then photograph it" : "Hold a part up to the camera and tap the shutter";
+  $("#hint").style.display = $("#reply").classList.contains("on") || building ? "none" : "";
+  $("#reply").classList.toggle("on", !e && $("#reply").classList.contains("on"));
+  renderStep();
+}
+$("#modes").querySelectorAll("button").forEach(b => b.onclick = async () => {
+  mode = b.dataset.m; try { localStorage.setItem("eyes_mode", mode); } catch (e) {}
+  closeSheet(); updateChrome();
+  if (mode === "eng" && token && project === null) { try { const j = await post("/api/eng", { action: "status" }); project = j.project; updateChrome(); } catch (e) {} }
+});
+$("#ask").addEventListener("input", updateChrome);
+$("#ask").addEventListener("keydown", e => { if (e.key === "Enter" && mode === "eng" && !(project && !project.finished)) startBuild(); });
+$("#go").onclick = startBuild;
+const shoot = () => mode === "eng" ? engShoot() : (() => { const f = frame(1024, 0.82); if (f) eyesAsk([f]); })();
+const pick = Object.assign(document.createElement("input"), { type: "file", accept: "image/*", hidden: true });
+document.body.appendChild(pick);
+pick.onchange = () => {
+  const f = pick.files[0]; pick.value = ""; if (!f) return;
+  const img = new Image(); img.onload = () => { picked = img; shoot(); URL.revokeObjectURL(img.src); }; img.src = URL.createObjectURL(f);
+};
+$("#shot").onclick = () => view.videoWidth ? shoot() : pick.click();
+$("#video").onclick = () => recording ? stopRec() : startRec();
+$("#flip").onclick = () => { facing = facing === "environment" ? "user" : "environment"; startCamera(); };
+window.addEventListener("resize", fitBoxes);
+document.addEventListener("touchend", function once() { player.play().then(() => player.pause()).catch(() => {}); }, { once: true });
+updateChrome(); startCamera();
+if (mode === "eng" && token) post("/api/eng", { action: "status" }).then(j => { project = j.project; updateChrome(); }).catch(() => {});
+</script>
+</body>
+</html>

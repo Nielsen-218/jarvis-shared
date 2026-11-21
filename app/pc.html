@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JARVIS · PC control</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 760px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  [hidden] { display: none !important; }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); align-content: start; }
+  .head { display: flex; align-items: center; gap: var(--s-2); }
+  .head b, .h { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); overflow-wrap: anywhere; }
+  .row2 { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: stretch; } .row2 > * { flex: 1 1 140px; min-width: 0; }
+  .row2 > .ds-input, .row2 > .ds-textarea { flex: 2 1 180px; }
+  form { display: grid; gap: var(--s-2); }
+  .ds-textarea { min-height: 96px; }
+  #task { overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  #result { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--fs-sm); line-height: var(--lh-md); }
+  #result.err { color: var(--danger); }
+  #screen { max-width: 100%; height: auto; border-radius: var(--r-2); border: 1px solid var(--line-1); }
+  pre { font: 400 var(--fs-xs)/var(--lh-sm) var(--font-mono); color: var(--text-2); white-space: pre-wrap; overflow-wrap: anywhere;
+    background: var(--bg-1); border: 1px solid var(--line-1); border-radius: var(--r-2); padding: var(--s-3); max-height: 320px; overflow: auto; }
+  pre:empty { display: none; }
+  .busy { display: flex; align-items: center; gap: var(--s-2); }
+</style>
+</head>
+<body class="ds">
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>PC control</h1>
+  <span id="connection" class="ds-badge" role="status">Checking…</span>
+</header>
+<main>
+  <p class="sub">Your phone is the remote. Open apps, see the screen, or hand Jarvis a task. It runs on your Windows PC.</p>
+  <section class="ds-card"><div class="row2"><button class="ds-btn" id="refresh">Check connection</button><button class="ds-btn" id="capture">Show PC screen</button><button class="ds-btn danger" id="stop">Stop PC task</button></div>
+    <p id="identity" class="sub">Checking the private connection…</p><div id="task" aria-live="polite"></div></section>
+  <section class="ds-card"><div class="head"><h2 class="h">Quick commands</h2></div><p class="sub">Instant, no AI involved.</p>
+    <form id="open"><div class="ds-field"><label for="app">Application</label></div><div class="row2"><input class="ds-input" id="app" placeholder="Calculator, Chrome, Spotify…" maxlength="100" required><button class="ds-btn primary">Open on PC</button></div></form>
+    <form id="website"><div class="ds-field"><label for="url">Website</label></div><div class="row2"><input class="ds-input" type="url" id="url" placeholder="https://…" maxlength="2000" required><button class="ds-btn">Open on PC</button></div></form>
+    <div class="row2"><button class="ds-btn" id="play">Play / pause</button><button class="ds-btn" id="mute">Mute / unmute</button></div>
+  </section>
+  <section class="ds-card"><div class="head"><h2 class="h">Give Jarvis a task</h2></div><p class="sub">Known tasks and saved workflows run straight away. New ones get a plan you approve first, and nothing paid runs without your OK.</p>
+    <form id="control"><div class="ds-field"><label for="command">What should JARVIS do?</label><textarea class="ds-textarea" id="command" maxlength="4000" required placeholder="Describe the app and exactly what you want done…"></textarea></div><button class="ds-btn primary wide">Run on PC</button></form>
+    <p class="sub">Windows needs to be awake and unlocked for screen actions. JARVIS cannot bypass the Windows lock screen or secure UAC prompts.</p></section>
+  <section class="ds-card" id="review" hidden><div class="head"><h2 class="h">Review before continuing</h2></div><p id="review-note" class="sub"></p><pre id="plan"></pre>
+    <button class="ds-btn primary" id="approve-plan" hidden>Approve this exact plan and run</button>
+    <form id="budget" hidden><div class="ds-field"><label for="usd">Maximum USD for one cloud planning call (up to $1)</label><input class="ds-input" id="usd" type="number" min="0.000001" max="1" step="0.000001" inputmode="decimal" required placeholder="Enter your authorized amount"></div><p class="sub">Only the task text is sent. No screenshots, automatic retries or paid calls for individual steps. USD uses your configured rate ceilings; provider usage is logged separately.</p><button class="ds-btn primary">Authorize one planning call</button></form></section>
+  <section class="ds-card" id="workflow" hidden><div class="head"><h2 class="h">Save this verified procedure</h2></div><form id="save-workflow"><div class="ds-field"><label for="workflow-name">Name</label><input class="ds-input" id="workflow-name" maxlength="80" required></div><div class="ds-field"><label for="workflow-trigger">Exact phrase to reuse it</label><input class="ds-input" id="workflow-trigger" maxlength="300" required></div><p class="sub">Only a successful verified run can be saved. Sensitive steps still require approval when replayed.</p><button class="ds-btn">Save workflow</button></form></section>
+  <section class="ds-card"><div class="head"><h2 class="h">Usage</h2></div><button class="ds-btn" id="usage">What ran, and what it cost</button><pre id="usage-result"></pre></section>
+  <section class="ds-card"><div class="head"><h2 class="h">Result</h2></div><div id="result" aria-live="polite">Ready. Pick a command above, or describe a task.</div><img id="screen" alt="Screenshot requested from your PC" hidden></section>
+</main>
+<script src="/pc.js"></script>
+</body>
+</html>

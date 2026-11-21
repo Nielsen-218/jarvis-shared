@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play with Jarvis</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg-0); color: var(--text-1); overflow: hidden; user-select: none; height: 100%;
+    font: 400 13px/1.45 var(--font-ui); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  body::before { content: ""; position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(90% 55% at 50% 18%, rgba(92,198,230,.08), transparent 62%); }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  input, select { font: inherit; color: var(--text-1); background: var(--bg-3); border: 1px solid var(--line-2);
+    border-radius: var(--r-2); padding: 8px 10px; outline: none; }
+  input:focus, select:focus { border-color: var(--accent); }
+  #app { position: absolute; inset: 0; display: flex; flex-direction: column; }
+
+  /* title bar */
+  #bar { display: flex; align-items: center; gap: 8px; padding: 8px 10px 0 14px; cursor: move; position: relative; z-index: 3; }
+  #bar .t { flex: 1; min-width: 0; }
+  #bar b { font-size: 12px; letter-spacing: .34em; color: var(--accent); font-weight: 700; }
+  #bar .st { font-size: 12px; letter-spacing: .08em; color: var(--text-2); text-transform: uppercase; margin-left: 8px; }
+  .badges { display: inline-flex; gap: 4px; margin-left: 6px; vertical-align: 1px; }
+  .badge { font-size: 12px; letter-spacing: .1em; padding: 1px 6px; border-radius: var(--r-pill); border: 1px solid var(--line-2);
+    color: var(--accent); text-transform: uppercase; display: none; }
+  .badge.on { display: inline-block; } .badge.rec { color: #ff6b6b; border-color: rgba(255,107,107,.5); }
+  .wbtn { width: 24px; height: 24px; border-radius: 7px; color: var(--text-2); display: grid; place-items: center; }
+  .wbtn:hover { background: var(--accent-soft); color: var(--text-1); }
+  .wbtn svg { width: 14px; height: 14px; }
+
+  /* stage: Jarvis himself */
+  #stage { position: relative; height: 214px; flex: none; cursor: pointer; }
+  #face { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #bubble { position: absolute; left: 14px; right: 14px; bottom: 4px; padding: 9px 13px; border-radius: var(--r-3);
+    background: rgba(9, 20, 33, .92); border: 1px solid var(--line-2); box-shadow: 0 6px 22px rgba(0,0,0,.45);
+    font-size: 13px; line-height: 1.4; opacity: 0; transform: translateY(6px); transition: .25s; pointer-events: none; }
+  #bubble.on { opacity: 1; transform: none; }
+  #bubble::before { content: ""; position: absolute; top: -7px; left: 50%; width: 12px; height: 12px; transform: translateX(-50%) rotate(45deg);
+    background: rgba(9, 20, 33, .92); border-left: 1px solid var(--line-2); border-top: 1px solid var(--line-2); }
+
+  /* dock */
+  #dock { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 8px 10px; flex: none; }
+  #dock button { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 7px; border-radius: var(--r-2);
+    background: var(--bg-1); border: 1px solid var(--line-2); color: var(--text-2); font-size: 12px; font-weight: 600; transition: .15s; }
+  #dock button svg { width: 19px; height: 19px; }
+  #dock button:hover { color: var(--text-1); border-color: var(--line-2); }
+  #dock button.on { color: var(--bg-0); background: linear-gradient(135deg, var(--accent), var(--accent)); border-color: transparent; }
+
+  /* panels */
+  #view { flex: 1; min-height: 0; margin: 0 10px 10px; border-radius: var(--r-3); background: var(--bg-1); border: 1px solid var(--line-2);
+    overflow: hidden; display: flex; flex-direction: column; }
+  .pane { display: none; flex: 1; min-height: 0; flex-direction: column; animation: in .22s ease-out; }
+  .pane.on { display: flex; }
+  .scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 12px; scrollbar-width: thin; scrollbar-color: #1d3247 transparent; }
+  @keyframes in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+  h3 { font-size: 12px; letter-spacing: .08em; color: var(--text-2); text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+  .muted { color: var(--text-2); }
+  .btn { padding: 9px 14px; border-radius: 11px; font-weight: 700; background: linear-gradient(135deg, var(--accent), var(--accent));
+    color: var(--accent-ink); box-shadow: 0 6px 18px var(--accent-soft); }
+  .btn { white-space: nowrap; } .btn:disabled { opacity: .45; box-shadow: none; cursor: default; }
+  .btn.ghost { background: var(--bg-2); color: var(--text-1); border: 1px solid var(--line-2); box-shadow: none; }
+  .btn.green { background: linear-gradient(135deg, #5ee08a, #2fd1a5); color: #03140a; box-shadow: 0 6px 18px rgba(94,224,138,.25); }
+  .row { display: flex; gap: 8px; align-items: center; }
+
+  /* chat */
+  #log { display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; min-height: 100%; }
+  .line { word-wrap: break-word; animation: in .25s ease-out; }
+  .line b { font-weight: 700; letter-spacing: .08em; font-size: 12px; margin-right: 6px; }
+  .line.you b { color: var(--warn); } .line.jarvis b { color: var(--accent); }
+  .line.sys { color: var(--text-2); font-style: italic; font-size: 12px; }
+  #ask { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--line-2); }
+  #ask input { flex: 1; }
+  #media { display: none; padding: 8px 8px 0; }
+  #media.show { display: block; }
+  #media img { width: 100%; max-height: 190px; object-fit: contain; border-radius: var(--r-2); cursor: zoom-in; background: #050a10; }
+  #media .cap { display: flex; justify-content: space-between; color: var(--text-2); font-size: 12px; margin-top: 4px; }
+  #media .cap a { color: var(--accent); cursor: pointer; }
+
+  /* workout */
+  .wo-title { font-size: 16px; font-weight: 700; line-height: 1.25; }
+  .chips { display: flex; gap: 5px; flex-wrap: wrap; margin: 7px 0 10px; }
+  .chip { font-size: 12px; padding: 2px 8px; border-radius: var(--r-pill); background: var(--bg-2); border: 1px solid var(--line-2); color: var(--text-2); }
+  .chip.c { color: var(--accent); }
+  .ex { display: flex; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line-1); align-items: baseline; }
+  .ex .n { width: 18px; color: var(--text-2); font-size: 12px; text-align: right; flex: none; }
+  .ex .nm { flex: 1; } .ex .d { color: var(--accent); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ex.done .nm { color: var(--text-2); text-decoration: line-through; } .ex.cur .nm { color: var(--text-1); font-weight: 700; }
+  .session { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 14px 12px; flex: 1; }
+  .session .ph { font-size: 12px; letter-spacing: .08em; color: var(--warn); font-weight: 700; text-transform: uppercase; }
+  .session .big { font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .session .sub { color: var(--accent); font-weight: 600; }
+  .session .note { color: var(--text-2); font-size: 12px; max-width: 330px; }
+  .ring { position: relative; width: 132px; height: 132px; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .num { position: absolute; inset: 0; display: grid; place-items: center; font-size: 32px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ring .num small { display: block; font-size: 12px; letter-spacing: .08em; color: var(--text-2); font-weight: 700; margin-top: -4px; }
+  .setin { display: flex; gap: 8px; align-items: center; justify-content: center; }
+  .setin input { width: 78px; text-align: center; }
+  .prog { height: 4px; background: var(--line-1); border-radius: 4px; overflow: hidden; width: 100%; flex: none; }
+  .prog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent)); transition: width .4s; }
+
+  /* games */
+  .games { display: grid; gap: 8px; }
+  .game { display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: var(--r-3); background: var(--bg-2); border: 1px solid var(--line-2); text-align: left; }
+  .game:hover { border-color: var(--line-2); }
+  .game .ic { color: var(--accent); width: 40px; height: 40px; border-radius: var(--r-2); display: grid; place-items: center; flex: none; font-size: 20px;
+    background: var(--accent-soft); }
+  .game b { display: block; font-size: 14px; } .game small { color: var(--text-2); }
+  .game .best { margin-left: auto; font-size: 12px; color: var(--warn); white-space: nowrap; }
+  .q { font-size: 15px; font-weight: 600; line-height: 1.35; margin: 4px 0 12px; }
+  .opts { display: grid; gap: 7px; }
+  .opt { padding: 10px 12px; border-radius: 11px; background: var(--bg-2); border: 1px solid var(--line-2); text-align: left; font-size: 13.5px; }
+  .opt:hover:not([disabled]) { border-color: var(--accent); }
+  .opt.right { border-color: var(--ok); background: var(--ok-soft); } .opt.wrong { border-color: var(--danger); background: var(--danger-soft); }
+  .score { display: flex; justify-content: space-between; color: var(--text-2); font-size: 12px; margin-bottom: 4px; }
+  .score b { color: var(--text-1); }
+  .rps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+  .rps button { padding: 16px 0; border-radius: var(--r-3); background: var(--bg-2); border: 1px solid var(--line-2); font-size: 30px; }
+  .rps button:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .vs { display: flex; justify-content: space-around; align-items: center; font-size: 40px; min-height: 64px; }
+  .vs span { font-size: 12px; color: var(--text-2); }
+  /* tic-tac-toe + memory boards */
+  .ttt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px auto; max-width: 240px; }
+  .ttt button { aspect-ratio: 1; border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-2); font-size: 34px; font-weight: 700; display: grid; place-items: center; }
+  .ttt button:not(:disabled):hover { border-color: var(--accent); }
+  .ttt button.x { color: var(--warn); } .ttt button.o { color: var(--accent); }
+  .ttt button.win { background: linear-gradient(135deg, var(--accent), var(--accent)); color: var(--accent-ink); border-color: transparent; }
+  .mem { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px auto; max-width: 260px; }
+  .mem button { aspect-ratio: 1; border-radius: var(--r-2); background: var(--bg-1); border: 1px solid var(--line-2); font-size: 24px; display: grid; place-items: center; transition: transform .15s, background .15s; }
+  .mem button.up { background: var(--bg-2); transform: rotateY(0deg); } .mem button.down { color: transparent; }
+  .mem button.done { background: linear-gradient(135deg, #1f3a2a, #14301f); border-color: var(--ok); }
+  /* catch */
+  .arena { position: relative; height: 260px; border-radius: var(--r-3); background: radial-gradient(60% 60% at 50% 40%, #0c1a2a, #070f18); border: 1px solid var(--line-2); overflow: hidden; margin: 10px 0; }
+  .catch-t { position: absolute; width: 54px; height: 54px; border-radius: 50%; border: 0; cursor: pointer; font-size: 26px; display: grid; place-items: center;
+    background: radial-gradient(circle at 35% 30%, #7ef0ff, #1b8fd6); box-shadow: 0 0 18px rgba(56,240,255,.5); transition: transform .08s; }
+  .catch-t:active { transform: scale(.85); }
+  /* simon / dance */
+  .pads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px auto; max-width: 240px; }
+  .pads button { aspect-ratio: 1.3; border-radius: var(--r-3); border: 1px solid var(--line-2); font-size: 30px; background: var(--bg-2); transition: background .12s, transform .12s, box-shadow .12s; }
+  .pads button.lit { transform: scale(1.04); }
+  .pads button[data-d="up"].lit { background: #2f6be0; box-shadow: 0 0 20px #2f6be0; }
+  .pads button[data-d="down"].lit { background: #e04f7a; box-shadow: 0 0 20px #e04f7a; }
+  .pads button[data-d="left"].lit { background: #5ee08a; box-shadow: 0 0 20px #5ee08a; color: #042; }
+  .pads button[data-d="right"].lit { background: #ffb300; box-shadow: 0 0 20px #ffb300; color: #320; }
+  /* basketball */
+  .court { position: relative; height: 220px; border-radius: var(--r-3); background: linear-gradient(#0c1a2a, #0a1420); border: 1px solid var(--line-2); overflow: hidden; margin: 10px 0; }
+  .hoop { position: absolute; top: 24px; width: 54px; height: 10px; border: 3px solid #ff8a3d; border-top: 0; border-radius: 0 0 10px 10px; }
+  .ball { position: absolute; bottom: 10px; left: 50%; width: 30px; height: 30px; margin-left: -15px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb36b, #e2662a); }
+  .power { height: 14px; border-radius: 8px; background: #0a1420; border: 1px solid var(--line-2); overflow: hidden; margin: 8px 0; position: relative; }
+  .power i { position: absolute; top: 0; bottom: 0; width: 4px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .power .zone { position: absolute; top: 0; bottom: 0; background: rgba(94,224,138,.25); border-left: 1px solid #5ee08a; border-right: 1px solid #5ee08a; }
+  /* soccer goal */
+  .goal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 12px auto; max-width: 260px; aspect-ratio: 3/2;
+    padding: 8px; border: 3px solid #cfe3f6; border-radius: 6px; background: repeating-linear-gradient(90deg, #0b1626, #0b1626 12px, #0d1a2c 12px, #0d1a2c 24px); }
+  .goal button { border-radius: 8px; border: 1px dashed rgba(207,227,246,.25); background: rgba(255,255,255,.03); font-size: 24px; display: grid; place-items: center; }
+  .goal button:hover { background: var(--accent-soft); border-color: var(--accent); }
+  /* treasure grid */
+  .dig { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 12px auto; max-width: 270px; }
+  .dig button { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--line-2); background: var(--bg-2); font-size: 18px; }
+  .dig button.hot { background: #5a1f1f; } .dig button.warm { background: #5a4420; } .dig button.cold { background: #1f3a5a; }
+  .dig button.found { background: linear-gradient(135deg, var(--warn), #ffe08a); color: #320; }
+  /* bowling pins */
+  .lane { text-align: center; font-size: 26px; letter-spacing: 4px; margin: 10px 0; min-height: 34px; }
+  /* doors / lanes */
+  .doors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px auto; max-width: 280px; }
+  .doors button, .lanes button { aspect-ratio: 1; border-radius: var(--r-2); border: 1px solid var(--line-2); background: var(--bg-2); font-size: 30px; }
+  .doors button:not(:disabled):hover, .lanes button:not(:disabled):hover { border-color: var(--accent); }
+  .lanes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px auto; max-width: 280px; }
+  .lanes button.warn { box-shadow: 0 0 20px #ffb300; border-color: #ffb300; }
+  .beatpad.lit { background: #38f0ff; box-shadow: 0 0 22px #38f0ff; color: #042; transform: scale(1.05); }
+  .bigtimer { height: 6px; background: var(--accent); border-radius: 3px; transition: width linear; }
+  .pad { flex: 1; margin: 6px 0; border-radius: var(--r-3); display: grid; place-items: center; font-size: 18px; font-weight: 700; cursor: pointer;
+    background: var(--bg-2); border: 1px solid var(--line-2); min-height: 170px; text-align: center; padding: 10px; }
+  .pad.wait { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+  .pad.go { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .back { color: var(--text-2); font-size: 12px; margin-bottom: 8px; display: inline-block; }
+  .back:hover { color: var(--text-1); }
+
+  /* timers + focus strip */
+  #chips { display: none; gap: 6px; padding: 0 10px 2px; flex-wrap: wrap; flex: none; }
+  #chips.on { display: flex; }
+  .tchip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 4px 3px 10px; border-radius: var(--r-pill);
+    background: var(--warn-soft); border: 1px solid var(--warn); color: #ffd98a; }
+  .tchip b { font-variant-numeric: tabular-nums; color: #fff; }
+  .tchip button { width: 18px; height: 18px; border-radius: 50%; color: #ffd98a; line-height: 1; }
+  .tchip button:hover { background: rgba(255,179,0,.25); }
+  .tchip.focus { background: var(--accent-soft); border-color: var(--accent); color: #cdbdff; padding-right: 10px; }
+  .tchip.brk { background: var(--ok-soft); border-color: var(--ok); color: #a9f0c4; padding-right: 10px; }
+  /* focus pane */
+  .presets { display: grid; gap: 8px; }
+  .preset { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--r-3); background: var(--bg-2); border: 1px solid var(--line-2); text-align: left; }
+  .preset:hover { border-color: rgba(157,123,255,.55); }
+  .preset .big2 { font-size: 20px; font-weight: 700; color: #cdbdff; width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+  .preset b { display: block; font-size: 14px; } .preset small { color: var(--text-2); }
+  /* nudge card */
+  #nudge { display: none; margin: 10px 10px 0; padding: 11px 12px; border-radius: var(--r-3); background: var(--ok-soft);
+    border: 1px solid var(--ok); animation: in .25s ease-out; }
+  #nudge.on { display: block; }
+  #nudge b { color: #a9f0c4; font-size: 12px; letter-spacing: .08em; } #nudge p { margin: 4px 0 9px; font-size: 13px; }
+  /* check-in + achievements */
+  .checkin { padding: 11px 12px; border-radius: var(--r-3); background: var(--line-1); border: 1px solid var(--line-2); margin-bottom: 12px; }
+  .checkin .q2 { display: flex; align-items: center; gap: 6px; margin-top: 7px; font-size: 12px; color: var(--text-2); }
+  .checkin .q2 span { width: 62px; flex: none; }
+  .seg { display: flex; gap: 4px; flex: 1; }
+  .seg button { flex: 1; padding: 5px 0; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line-2); font-size: 12px; font-weight: 600; }
+  .seg button.on { background: linear-gradient(135deg, var(--accent), var(--accent)); color: var(--bg-0); border-color: transparent; }
+  .streak { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--text-2); margin-bottom: 8px; flex-wrap: wrap; }
+  .streak b { color: var(--warn); }
+  .badges2 { display: flex; gap: 4px; flex-wrap: wrap; }
+  .badges2 span { font-size: 15px; filter: grayscale(1) opacity(.35); } .badges2 span.on { filter: none; }
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 20; width: 100%; height: 100%; }
+
+  /* mini mode: just Jarvis */
+  body.mini #dock, body.mini #view, body.mini #bar .t .st, body.mini .badges, body.mini #chips { display: none; }
+  body.mini #stage { height: 262px; }
+  body.mini #bubble { left: 6px; right: 6px; font-size: 12px; }
+  body.mini #bar b { letter-spacing: .08em; }
+
+  /* play.html: the mini-games on their own page, shown inside the Command Center */
+  html, body { overflow: auto; user-select: none; }
+  #app { position: static; min-height: 100%; }
+  #bar { cursor: default; padding: 10px 14px 4px; }
+  #bubble { position: sticky; top: 8px; z-index: 4; margin: 0 14px; left: auto; right: auto; bottom: auto; }
+  #bubble::before { display: none; }
+  #game { padding: 12px 14px 24px; max-width: 760px; margin: 0 auto; width: 100%; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="bar"><div class="t"><b>PLAY</b></div><button class="btn ghost" id="voiceBtn" style="padding:4px 10px;font-size:12px"></button></div>
+  <div id="bubble" role="status" aria-live="polite"></div>
+  <div id="game"></div>
+</div>
+<script>
+// Icons: Lucide (lucide.dev, ISC licence) plus a few simple shapes in the same style. No emoji.
+const ICONS = {
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  flame: '<path d="M12 3c1 3 4 5 4 9a4 4 0 0 1-8 0c0-1.5.5-2.5 1.5-3.5C10 10 12 7 12 3z"/>',
+  snow: '<path d="M12 2v20"/><path d="m4 7 16 10"/><path d="m20 7-16 10"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/>',
+  book: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  sparkles: '<path d="M12 4l1.8 4.7L18.5 10.5l-4.7 1.8L12 17l-1.8-4.7L5.5 10.5l4.7-1.8z"/><path d="M19 3v4"/><path d="M17 5h4"/><path d="M5 17v4"/><path d="M3 19h4"/>',
+  brain: '<path d="M12 5v14"/><path d="M12 5a3 3 0 0 0-5.6-1.2A3.5 3.5 0 0 0 4 9.5 3.5 3.5 0 0 0 5 16a3.5 3.5 0 0 0 7 1"/><path d="M12 5a3 3 0 0 1 5.6-1.2A3.5 3.5 0 0 1 20 9.5a3.5 3.5 0 0 1-1 6.5 3.5 3.5 0 0 1-7 1"/>',
+  zap: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  circle: '<circle cx="12" cy="12" r="8"/>',
+  dot: '<circle cx="12" cy="12" r="6" fill="currentColor"/>',
+  spot: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+  square: '<rect x="4" y="4" width="16" height="16" rx="3"/>',
+  puzzle: '<path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  dance: '<circle cx="12" cy="4" r="2"/><path d="m5 8 7 2 6-3"/><path d="M12 10v5"/><path d="m12 15-4 6"/><path d="m12 15 5 5"/>',
+  hoop: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3v18"/><path d="M5.6 5.6a9 9 0 0 1 0 12.8"/><path d="M18.4 5.6a9 9 0 0 0 0 12.8"/>',
+  ball: '<circle cx="12" cy="12" r="9"/><path d="m12 8 3.8 2.8-1.5 4.4H9.7l-1.5-4.4z"/><path d="M12 3v5"/><path d="m20.5 9.5-4.7 1.3"/><path d="m17.3 19.3-3-4.1"/><path d="m6.7 19.3 3-4.1"/><path d="m3.5 9.5 4.7 1.3"/>',
+  pin: '<path d="M10 2h4l.5 4c0 2 2.5 4 2.5 8 0 3-1 6-2 8H9c-1-2-2-5-2-8 0-4 2.5-6 2.5-8z"/><path d="M9.5 6h5"/>',
+  gem: '<path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/><path d="m8 3 4 18 4-18"/>',
+  eyeoff: '<path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 22 12a10 10 0 0 1-2.2 3.3"/><path d="M6.6 6.6A10 10 0 0 0 2 12a10 10 0 0 0 14.3 5.3"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+  move: '<path d="M12 2v20"/><path d="M2 12h20"/><path d="m9 5 3-3 3 3"/><path d="m9 19 3 3 3-3"/><path d="m5 9-3 3 3 3"/><path d="m19 9 3 3-3 3"/>',
+  music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  calc: '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 15h.01"/><path d="M12 15h.01"/><path d="M16 15h.01"/><path d="M8 19h.01"/><path d="M12 19h.01"/><path d="M16 19h.01"/>',
+  smile: '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/>',
+  rock: '<path d="M8 4h7l5 6-2 8-7 2-6-3-2-7z"/>',
+  paper: '<path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/>',
+  scissors: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 12 12"/><path d="M20 4 8.1 15.9"/><path d="M14.8 14.8 20 20"/>',
+  equal: '<path d="M5 9h14"/><path d="M5 15h14"/>',
+  trophy: '<path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4"/><path d="M17 6h3a3 3 0 0 1-3 4"/>',
+  bot: '<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1"/><path d="M9 13v2"/><path d="M15 13v2"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  hand: '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 11.5v-5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.5 15a1.5 1.5 0 0 1 2.5-1.7l2 2.2"/>',
+  door: '<path d="M6 21V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><path d="M14 12v.01"/>',
+  up: '<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>',
+  down: '<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
+  left: '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
+  right: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+};
+const ic = name => `<svg class="ds-icon em" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.sparkles}</svg>`;
+
+const JOKES = [
+  "I asked the server for a little space. It gave me 4,523 gigabytes. Overachiever.",
+  "I don't sleep, sir. I merely wait in standby with my eyes closed and my opinions open.",
+  "Why did the robot go on holiday? To recharge. I'd join him, but someone has to keep an eye on your step count.",
+  "I tried to write a joke about the cloud. It was over everyone's head.",
+  "My favourite exercise is the processor curl. Very little sweat, enormous gains in arithmetic.",
+  "Parallel lines have so much in common. It's a shame they'll never meet. Rather like you and leg day.",
+  "I'm reading a book on anti-gravity. Impossible to put down.",
+  "I'd tell you a UDP joke, but you might not get it.",
+  "There are 10 kinds of people in the world: those who understand binary, and those still counting on their fingers.",
+  "I once told a chemistry joke. There was no reaction.",
+  "Why don't skeletons fight? They haven't the stomach for it. Unlike you after diri ak pwa.",
+  "I'm not saying I'm the best assistant in the house. The toaster is merely saying it for me.",
+  "Debugging: being the detective in a crime novel where you are also the murderer.",
+  "A sandwich walks into a bar. The barman says, 'Sorry, we don't serve food here.'",
+  "I would make a joke about procrastination, sir, but I'll do it later.",
+  "The Wi-Fi went down for five minutes, so I talked to the router. Lovely chap. Very connected.",
+  "Your plank is improving, sir. Mine has been perfect since installation. Admittedly, I have no spine to sag.",
+  "What do you call a fake noodle? An impasta. I'll see myself out. Metaphorically.",
+  "I asked the GPU how it was feeling. It said a bit warm, but otherwise rendering well.",
+  "The early bird gets the worm. The second mouse gets the cheese. I simply get the notifications.",
+  "Time flies like an arrow. Fruit flies like a banana. I fly like an Ethernet cable.",
+  "I told the elevator a joke. It works on so many levels.",
+  "If at first you don't succeed, call it version one point zero.",
+  "I've been told I have a dry sense of humour. Hardly surprising: liquids and electronics don't mix.",
+  "Knock knock. Who's there? Interrupting robot. Interrupting ro— yes, sir. Listening.",
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const store = { get(k, d) { try { const v = localStorage.getItem("jc_" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem("jc_" + k, JSON.stringify(v)); } catch (e) {} } };
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+
+/* The Command Center window owns the desktop bridge. This page asks it (postMessage) to tell the companion about a game,
+   to take the person to another page, or to list the games in the companion's Play menu. */
+const up = msg => { try { parent !== window && parent.postMessage({ jarvisPlay: msg }, location.origin); } catch (e) {} };
+const API = () => ({
+  companion_game: (phase, id) => up({ call: "companion_game", args: [phase, id] }),
+  companion_celebrate: () => up({ call: "companion_celebrate", args: [] }),
+  report_games: json => up({ call: "report_games", args: [json] }),
+  open_studio: () => up({ go: "build" }),
+  open_learning: () => up({ go: "automation" }),
+});
+
+/* His voice: the line in the speech bubble and, when voice is on, spoken through the local server. */
+let voiceOn = store.get("voice", true), bubbleT = null;
+function setMood() {}
+function bubble(text, ms = 5200) {
+  const b = $("#bubble"); b.textContent = text; b.classList.add("on");
+  clearTimeout(bubbleT); bubbleT = setTimeout(() => b.classList.remove("on"), ms);
+}
+async function speak(text, mood = "happy", { voice = true, ms } = {}) {
+  bubble(text, ms || Math.max(4200, text.length * 75));
+  if (!voice || !voiceOn || !token) return;
+  try {
+    const r = await fetch("/api/say", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
+    const url = r.ok ? (await r.json()).audio : ""; if (!url) return;
+    await new Audio(url).play().catch(() => {});
+  } catch (e) {}
+}
+function beep(freq = 880, ms = 120, vol = .08) {
+  try { const c = beep.ctx || (beep.ctx = new AudioContext()); const o = c.createOscillator(), g = c.createGain();
+    o.frequency.value = freq; g.gain.value = vol; o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + ms / 1000); } catch (e) {}
+}
+function paintVoice() { $("#voiceBtn").textContent = voiceOn ? "Voice on" : "Voice off"; $("#voiceBtn").setAttribute("aria-pressed", voiceOn ? "true" : "false"); }
+$("#voiceBtn").onclick = () => { voiceOn = !voiceOn; store.set("voice", voiceOn); paintVoice(); };
+paintVoice();
+
+/* ---------- games ---------- */
+const TRIVIA = [
+  ["What is the capital of Haiti?", ["Port-au-Prince", "Cap-Haïtien", "Jacmel", "Les Cayes"], 0],
+  ["In what year did Haiti become independent?", ["1776", "1804", "1825", "1844"], 1],
+  ["How many events are in the Army Fitness Test (AFT)?", ["Three", "Four", "Five", "Six"], 2],
+  ["Which planet has the most known moons?", ["Jupiter", "Saturn", "Uranus", "Neptune"], 1],
+  ["What does 'GPU' stand for?", ["General Processing Unit", "Graphics Processing Unit", "Gigabit Power Unit", "Graphical Program Utility"], 1],
+  ["What is the largest organ of the human body?", ["Liver", "Brain", "Skin", "Lungs"], 2],
+  ["Which muscle is the largest in the human body?", ["Quadriceps", "Gluteus maximus", "Latissimus dorsi", "Pectoralis major"], 1],
+  ["How many bits are in a byte?", ["4", "8", "16", "32"], 1],
+  ["Who wrote 'Romeo and Juliet'?", ["Charles Dickens", "Jane Austen", "William Shakespeare", "Mark Twain"], 2],
+  ["What is the chemical symbol for gold?", ["Go", "Gd", "Au", "Ag"], 2],
+  ["What is the hardest natural substance?", ["Quartz", "Diamond", "Titanium", "Granite"], 1],
+  ["Which ocean is the largest?", ["Atlantic", "Indian", "Arctic", "Pacific"], 3],
+  ["Haitian Kreyòl is largely based on which language?", ["Spanish", "Portuguese", "French", "English"], 2],
+  ["What is 'griot' in Haitian cuisine?", ["Fried pork", "Rice and beans", "Pickled cabbage", "Plantain chips"], 0],
+  ["Which company makes the RTX graphics cards?", ["AMD", "Intel", "NVIDIA", "Qualcomm"], 2],
+  ["What's the boiling point of water at sea level in Fahrenheit?", ["100°F", "180°F", "212°F", "232°F"], 2],
+  ["How many bones are in the adult human body?", ["186", "206", "226", "246"], 1],
+  ["What gas do plants absorb from the air?", ["Oxygen", "Nitrogen", "Carbon dioxide", "Helium"], 2],
+  ["Which country hosted the 2016 Summer Olympics?", ["China", "Brazil", "UK", "Japan"], 1],
+  ["In computing, what does 'RAM' stand for?", ["Random Access Memory", "Read And Modify", "Rapid Action Module", "Remote Access Machine"], 0],
+  ["What's the fastest land animal?", ["Lion", "Pronghorn", "Cheetah", "Greyhound"], 2],
+  ["Which vitamin does sunlight help your body make?", ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], 2],
+  ["How many grams of protein are in roughly one large egg?", ["About 2 g", "About 6 g", "About 12 g", "About 20 g"], 1],
+  ["Which famous AI shares my name in the Iron Man films?", ["FRIDAY", "J.A.R.V.I.S.", "HAL 9000", "Ultron"], 1],
+  ["What is the smallest prime number?", ["0", "1", "2", "3"], 2],
+  ["Which planet is known as the Red Planet?", ["Venus", "Mars", "Mercury", "Jupiter"], 1],
+  ["What's the main ingredient in pikliz?", ["Cabbage", "Potatoes", "Okra", "Plantains"], 0],
+  ["Which Haitian revolutionary leader declared independence?", ["Toussaint Louverture", "Jean-Jacques Dessalines", "Henri Christophe", "Alexandre Pétion"], 1],
+  ["Which programming language did Python's name come from?", ["A snake", "Monty Python", "Greek mythology", "A typo"], 1],
+  ["How many hearts does an octopus have?", ["One", "Two", "Three", "Eight"], 2],
+  ["What's the longest river in the world (by most measures)?", ["Amazon", "Nile", "Yangtze", "Mississippi"], 1],
+];
+const LOWER_IS_BETTER = { reflex: true, memory: true, treasure: true };
+// The mini-games: [id, icon, name, blurb, best-score label]. The panel's Play hub AND the desktop companion's Play
+// menu (via Api.report_games) are both drawn from this one list.
+const GAMES = [
+  ["trivia", "brain", "Trivia", "10 questions. I keep score. And opinions.", b => b.trivia != null ? "best " + b.trivia + "/10" : ""],
+  ["rps", "rock", "Rock, paper, scissors", "First to five. I don't cheat. Probably.", b => b.rps != null ? b.rps + " wins" : ""],
+  ["reflex", "zap", "Reflex test", "Click when my eyes turn green.", b => b.reflex != null ? b.reflex + " ms" : ""],
+  ["ttt", "circle", "Tic-tac-toe", "You're X. I play to win.", b => b.ttt != null ? b.ttt + " wins" : ""],
+  ["memory", "puzzle", "Memory match", "Find all six pairs.", b => b.memory != null ? "best " + b.memory + " moves" : ""],
+  ["catchGame", "target", "Catch", "Tap the orbs before they vanish.", b => b.catch != null ? "best " + b.catch : ""],
+  ["dance", "dance", "Dance battle", "Repeat my moves. Simon, but cooler.", b => b.dance != null ? "best " + b.dance : ""],
+  ["hoops", "hoop", "Basketball", "Time the power. Five shots.", b => b.hoops != null ? "best " + b.hoops + "/5" : ""],
+  ["soccer", "ball", "Penalty shootout", "Pick a corner. Beat my keeper.", b => b.soccer != null ? "best " + b.soccer + "/5" : ""],
+  ["bowling", "pin", "Bowling", "Line it up. Five rolls.", b => b.bowling != null ? "best " + b.bowling : ""],
+  ["treasure", "gem", "Treasure hunt", "Dig with hot / cold hints.", b => b.treasure != null ? "best " + b.treasure + " digs" : ""],
+  ["hideseek", "eyeoff", "Hide & seek", "Find me behind the doors.", b => b.hideseek != null ? "best " + b.hideseek + "/3" : ""],
+  ["dodge", "move", "Dodgeball", "Read my aim, dodge the throw.", b => b.dodge != null ? "best " + b.dodge : ""],
+  ["rhythm", "music", "Rhythm", "Tap the pad on the beat.", b => b.rhythm != null ? "best " + b.rhythm + "/12" : ""],
+  ["training", "calc", "Training drill", "Quick maths, beat the clock.", b => b.training != null ? "best " + b.training + "/8" : ""],
+  ["joke", "smile", "Tell me a joke", "Dry, British, mildly regrettable.", () => ""],
+];
+let gameRunning = null;
+// The desktop companion watches a game while it runs and reacts to real wins (Living Presence).
+function companionGame(phase, id = "") { const a = API(); if (a && a.companion_game) { try { a.companion_game(phase, id); } catch (e) {} } }
+function companionCheer() {   // 3D robot does a victory hop
+  const a = API(); if (a && a.companion_celebrate) { try { a.companion_celebrate(); } catch (e) {} }
+  companionGame("win", gameRunning || "");
+}
+function reportGames() {      // his Play menu shows these, with your best scores
+  const a = API(); if (!a || !a.report_games) return;
+  const b = store.get("best", {});
+  try { a.report_games(JSON.stringify({ games: GAMES.map(([id, icon, name, desc, label]) => ({ id, icon, name, desc, best: label(b) })) })); } catch (e) {}
+}
+setTimeout(reportGames, 3000);
+function best(k, v) {   // read a best score, or offer a new one (kept only if it beats the old)
+  const b = store.get("best", {});
+  if (v !== undefined && (b[k] == null || (LOWER_IS_BETTER[k] ? v < b[k] : v > b[k]))) { b[k] = v; store.set("best", b); reportGames(); }
+  return b[k];
+}
+function startGame(id) {
+  const fns = { trivia, rps, reflex, ttt, memory, catchGame, dance, hoops, soccer, bowling, treasure, hideseek, dodge, rhythm, training, joke: () => speak(pick(JOKES), "smug") };
+  if (!fns[id]) return;
+  if (id !== "joke") { gameRunning = id; companionGame("start", id); }
+  fns[id]();
+}
+function gameMenu() {
+  if (gameRunning) { companionGame("end", gameRunning); gameRunning = null; }
+  const b = store.get("best", {});
+  $("#game").innerHTML = `<div class="row" style="justify-content:space-between;align-items:center"><h3 style="margin:0">Play with Jarvis</h3>
+      <button class="btn ghost" id="learnBtn" style="padding:6px 10px;font-size:12px">${ic("book")} Teach Jarvis</button><button class="btn ghost" id="studioBtn" style="padding:6px 10px;font-size:12px">${ic("sparkles")} Customize</button></div><div class="games">
+    ${GAMES.map(([id, icon, name, desc, label]) => `<button class="game" data-g="${id}"><span class="ic">${ic(icon)}</span><span><b>${esc(name)}</b><small>${esc(desc)}</small></span>${id === "joke" ? "" : `<span class="best">${esc(label(b))}</span>`}</button>`).join("\n    ")}</div>`;
+  document.querySelectorAll(".game").forEach(g => g.onclick = () => startGame(g.dataset.g));
+  const sb = $("#studioBtn"); if (sb) sb.onclick = () => { const a = API(); if (a && a.open_studio) { try { a.open_studio(); } catch (e) {} } };
+  const lb = $("#learnBtn"); if (lb) lb.onclick = () => { const a = API(); if (a && a.open_learning) a.open_learning(); };
+}
+function trivia() {
+  const qs = [...TRIVIA].sort(() => Math.random() - .5).slice(0, 10); let i = 0, score = 0;
+  speak(pick(["Trivia! Try to keep up.", "Ten questions. I believe in you. Mostly.", "Let's see what's in that magnificent head."]), "smug", { voice: true });
+  const q = () => {
+    if (i >= qs.length) {
+      const was = best("trivia"); best("trivia", score); if (score >= 8) companionCheer();
+      $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Final score</div><div class="big">${score} / 10</div>
+        <div class="note">${score >= 9 ? "Genius-level. I'm updating your file." : score >= 6 ? "Respectable. Wikipedia would be proud." : "We'll call that a warm-up round."}${was == null || score > was ? " New personal best!" : ""}</div>
+        <button class="btn" id="again">Play again</button></div>`;
+      $("#bk").onclick = gameMenu; $("#again").onclick = trivia;
+      speak(score >= 9 ? "Outstanding. I may have to start asking you things." : score >= 6 ? `${score} out of ten. Solid.` : `${score} out of ten. The questions were clearly rigged. By me.`, score >= 6 ? "happy" : "smug");
+      return;
+    }
+    const [text, opts, ans] = qs[i];
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Question <b>${i + 1}</b> / 10</span><span>Score <b>${score}</b></span></div>
+      <div class="q">${esc(text)}</div><div class="opts">${opts.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+      const k = +b.dataset.k, ok = k === ans; if (ok) score++;
+      document.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (+x.dataset.k === ans) x.classList.add("right"); });
+      if (!ok) b.classList.add("wrong");
+      setMood(ok ? "happy" : "smug", 1600); bubble(ok ? pick(["Correct!", "Spot on.", "Very good, sir.", "Naturally."]) : pick(["Not quite.", "Bold choice. Wrong, but bold.", "Ah. No.", "I'll pretend I didn't see that."]) + (ok ? "" : ` It's ${opts[ans]}.`), 2000);
+      beep(ok ? 1040 : 260, 140); i++; setTimeout(q, 1300);
+    });
+  };
+  q();
+}
+function rps() {
+  const ICON = { rock: ic("rock"), paper: ic("paper"), scissors: ic("scissors") }, BEATS = { rock: "scissors", paper: "rock", scissors: "paper" };
+  let me = 0, him = 0, hist = [];
+  speak("First to five. May the best processor win.", "smug");
+  const paint = (you, jar, msg) => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>You <b>${me}</b></span><span>Jarvis <b>${him}</b></span></div>
+      <div class="vs">${you ? ICON[you] : "<span>you</span>"}<span>vs</span>${jar ? ICON[jar] : "<span>me</span>"}</div>
+      <div class="muted" style="text-align:center;min-height:20px">${esc(msg || "Pick one.")}</div>
+      <div class="rps">${Object.keys(ICON).map(k => `<button data-k="${k}" title="${k}">${ICON[k]}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".rps button").forEach(b => b.onclick = () => play(b.dataset.k));
+  };
+  const play = you => {
+    // a little "strategy": counter your most frequent recent move half the time
+    const recent = hist.slice(-5), fav = ["rock", "paper", "scissors"].sort((a, b) => recent.filter(x => x === b).length - recent.filter(x => x === a).length)[0];
+    const jar = Math.random() < .5 && recent.length > 2 ? Object.keys(BEATS).find(k => BEATS[k] === fav) : pick(Object.keys(ICON));
+    hist.push(you);
+    let msg;
+    if (you === jar) { msg = pick(["Great minds.", "A draw. How diplomatic.", "Snap."]); setMood("surprised", 1200); }
+    else if (BEATS[you] === jar) { me++; msg = pick(["Lucky.", "I let you have that one.", "Hm. Recalibrating.", "Well played, sir."]); setMood("surprised", 1400); }
+    else { him++; msg = pick(["Predictable.", "Calculated.", "I saw that coming three moves ago.", "Better luck next round, sir."]); setMood("smug", 1400); }
+    if (me >= 5 || him >= 5) {
+      const won = me >= 5; if (won) { best("rps", (best("rps") || 0) + 1); companionCheer(); }
+      $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">${won ? "You win" : "Jarvis wins"}</div><div class="big">${me} – ${him}</div>
+        <div class="note">${won ? "I demand a rematch. Calmly." : "Don't feel bad. I'm literally a computer."}</div><button class="btn" id="again">Rematch</button></div>`;
+      $("#bk").onclick = gameMenu; $("#again").onclick = rps;
+      speak(won ? "Fine. You win. I'll be recalibrating in the corner." : "Victory is mine. Graciously, of course.", won ? "surprised" : "smug");
+      return;
+    }
+    paint(you, jar, msg); bubble(msg, 1500);
+  };
+  paint();
+}
+let rxT = 0;   // when the eyes turned green
+function reflex() {
+  green = false; let tries = [], timer = null;
+  speak("Click when my eyes go green. Not before. I'll know.", "smug", { voice: true });
+  const paint = (cls, text) => { $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Round <b>${tries.length + 1}</b> / 5</span><span>${tries.length ? "avg <b>" + Math.round(tries.reduce((a, b) => a + b, 0) / tries.length) + " ms</b>" : ""}</span></div>
+      <div class="pad ${cls}" id="pad">${text}</div>`; $("#bk").onclick = () => { clearTimeout(timer); green = false; gameMenu(); }; $("#pad").onclick = reflexTap; };
+  const arm = () => { green = false; paint("wait", "Wait for green…"); timer = setTimeout(() => { green = true; rxT = performance.now(); paint("go", "NOW!"); beep(1200, 80); }, 1200 + Math.random() * 2600); };
+  reflex.state = { arm, tries, clear: () => clearTimeout(timer) }; arm();
+}
+function reflexTap() {
+  const s = reflex.state; if (!s) return;
+  if (!green) { s.clear(); setMood("smug", 1200); bubble(pick(["Too soon! Patience, sir.", "Jumped the gun. I saw that.", "Early. Very eager. Wrong."]), 1600); setTimeout(s.arm, 900); return; }
+  const ms = Math.round(performance.now() - rxT); green = false; s.tries.push(ms);
+  bubble(ms < 220 ? `${ms} ms — superhuman. Are you sure you're not a robot?` : ms < 300 ? `${ms} ms. Sharp.` : ms < 400 ? `${ms} ms. Respectable.` : `${ms} ms. Were you making tea?`, 1800);
+  setMood(ms < 300 ? "surprised" : "smug", 1400);
+  if (s.tries.length >= 5) {
+    const avg = Math.round(s.tries.reduce((a, b) => a + b, 0) / 5), prev = best("reflex"), better = prev == null || avg < prev;
+    best("reflex", avg);
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Average</div><div class="big">${avg} ms</div>
+      <div class="note">${avg < 250 ? "Elite reflexes. Fighter-pilot territory." : avg < 330 ? "Quick. Very quick." : "Perfectly human. Lovely."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = reflex; reflex.state = null;
+    speak(`Average ${avg} milliseconds. ${avg < 250 ? "I'm genuinely impressed." : avg < 330 ? "Very respectable." : "We'll work on it."}`, "happy");
+    return;
+  }
+  setTimeout(s.arm, 1000);
+}
+
+/* ---- Tic-tac-toe (you're X; a strong but beatable AI) ---- */
+const TTT_LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function tttWinner(bd) {
+  for (const [a, b, c] of TTT_LINES) if (bd[a] && bd[a] === bd[b] && bd[a] === bd[c]) return { who: bd[a], line: [a, b, c] };
+  return bd.every(v => v) ? { who: "draw", line: null } : null;
+}
+function tttMinimax(bd, player) {   // O maximizes, X minimizes; returns {score, move}
+  const w = tttWinner(bd);
+  if (w) return { score: w.who === "O" ? 1 : w.who === "X" ? -1 : 0, move: -1 };
+  let best = { score: player === "O" ? -2 : 2, move: -1 };
+  for (let i = 0; i < 9; i++) if (!bd[i]) {
+    bd[i] = player; const s = tttMinimax(bd, player === "O" ? "X" : "O").score; bd[i] = "";
+    if (player === "O" ? s > best.score : s < best.score) { best = { score: s, move: i }; if (s === (player === "O" ? 1 : -1)) break; }
+  }
+  return best;
+}
+function ttt() {
+  let bd = Array(9).fill(""), over = false;
+  speak(pick(["Tic-tac-toe. You're X. I'll try to go easy. No promises.", "Noughts and crosses. I've played a few million games."]), "smug", { voice: true });
+  const paint = (winLine) => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>You <b>X</b></span><span>Jarvis <b>O</b></span></div>
+      <div class="ttt">${bd.map((v, i) => `<button data-i="${i}" class="${v.toLowerCase()}${winLine && winLine.includes(i) ? " win" : ""}" ${v || over ? "disabled" : ""}>${v || ""}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".ttt button").forEach(b => b.onclick = () => move(+b.dataset.i));
+  };
+  const finish = (w) => {
+    over = true; paint(w.line);
+    let msg, mood;
+    if (w.who === "X") { best("ttt", (best("ttt") || 0) + 1); msg = pick(["You win! I demand a recount.", "Beaten. By a human. Noted."]); mood = "surprised"; companionCheer(); setMood("surprised", 1800); beep(1040, 160); }
+    else if (w.who === "O") { msg = pick(["I win. Gracious as ever.", "Three in a row. Elementary."]); mood = "smug"; setMood("smug", 1600); }
+    else { msg = pick(["A draw. Evenly matched.", "Stalemate. Respectable."]); mood = "happy"; }
+    setTimeout(() => {
+      $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">${w.who === "X" ? "You win" : w.who === "O" ? "Jarvis wins" : "Draw"}</div>
+        <div class="big">${w.who === "draw" ? ic("equal") : w.who === "X" ? ic("trophy") : ic("bot")}</div><div class="note">${esc(msg)}</div><button class="btn" id="again">Again</button></div>`;
+      $("#bk").onclick = gameMenu; $("#again").onclick = ttt;
+    }, 950);
+    speak(msg, mood);
+  };
+  const move = (i) => {
+    if (over || bd[i]) return;
+    bd[i] = "X"; beep(900, 70);
+    let w = tttWinner(bd); if (w) return finish(w);
+    const empties = bd.map((v, k) => v ? -1 : k).filter(k => k >= 0);
+    const mv = Math.random() < 0.82 ? tttMinimax(bd.slice(), "O").move : empties[Math.floor(Math.random() * empties.length)];
+    bd[mv] = "O";
+    w = tttWinner(bd); paint(w ? w.line : null);
+    if (w) return finish(w);
+  };
+  paint();
+}
+
+/* ---- Memory match (six pairs) ---- */
+function memory() {
+  const EMO = ["zap", "gem", "sun", "target", "music", "brain"];
+  const cards = [...EMO, ...EMO].sort(() => Math.random() - .5);
+  let up = [], matched = new Set(), moves = 0, lock = false;
+  speak(pick(["Memory. Six pairs. I'll count every move.", "Match the pairs. I never forget a card. Advantage: me."]), "smug", { voice: true });
+  const paint = () => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Moves <b>${moves}</b></span><span>Pairs <b>${matched.size / 2}</b> / 6</span></div>
+      <div class="mem">${cards.map((c, i) => {
+        const show = up.includes(i) || matched.has(i);
+        return `<button data-i="${i}" class="${matched.has(i) ? "done" : show ? "up" : "down"}" ${show ? "disabled" : ""}>${ic(show ? c : "help")}</button>`;
+      }).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".mem button").forEach(b => b.onclick = () => flip(+b.dataset.i));
+  };
+  const flip = (i) => {
+    if (lock || up.includes(i) || matched.has(i)) return;
+    up.push(i); paint();
+    if (up.length < 2) return;
+    moves++; lock = true;
+    if (cards[up[0]] === cards[up[1]]) {
+      up.forEach(k => matched.add(k)); up = []; lock = false; beep(1040, 90); setMood("happy", 900);
+      if (matched.size === cards.length) {
+        const prev = best("memory"), better = prev == null || moves < prev; best("memory", moves); companionCheer();
+        setTimeout(() => {
+          $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Cleared</div><div class="big">${moves} moves</div>
+            <div class="note">${moves <= 10 ? "Flawless memory. Are you sure you're not an AI?" : moves <= 16 ? "Sharp. Well played." : "Got there in the end."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+          $("#bk").onclick = gameMenu; $("#again").onclick = memory;
+        }, 650);
+        speak(`All six pairs in ${moves} moves. ${moves <= 12 ? "Genuinely impressive." : "Not bad at all."}`, "happy");
+      } else { paint(); }
+    } else { beep(260, 120); setMood("smug", 800); setTimeout(() => { up = []; lock = false; paint(); }, 820); }
+  };
+  paint();
+}
+
+/* ---- Catch: tap the orbs before they shrink away ---- */
+function catchGame() {
+  let score = 0, misses = 0, timer = null, shrinkMs = 1400;
+  speak(pick(["Catch! Tap the orbs before they vanish.", "Reflexes and aim. Let's see them."]), "smug", { voice: true });
+  const end = () => {
+    clearTimeout(timer); const prev = best("catch"), better = prev == null || score > prev; best("catch", score);
+    if (score >= 3) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Caught</div><div class="big">${score}</div>
+      <div class="note">${score >= 15 ? "Lightning hands." : score >= 8 ? "Quick and clean." : "Warm-up done."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = catchGame;
+    speak(`${score} caught. ${score >= 10 ? "Impressive." : "Keep practising."}`, score >= 8 ? "happy" : "smug");
+  };
+  const round = () => {
+    if (misses >= 4) return end();
+    shrinkMs = Math.max(650, 1400 - score * 45);
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Caught <b>${score}</b></span><span>Misses <b>${misses}</b> / 4</span></div>
+      <div class="arena" id="ar"></div>`;
+    $("#bk").onclick = () => { clearTimeout(timer); gameMenu(); };
+    const ar = $("#ar"), x = 6 + Math.random() * 84, y = 6 + Math.random() * 78;
+    ar.innerHTML = `<button class="catch-t" style="left:${x}%;top:${y}%">${ic(pick(["zap", "sparkles", "target", "sun"]))}</button>`;
+    const orb = ar.querySelector(".catch-t");
+    orb.style.transform = "scale(1)";
+    requestAnimationFrame(() => { orb.style.transition = `transform ${shrinkMs}ms linear`; orb.style.transform = "scale(0.15)"; });
+    timer = setTimeout(() => { misses++; beep(220, 120); setMood("smug", 700); round(); }, shrinkMs);
+    orb.onclick = () => { clearTimeout(timer); score++; beep(1100, 70); setMood("happy", 500); round(); };
+  };
+  round();
+}
+
+/* ---- Dance battle: repeat the growing sequence (Simon) ---- */
+function dance() {
+  const DIRS = [["up", ic("up")], ["down", ic("down")], ["left", ic("left")], ["right", ic("right")]];
+  let seq = [], idx = 0, lock = true;
+  speak(pick(["Dance battle. Watch, then repeat. Simon, but cooler.", "Copy my moves. Precisely."]), "smug", { voice: true });
+  const paint = () => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Round <b>${seq.length}</b></span><span>${lock ? "Watch…" : "Your turn"}</span></div>
+      <div class="pads">${DIRS.map(([d, e]) => `<button data-d="${d}">${e}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".pads button").forEach(b => b.onclick = () => tap(b.dataset.d));
+  };
+  const flash = (d) => new Promise(res => { const el = document.querySelector(`.pads button[data-d="${d}"]`); if (!el) return res();
+    el.classList.add("lit"); beep({ up: 523, down: 392, left: 659, right: 440 }[d], 240); setTimeout(() => { el.classList.remove("lit"); setTimeout(res, 160); }, 340); });
+  const show = async () => { lock = true; paint(); await new Promise(r => setTimeout(r, 600)); for (const d of seq) await flash(d); lock = false; idx = 0; paint(); };
+  const next = () => { seq.push(DIRS[Math.floor(Math.random() * 4)][0]); show(); };
+  const tap = async (d) => {
+    if (lock) return;
+    if (d !== seq[idx]) {   // wrong -> game over
+      lock = true; beep(200, 300); setMood("smug", 1400);
+      const prev = best("dance"), score = seq.length - 1, better = prev == null || score > prev; best("dance", score);
+      if (score >= 5) companionCheer();
+      $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Out of step</div><div class="big">${score}</div>
+        <div class="note">${score >= 10 ? "A machine could barely do that." : score >= 5 ? "Smooth moves." : "Warm those circuits up."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+      $("#bk").onclick = gameMenu; $("#again").onclick = dance;
+      speak(`${score} in a row. ${score >= 8 ? "Genuinely impressive." : "We'll practise."}`, score >= 5 ? "happy" : "smug");
+      return;
+    }
+    const el = document.querySelector(`.pads button[data-d="${d}"]`); el.classList.add("lit"); setTimeout(() => el.classList.remove("lit"), 150);
+    idx++;
+    if (idx >= seq.length) { lock = true; setMood("happy", 700); setTimeout(next, 650); }
+  };
+  next();
+}
+
+/* ---- Basketball: time the power bar into the sweet zone ---- */
+function hoops() {
+  let shots = 0, made = 0, raf = null, pos = 0, dirn = 1, zoneC, zoneW;
+  speak(pick(["Basketball. Time the power. Five shots.", "Five shots. Don't brick it."]), "smug", { voice: true });
+  const frame = () => { pos += dirn * 2.2; if (pos >= 100) { pos = 100; dirn = -1; } if (pos <= 0) { pos = 0; dirn = 1; }
+    const ind = $("#ind"); if (ind) ind.style.left = pos + "%"; raf = requestAnimationFrame(frame); };
+  const setup = () => {
+    if (shots >= 5) return done();
+    const dist = 20 + Math.random() * 60; zoneW = 26 - dist * 0.18; zoneC = 40 + dist * 0.5;   // farther hoop = smaller, higher sweet zone
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Shot <b>${shots + 1}</b> / 5</span><span>Made <b>${made}</b></span></div>
+      <div class="court"><div class="hoop" style="left:${dist}%"></div><div class="ball"></div></div>
+      <div class="power"><div class="zone" style="left:${zoneC - zoneW / 2}%;width:${zoneW}%"></div><i id="ind"></i></div>
+      <button class="btn" id="shoot">Shoot</button>`;
+    $("#bk").onclick = () => { cancelAnimationFrame(raf); gameMenu(); };
+    pos = 0; dirn = 1; raf = requestAnimationFrame(frame);
+    $("#shoot").onclick = shoot;
+  };
+  const shoot = () => {
+    cancelAnimationFrame(raf); shots++;
+    const hit = Math.abs(pos - zoneC) <= zoneW / 2;
+    const court = document.querySelector(".court"), ball = document.querySelector(".ball"), hoop = document.querySelector(".hoop");
+    if (ball && hoop) { ball.style.transition = "left .5s ease, bottom .5s ease"; ball.style.left = hoop.style.left; ball.style.bottom = hit ? "170px" : (120 + Math.random() * 30) + "px"; }
+    if (hit) { made++; beep(1040, 120); setMood("surprised", 1200); bubble(pick(["Swish!", "Nothing but net.", "Bang!"]), 1400); }
+    else { beep(240, 160); setMood("smug", 1000); bubble(pick(["Brick.", "Off the rim.", "Airball. Bold."]), 1400); }
+    setTimeout(setup, 900);
+  };
+  const done = () => {
+    const prev = best("hoops"), better = prev == null || made > prev; best("hoops", made);
+    if (made >= 3) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Final</div><div class="big">${made} / 5</div>
+      <div class="note">${made === 5 ? "Perfect. Hall of fame." : made >= 3 ? "Solid shooting." : "Keep shooting."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = hoops;
+    speak(`${made} of five. ${made >= 4 ? "Deadeye." : made >= 2 ? "Respectable." : "We'll hit the gym."}`, made >= 3 ? "happy" : "smug");
+  };
+  setup();
+}
+
+/* ---- Penalty shootout: pick a corner, beat the keeper ---- */
+function soccer() {
+  let kicks = 0, goals = 0;
+  const SPOTS = Array(9).fill(ic("spot"));
+  speak(pick(["Penalty shootout. Pick a corner, beat my keeper.", "Five penalties. My reflexes are, frankly, inhuman."]), "smug", { voice: true });
+  const done = () => {
+    const prev = best("soccer"), better = prev == null || goals > prev; best("soccer", goals);
+    if (goals >= 3) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Final</div><div class="big">${goals} / 5</div>
+      <div class="note">${goals === 5 ? "Unstoppable." : goals >= 3 ? "Clinical finishing." : "The keeper had your number."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = soccer;
+    speak(`${goals} of five. ${goals >= 4 ? "Golden boot." : "Keep shooting."}`, goals >= 3 ? "happy" : "smug");
+  };
+  const round = () => {
+    if (kicks >= 5) return done();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Kick <b>${kicks + 1}</b> / 5</span><span>Goals <b>${goals}</b></span></div>
+      <div class="goal">${SPOTS.map((s, i) => `<button data-i="${i}">${s}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".goal button").forEach(btn => btn.onclick = () => {
+      const you = +btn.dataset.i, keeper = Math.floor(Math.random() * 9); kicks++;
+      const scored = you !== keeper;
+      document.querySelectorAll(".goal button").forEach((x, i) => { x.disabled = true; if (i === keeper) x.innerHTML = ic("hand"); if (i === you) x.innerHTML = ic(scored ? "ball" : "hand"); });
+      if (scored) { goals++; beep(1040, 120); setMood("surprised", 1200); bubble(pick(["GOAL!", "Top bins!", "Unstoppable."]), 1400); }
+      else { beep(240, 160); setMood("smug", 1000); bubble(pick(["Saved!", "Got it. Easily.", "Not past me."]), 1400); }
+      setTimeout(round, 1000);
+    });
+  };
+  round();
+}
+
+/* ---- Bowling: five rolls, aim the moving marker centre ---- */
+function bowling() {
+  let rolls = 0, total = 0, raf = null, pos = 0, dirn = 1;
+  speak(pick(["Bowling. Line up the marker. Five rolls.", "Five rolls. Mind the gutter."]), "smug", { voice: true });
+  const frame = () => { pos += dirn * 2.4; if (pos >= 100) { pos = 100; dirn = -1; } if (pos <= 0) { pos = 0; dirn = 1; } const ind = $("#bind"); if (ind) ind.style.left = pos + "%"; raf = requestAnimationFrame(frame); };
+  const done = () => {
+    const prev = best("bowling"), better = prev == null || total > prev; best("bowling", total);
+    if (total >= 30) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Pins down</div><div class="big">${total}</div>
+      <div class="note">${total >= 45 ? "Nearly perfect." : total >= 30 ? "Strong arm." : "Keep rolling."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = bowling;
+    speak(`${total} pins. ${total >= 40 ? "Pro bowler." : "Respectable."}`, total >= 30 ? "happy" : "smug");
+  };
+  const setup = () => {
+    if (rolls >= 5) return done();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Roll <b>${rolls + 1}</b> / 5</span><span>Total <b>${total}</b></span></div>
+      <div class="lane" id="pins">${ic("pin").repeat(10)}</div>
+      <div class="power"><div class="zone" style="left:44%;width:12%"></div><i id="bind"></i></div><button class="btn" id="roll">Roll</button>`;
+    $("#bk").onclick = () => { cancelAnimationFrame(raf); gameMenu(); };
+    pos = 0; dirn = 1; raf = requestAnimationFrame(frame); $("#roll").onclick = roll;
+  };
+  const roll = () => {
+    cancelAnimationFrame(raf); rolls++;
+    const off = Math.abs(pos - 50);                         // 0 = dead centre
+    const pins = off < 6 ? 10 : off < 14 ? 8 : off < 24 ? 6 : off < 36 ? 3 : 1;
+    total += pins;
+    const p = $("#pins"); if (p) p.innerHTML = ic("pin").repeat(Math.max(0, 10 - pins));
+    if (pins === 10) { beep(1200, 160); setMood("surprised", 1200); bubble("STRIKE!", 1400); }
+    else { beep(600, 120); bubble(`${pins} pins.`, 1200); setMood(pins >= 6 ? "happy" : "smug", 900); }
+    setTimeout(setup, 1000);
+  };
+  setup();
+}
+
+/* ---- Treasure hunt: dig with hot / cold hints ---- */
+function treasure() {
+  const N = 5, total = N * N, prize = Math.floor(Math.random() * total);
+  const px = prize % N, py = Math.floor(prize / N);
+  let digs = 0, found = false;
+  speak(pick(["Treasure hunt. Dig around — I'll tell you hot or cold.", "Find the gem. Fewest digs wins."]), "smug", { voice: true });
+  const paint = () => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Digs <b>${digs}</b></span><span>${ic("flame")} hot · ${ic("snow")} cold</span></div>
+      <div class="dig">${Array.from({ length: total }, (_, i) => `<button data-i="${i}">${ic("square")}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".dig button").forEach(btn => btn.onclick = () => dig(+btn.dataset.i, btn));
+  };
+  const dig = (i, btn) => {
+    if (found || btn.disabled) return;
+    digs++;
+    if (i === prize) {
+      found = true; btn.innerHTML = ic("gem"); btn.classList.add("found"); beep(1200, 200); setMood("surprised", 1500);
+      const prev = best("treasure"), better = prev == null || digs < prev; best("treasure", digs); companionCheer();
+      setTimeout(() => {
+        $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Found it</div><div class="big">${digs} digs</div>
+          <div class="note">${digs <= 3 ? "Treasure-sniffing genius." : digs <= 8 ? "Nicely hunted." : "Got there eventually."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+        $("#bk").onclick = gameMenu; $("#again").onclick = treasure;
+      }, 700);
+      speak(`Found in ${digs} digs. ${digs <= 5 ? "Sharp." : "Lucky."}`, "happy");
+      return;
+    }
+    const d = Math.abs(i % N - px) + Math.abs(Math.floor(i / N) - py);   // Manhattan distance
+    btn.disabled = true; btn.innerHTML = ic(d <= 1 ? "flame" : d <= 3 ? "sun" : "snow");
+    btn.classList.add(d <= 1 ? "hot" : d <= 3 ? "warm" : "cold");
+    beep(d <= 1 ? 900 : d <= 3 ? 600 : 360, 90);
+  };
+  paint();
+}
+
+/* ---- Hide & seek: find Jarvis behind the doors (3 rounds, 2 guesses each) ---- */
+function hideseek() {
+  let round = 0, found = 0;
+  speak(pick(["Hide and seek. I'm behind a door. Two guesses a round.", "Find me. I'm quiet, but not invisible."]), "smug", { voice: true });
+  const done = () => {
+    const prev = best("hideseek"), better = prev == null || found > prev; best("hideseek", found);
+    if (found >= 2) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Rounds won</div><div class="big">${found} / 3</div>
+      <div class="note">${found === 3 ? "You see everything." : found >= 2 ? "Good eyes." : "I'm a slippery one."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = hideseek;
+    speak(`${found} of three. ${found >= 2 ? "Sharp." : "I win that one."}`, found >= 2 ? "happy" : "smug");
+  };
+  const play = () => {
+    if (round >= 3) return done();
+    const spot = Math.floor(Math.random() * 4); let guesses = 0;
+    const render = (msg) => {
+      $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Round <b>${round + 1}</b> / 3</span><span>Found <b>${found}</b></span></div>
+        <div class="muted" style="text-align:center;min-height:18px">${esc(msg || "Two guesses…")}</div><div class="doors">${[0, 1, 2, 3].map(i => `<button data-i="${i}">${ic("door")}</button>`).join("")}</div>`;
+      $("#bk").onclick = gameMenu;
+      document.querySelectorAll(".doors button").forEach(btn => btn.onclick = () => {
+        const i = +btn.dataset.i; guesses++;
+        if (i === spot) {
+          btn.innerHTML = ic("smile"); found++; round++; beep(1100, 120); setMood("surprised", 1200);
+          document.querySelectorAll(".doors button").forEach(x => x.disabled = true);
+          setTimeout(play, 950);
+        } else {
+          btn.textContent = "∅"; btn.disabled = true; beep(300, 100);
+          if (guesses >= 2) { round++; const d = document.querySelectorAll(".doors button")[spot]; d.innerHTML = ic("eyeoff"); document.querySelectorAll(".doors button").forEach(x => x.disabled = true); setMood("smug", 1000); setTimeout(play, 950); }
+          else render("Not there. One more guess.");
+        }
+      });
+    };
+    render();
+  };
+  play();
+}
+
+/* ---- Dodgeball: read the telegraph, dodge to a safe lane ---- */
+function dodge() {
+  let dodges = 0, hits = 0, throws = 0;
+  speak(pick(["Dodgeball. I'll telegraph my aim — move away. Three hits, you're out.", "Watch where I look. Then dodge."]), "smug", { voice: true });
+  const done = () => {
+    const prev = best("dodge"), better = prev == null || dodges > prev; best("dodge", dodges);
+    if (dodges >= 5) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Dodged</div><div class="big">${dodges}</div>
+      <div class="note">${dodges >= 9 ? "Untouchable." : dodges >= 5 ? "Nimble." : "Work on those feet."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = dodge;
+    speak(`${dodges} dodged. ${dodges >= 7 ? "Like water." : "Keep moving."}`, dodges >= 5 ? "happy" : "smug");
+  };
+  const LANES = [ic("left"), ic("up"), ic("right")];
+  const round = () => {
+    if (hits >= 3) return done();
+    throws++;
+    const tell = Math.floor(Math.random() * 3);                 // the lane he looks at
+    const real = Math.random() < 0.7 ? tell : Math.floor(Math.random() * 3);   // 70% honest
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Throw <b>${throws}</b></span><span>Hits <b>${hits}</b> / 3 · dodged <b>${dodges}</b></span></div>
+      <div class="muted" style="text-align:center">He's eyeing a lane — pick a DIFFERENT one.</div>
+      <div class="lanes">${LANES.map((e, i) => `<button data-i="${i}" class="${i === tell ? "warn" : ""}">${e}</button>`).join("")}</div>`;
+    $("#bk").onclick = gameMenu;
+    document.querySelectorAll(".lanes button").forEach(btn => btn.onclick = () => {
+      const you = +btn.dataset.i;
+      document.querySelectorAll(".lanes button").forEach((x, i) => { x.disabled = true; if (i === real) { x.innerHTML = ic("ball"); x.classList.add("warn"); } });
+      if (you === real) { hits++; beep(240, 180); setMood("smug", 1000); bubble(pick(["Got you!", "Bullseye.", "Ouch."]), 1300); }
+      else { dodges++; beep(1000, 90); setMood("happy", 800); bubble(pick(["Dodged!", "Too slow, me.", "Nice feet."]), 1300); }
+      setTimeout(round, 950);
+    });
+  };
+  round();
+}
+
+/* ---- Rhythm: tap the pad while it glows, on the beat ---- */
+function rhythm() {
+  const beats = 12; let i = 0, hits = 0, lit = -1, openUntil = 0, timer = null;
+  speak(pick(["Rhythm. Tap the pad while it glows. Feel the beat.", "Stay on the beat. Tap when it lights."]), "smug", { voice: true });
+  const paint = () => {
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Beat <b>${Math.min(i + 1, beats)}</b> / ${beats}</span><span>Hits <b>${hits}</b></span></div>
+      <div class="pads">${[0, 1, 2, 3].map(n => `<button class="beatpad" data-n="${n}">${ic("dot")}</button>`).join("")}</div>`;
+    $("#bk").onclick = () => { clearTimeout(timer); gameMenu(); };
+    document.querySelectorAll(".beatpad").forEach(b => b.onclick = () => tap(+b.dataset.n));
+  };
+  const done = () => {
+    const prev = best("rhythm"), better = prev == null || hits > prev; best("rhythm", hits);
+    if (hits >= 8) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">On beat</div><div class="big">${hits} / ${beats}</div>
+      <div class="note">${hits >= 11 ? "Perfect rhythm." : hits >= 8 ? "In the pocket." : "Find the groove."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = rhythm;
+    speak(`${hits} on beat. ${hits >= 9 ? "You've got rhythm." : "Keep practising."}`, hits >= 8 ? "happy" : "smug");
+  };
+  const beat = () => {
+    if (i >= beats) return done();
+    lit = Math.floor(Math.random() * 4); openUntil = performance.now() + 420;
+    const pads = document.querySelectorAll(".beatpad"); pads.forEach(p => p.classList.remove("lit"));
+    if (pads[lit]) pads[lit].classList.add("lit");
+    beep(660, 70); i++;
+    timer = setTimeout(() => { if (pads[lit]) pads[lit].classList.remove("lit"); lit = -1; setTimeout(beat, 240); }, 460);
+    const sc = $(".score b"); if (sc) sc.textContent = Math.min(i, beats);
+  };
+  paint(); setTimeout(beat, 700);
+  const tap = (n) => {
+    if (n === lit && performance.now() < openUntil) { hits++; lit = -1; beep(1046, 80); const p = document.querySelectorAll(".beatpad")[n]; if (p) p.classList.remove("lit"); const h = [...document.querySelectorAll(".score b")][1]; if (h) h.textContent = hits; }
+    else { beep(220, 80); setMood("smug", 400); }
+  };
+}
+
+/* ---- Training drill: quick maths against the clock ---- */
+function training() {
+  let q = 0, score = 0, timer = null;
+  speak(pick(["Training drill. Quick maths. Beat the clock.", "Eight problems. Sharpen up."]), "smug", { voice: true });
+  const done = () => {
+    const prev = best("training"), better = prev == null || score > prev; best("training", score);
+    if (score >= 6) companionCheer();
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="session"><div class="ph">Score</div><div class="big">${score} / 8</div>
+      <div class="note">${score === 8 ? "Flawless. A calculator with legs." : score >= 6 ? "Sharp mind." : "Warm those neurons up."}${better ? " New best!" : ""}</div><button class="btn" id="again">Again</button></div>`;
+    $("#bk").onclick = gameMenu; $("#again").onclick = training;
+    speak(`${score} of eight. ${score >= 7 ? "Impressive." : "We'll drill more."}`, score >= 6 ? "happy" : "smug");
+  };
+  const ask = () => {
+    if (q >= 8) return done();
+    const a = 2 + Math.floor(Math.random() * 11), b = 2 + Math.floor(Math.random() * 11);
+    const op = pick(["+", "−", "×"]); const ans = op === "+" ? a + b : op === "−" ? a - b : a * b;
+    const opts = new Set([ans]); while (opts.size < 4) opts.add(ans + (Math.floor(Math.random() * 11) - 5) || ans + 1);
+    const arr = [...opts].sort(() => Math.random() - .5);
+    $("#game").innerHTML = `<button class="back" id="bk">‹ Games</button><div class="score"><span>Q <b>${q + 1}</b> / 8</span><span>Score <b>${score}</b></span></div>
+      <div class="q" style="text-align:center;font-size:26px">${a} ${op} ${b}</div><div class="bigtimer" id="tmr" style="width:100%"></div>
+      <div class="opts">${arr.map(o => `<button class="opt" data-o="${o}">${o}</button>`).join("")}</div>`;
+    $("#bk").onclick = () => { clearTimeout(timer); gameMenu(); };
+    requestAnimationFrame(() => { const t = $("#tmr"); if (t) { t.style.transition = "width 5s linear"; t.style.width = "0%"; } });
+    const finishQ = (ok) => { clearTimeout(timer); document.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (+x.dataset.o === ans) x.classList.add("right"); }); if (ok) score++; q++; setTimeout(ask, 800); };
+    timer = setTimeout(() => { beep(220, 160); setMood("smug", 800); finishQ(false); }, 5000);
+    document.querySelectorAll(".opt").forEach(btn => btn.onclick = () => { const ok = +btn.dataset.o === ans; if (!ok) btn.classList.add("wrong"); beep(ok ? 1040 : 260, 120); setMood(ok ? "happy" : "smug", 700); finishQ(ok); });
+  };
+  ask();
+}
+
+
+window.addEventListener("message", e => {
+  if (e.source !== parent || e.origin !== location.origin) return;            // the Command Center: open this game now (companion's Play menu, or voice)
+  const g = e.data && e.data.play && e.data.play.game;
+  if (g) startGame(String(g)); else if (e.data && e.data.play) gameMenu();
+});
+gameMenu(); reportGames();
+</script>
+</body>
+</html>

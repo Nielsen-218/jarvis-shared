@@ -1,0 +1,149 @@
+{
+  "format": "jarvis-skill/1",
+  "id": "util.split_bill",
+  "version": "1.1.0",
+  "title": "Split a bill",
+  "description": "Splits a restaurant bill plus tip between people to the cent, in exact integer cents.",
+  "author": {
+    "name": "JARVIS example (hand-written, no AI model needed)",
+    "contact": ""
+  },
+  "scope": "Dividing ONE bill total (0 to 1,000,000 dollars, at most 2 decimal places) with an optional tip percent (0-100, at most 2 decimal places) evenly between 1 to 1000 people. Tip is applied to the pre-tip total, the total with tip is rounded half-up to the cent, leftover cents go one each to the first people. NOT itemised bills, unequal shares, currencies other than dollars, or taxes.",
+  "permissions": [
+    "compute"
+  ],
+  "dependencies": {
+    "python": ">=3.10",
+    "modules": [
+      "decimal"
+    ]
+  },
+  "entry": "run",
+  "params": {
+    "total": {
+      "type": "decimal",
+      "places": 2,
+      "min": 0,
+      "max": 1000000,
+      "from_text": "\\$\\s*(\\d[\\d,]*(?:\\.\\d+)?)",
+      "ask": "How much is the bill, in dollars?"
+    },
+    "tip_percent": {
+      "type": "decimal",
+      "places": 2,
+      "min": 0,
+      "max": 100,
+      "from_text": "(\\d+(?:\\.\\d+)?)\\s*(?:%|percent)",
+      "default": "0"
+    },
+    "people": {
+      "type": "integer",
+      "min": 1,
+      "max": 1000,
+      "number_words": true,
+      "from_text": "(\\d+)\\s*(?:people|ways|persons|friends|guests|of us)",
+      "ask": "How many people are splitting it?"
+    }
+  },
+  "triggers": {
+    "match": "word",
+    "all": [
+      [
+        "split",
+        "divide",
+        "splitting"
+      ],
+      [
+        "bill",
+        "check",
+        "tab",
+        "dinner",
+        "lunch",
+        "tip",
+        "ways",
+        "evenly"
+      ]
+    ],
+    "exclude": [
+      "bill gates",
+      "git",
+      "commit",
+      "pdf",
+      "screen",
+      "window",
+      "windows",
+      "video",
+      "audio",
+      "file",
+      "files",
+      "rig",
+      "bone",
+      "string",
+      "difference",
+      "text",
+      "image",
+      "list",
+      "data",
+      "column",
+      "table",
+      "paragraph",
+      "clip",
+      "track",
+      "partition"
+    ]
+  },
+  "recovery": {
+    "zero_total": {
+      "ask_user": true,
+      "why": "a bill of zero dollars has nothing to split"
+    },
+    "not_enough_money": {
+      "ask_user": true,
+      "why": "that is less than one cent per person"
+    }
+  },
+  "errors": {
+    "zero_total": "the bill total must be above zero",
+    "not_enough_money": "there is less than one cent per person"
+  },
+  "verify": {
+    "invariants": [
+      {
+        "name": "shares add up to the total",
+        "expr": "sum(output['shares_cents']) == output['total_cents']"
+      },
+      {
+        "name": "shares differ by at most one cent",
+        "expr": "max(output['shares_cents']) - min(output['shares_cents']) <= 1"
+      },
+      {
+        "name": "one share per person",
+        "expr": "len(output['shares_cents']) == input['people']"
+      },
+      {
+        "name": "total equals an independent exact half-up calculation",
+        "expr": "output['total_cents'] == int((Decimal(input['total']) * (100 + Decimal(input['tip_percent'])) * 2 + 1) // 2)"
+      },
+      {
+        "name": "shares are whole non-negative cents",
+        "expr": "all(isinstance(c, int) and c >= 0 for c in output['shares_cents'])"
+      }
+    ]
+  },
+  "reply": "Split ${total_with_tip} (including a {tip_percent}% tip) between {people_text}: {share_text}.",
+  "provenance": {
+    "created_by": "JARVIS project example",
+    "created_with": "hand-written",
+    "source_url": "",
+    "created": "2026-11-01",
+    "notes": "Claimed provenance is informational only; trust comes from the host judge."
+  },
+  "files": {
+    "cases/dev.json": "9fcf859c5e16c53cea4187af79703af2cde24371ad5a05dd7e8f689d92eef972",
+    "cases/holdout.json": "6b7e8da5056247abd37b4c1e16aa0294b2db8e9e9d46101459b5b3a04edccef3",
+    "cases/train.json": "56c5655e7f9b46237ca601c5a388c6d531f7955fe85e6c7f8678cd345c08ae83",
+    "docs/README.md": "825d3e8f9c525ea3402f0fc0853cad44b4677dfa405d2304017e046e2404358e",
+    "judge.py": "3c424c5ba79964100ea583884a2cd72da8c2445795db057ae22d8923676ebdf6",
+    "procedure.py": "73394cc152569feeccd9967a82b8ae877751234f2024be3ad4373c36028e0540"
+  }
+}

@@ -1,0 +1,335 @@
+{
+  "input": "C:/Users/you/ECC/jarvis/docs/rigging/synth/synthetic_quadruped.glb",
+  "blender": "5.2.2 LTS",
+  "stages": {
+    "skin_valid": true,
+    "pose_tests": "10/10 passed",
+    "ik_fk": "2/2 passed",
+    "export": "PASS",
+    "reimport_animation_roundtrip": "PASS"
+  },
+  "pipeline": {
+    "input": "synthetic_quadruped",
+    "clean": {
+      "verts_before": 57634,
+      "verts_after": 57634,
+      "components_before": 1,
+      "floaters_removed": 0
+    },
+    "analysis": {
+      "kind": "quadruped",
+      "confidence": 0.7,
+      "leg_clusters": 4,
+      "elongation": 2.161,
+      "dimensions": [
+        0.4591,
+        2.3104,
+        1.0694
+      ],
+      "bbox_min": [
+        -0.2295340746641159,
+        -1.310735821723938,
+        0.049999892711639404
+      ],
+      "bbox_max": [
+        0.2295341044664383,
+        0.9996893405914307,
+        1.1193865537643433
+      ],
+      "verts": 57634,
+      "faces": 115264
+    },
+    "kind_used": "quadruped",
+    "retopo": {
+      "method": "collapse_decimate",
+      "faces_in": 115264,
+      "faces_out": 40000
+    },
+    "landmarks": {
+      "axis": "y",
+      "head_sign": 1
+    },
+    "bones": 27,
+    "skin": {
+      "attempts": [
+        {
+          "method": "armature_auto_direct",
+          "seconds": 0.61,
+          "error": null,
+          "validation": {
+            "verts": 20002,
+            "unweighted_verts": 0,
+            "unweighted_fraction": 0.0,
+            "deform_bones": 26,
+            "empty_bones": [
+              "tail_03",
+              "tail_04"
+            ],
+            "ok": true
+          }
+        }
+      ],
+      "final_method": "armature_auto_direct",
+      "ok": true,
+      "final_validation": {
+        "verts": 20002,
+        "unweighted_verts": 0,
+        "unweighted_fraction": 0.0,
+        "deform_bones": 26,
+        "empty_bones": [
+          "tail_03",
+          "tail_04"
+        ],
+        "ok": true
+      }
+    },
+    "ik_controls": [
+      "ik_fore_paw.L",
+      "ik_hind_paw.L",
+      "ik_fore_paw.R",
+      "ik_hind_paw.R"
+    ],
+    "seconds": 1.04
+  },
+  "pose_tests": [
+    {
+      "test": "fore_leg.L",
+      "bones": [
+        "fore_upperleg.L"
+      ],
+      "angle_deg": 40,
+      "axis_chosen": [
+        -1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.829,
+      "subtree_verts": 497,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.259,
+      "edge_stretch_p99.9": 1.157,
+      "edge_compress_p0.1": 0.857,
+      "pass": true
+    },
+    {
+      "test": "fore_knee.L",
+      "bones": [
+        "fore_lowerleg.L"
+      ],
+      "angle_deg": 50,
+      "axis_chosen": [
+        1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.906,
+      "subtree_verts": 203,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.174,
+      "edge_stretch_p99.9": 1.206,
+      "edge_compress_p0.1": 0.847,
+      "pass": true
+    },
+    {
+      "test": "hind_leg.L",
+      "bones": [
+        "hind_thigh.L"
+      ],
+      "angle_deg": 40,
+      "axis_chosen": [
+        1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.94,
+      "subtree_verts": 942,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0048,
+      "max_displacement_over_H": 0.377,
+      "edge_stretch_p99.9": 1.256,
+      "edge_compress_p0.1": 0.757,
+      "pass": true
+    },
+    {
+      "test": "hind_hock.L",
+      "bones": [
+        "hind_shin.L"
+      ],
+      "angle_deg": 50,
+      "axis_chosen": [
+        -1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.982,
+      "subtree_verts": 495,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.32,
+      "edge_stretch_p99.9": 1.177,
+      "edge_compress_p0.1": 0.771,
+      "pass": true
+    },
+    {
+      "test": "fore_leg.R",
+      "bones": [
+        "fore_upperleg.R"
+      ],
+      "angle_deg": 40,
+      "axis_chosen": [
+        -1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.829,
+      "subtree_verts": 501,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.259,
+      "edge_stretch_p99.9": 1.171,
+      "edge_compress_p0.1": 0.852,
+      "pass": true
+    },
+    {
+      "test": "fore_knee.R",
+      "bones": [
+        "fore_lowerleg.R"
+      ],
+      "angle_deg": 50,
+      "axis_chosen": [
+        1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.906,
+      "subtree_verts": 205,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.174,
+      "edge_stretch_p99.9": 1.205,
+      "edge_compress_p0.1": 0.852,
+      "pass": true
+    },
+    {
+      "test": "hind_leg.R",
+      "bones": [
+        "hind_thigh.R"
+      ],
+      "angle_deg": 40,
+      "axis_chosen": [
+        1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.94,
+      "subtree_verts": 956,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0054,
+      "max_displacement_over_H": 0.377,
+      "edge_stretch_p99.9": 1.28,
+      "edge_compress_p0.1": 0.741,
+      "pass": true
+    },
+    {
+      "test": "hind_hock.R",
+      "bones": [
+        "hind_shin.R"
+      ],
+      "angle_deg": 50,
+      "axis_chosen": [
+        -1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.982,
+      "subtree_verts": 503,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0,
+      "max_displacement_over_H": 0.319,
+      "edge_stretch_p99.9": 1.176,
+      "edge_compress_p0.1": 0.736,
+      "pass": true
+    },
+    {
+      "test": "tail",
+      "bones": [
+        "tail_02"
+      ],
+      "angle_deg": 40,
+      "axis_chosen": [
+        -1,
+        0,
+        0
+      ],
+      "axis_alignment": 1.0,
+      "subtree_verts": 733,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.007,
+      "max_displacement_over_H": 0.202,
+      "edge_stretch_p99.9": 1.407,
+      "edge_compress_p0.1": 0.905,
+      "pass": true
+    },
+    {
+      "test": "neck_head",
+      "bones": [
+        "neck"
+      ],
+      "angle_deg": 25,
+      "axis_chosen": [
+        1,
+        0,
+        0
+      ],
+      "axis_alignment": 0.911,
+      "subtree_verts": 5415,
+      "moved_fraction": 1.0,
+      "stray_fraction": 0.0056,
+      "max_displacement_over_H": 0.248,
+      "edge_stretch_p99.9": 1.296,
+      "edge_compress_p0.1": 0.729,
+      "pass": true
+    }
+  ],
+  "ik_tests": [
+    {
+      "control": "ik_fore_paw.L",
+      "ik_influence": 1.0,
+      "end_effector_error_over_H": 0.0,
+      "end_effector_moved_over_H": 0.0781,
+      "pass": true
+    },
+    {
+      "control": "ik_fore_paw.L",
+      "ik_influence": 0.0,
+      "end_effector_error_over_H": 0.0781,
+      "end_effector_moved_over_H": 0.0,
+      "pass": true
+    }
+  ],
+  "animation": "JV_AnimTest",
+  "exports": {
+    "glb": {
+      "path": "C:/Users/you/ECC/jarvis/docs/rigging/synth/quadruped\\char_rigged.glb",
+      "bytes": 1506500
+    },
+    "fbx": {
+      "path": "C:/Users/you/ECC/jarvis/docs/rigging/synth/quadruped\\char_rigged.fbx",
+      "bytes": 1771836
+    }
+  },
+  "reimport": {
+    "bones": 31,
+    "bones_expected_deform+ctl": 31,
+    "vertex_groups": 31,
+    "has_action": true,
+    "pose_deform_over_H": 0.2894,
+    "verts_reimported": 23873,
+    "verts_original": 20002,
+    "max_pos_error_over_H": 0.0,
+    "mean_pos_error_over_H": 0.0,
+    "pass": true
+  }
+}

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teach Jarvis</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2);
+    background: color-mix(in srgb, var(--bg-0) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); }
+  main { max-width: 640px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-8) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  [hidden] { display: none !important; }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .said { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); overflow-wrap: anywhere; }
+  .reply { padding: var(--s-3); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); overflow-wrap: anywhere; }
+  .tags { display: flex; gap: var(--s-1); flex-wrap: wrap; }
+  .tag { font-size: var(--fs-xs); padding: 2px 8px; border-radius: 999px; background: var(--bg-2); color: var(--text-2); border: 1px solid var(--line-1); }
+  .tag.bad { color: var(--warn); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+  .ds-btn { min-height: 52px; font-weight: 600; }
+  .wrongbox { display: grid; gap: var(--s-2); }
+  select, input { width: 100%; min-height: 48px; padding: 0 var(--s-3); border-radius: var(--r-2); background: var(--bg-1);
+    color: var(--text-1); border: 1px solid var(--line-2); font: inherit; }
+  .score { font: 600 var(--fs-xl)/var(--lh-xl) var(--font-display); }
+  .skip { justify-self: center; background: none; border: 0; color: var(--text-2); font: inherit; padding: var(--s-2); cursor: pointer; }
+</style>
+</head>
+<body>
+<header><h1>Teach Jarvis</h1><p class="sub">A few of your real lines a day. Was he right?</p></header>
+<main>
+  <div class="ds-card" id="score" hidden></div>
+  <div id="cards"></div>
+  <p class="sub" id="why">Your verdicts stay on your PC. They show how often Jarvis gets it right by <b>your</b> judgement, and they are
+    the examples Nijon may learn from: your words and your corrections, nothing written by Claude.</p>
+</main>
+<div class="ds-toast" id="toast" hidden></div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let Q = null;
+
+async function api(path, body) {
+  const opts = { method: body ? "POST" : "GET", headers: { Authorization: `Bearer ${token}` } };
+  if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3500); }
+
+const KIND = { open: "Open", close: "Close", minimize: "Minimize", focus: "Bring forward", screen: "Jarvis screen", globe: "Globe",
+  pc_question: "PC question", info: "Everyday question", cancel: "Cancel", other: "Conversation" };
+
+function score(s) {
+  const el = $("#score");
+  if (!s || !s.reviewed) { el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = `<div class="score">Right ${s.right} of ${s.reviewed}</div><p class="sub">by your judgement so far${s.skipped ? ` · ${s.skipped} skipped` : ""}</p>`;
+}
+
+function render() {
+  score(Q.stats);
+  const box = $("#cards");
+  if (!Q.items.length) {
+    box.innerHTML = `<div class="ds-card"><b>${Q.left_today ? "Nothing to review yet." : "All done for today."}</b>
+      <p class="sub">${Q.left_today ? "New lines appear after you talk to Jarvis." : "Thanks. More tomorrow."}${Q.waiting ? ` ${Q.waiting} older lines are waiting.` : ""}</p></div>`;
+    return;
+  }
+  const it = Q.items[0];
+  const opts = Object.entries(Q.kinds).map(([k, v]) => `<option value="${k}">${esc(v)}</option>`).join("");
+  box.innerHTML = `<div class="ds-card">
+    <p class="sub">${esc(it.when)} · ${esc(it.channel)} · ${Q.items.length} left today</p>
+    <div class="said">“${esc(it.said)}”</div>
+    <div class="tags"><span class="tag">${esc(KIND[it.kind] || it.kind)}</span>
+      ${it.repeated ? `<span class="tag bad">you said it again</span>` : ""}${it.complained ? `<span class="tag bad">you complained</span>` : ""}
+      ${it.outcome && it.outcome !== "done" ? `<span class="tag bad">${esc(it.outcome)}</span>` : ""}</div>
+    <div class="reply"><span class="sub">Jarvis:</span> ${esc(it.reply || "(no reply recorded)")}</div>
+    <div class="row"><button class="ds-btn primary" id="right">Right</button><button class="ds-btn" id="wrong">Wrong</button></div>
+    <div class="wrongbox" id="wbox" hidden>
+      <label class="sub" for="mk">What did you mean?</label>
+      <select id="mk">${opts}</select>
+      <input id="meant" maxlength="120" placeholder="In your words, e.g. minimize Claude">
+      <button class="ds-btn primary" id="save">Save correction</button>
+    </div>
+    <button class="skip" id="skip">Skip this one</button></div>`;
+  $("#right").onclick = () => send(it, { verdict: "right" });
+  $("#skip").onclick = () => send(it, { verdict: "skip" });
+  $("#wrong").onclick = () => { $("#wbox").hidden = false; const k = Q.kinds[it.kind] ? it.kind : "other"; $("#mk").value = k; $("#meant").focus(); };
+  $("#save").onclick = () => send(it, { verdict: "wrong", meant_kind: $("#mk").value, meant: $("#meant").value });
+}
+
+async function send(it, body) {
+  try {
+    const r = await api("/api/corrections", { key: it.key, via: "phone", ...body });
+    Q.items.shift(); Q.stats = r.stats; Q.left_today = Math.max(0, Q.left_today - 1);
+    toast(body.verdict === "right" ? "Noted: he got it right." : body.verdict === "wrong" ? "Correction saved." : "Skipped.");
+    render();
+  } catch (e) { toast(e.message); }
+}
+
+(async () => {
+  if (!token) { $("#cards").innerHTML = `<div class="ds-card"><b>Link this phone first.</b><p class="sub">Open the Jarvis app and pair this device.</p></div>`; return; }
+  try { Q = await api("/api/corrections"); render(); } catch (e) { $("#cards").innerHTML = `<div class="ds-card"><b>${esc(e.message)}</b></div>`; }
+})();
+</script>
+</body>
+</html>

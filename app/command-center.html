@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04070D">
+<title>J.A.R.V.I.S. Command Center</title>
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="command-center.css">
+</head>
+<body class="cc" data-state="starting">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8E3A0"/><stop offset=".5" stop-color="#E3B04B"/><stop offset="1" stop-color="#9A6A1C"/></linearGradient>
+    <symbol id="crest" viewBox="0 0 100 100">
+      <g fill="none" stroke="url(#gold)" stroke-width="2.2" stroke-linecap="round">
+        <path d="M50 92C26 90 10 72 10 50c0-12 5-23 13-30"/><path d="M50 92c24-2 40-20 40-42 0-12-5-23-13-30"/>
+        <path d="M14 62l-8-2M12 50l-8 1M14 38l-7 4M20 27l-6 6M24 74l-8 1M34 84l-7 4M86 62l8-2M88 50l8 1M86 38l7 4M80 27l6 6M76 74l8 1M66 84l7 4" stroke-width="3.4"/>
+      </g>
+      <circle cx="50" cy="50" r="30" fill="#070B14" stroke="url(#gold)" stroke-width="2.4"/>
+      <path d="M36 12l5 6 9-9 9 9 5-6-3 12H39z" fill="url(#gold)"/>
+      <text x="50" y="64" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="40" fill="url(#gold)">N</text>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="cc-top" id="topbar">
+  <div class="cc-brand">
+    <svg class="cc-crest" role="img" aria-label="N crest"><use href="#crest"/></svg>
+    <div><b>J.A.R.V.I.S.</b><span>PERSONAL AI COMMAND CENTER</span><em id="builtFor">BUILT FOR ALEX</em></div>
+  </div>
+  <nav class="cc-tabs glass" id="tabs" aria-label="Sections">
+    <button data-go="home" aria-current="page"><i data-ic="home"></i>Home</button>
+    <button data-go="chat"><i data-ic="chat"></i>Chat</button>
+    <button data-go="code"><i data-ic="code"></i>Code</button>
+    <button data-go="build"><i data-ic="box"></i>Build</button>
+    <button data-go="game"><i data-ic="gamepad"></i>Game</button>
+    <button data-go="fitness"><i data-ic="dumbbell"></i>Fitness</button>
+    <button data-go="learn"><i data-ic="book"></i>Learn</button>
+    <button data-go="projects"><i data-ic="layers"></i>Projects</button>
+    <button data-go="automation"><i data-ic="cog"></i>Automation</button>
+  </nav>
+  <div class="cc-gauges glass" id="gauges" aria-label="System gauges">
+    <div class="ring na" data-g="cpu">CPU<b>--</b></div><div class="ring na" data-g="gpu">GPU<b>--</b></div>
+    <div class="ring na" data-g="ram">RAM<b>--</b></div><div class="ring na" data-g="ssd">SSD<b>--</b></div>
+  </div>
+  <button class="cc-gear" data-go="settings" aria-label="Settings" title="Settings"><i data-ic="cog"></i></button>
+</header>
+
+<aside class="cc-side glass" id="sidebar" aria-label="Navigation">
+  <div class="cc-status"><i id="dot" class="off"></i><div><b>J.A.R.V.I.S.</b><span id="statusLine">Connecting</span></div></div>
+  <button data-go="home" aria-current="page"><i data-ic="home"></i>Home</button>
+  <button data-go="chat"><i data-ic="chat"></i>Chat</button>
+  <button data-go="workout"><i data-ic="dumbbell"></i>Workout</button>
+  <button data-go="partner"><i data-ic="target"></i>Partner</button>
+  <button data-go="focus"><i data-ic="target"></i>Focus</button>
+  <button data-go="play"><i data-ic="gamepad"></i>Play</button>
+  <button data-go="dashboard"><i data-ic="grid"></i>Dashboard</button>
+  <button data-go="myworld"><i data-ic="user"></i>My World</button>
+  <button data-go="record"><i data-ic="mic"></i>Record my voice</button>
+  <div class="grp"><i data-ic="cube"></i>Systems</div>
+  <button data-go="world"><i data-ic="globe"></i>World Intelligence</button>
+  <button data-go="house"><i data-ic="monitor"></i>House cameras</button>
+  <button data-go="pc"><i data-ic="monitor"></i>PC Control</button>
+  <button data-go="files"><i data-ic="folder"></i>Files</button>
+  <button data-go="apps"><i data-ic="grid"></i>Apps</button>
+  <button data-go="devices"><i data-ic="chip"></i>Devices</button>
+  <button data-go="automation"><i data-ic="bot"></i>Automation</button>
+  <button data-go="teach"><i data-ic="book"></i>Teach Jarvis</button>
+  <button data-go="settings"><i data-ic="cog"></i>Settings</button>
+</aside>
+
+<main class="cc-main" id="main" data-view="home">
+  <section class="cc-hero" id="hero" aria-label="Jarvis">
+    <div class="cc-room" aria-hidden="false">
+      <button class="cc-world" data-say="Open my Shadow World project" title="Shadow World"><b><i data-ic="gamepad"></i>SHADOW WORLD</b><span>GAME DEVELOPMENT</span></button>
+    </div>
+    <div class="cc-hexes" aria-label="Create">
+      <button class="hex" data-go="code" title="Code" aria-label="Code"><i data-ic="code"></i></button>
+      <button class="hex" data-say="Open Blender" data-app="blender" title="Blender" aria-label="Open Blender"><span class="mono bl">B</span></button>
+      <button class="hex" data-say="Open Unreal Engine" data-app="unreal" title="Unreal Engine" aria-label="Open Unreal Engine"><span class="mono ue">UE</span></button>
+      <button class="hex" data-say="Open Visual Studio Code" data-app="vscode" title="VS Code" aria-label="Open VS Code"><span class="mono vs">VS</span></button>
+    </div>
+    <div class="cc-stage">
+      <div class="cc-title"><b>J.A.R.V.I.S.</b>
+        <div class="cc-state" id="state" data-s="starting" role="status" aria-live="polite"><span class="wave" id="waveS" aria-hidden="true"></span><span id="stateText">STARTING</span></div>
+      </div>
+    </div>
+    <div class="cc-hexes" aria-label="Do">
+      <button class="hex" data-go="game" title="Game" aria-label="Game"><i data-ic="gamepad"></i></button>
+      <button class="hex" data-go="workout" title="Workout" aria-label="Workout"><i data-ic="dumbbell"></i></button>
+      <button class="hex" data-go="learn" title="Learn" aria-label="Learn"><i data-ic="book"></i></button>
+      <button class="hex" data-go="build" title="Build" aria-label="Build"><i data-ic="box"></i></button>
+    </div>
+  </section>
+
+  <section class="cc-feed glass" id="feed" aria-label="Conversation">
+    <div class="cc-chips" id="chips" aria-live="off"></div>
+    <div class="cc-log" id="log" aria-live="polite"><div class="empty" id="logEmpty">Nothing said yet. Say "Hey Jarvis", press the microphone, or type with the keyboard button.</div></div>
+    <div class="cc-media" id="media"><img id="mediaImg" alt=""><div><small id="mediaCap"></small><a id="mediaLink" target="_blank" rel="noopener">Open</a></div><button id="mediaX" title="Clear this picture" aria-label="Clear this picture">Clear</button></div>
+    <div class="cc-task" id="task"><span class="av"><i data-ic="bolt"></i></span><div><b id="taskName">Working</b><small id="taskStep"></small></div>
+      <div class="bar busy" id="taskBar"><i></i></div><span id="taskPct"></span><span class="ok" id="taskOk"></span></div>
+  </section>
+
+  <section class="cc-focus glass" id="focusView" aria-label="Focus">
+    <header><b>Focus</b><button data-go="home">Back to Home</button></header>
+    <div class="body" id="focusBody"></div>
+  </section>
+
+  <section class="cc-page glass" id="page" aria-label="Page">
+    <header><b id="pageTitle"></b><button id="pagePop">Open in its own window</button><button data-go="home">Back to Home</button></header>
+    <iframe id="frame" title="Jarvis page" src="about:blank" allow="fullscreen; autoplay; microphone" allowfullscreen></iframe>
+  </section>
+
+  <section class="cc-mic glass" id="micbar" aria-label="Talk to Jarvis">
+    <button class="sq" id="stopBtn" title="Stop speaking" aria-label="Stop speaking"><i data-ic="speaker"></i></button>
+    <button class="sq" id="kbBtn" title="Type to Jarvis" aria-label="Type to Jarvis" aria-pressed="false"><i data-ic="keyboard"></i></button>
+    <span class="wave" id="waveL" aria-hidden="true"></span>
+    <form id="ask"><input id="askText" type="text" autocomplete="off" placeholder="Type to Jarvis and press Enter" aria-label="Message to Jarvis"></form>
+    <button class="cc-micbtn" id="micBtn" title="Listen" aria-label="Listen"><i data-ic="mic"></i></button>
+    <span class="wave" id="waveR" aria-hidden="true"></span>
+    <button class="sq" id="muteBtn" title="Mute the microphone" aria-label="Mute the microphone" aria-pressed="false"><i data-ic="sliders"></i></button>
+    <button class="sq" data-go="pc" title="PC screen and control" aria-label="PC screen and control"><i data-ic="monitor"></i></button>
+  </section>
+</main>
+
+<aside class="cc-right" id="right">
+  <section class="cc-profile glass" id="profile">
+    <button class="cc-photo" id="photo" title="Click to set or change your photo" aria-label="Set or change your photo"><i data-ic="user"></i></button><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" hidden>
+    <div style="min-width:0;flex:1"><b id="ownerName">Your Name</b><span id="ownerTag">Tap to add your tagline</span><form id="tagForm" class="cc-tagform" hidden><input id="tagInput" maxlength="90" aria-label="Your tagline"><button type="submit" class="cc-edit">Save</button></form><div class="rule"></div></div>
+    <button class="cc-edit" id="tagEdit" title="Edit your tagline" aria-label="Edit your tagline"><i data-ic="edit"></i></button>
+    <svg class="mini" aria-hidden="true"><use href="#crest"/></svg>
+  </section>
+  <section class="cc-now glass" id="now">
+    <i data-ic="calendar"></i><div><small id="date">&nbsp;</small><b id="clock">--:--</b></div><span class="sep"></span>
+    <span class="wx" id="wxIcon"></span><div id="wx"><small class="faint">Weather unavailable</small></div>
+  </section>
+  <section class="cc-mission glass" id="mission">
+    <h2><i data-ic="target"></i>Today's Mission</h2>
+    <ul id="missionList"><li class="empty" style="display:block">Loading today.</li></ul>
+  </section>
+  <section class="glass" id="launch">
+    <h2><i data-ic="rocket"></i>Quick Launch</h2>
+    <div class="cc-tiles">
+      <button data-say="Open Blender" data-app="blender"><span class="mono bl">B</span>Blender</button>
+      <button data-say="Open Unreal Engine" data-app="unreal"><span class="mono ue">UE</span>UE</button>
+      <button data-say="Open Visual Studio Code" data-app="vscode"><span class="mono vs">VS</span>VS Code</button>
+      <button data-say="Open GitHub" data-app="github"><span class="mono gh">GH</span>GitHub</button>
+      <button data-say="Open Steam" data-app="steam"><span class="mono st">S</span>Steam</button>
+      <button id="launchMore" title="Open something else" aria-label="Open something else"><i data-ic="plus"></i></button>
+    </div>
+  </section>
+  <section class="cc-sys glass" id="system">
+    <header><h2><i data-ic="pulse"></i>System Status</h2><span id="sysAll" class="na">Checking</span></header>
+    <div class="cc-rings" id="rings">
+      <div class="ring big na" data-g="cpu">CPU<b>--</b></div><div class="ring big na" data-g="gpu">GPU<b>--</b></div>
+      <div class="ring big na" data-g="ram">RAM<b>--</b></div><div class="ring big na" data-g="ssd">SSD<b>--</b></div>
+    </div>
+  </section>
+  <section class="cc-core glass" id="core" aria-label="Core scorecard">
+    <header><h2><i data-ic="target"></i>Core Scorecard</h2><span id="coreRate" class="na">Checking</span></header>
+    <p class="cc-core-sub" id="coreSub">Everyday commands done right the first time (target 9 in 10).</p>
+    <div class="cc-core-stats" id="coreStats"></div>
+    <div class="cc-core-kinds" id="coreKinds"></div>
+    <div class="cc-core-days" id="coreDays" aria-label="Last 7 days"></div>
+    <small class="faint" id="coreReplay"></small>
+  </section>
+</aside>
+<div class="cc-pick" id="pick" hidden role="dialog" aria-label="Pin an app to Quick Launch">
+  <div class="glass"><header><b>Pin an app to Quick Launch</b><button id="pickX" aria-label="Close">Close</button></header>
+    <input id="pickFind" type="text" autocomplete="off" placeholder="Find an installed app" aria-label="Find an installed app">
+    <div class="pins" id="pickPins"></div><div class="list" id="pickList"></div></div>
+</div>
+<div class="cc-toast" id="toast" role="status"></div>
+<script src="command-center.js"></script>
+</body>
+</html>

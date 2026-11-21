@@ -1,0 +1,29 @@
+{
+  "source": "https://github.com/makehumancommunity/makehuman",
+  "revision": "a8bc2d54ff0ac92e78ff71431b1023eda42bf482",
+  "license": "CC0-1.0",
+  "source_hashes": {
+    "makehuman/data/3dobjs/base.obj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+    "makehuman/data/targets/macrodetails/african-male-young.target": "894abc1fbb3d28543a51fef16f89d5d4bdf9aa2e1534413339811a3d47818b7d",
+    "makehuman/data/targets/macrodetails/asian-male-young.target": "ed2e8c191cb6b87b4a2d97c80486acb2604fa549316c7aa2a738a5d5a14334dc",
+    "makehuman/data/targets/macrodetails/caucasian-male-young.target": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5",
+    "makehuman/data/targets/macrodetails/african-female-young.target": "92d61eeb3c164b421fd5a7c3537ee45e7e1a51de4d49bf312e19c3df2be1d8fc",
+    "makehuman/data/targets/macrodetails/asian-female-young.target": "095fe79694fa19e1fe98d93009ec116199bd524e081c640351a10eccf2cca1eb",
+    "makehuman/data/targets/macrodetails/caucasian-female-young.target": "118379f6e8ba9266247fdb8788a20e1df40a239f97ced0b9905bcbcc74f6e820",
+    "makehuman/data/targets/macrodetails/universal-male-young-maxmuscle-averageweight.target": "c171ff9cc95e96273beb3e3b1969a01988c2d4982ebc6fe04bf81cf72ee3b295",
+    "makehuman/data/targets/macrodetails/universal-male-young-averagemuscle-maxweight.target": "3e77ff5a07a9b870db5226507e1cf8a295f0e09c109fb72142770f5f50427b5e",
+    "makehuman/data/targets/macrodetails/universal-female-young-maxmuscle-averageweight.target": "2e56b09b44a8497b927585447fdaac5ea7293521d1f3a3df1059495873c53f4e",
+    "makehuman/data/targets/macrodetails/universal-female-young-averagemuscle-maxweight.target": "3648e7f9b34d947726161b563b90ba92b29860bac4c4f82aea3cec37bad2bb4e",
+    "makehuman/data/targets/nose/nose-scale-horiz-incr.target": "cc319e3ddb0523fa2b563dcfc840cf2f915a890abe5612009a0becebecd3c5ae",
+    "makehuman/data/targets/head/head-scale-horiz-incr.target": "31830f645c194c9451cb5f59cffb8e1d2a1c8fb215afb0c2ab36028b2c24570d",
+    "makehuman/data/targets/torso/torso-muscle-pectoral-incr.target": "0299c687b73a5e217d00273da99acb8a983c8a83640177062fdc27d20bdce77b",
+    "makehuman/data/targets/mouth/mouth-scale-vert-incr.target": "acdbd062c3709211daf947c437b4962a944148c4255501fdd449625160e3d50a",
+    "makehuman/data/targets/chin/chin-prominent-incr.target": "d2493ca5f69aabeb8557d77a56c49cfcf2062ff90c0cad03073d87990d11448b",
+    "makehuman/data/targets/cheek/l-cheek-bones-incr.target": "244ffa39d2d2db94ff15130719346b4cae2236bf2a309c5682eac352da06be50",
+    "makehuman/data/targets/cheek/r-cheek-bones-incr.target": "a393f67acce21568ab832091daadab267685d464492647cb0c4e8cb5af58c4c9",
+    "makehuman/data/targets/eyes/l-eye-scale-incr.target": "f35550dc3170ca1c0aacae0b598ca139e4f1f913f2ccea146ec6ea5b4e050dbb",
+    "makehuman/data/targets/eyes/r-eye-scale-incr.target": "e1f4cb48575b60a46589635b99a8b87587ba82d7524a8ac1445ace0ba002e918",
+    "LICENSE.ASSETS.md": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+  },
+  "changes": "OBJ triangulated; helpers omitted; averaged adult male/female macro targets; selected morph targets. No MakeHuman program code included."
+}

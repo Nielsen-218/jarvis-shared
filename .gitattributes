@@ -1,0 +1,5 @@
+skillkit/** -text
+
+integration/**/*.patch -text
+integration/homecam/** text eol=lf
+integration/homecam/camera-card/debug/libre_anyka_app_jarvis binary

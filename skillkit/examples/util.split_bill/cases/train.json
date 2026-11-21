@@ -1,0 +1,156 @@
+[
+ {
+  "id": "t1",
+  "params": {
+   "total": "120",
+   "tip_percent": "20",
+   "people": 4
+  },
+  "expect": {
+   "output": {
+    "total_cents": 14400,
+    "shares_cents": [
+     3600,
+     3600,
+     3600,
+     3600
+    ]
+   }
+  }
+ },
+ {
+  "id": "t2",
+  "params": {
+   "total": "90",
+   "tip_percent": "0",
+   "people": 3
+  },
+  "expect": {
+   "output": {
+    "total_cents": 9000,
+    "shares_cents": [
+     3000,
+     3000,
+     3000
+    ]
+   }
+  }
+ },
+ {
+  "id": "t3",
+  "params": {
+   "total": "100",
+   "tip_percent": "0",
+   "people": 3
+  },
+  "expect": {
+   "output": {
+    "total_cents": 10000,
+    "shares_cents": [
+     3334,
+     3333,
+     3333
+    ]
+   }
+  }
+ },
+ {
+  "id": "t4",
+  "params": {
+   "total": "10",
+   "tip_percent": "0",
+   "people": 1
+  },
+  "expect": {
+   "output": {
+    "total_cents": 1000,
+    "shares_cents": [
+     1000
+    ]
+   }
+  }
+ },
+ {
+  "id": "t5",
+  "params": {
+   "total": "0",
+   "tip_percent": "0",
+   "people": 2
+  },
+  "expect": {
+   "error": "zero_total"
+  }
+ },
+ {
+  "id": "t6",
+  "params": {
+   "total": "45",
+   "tip_percent": "15",
+   "people": 5
+  },
+  "expect": {
+   "output": {
+    "total_cents": 5175,
+    "shares_cents": [
+     1035,
+     1035,
+     1035,
+     1035,
+     1035
+    ]
+   }
+  }
+ },
+ {
+  "id": "t7",
+  "params": {
+   "total": "0.10",
+   "tip_percent": "5",
+   "people": 1
+  },
+  "expect": {
+   "output": {
+    "total_cents": 11,
+    "shares_cents": [
+     11
+    ]
+   }
+  }
+ },
+ {
+  "id": "t8",
+  "params": {
+   "total": "0.01",
+   "tip_percent": "0",
+   "people": 1
+  },
+  "expect": {
+   "output": {
+    "total_cents": 1,
+    "shares_cents": [
+     1
+    ]
+   }
+  }
+ },
+ {
+  "id": "r1",
+  "text": "divide the $45 check between 5 people, 15 percent tip",
+  "route": true,
+  "params": {
+   "total": "45",
+   "tip_percent": "15",
+   "people": 5
+  }
+ },
+ {
+  "id": "r2",
+  "text": "split this pdf into pages",
+  "route": false
+ },
+ {
+  "id": "r3",
+  "text": "what is the bill for electricity this month",
+  "route": false
+ }
+]

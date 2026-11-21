@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Dressing Room</title>
+<meta name="theme-color" content="#06090f">
+<style>html,body{margin:0;height:100%;background:#06090f}</style>
+<script>
+// The photo fitting room and the old avatar pages are retired: the 3D dressing room (wardrobe.html) replaces them.
+// Carry a pairing token (#t=) straight through; otherwise open the dressing room's Avatar tab.
+var h = location.hash && location.hash.indexOf("#t=") === 0 ? location.hash : "#avatar";
+try { location.replace("/wardrobe.html" + h); } catch (e) { location.href = "/wardrobe.html" + h; }
+</script>
+</head>
+<body></body>
+</html>

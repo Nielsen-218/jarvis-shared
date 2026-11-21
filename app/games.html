@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ht">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#110816">
+  <title>JARVIS Playhouse</title>
+  <link rel="stylesheet" href="/games.css">
+  <script type="module" src="/games-ui.mjs"></script>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail" aria-label="Navigasyon jwèt">
+    <div class="brand">JARVIS<small>Playhouse</small><span aria-hidden="true">⌘</span></div>
+    <nav><button aria-current="page"><span class="ico" aria-hidden="true">⌂</span>Akèy</button>
+    <button><span class="ico" aria-hidden="true">▦</span>Tout Jwèt</button>
+    <button><span class="ico" aria-hidden="true">♧</span>Avanti Istwa</button>
+    <button><span class="ico" aria-hidden="true">♟</span>Jwèt Fanmi</button>
+    <button class="love"><span class="ico" aria-hidden="true">♡</span>Kwen Lanmou</button>
+    <button><span class="ico" aria-hidden="true">◌</span>Jwèt Konvèsasyon</button>
+    <button><span class="ico" aria-hidden="true">♜</span>Kwiz &amp; Konesans</button>
+    <button><span class="ico" aria-hidden="true">ϟ</span>Defi &amp; Aksyon</button>
+    <button><span class="ico" aria-hidden="true">✧</span>Pati Gwoup</button></nav>
+    <p class="rail-foot">Yon espas pou ri, jwe, epi rakonte istwa ansanm.</p>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div class="host"><span class="orb" aria-hidden="true">••</span><span><b>Bon swa, fanmi!</b><br>JARVIS pare pou jwèt la.</span></div>
+      <div class="tools">
+        <button id="language" class="language" aria-label="Chanje lang">Kreyòl / English</button>
+        <button class="round" aria-label="Notifikasyon">♧</button>
+        <button class="room">Kreye yon salon</button>
+      </div>
+    </header>
+    <h1 class="headline">Ki istwa n ap viv ansanm?</h1>
+    <p class="subtitle">Chwazi yon jwèt, pran telefòn nou yo, epi kite JARVIS mennen lannwit lan.</p>
+    <section class="hero-grid" aria-label="Jwèt vedèt">
+      <article class="hero">
+        <div class="hero-copy">
+          <span class="compass" aria-hidden="true">☼</span>
+          <h2>Misyon<br>Fanmi</h2>
+          <p class="eyebrow">AVANTI ISTWA · 2–8 JWÈ</p>
+          <p>Gato fèt la disparèt! Fè chwa ansanm pou jwenn li anvan fèt la kòmanse.</p>
+          <button class="cta" id="start-story">Kòmanse avanti →</button>
+        </div>
+        <span class="hero-dots" aria-hidden="true">●●●●</span>
+      </article>
+      <article class="love-card">
+        <p class="eyebrow">POU NOU DE</p>
+        <h2>Kwen Lanmou</h2>
+        <p>Ti kestyon dous, defi ansanm, ak souvni ki rete prive.</p>
+        <button class="privacy">◒ Antre an prive</button>
+      </article>
+    </section>
+    <section aria-label="Katalòg jwèt">
+      <div class="section-head"><h2><span aria-hidden="true">♛</span> Jwèt Popilè Fanmi an</h2><a href="#catalog">Wè tout jwèt yo →</a></div>
+      <div id="catalog" class="shelf">
+        <button class="game"><span class="art a1" aria-hidden="true"></span><span><h3>Misyon Fanmi</h3><small>Avanti chwa</small></span></button>
+        <button class="game"><span class="art a2" aria-hidden="true"></span><span><h3>Ki Moun Ki Konnen M?</h3><small>Sou aparèy sa a</small></span></button>
+        <button class="game"><span class="art a3" aria-hidden="true"></span><span><h3>Manti Oswa Verite?</h3><small>Sou aparèy sa a</small></span></button>
+        <button class="game"><span class="art a4" aria-hidden="true"></span><span><h3>Sa W Ta Chwazi?</h3><small>Ap vini</small></span></button>
+        <button class="game"><span class="art a5" aria-hidden="true"></span><span><h3>Telefòn Fou</h3><small>Ap vini</small></span></button>
+        <button class="game"><span class="art a6" aria-hidden="true"></span><span><h3>Kiyès Mwen Ye?</h3><small>Ap vini</small></span></button>
+      </div>
+    </section>
+    <section aria-label="Kategori jwèt">
+      <div class="section-head"><h2><span aria-hidden="true">♧</span> Kategori Jwèt</h2></div>
+      <div class="chips"><button class="chip"><span aria-hidden="true">♧</span>Avanti Istwa</button>
+      <button class="chip"><span aria-hidden="true">♟</span>Jwèt Fanmi</button>
+      <button class="chip"><span aria-hidden="true">♡</span>Kwen Lanmou</button>
+      <button class="chip"><span aria-hidden="true">◌</span>Jwèt Konvèsasyon</button>
+      <button class="chip"><span aria-hidden="true">♜</span>Kwiz &amp; Konesans</button>
+      <button class="chip"><span aria-hidden="true">ϟ</span>Defi &amp; Aksyon</button>
+      <button class="chip"><span aria-hidden="true">✧</span>Pati Gwoup</button></div>
+    </section>
+    <section class="imposter-launch" aria-label="Imposter">
+      <div><p class="eyebrow">JWE FASAFAS · 5–12 JWÈ</p><h2>IMPOSTER <span>Pa fè pèsonn konfyans</span></h2>
+        <p>Wòl sekrè, chwa lannwit, diskisyon ki fè bri, epi vòt prive sou chak telefòn.</p></div>
+      <a href="/imposter.html">Antre nan salon an →</a>
+    </section>
+    <noscript>Tanpri aktive JavaScript pou jwe. Please enable JavaScript to play.</noscript>
+  </main>
+</div>
+<nav class="mobile-nav" aria-label="Navigasyon mobil">
+  <button><span aria-hidden="true">⌂</span>Akèy</button><button><span aria-hidden="true">▦</span>Jwèt</button><button><span aria-hidden="true">✦</span>Avanti</button><button><span aria-hidden="true">♡</span>Lanmou</button>
+</nav>
+<section class="story" id="story" role="dialog" aria-modal="true" aria-labelledby="story-title">
+  <article class="story-card">
+    <button class="close" id="close-story" aria-label="Fèmen">×</button>
+    <p class="status" id="chapter"></p>
+    <div class="progress" aria-label="Pwogrè"><i></i><i></i><i></i></div>
+    <h2 id="story-title"></h2><p id="story-copy"></p><div class="choices" id="choices"></div>
+  </article>
+</section>
+</body>
+</html>

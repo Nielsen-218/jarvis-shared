@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jarvis TV</title>
+<style>
+  /* Built for old TVs: composite video is ~720x480 and blurry, so everything is big,
+     bold and high-contrast, sized in vw/vh so it fills any screen. */
+  :root { --bg: #02060b; --panel: #08131e; --text: #f1f8ff; --muted: #8fb2cc; --cyan: #4fd8ff;
+          --green: #35e07a; --amber: #ffbf2e; --red: #ff5a5a; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); overflow: hidden;
+               font-family: "Segoe UI", Roboto, "DejaVu Sans", Arial, sans-serif; font-weight: 600; cursor: none; }
+  #pair { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3vh; font-size: 4vh; text-align: center; }
+  #pair input { font-size: 7vh; width: 40vw; text-align: center; letter-spacing: .3em; background: var(--panel); color: var(--text); border: .4vh solid var(--cyan); border-radius: 1.5vh; padding: 1vh; }
+  #pair button { font: inherit; font-size: 4vh; padding: 1.5vh 4vw; background: var(--cyan); color: #001018; border: 0; border-radius: 1.5vh; font-weight: 700; cursor: pointer; }
+  #main { position: fixed; inset: 0; display: grid; grid-template-columns: 55% 45%; grid-template-rows: auto 1fr; gap: 2vh 2vw; padding: 3vh 3vw; }
+  .top { grid-column: 1 / 3; display: flex; align-items: center; gap: 3vw; }
+  .clock { font-size: 13vh; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+  .date { font-size: 4.2vh; color: var(--muted); }
+  .weather { margin-left: auto; text-align: right; font-size: 3.6vh; max-width: 42vw; }
+  .weather b { display: block; font-size: 4.6vh; color: var(--cyan); }
+  .panel { background: var(--panel); border-radius: 2vh; padding: 2.5vh 2vw; min-height: 0; overflow: hidden; }
+  .jarvis { display: flex; flex-direction: column; gap: 2vh; }
+  .head { display: flex; align-items: center; gap: 2vw; }
+  canvas { width: 16vh; height: 16vh; flex: none; }
+  .title { font-size: 4.4vh; letter-spacing: .25em; color: var(--cyan); }
+  .state { font-size: 3.6vh; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+  .lines { display: flex; flex-direction: column; gap: 1.6vh; font-size: 3.4vh; line-height: 1.3; overflow: hidden; }
+  .lines .you { color: #ffd98a; } .lines .sys { color: var(--muted); font-size: 2.8vh; }
+  .lines div { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .side { display: flex; flex-direction: column; gap: 2vh; }
+  h2 { font-size: 3.4vh; color: var(--cyan); letter-spacing: .15em; margin-bottom: 1.4vh; }
+  .bar { margin-bottom: 1.6vh; font-size: 3vh; }
+  .bar .row { display: flex; justify-content: space-between; margin-bottom: .6vh; }
+  .track { height: 2.4vh; background: #1b2d3d; border-radius: 1.2vh; overflow: hidden; }
+  .fill { height: 100%; border-radius: 1.2vh; background: var(--green); transition: width 1s; }
+  .apps { display: flex; flex-wrap: wrap; gap: 1vh 1.4vw; font-size: 2.7vh; }
+  .app { display: flex; align-items: center; gap: .6vw; }
+  .dot { width: 2vh; height: 2vh; border-radius: 50%; background: var(--green); flex: none; }
+  .down .dot { background: var(--red); } .down { color: var(--red); }
+  .list { font-size: 3vh; line-height: 1.45; }
+  .muted { color: var(--muted); }
+  .alerts { margin-top: 1.4vh; font-size: 2.7vh; color: var(--red); line-height: 1.35; }
+</style>
+</head>
+<body>
+<div id="pair" hidden>
+  <div style="font-size:6vh;color:var(--cyan);letter-spacing:.25em">J.A.R.V.I.S.</div>
+  <div>Say <b>“Hey Jarvis, pair the TV”</b> and enter the code</div>
+  <input id="code" inputmode="numeric" maxlength="6" autofocus>
+  <button id="go">Link</button>
+  <div id="err" style="color:var(--red)"></div>
+</div>
+
+<div id="main" hidden>
+  <div class="top">
+    <div><div class="clock" id="clock">--:--</div><div class="date" id="date"></div></div>
+    <div class="weather" id="weather"></div>
+  </div>
+  <div class="panel jarvis">
+    <div class="head"><canvas id="orb" width="200" height="200"></canvas>
+      <div><div class="title">J.A.R.V.I.S.</div><div class="state" id="state">Standing by</div></div></div>
+    <div class="lines" id="lines"></div>
+  </div>
+  <div class="side">
+    <div class="panel">
+      <h2>HOMELAB</h2>
+      <div id="bars"></div>
+      <div class="apps" id="apps"></div>
+      <div class="alerts" id="alerts"></div>
+    </div>
+    <div class="panel" id="extra"></div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let token = localStorage.getItem("jarvis_tv_token"), mode = "sleeping";
+const LABEL = { sleeping: "Standing by", listening: "Listening", thinking: "Thinking", speaking: "Speaking", working: "Working on it", muted: "Mic muted" };
+const COLOR = { sleeping: [79, 216, 255], listening: [64, 224, 255], thinking: [255, 191, 46], speaking: [79, 216, 255], working: [255, 191, 46], muted: [255, 90, 90] };
+
+// Orb: chunky rings that read well even on a blurry composite picture.
+(function orb() {
+  const cv = $("#orb"), ctx = cv.getContext("2d"), W = cv.width, c = W / 2, t0 = performance.now();
+  (function draw(now) {
+    const t = (now - t0) / 1000, [r, g, b] = COLOR[mode] || COLOR.sleeping, col = a => `rgba(${r},${g},${b},${a})`;
+    const active = mode !== "sleeping" && mode !== "muted";
+    const pulse = active ? 0.3 + 0.25 * Math.abs(Math.sin(t * 4)) : 0.15 + 0.06 * Math.sin(t * 2);
+    ctx.clearRect(0, 0, W, W);
+    const glow = ctx.createRadialGradient(c, c, 4, c, c, c);
+    glow.addColorStop(0, col(0.7 + pulse)); glow.addColorStop(0.45, col(0.25)); glow.addColorStop(1, col(0));
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(c, c, c, 0, 7); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(c, c, 14 + pulse * 16, 0, 7); ctx.fill();
+    const speed = mode === "thinking" || mode === "working" ? 2.5 : active ? 1.2 : 0.4;
+    [[48, 5, 1], [72, 8, -0.7], [92, 3, 0.4]].forEach(([rad, segs, dir]) => {
+      ctx.strokeStyle = col(0.85); ctx.lineWidth = 9;
+      for (let s = 0; s < segs; s++) {
+        const a0 = t * dir * speed + s / segs * 6.283;
+        ctx.beginPath(); ctx.arc(c, c, rad, a0, a0 + 6.283 / segs * 0.6); ctx.stroke();
+      }
+    });
+    requestAnimationFrame(draw);
+  })(t0);
+})();
+
+function bar(label, pct, text, warnAt = 75, badAt = 90) {
+  const color = pct >= badAt ? "var(--red)" : pct >= warnAt ? "var(--amber)" : "var(--green)";
+  return `<div class="bar"><div class="row"><span>${label}</span><span>${text}</span></div>
+          <div class="track"><div class="fill" style="width:${Math.max(3, pct)}%;background:${color}"></div></div></div>`;
+}
+const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const SHORT = { immich_server: "Photos", immich_machine_learning: "Photos AI", immich_postgres: "Photos DB",
+                immich_redis: "Photos cache", "nginx-proxy-manager": "Proxy", "uptime-kuma": "Uptime" };
+
+async function refresh() {
+  try {
+    const res = await fetch("/api/dashboard", { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401) { localStorage.removeItem("jarvis_tv_token"); token = null; return showPair(); }
+    const d = await res.json();
+    $("#clock").textContent = d.time; $("#date").textContent = d.date;
+    $("#weather").innerHTML = d.weather && d.weather.now ? `<b>${esc(d.weather.now.split(":").slice(1).join(":").split(",").slice(0, 2).join(","))}</b>${esc((d.weather.today.split(": ")[1] || "").split(",").slice(1, 3).join(","))}` : "";
+    mode = d.jarvis.state; $("#state").textContent = LABEL[mode] || mode;
+    $("#lines").innerHTML = d.jarvis.lines.slice(-4).map(l => `<div class="${l.who}">${l.who === "you" ? "You: " : ""}${esc(l.text)}</div>`).join("")
+      || `<div class="sys">Say "Hey Jarvis" any time.</div>`;
+    const h = d.homelab;
+    if (h && !h.error) {
+      $("#bars").innerHTML = bar("Drive", h.disk.used_pct, `${h.disk.free_gb} GB free`) +
+        bar("Pi temp", Math.min(100, Math.round(h.pi.temp_c / 85 * 100)), `${h.pi.temp_c}°C`, 70, 82) +
+        bar("CPU", h.pi.cpu_pct, `${h.pi.cpu_pct}%`) + bar("Memory", h.pi.mem_pct, `${h.pi.mem_pct}%`, 80, 92);
+      const down = h.apps.filter(a => !a.up);
+      $("#apps").innerHTML = h.apps.filter(a => !a.name.startsWith("immich_") || a.name === "immich_server" || !a.up)
+        .map(a => `<span class="app ${a.up && a.healthy ? "" : "down"}"><span class="dot"></span>${esc(SHORT[a.name] || a.name)}</span>`).join("")
+        + (down.length ? "" : `<span class="app muted">· all ${h.apps.length} up</span>`);
+    } else $("#bars").innerHTML = `<div class="muted list">Homelab unreachable</div>`;
+    $("#alerts").innerHTML = (d.problems || []).slice(0, 3).map(p => `⚠ ${esc(p)}`).join("<br>");
+    const parts = [];
+    if (d.today.length) parts.push(`<h2>TODAY</h2><div class="list">${d.today.slice(0, 4).map(esc).join("<br>")}</div>`);
+    if (d.playing.length) parts.push(`<h2 style="margin-top:1.6vh">NOW PLAYING</h2><div class="list">${d.playing.map(p => `${esc(p.user)}: ${esc(p.series ? p.series + " – " : "")}${esc(p.title)}`).join("<br>")}</div>`);
+    $("#extra").innerHTML = parts.join("") || `<h2>TODAY</h2><div class="list muted">Nothing scheduled</div>`;
+  } catch (e) { $("#state").textContent = "Reconnecting…"; }
+}
+
+function showPair() { $("#main").hidden = true; $("#pair").hidden = false; $("#code").focus(); }
+$("#go").onclick = async () => {
+  const res = await fetch("/api/pair", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: $("#code").value.trim(), device: "TV" }) });
+  const d = await res.json();
+  if (!res.ok) return ($("#err").textContent = d.detail || "That code didn't work");
+  token = d.token; localStorage.setItem("jarvis_tv_token", token); start();
+};
+$("#code").addEventListener("keydown", e => e.key === "Enter" && $("#go").click());
+
+function start() {
+  if (!token) return showPair();
+  $("#pair").hidden = true; $("#main").hidden = false;
+  refresh(); setInterval(refresh, 2000);
+}
+start();
+</script>
+</body>
+</html>

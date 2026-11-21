@@ -1,0 +1,213 @@
+{
+  "ts": "2026-10-31T13:51:48",
+  "summary": {
+    "dev": {
+      "cases": 5,
+      "passed": 5
+    },
+    "heldout": {
+      "cases": 4,
+      "passed": 2
+    }
+  },
+  "observed_metric_distribution": {
+    "moved": {
+      "n": 129,
+      "min": 0.0,
+      "p5": 0.999,
+      "median": 1.0,
+      "p95": 1.0,
+      "max": 1.0
+    },
+    "stray": {
+      "n": 129,
+      "min": 0.0,
+      "p5": 0.0,
+      "median": 0.0,
+      "p95": 0.0126,
+      "max": 0.0847
+    },
+    "stretch": {
+      "n": 129,
+      "min": 1.0,
+      "p5": 1.012,
+      "median": 1.25,
+      "p95": 2.519,
+      "max": 9.272
+    },
+    "compress": {
+      "n": 129,
+      "min": 0.418,
+      "p5": 0.47,
+      "median": 0.729,
+      "p95": 0.985,
+      "max": 1.0
+    }
+  },
+  "cases": {
+    "synthetic_humanoid": {
+      "split": "dev",
+      "type": "synthetic",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 41,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "16/16 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 12,
+      "skin_method": "armature_auto_direct"
+    },
+    "synthetic_disjoint": {
+      "split": "dev",
+      "type": "synthetic",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 21,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "14/14 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 32,
+      "skin_method": "armature_auto_direct"
+    },
+    "synthetic_quadruped": {
+      "split": "dev",
+      "type": "synthetic",
+      "status": "pass",
+      "kind": "quadruped",
+      "bones": 27,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "10/10 passed",
+        "ik_fk": "2/2 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 0,
+      "skin_method": "armature_auto_direct"
+    },
+    "vanguard": {
+      "split": "dev",
+      "type": "owner_character",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 36,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "15/15 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 17,
+      "skin_method": "armature_auto_direct"
+    },
+    "neon_sentinel": {
+      "split": "dev",
+      "type": "owner_character",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 39,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "16/16 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 14,
+      "skin_method": "armature_auto_direct"
+    },
+    "red_sweater": {
+      "split": "heldout",
+      "type": "owner_character",
+      "status": "fail",
+      "kind": "humanoid",
+      "bones": 21,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "13/14 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [
+        "wrist.R"
+      ],
+      "pruned_bones": 32,
+      "skin_method": "armature_auto_direct"
+    },
+    "pink_confidence": {
+      "split": "heldout",
+      "type": "owner_character",
+      "status": "fail",
+      "kind": "humanoid",
+      "bones": 23,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "6/14 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [
+        "shoulder.L",
+        "wrist.L",
+        "hip.L",
+        "shoulder.R",
+        "elbow.R",
+        "wrist.R",
+        "hip.R",
+        "spine_twist"
+      ],
+      "pruned_bones": 30,
+      "skin_method": "armature_auto_via_voxel_weld_proxy"
+    },
+    "elf_model": {
+      "split": "heldout",
+      "type": "downloaded",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 26,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "15/15 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 27,
+      "skin_method": "armature_auto_direct"
+    },
+    "comfyui_00008": {
+      "split": "heldout",
+      "type": "generated",
+      "status": "pass",
+      "kind": "humanoid",
+      "bones": 33,
+      "stages": {
+        "skin_valid": true,
+        "pose_tests": "15/15 passed",
+        "ik_fk": "4/4 passed",
+        "export": "PASS",
+        "reimport_animation_roundtrip": "PASS"
+      },
+      "failing": [],
+      "pruned_bones": 20,
+      "skin_method": "armature_auto_direct"
+    }
+  }
+}

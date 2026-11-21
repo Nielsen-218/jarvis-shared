@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "JARVIS Tab Bridge",
+  "version": "1.1.0",
+  "description": "Lets JARVIS list, focus, open blank and close tabs through the browser's own tabs API. Talks only to JARVIS on 127.0.0.1 with a secret token. No page content, history or cookies.",
+  "permissions": ["tabs", "alarms"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": {"service_worker": "background.js"}
+}

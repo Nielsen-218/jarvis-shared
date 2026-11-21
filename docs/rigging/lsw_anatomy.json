@@ -1,0 +1,220 @@
+{
+  "manifest_limbs": [
+    "arm.L",
+    "leg.L",
+    "arm.R",
+    "leg.R"
+  ],
+  "cases": [
+    {
+      "root": "upperarm.L",
+      "ok": true,
+      "limb_object": "lsw_game_sever_upperarm.L",
+      "limb_armature": "lsw_Rig_limb_upperarm.L",
+      "limb_verts": 6058,
+      "body_verts": 51806,
+      "stump_cap_faces": 1,
+      "limb_moves_alone_over_H": 0.362,
+      "body_unaffected_over_H": 0.0,
+      "pass": true
+    },
+    {
+      "root": "thigh.R",
+      "ok": true,
+      "limb_object": "lsw_game_sever_thigh.R",
+      "limb_armature": "lsw_Rig_limb_thigh.R",
+      "limb_verts": 10840,
+      "body_verts": 41106,
+      "stump_cap_faces": 0,
+      "limb_moves_alone_over_H": 0.424,
+      "body_unaffected_over_H": 0.0,
+      "pass": true
+    }
+  ],
+  "manifest": {
+    "schema": "jarvis-lsw-anatomy/1",
+    "kind": "humanoid",
+    "limbs": [
+      {
+        "id": "arm.L",
+        "attach_bone": "clavicle.L",
+        "bones": [
+          "upperarm.L",
+          "forearm.L",
+          "hand.L",
+          "thumb_01.L",
+          "thumb_02.L",
+          "thumb_03.L",
+          "index_01.L",
+          "index_02.L",
+          "index_03.L",
+          "ring_01.L",
+          "ring_02.L",
+          "ring_03.L",
+          "pinky_01.L",
+          "pinky_02.L",
+          "pinky_03.L"
+        ],
+        "sever_joints": [
+          {
+            "joint": "shoulder",
+            "bone": "upperarm.L"
+          },
+          {
+            "joint": "elbow",
+            "bone": "forearm.L"
+          },
+          {
+            "joint": "wrist",
+            "bone": "hand.L"
+          }
+        ],
+        "locomotion_consequence": "reduces carry/climb; two-handed actions blocked",
+        "independent_function_after_sever": true,
+        "regeneration": {
+          "stump_bone": "upperarm.L",
+          "regrow_order": [
+            "upperarm.L",
+            "forearm.L",
+            "hand.L",
+            "thumb_01.L",
+            "thumb_02.L",
+            "thumb_03.L",
+            "index_01.L",
+            "index_02.L",
+            "index_03.L",
+            "ring_01.L",
+            "ring_02.L",
+            "ring_03.L",
+            "pinky_01.L",
+            "pinky_02.L",
+            "pinky_03.L"
+          ]
+        }
+      },
+      {
+        "id": "leg.L",
+        "attach_bone": "pelvis",
+        "bones": [
+          "thigh.L",
+          "calf.L",
+          "foot.L",
+          "toe.L"
+        ],
+        "sever_joints": [
+          {
+            "joint": "hip",
+            "bone": "thigh.L"
+          },
+          {
+            "joint": "knee",
+            "bone": "calf.L"
+          },
+          {
+            "joint": "ankle",
+            "bone": "foot.L"
+          }
+        ],
+        "locomotion_consequence": "limp/hop or crawl; one leg lost halves speed, both forces crawling",
+        "independent_function_after_sever": true,
+        "regeneration": {
+          "stump_bone": "thigh.L",
+          "regrow_order": [
+            "thigh.L",
+            "calf.L",
+            "foot.L",
+            "toe.L"
+          ]
+        }
+      },
+      {
+        "id": "arm.R",
+        "attach_bone": "clavicle.R",
+        "bones": [
+          "upperarm.R",
+          "forearm.R",
+          "hand.R",
+          "index_01.R",
+          "index_02.R",
+          "index_03.R",
+          "ring_01.R",
+          "ring_02.R",
+          "ring_03.R"
+        ],
+        "sever_joints": [
+          {
+            "joint": "shoulder",
+            "bone": "upperarm.R"
+          },
+          {
+            "joint": "elbow",
+            "bone": "forearm.R"
+          },
+          {
+            "joint": "wrist",
+            "bone": "hand.R"
+          }
+        ],
+        "locomotion_consequence": "reduces carry/climb; two-handed actions blocked",
+        "independent_function_after_sever": true,
+        "regeneration": {
+          "stump_bone": "upperarm.R",
+          "regrow_order": [
+            "upperarm.R",
+            "forearm.R",
+            "hand.R",
+            "index_01.R",
+            "index_02.R",
+            "index_03.R",
+            "ring_01.R",
+            "ring_02.R",
+            "ring_03.R"
+          ]
+        }
+      },
+      {
+        "id": "leg.R",
+        "attach_bone": "pelvis",
+        "bones": [
+          "thigh.R",
+          "calf.R",
+          "foot.R",
+          "toe.R"
+        ],
+        "sever_joints": [
+          {
+            "joint": "hip",
+            "bone": "thigh.R"
+          },
+          {
+            "joint": "knee",
+            "bone": "calf.R"
+          },
+          {
+            "joint": "ankle",
+            "bone": "foot.R"
+          }
+        ],
+        "locomotion_consequence": "limp/hop or crawl; one leg lost halves speed, both forces crawling",
+        "independent_function_after_sever": true,
+        "regeneration": {
+          "stump_bone": "thigh.R",
+          "regrow_order": [
+            "thigh.R",
+            "calf.R",
+            "foot.R",
+            "toe.R"
+          ]
+        }
+      }
+    ],
+    "vital_regions": [
+      "head",
+      "neck",
+      "spine_01",
+      "spine_02",
+      "spine_03",
+      "pelvis"
+    ]
+  }
+}

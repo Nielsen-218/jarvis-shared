@@ -1,0 +1,59 @@
+data/
+data-backup-before-sync/
+.env
+.env.*
+!.env.example
+.venv/
+crash.log
+models/
+# (models/smart_turn/smart-turn-v3.2-cpu.onnx, the end-of-turn model audio/endturn.py loads, is copied there per machine:
+#  never committed; pinned by SHA-256 in audio/endturn.py)
+models/smart_turn/*.onnx
+# ...except the shipped companion robot (12k-triangle LOD, 5 MB): the desktop companion needs it on every machine
+!app/companion/models/
+app/companion/models/*
+!app/companion/models/README.md
+!app/companion/models/robot/
+app/companion/models/robot/*
+!app/companion/models/robot/robot-lod1.glb
+__pycache__/
+*.pem
+*.npy
+*.corrupt.json
+bridge/activity.log
+bridge/STOP
+bridge/*.local.json
+
+# machine-local PC-control ledger (runtime state, differs per host)
+machine-state/pc-control/ledger.sqlite
+
+# Memory vault (personal recordings + transcript index) - runtime data, never commit
+vault/
+
+!app/companion/models/neon-sentinel/
+!app/companion/models/neon-sentinel/neon-sentinel.glb
+
+# stability monitor samples (scripts/stability_monitor.py): one line a minute, local only
+runs/stability-*.jsonl
+
+# Raw PC evidence (window titles, folder names, replies) stays in %LOCALAPPDATA%\JarvisAcceptance; commit only sanitized
+# summaries under docs/evidence/ (PR #216 review).
+runs/gateway-acceptance-*
+runs/acceptance-*
+runs/notepad-*
+runs/pytest-*
+runs/gateway-eval-pr*
+# scripts/voice_style_eval.py: the owner's own chat lines and the model's replies, verbatim (review 2026-11-10)
+runs/voice-style-*
+
+runs/gate/
+
+# The Creole voice training run (scripts/kreyol_finetune.py): his recordings as a dataset, checkpoints, A/B files
+runs/kreyol-finetune/
+
+# pytest scratch output (teaching CI runs with --basetemp=teaching-test-work); regenerated every run, never commit
+teaching-test-work/
+
+# shared-repo extras
+setup-log.txt
+*.bak

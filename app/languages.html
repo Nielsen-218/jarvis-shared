@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Languages</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 760px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  section { display: grid; gap: var(--s-3); }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .head { display: flex; align-items: center; gap: var(--s-2); }
+  .head b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .langs { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: var(--s-2); }
+  .lang { display: grid; gap: 2px; text-align: left; padding: var(--s-3); min-height: var(--tap); border-radius: var(--r-2); border: 1px solid var(--line-2);
+    background: var(--bg-2); color: var(--text-1); font: inherit; cursor: pointer; transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+  .lang:hover { background: var(--bg-3); }
+  .lang.on { border-color: var(--accent); background: var(--accent-soft, var(--bg-3)); }
+  .lang b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); } .lang small { color: var(--text-2); font-size: var(--fs-xs); }
+  .meter { height: 6px; border-radius: var(--r-pill); background: var(--bg-3); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width var(--dur-base) var(--ease-out); }
+  .meter.ok i { background: var(--ok); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .stat { padding: var(--s-3); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); }
+  .stat b { display: block; font: 600 var(--fs-xl, 24px)/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--text-2); font-size: var(--fs-xs); }
+  .row2 { display: flex; gap: var(--s-2); flex-wrap: wrap; } .row2 > .ds-btn { flex: 1; }
+  .line { display: grid; gap: var(--s-2); }
+  .line p { font: 500 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  .phrase { padding: var(--s-3) var(--s-4); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-2); display: grid; gap: 2px; }
+  .phrase b { font: 600 28px/1.25 var(--font-display); overflow-wrap: anywhere; }
+  .phrase span { color: var(--text-2); font-size: var(--fs-sm); }
+  .answer { display: flex; gap: var(--s-2); } .answer .ds-input { flex: 1; min-width: 0; }
+  .item { display: grid; grid-template-columns: 1fr auto; gap: var(--s-2); align-items: baseline; padding: var(--s-2) 0; border-top: 1px solid var(--line-1); }
+  .item:first-child { border-top: 0; }
+  .item b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); overflow-wrap: anywhere; } .item small { color: var(--text-2); font-size: var(--fs-sm); display: block; }
+  .unit { display: grid; gap: var(--s-2); padding: var(--s-2) 0; border-top: 1px solid var(--line-1); } .unit:first-child { border-top: 0; }
+  .busy { display: flex; align-items: center; gap: var(--s-3); color: var(--text-2); font-size: var(--fs-sm); }
+  .verdict { padding: var(--s-2) var(--s-3); border-radius: var(--r-2); border: 1px solid var(--line-2); font-size: var(--fs-sm); }
+  .verdict.ok { border-color: var(--ok); background: var(--ok-soft); } .verdict.no { border-color: var(--warn); background: var(--warn-soft); }
+</style>
+</head>
+<body>
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Languages</h1>
+  <span class="ds-badge accent" id="due-badge" hidden></span>
+</header>
+<main>
+  <section id="voice"><div class="ds-card"><div class="head"><b>Record my Creole voice</b><span class="ds-badge accent" id="voice-count" hidden></span></div>
+    <p class="sub">Read short sentences so Jarvis learns to pronounce Creole like you</p>
+    <a class="ds-btn primary" id="voice-start" href="/voice-record.html">Start recording</a></div></section>
+  <section id="pick"><div class="ds-card"><div class="ds-skeleton" style="height:20px;width:50%"></div><div class="ds-skeleton" style="height:44px"></div><div class="ds-skeleton" style="height:6px"></div></div></section>
+  <section id="lesson"></section>
+  <section id="due"></section>
+  <section id="units"></section>
+  <section id="weak"></section>
+</main>
+<div class="ds-toast" id="toast" hidden></div>
+<audio id="player" hidden></audio>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let D = null, lang = null, L = null, sid = "", minutes = 10, waiting = false, verdict = null;
+try { sid = sessionStorage.getItem("jarvis_lang_session") || ""; } catch (e) {}
+
+async function api(path, body) {
+  const opts = { method: body ? "POST" : "GET", headers: { Authorization: `Bearer ${token}` } };
+  if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg, kind) { const t = $("#toast"); t.textContent = msg; t.className = "ds-toast " + (kind || ""); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3800); }
+const empty = (title, text) => `<div class="ds-card"><div class="ds-empty"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg><b>${esc(title)}</b><span>${esc(text)}</span></div></div>`;
+const cur = () => D.languages.find(l => l.lang === lang) || D.languages[0];
+const pct = (a, b) => b ? Math.round(100 * a / b) : 0;
+const phrase = p => `<div class="phrase" lang="${esc(p.lang)}"><b>${esc(p.show || p.text)}</b>${p.roman ? `<span>${esc(p.roman)}</span>` : ""}</div>`;
+const line = parts => `<div class="line">${(parts || []).map(p => typeof p === "string" ? `<p>${esc(p)}</p>` : phrase(p)).join("")}</div>`;
+
+function renderPick() {
+  $("#pick").innerHTML = `<div class="langs">${D.languages.map(l => `<button class="lang ${l.lang === lang ? "on" : ""}" data-lang="${esc(l.lang)}" aria-pressed="${l.lang === lang}">
+    <b>${esc(l.name)}</b><small>${esc(l.native)} · ${esc(l.learned ? l.level : "Not started")}</small></button>`).join("")}</div>`;
+  const due = D.languages.reduce((n, l) => n + l.due.length, 0);
+  $("#due-badge").hidden = !due; $("#due-badge").textContent = `${due} due`;
+}
+
+function renderLesson() {
+  const p = cur(), v = (D.voices || {})[p.lang];
+  if (L && !L.done && L.lang === p.lang) {
+    $("#lesson").innerHTML = `<div class="ds-card">
+      <div class="head"><b>${esc(p.name)} lesson</b><span class="ds-badge accent">${esc(L.phase_name || "")}</span></div>
+      <div class="meter"><i style="width:${pct(L.step - 1, L.steps)}%"></i></div>
+      ${verdict ? `<div class="verdict ${verdict.ok ? "ok" : "no"}">${esc(verdict.text)}</div>` : ""}
+      ${line(L.parts)}
+      ${waiting ? `<div class="busy"><span class="ds-spinner"></span>Checking</div>` : `<form class="answer" id="answer-form"><input class="ds-input" id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Your answer" aria-label="Your answer"><button class="ds-btn primary" type="submit">Answer</button></form>`}
+      <div class="row2"><button class="ds-btn" data-act="listen">Listen</button><button class="ds-btn" data-act="slower">Slower</button><button class="ds-btn" data-act="skip">Skip</button><button class="ds-btn" data-act="stop">End</button></div>
+      <p class="sub">${L.right} of ${L.of} right so far. You can also do this by voice: say "let's practice ${esc(p.name)} for ${minutes} minutes".</p></div>`;
+    const box = $("#answer"); if (box) box.focus();
+    return;
+  }
+  const recap = L && L.done && L.lang === p.lang ? `<div class="verdict ok">${line(L.parts)}</div>` : "";
+  $("#lesson").innerHTML = `<div class="ds-card">
+    <div class="head"><b>${esc(p.name)}</b><span class="ds-badge">${esc(p.level)}</span></div>
+    ${recap}
+    <p>${esc(p.unit.title)}: ${esc(p.unit.can_do)}.</p>
+    <div class="stats"><div class="stat"><b>${p.learned}</b><span>of ${p.total} phrases</span></div><div class="stat"><b>${p.due.length}</b><span>due for review</span></div><div class="stat"><b>${p.streak}</b><span>day streak</span></div></div>
+    <div class="ds-field"><label for="minutes">Length</label><select class="ds-select" id="minutes">${[5, 10, 15, 20, 30].map(m => `<option value="${m}" ${m === minutes ? "selected" : ""}>${m} minutes</option>`).join("")}</select></div>
+    <div class="row2"><button class="ds-btn primary" data-act="start" ${waiting ? "disabled" : ""}>${p.learned ? "Continue lesson" : "Start lesson"}</button>${p.learned ? `<button class="ds-btn" data-act="zero" ${waiting ? "disabled" : ""}>From the beginning</button>` : ""}</div>
+    ${v ? `<p class="sub">Voice: ${esc(v.voice)}. ${esc(v.note)}</p>` : ""}</div>`;
+}
+
+function renderLists() {
+  const p = cur();
+  const rows = list => list.map(i => `<div class="item"><div><b lang="${esc(p.lang)}">${esc(i.text)}</b><small>${i.roman ? esc(i.roman) + " · " : ""}${esc(i.english)}</small></div>${i.wrong ? `<span class="ds-badge warn">missed ${i.wrong}</span>` : ""}</div>`).join("");
+  $("#due").innerHTML = `<div class="ds-card"><div class="head"><b>Due reviews</b><span class="ds-badge ${p.due.length ? "accent" : ""}">${p.due.length}</span></div>
+    ${p.due.length ? rows(p.due.slice(0, 8)) + (p.due.length > 8 ? `<p class="sub">and ${p.due.length - 8} more. They open the next lesson.</p>` : "") : `<p class="sub">${p.learned ? "Nothing is due today. New phrases come back the day after you learn them." : "Reviews appear here after your first lesson."}</p>`}</div>`;
+  $("#units").innerHTML = `<div class="ds-card"><div class="head"><b>Progress per unit</b><span class="sub">${p.lessons} lessons · ${p.minutes} min</span></div>
+    ${p.units.map(u => `<div class="unit"><div class="head"><b>${esc(u.title)}</b><span class="sub">${u.seen} of ${u.total}${u.mastered ? ` · ${u.mastered} solid` : ""}</span></div>
+      <div class="meter ${u.status === "done" ? "ok" : ""}"><i style="width:${pct(u.seen, u.total)}%"></i></div><p class="sub">You can ${esc(u.can_do)}.</p></div>`).join("")}</div>`;
+  $("#weak").innerHTML = `<div class="ds-card"><div class="head"><b>Words to practise</b></div>
+    ${p.weak.length ? rows(p.weak) : `<p class="sub">${p.learned ? "No weak spots right now." : "The phrases you miss will be listed here and come back first."}</p>`}</div>`;
+}
+function render() { renderPick(); renderLesson(); renderLists(); }
+
+async function refresh() { D = await api("/api/languages?session=" + encodeURIComponent(sid)); if (!lang) lang = (D.lesson && D.lesson.lang) || D.last || D.languages[0].lang; if (D.lesson && !L) L = D.lesson; }
+async function act(path, body, after) {
+  if (waiting) return;
+  waiting = true; renderLesson();
+  try { const out = await api(path, body); after(out); if (out.done) await refresh(); }
+  catch (e) { toast(e.message, "danger"); if (/No lesson/.test(e.message)) { L = null; try { await refresh(); } catch (e2) {} } }
+  waiting = false; render();
+}
+async function listen(text) {
+  try { const out = await api("/api/say", { text: text.slice(0, 400) }); if (out.audio) { const a = $("#player"); a.src = out.audio; await a.play(); } else toast("The voice is not available right now."); }
+  catch (e) { toast(e.message, "danger"); }
+}
+
+document.addEventListener("click", e => {
+  const pick = e.target.closest("[data-lang]"), b = e.target.closest("[data-act]");
+  if (pick) { lang = pick.dataset.lang; verdict = null; render(); return; }
+  if (!b) return;
+  const p = cur(), a = b.dataset.act;
+  if (a === "start" || a === "zero") { minutes = +($("#minutes") || {}).value || minutes; verdict = null;
+    act("/api/languages/lesson/start", { language: p.lang, minutes, from_zero: a === "zero" }, out => { L = out; sid = out.session; try { sessionStorage.setItem("jarvis_lang_session", sid); } catch (e2) {} }); }
+  else if (a === "listen") listen(L.text);
+  else if (a === "slower") act("/api/languages/lesson/repeat", { session: sid, slower: true }, out => { L = { ...L, ...out }; listen(out.text); });
+  else if (a === "skip") { verdict = null; act("/api/languages/lesson/skip", { session: sid }, out => { L = { ...L, ...out }; }); }
+  else if (a === "stop") { verdict = null; act("/api/languages/lesson/stop", { session: sid }, out => { L = { ...L, ...out, done: true }; }); }
+});
+document.addEventListener("submit", e => {
+  if (e.target.id !== "answer-form") return;
+  e.preventDefault();
+  const said = $("#answer").value.trim();
+  if (!said) return;
+  act("/api/languages/lesson/answer", { session: sid, answer: said }, out => {
+    verdict = out.correct === null || out.correct === undefined ? null : { ok: out.correct, text: out.correct ? "Right" : out.retry ? "Not yet. Try once more" : "Not this time. It comes back later" };
+    L = { ...L, ...out };
+  });
+});
+document.addEventListener("change", e => { if (e.target.id === "minutes") minutes = +e.target.value; });
+
+async function voiceProgress() {
+  if (!token) return;
+  try { const v = await api("/api/voice-record"); if (v && Number.isFinite(v.kept) && Number.isFinite(v.total)) { const c = $("#voice-count"); c.textContent = `${v.kept} of ${v.total} clips kept`; c.hidden = false; } }
+  catch (e) { /* no count when the call fails; the button still works */ }
+}
+voiceProgress();
+(async () => {
+  if (!token) { $("#pick").innerHTML = empty("Link this phone first", "Open the Jarvis app and pair this device, then come back for a lesson."); return; }
+  try { await refresh(); render(); }
+  catch (e) { $("#pick").innerHTML = empty("Languages did not load", e.message); }
+})();
+</script>
+</body>
+</html>

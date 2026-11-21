@@ -1,0 +1,12 @@
+# Reviewed runtime constraints; no package installation is performed by Jarvis.
+-c requirements.lock.txt
+pytest
+python-dotenv
+fastapi
+httpx
+python-multipart
+pypdf
+certifi
+psutil
+mcp==2.3.0
+pywin32; platform_system == "Windows"

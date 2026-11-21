@@ -1,0 +1,69 @@
+{
+  "format": "jarvis-skill/1",
+  "id": "group.skill_name",
+  "version": "0.1.0",
+  "title": "TODO Human title",
+  "description": "TODO one sentence",
+  "author": {
+    "name": "TODO your name",
+    "contact": ""
+  },
+  "scope": "TODO: exactly what this was verified for, with numeric limits, and what it is NOT for.",
+  "permissions": [
+    "compute"
+  ],
+  "dependencies": {
+    "python": ">=3.10",
+    "modules": []
+  },
+  "entry": "run",
+  "params": {
+    "amount": {
+      "type": "number",
+      "min": 0,
+      "max": 1000,
+      "from_text": "\\$\\s*(\\d+(?:\\.\\d+)?)",
+      "ask": "TODO question JARVIS asks if this is missing"
+    }
+  },
+  "triggers": {
+    "match": "word",
+    "all": [
+      [
+        "TODO_verb"
+      ],
+      [
+        "TODO_noun"
+      ]
+    ],
+    "exclude": [
+      "TODO_lookalike_word"
+    ]
+  },
+  "recovery": {
+    "example_error": {
+      "ask_user": true,
+      "why": "TODO plain-language reason"
+    }
+  },
+  "errors": {
+    "example_error": "TODO when procedure.py raises this"
+  },
+  "verify": {
+    "invariants": [
+      {
+        "name": "TODO what must always be true",
+        "expr": "output['result'] >= 0"
+      }
+    ]
+  },
+  "reply": "TODO answer using {result}.",
+  "provenance": {
+    "created_by": "TODO person or tool",
+    "created_with": "TODO",
+    "source_url": "",
+    "created": "TODO date",
+    "notes": ""
+  },
+  "files": {}
+}

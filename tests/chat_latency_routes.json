@@ -1,0 +1,1722 @@
+{
+ "action|Again": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Alright.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Can you explain that simpler?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "action|Can you give me an example?": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Can you open Notepad?": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Continue.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Cool.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Do it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Elaborate.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Explain it like I'm five.": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "action|Explain it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Explain subnetting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Explain that differently in the email.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Explain that differently.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Give me an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Give me an example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Give me another example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Go on.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Got it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Hey Jarvis.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|I see.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|I'm going to bed soon.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|In more detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Interesting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Lights off": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Longer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Louder": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Make it shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Make it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Make the font simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Make the playlist shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Makes sense.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|More": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|More detail on the invoice in Excel.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|More detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|More details.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Next one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Next.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Nice.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|No.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Not that one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Oh, okay.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Ok.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Okay, simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Okay.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Open an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Play some jazz.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Quieter": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Quiz me.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Rephrase that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Right.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Say it again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Say it in other words.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "action|Say that again to Maya in a text.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Say that again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Say that once more.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Send an example to Maya.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Set a timer for ten minutes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Shorter timer please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Shorter timer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Show me more detail on my screen.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Simpler layout for the slide.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Simpler please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Simplify that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Sure, go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Sure.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|Thank you.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Thanks.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|That makes sense.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|That was easier than I expected.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|That's clearer now.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|This is simpler than I thought.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "action|Understood.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|What does volatile mean?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "action|Why is the sky blue?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "action|Yes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|and Paint?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "action|close Spotify": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|mute": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|open Notepad": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|stop the music": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "action|what time is it": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Again": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Alright.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Can you explain that simpler?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "answer|Can you give me an example?": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Can you open Notepad?": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Continue.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Cool.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Do it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Elaborate.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Explain it like I'm five.": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "answer|Explain it simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Explain subnetting.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Explain that differently in the email.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Explain that differently.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Give me an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Give me an example.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Give me another example.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Go on.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Got it.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Hey Jarvis.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|I see.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|I'm going to bed soon.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|In more detail.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Interesting.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Lights off": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Longer.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Louder": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Make it shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Make it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Make the font simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Make the playlist shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Makes sense.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|More": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|More detail on the invoice in Excel.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|More detail.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|More details.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Next one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Next.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Nice.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|No.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Not that one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Oh, okay.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Ok.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Okay, simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Okay.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Open an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Play some jazz.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Quieter": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Quiz me.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Rephrase that.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Right.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Say it again.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Say it in other words.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "answer|Say that again to Maya in a text.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Say that again.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Say that once more.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Send an example to Maya.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Set a timer for ten minutes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Shorter timer please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Shorter timer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Shorter.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Show me more detail on my screen.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Simpler layout for the slide.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Simpler please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Simplify that.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|Sure, go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|Sure.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Thank you.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Thanks.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|That makes sense.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "answer|That was easier than I expected.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|That's clearer now.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|This is simpler than I thought.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|Understood.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|What does volatile mean?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "answer|Why is the sky blue?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "answer|Yes.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "answer|and Paint?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "answer|close Spotify": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|mute": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|open Notepad": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|stop the music": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "answer|what time is it": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Again": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Alright.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Can you explain that simpler?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "lesson|Can you give me an example?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|Can you open Notepad?": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Continue.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Cool.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Do it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Elaborate.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Explain it like I'm five.": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "lesson|Explain it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Explain subnetting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Explain that differently in the email.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Explain that differently.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Give me an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Give me an example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Give me another example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Go on.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Got it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Hey Jarvis.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|I see.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|I'm going to bed soon.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|In more detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Interesting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Lights off": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Longer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Louder": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Make it shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Make it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Make the font simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Make the playlist shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Makes sense.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|More": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|More detail on the invoice in Excel.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|More detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|More details.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Next one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Next.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Nice.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|No.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Not that one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Oh, okay.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Ok.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Okay, simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Okay.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Open an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Play some jazz.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Quieter": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Quiz me.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Rephrase that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Right.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Say it again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Say it in other words.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|Say that again to Maya in a text.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Say that again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Say that once more.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Send an example to Maya.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Set a timer for ten minutes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Shorter timer please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Shorter timer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Show me more detail on my screen.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Simpler layout for the slide.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|Simpler please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Simplify that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Sure, go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Sure.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Thank you.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|Thanks.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|That makes sense.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|That was easier than I expected.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|That's clearer now.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|This is simpler than I thought.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|Understood.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|What does volatile mean?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "lesson|Why is the sky blue?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "lesson|Yes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|and Paint?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "lesson|close Spotify": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|mute": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|open Notepad": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|stop the music": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "lesson|what time is it": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Again": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Alright.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Can you explain that simpler?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "none|Can you give me an example?": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Can you open Notepad?": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Continue.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Cool.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Do it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Elaborate.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Explain it like I'm five.": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "none|Explain it simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Explain subnetting.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Explain that differently in the email.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Explain that differently.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Give me an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Give me an example.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Give me another example.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Go on.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Got it.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Hey Jarvis.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|I see.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|I'm going to bed soon.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|In more detail.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Interesting.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Lights off": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Longer.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Louder": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Make it shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Make it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Make the font simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Make the playlist shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Makes sense.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|More": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|More detail on the invoice in Excel.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|More detail.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|More details.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Next one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Next.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Nice.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|No.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Not that one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Oh, okay.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Ok.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Okay, simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Okay.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Open an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Play some jazz.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Quieter": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Quiz me.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Rephrase that.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Right.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Say it again.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Say it in other words.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "none|Say that again to Maya in a text.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Say that again.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Say that once more.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Send an example to Maya.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Set a timer for ten minutes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Shorter timer please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Shorter timer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Shorter.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Show me more detail on my screen.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Simpler layout for the slide.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Simpler please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Simpler.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Simplify that.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|Sure, go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|Sure.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Thank you.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Thanks.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|That makes sense.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|That was easier than I expected.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|That's clearer now.": {
+  "planner": false,
+  "reply": "manual"
+ },
+ "none|This is simpler than I thought.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|Understood.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|What does volatile mean?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "none|Why is the sky blue?": {
+  "planner": false,
+  "reply": "depth"
+ },
+ "none|Yes.": {
+  "planner": false,
+  "reply": "chat"
+ },
+ "none|and Paint?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "none|close Spotify": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|mute": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|open Notepad": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|stop the music": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "none|what time is it": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Again": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Alright.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Can you explain that simpler?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "offer|Can you give me an example?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Can you open Notepad?": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Continue.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Cool.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Do it.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Elaborate.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Explain it like I'm five.": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "offer|Explain it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Explain subnetting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Explain that differently in the email.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Explain that differently.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Give me an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Give me an example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Give me another example.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Go on.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Got it.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Hey Jarvis.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|I see.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|I'm going to bed soon.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|In more detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Interesting.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Lights off": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Longer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Louder": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Make it shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Make it simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Make the font simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Make the playlist shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Makes sense.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|More": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|More detail on the invoice in Excel.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|More detail.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|More details.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Next one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Next.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Nice.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|No.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Not that one": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Oh, okay.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Ok.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Okay, simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Okay.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Open an example file.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Play some jazz.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Quieter": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Quiz me.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Rephrase that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Right.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Say it again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Say it in other words.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Say that again to Maya in a text.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Say that again.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Say that once more.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Send an example to Maya.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Set a timer for ten minutes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Shorter timer please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Shorter timer.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Shorter.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Show me more detail on my screen.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Simpler layout for the slide.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Simpler please.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Simpler.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Simplify that.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Sure, go ahead.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Sure.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|Thank you.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Thanks.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|That makes sense.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|That was easier than I expected.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|That's clearer now.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|This is simpler than I thought.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|Understood.": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|What does volatile mean?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "offer|Why is the sky blue?": {
+  "planner": true,
+  "reply": "depth"
+ },
+ "offer|Yes.": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|and Paint?": {
+  "planner": true,
+  "reply": "chat"
+ },
+ "offer|close Spotify": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|mute": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|open Notepad": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|stop the music": {
+  "planner": true,
+  "reply": "manual"
+ },
+ "offer|what time is it": {
+  "planner": true,
+  "reply": "manual"
+ }
+}

@@ -1,0 +1,421 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "generated": 1794849030000,
+  "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson",
+  "title": "USGS Magnitude 4.5+ Earthquakes, Past Day",
+  "status": 200,
+  "api": "2.8.2",
+  "count": 10
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5.4,
+    "place": "95 km WSW of Changuillo, Peru",
+    "time": 1794845805265,
+    "updated": 1794847679521,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tykh",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tykh.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": 4.161,
+    "alert": "green",
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 449,
+    "net": "us",
+    "code": "7000tykh",
+    "ids": ",us7000tykh,",
+    "sources": ",us,",
+    "types": ",losspager,origin,phase-data,shakemap,",
+    "nst": 64,
+    "dmin": 3.127,
+    "rms": 1.14,
+    "gap": 139,
+    "magType": "mww",
+    "type": "earthquake",
+    "title": "M 5.4 - 95 km WSW of Changuillo, Peru"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -76.0259,
+     -15.0306,
+     10
+    ]
+   },
+   "id": "us7000tykh"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.6,
+    "place": "113 km ESE of Wadomari, Japan",
+    "time": 1794835945974,
+    "updated": 1794842946040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyjz",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyjz.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 326,
+    "net": "us",
+    "code": "7000tyjz",
+    "ids": ",us7000tyjz,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 40,
+    "dmin": 1.214,
+    "rms": 0.94,
+    "gap": 94,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.6 - 113 km ESE of Wadomari, Japan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     129.6312,
+     26.8491,
+     10
+    ]
+   },
+   "id": "us7000tyjz"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.8,
+    "place": "166 km N of Caluula, Somalia",
+    "time": 1794835833980,
+    "updated": 1794842419040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyjy",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyjy.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 354,
+    "net": "us",
+    "code": "7000tyjy",
+    "ids": ",us7000tyjy,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 65,
+    "dmin": 7.948,
+    "rms": 0.72,
+    "gap": 45,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.8 - 166 km N of Caluula, Somalia"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     50.742,
+     13.474,
+     10
+    ]
+   },
+   "id": "us7000tyjy"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.5,
+    "place": "78 km S of Severo-Kuril\u2019sk, Russia",
+    "time": 1794835521731,
+    "updated": 1794841605040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyjx",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyjx.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 312,
+    "net": "us",
+    "code": "7000tyjx",
+    "ids": ",us7000tyjx,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 87,
+    "dmin": 3.321,
+    "rms": 0.64,
+    "gap": 122,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.5 - 78 km S of Severo-Kuril\u2019sk, Russia"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     155.9172,
+     49.9837,
+     85.011
+    ]
+   },
+   "id": "us7000tyjx"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5,
+    "place": "68 km S of Sarangani, Philippines",
+    "time": 1794813254483,
+    "updated": 1794815737040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyil",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyil.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 385,
+    "net": "us",
+    "code": "7000tyil",
+    "ids": ",us7000tyil,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 51,
+    "dmin": 2.275,
+    "rms": 0.43,
+    "gap": 104,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 5.0 - 68 km S of Sarangani, Philippines"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     125.4267,
+     4.7842,
+     10
+    ]
+   },
+   "id": "us7000tyil"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5.4,
+    "place": "20 km NW of Anamizu, Japan",
+    "time": 1794803051718,
+    "updated": 1794810624250,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyhr",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyhr.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": 2.929,
+    "alert": "green",
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 449,
+    "net": "us",
+    "code": "7000tyhr",
+    "ids": ",us7000tyhr,",
+    "sources": ",us,",
+    "types": ",losspager,moment-tensor,origin,phase-data,shakemap,",
+    "nst": 152,
+    "dmin": 1.428,
+    "rms": 0.59,
+    "gap": 66,
+    "magType": "mww",
+    "type": "earthquake",
+    "title": "M 5.4 - 20 km NW of Anamizu, Japan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.7444,
+     37.3664,
+     273.644
+    ]
+   },
+   "id": "us7000tyhr"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.8,
+    "place": "141 km ESE of Petropavlovsk-Kamchatsky, Russia",
+    "time": 1794782299154,
+    "updated": 1794783773040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tygk",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tygk.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 354,
+    "net": "us",
+    "code": "7000tygk",
+    "ids": ",us7000tygk,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 29,
+    "dmin": 1.805,
+    "rms": 0.7,
+    "gap": 138,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 4.8 - 141 km ESE of Petropavlovsk-Kamchatsky, Russia"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     160.494,
+     52.4937,
+     10
+    ]
+   },
+   "id": "us7000tygk"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 4.9,
+    "place": "44 km S of Jurm, Afghanistan",
+    "time": 1794778641082,
+    "updated": 1794780978040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyga",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyga.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 369,
+    "net": "us",
+    "code": "7000tyga",
+    "ids": ",us7000tyga,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 67,
+    "dmin": 2.431,
+    "rms": 0.78,
+    "gap": 56,
+    "magType": "mww",
+    "type": "earthquake",
+    "title": "M 4.9 - 44 km S of Jurm, Afghanistan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     70.9205,
+     36.4657,
+     191.363
+    ]
+   },
+   "id": "us7000tyga"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5,
+    "place": "256 km SSE of Ambon, Indonesia",
+    "time": 1794775916298,
+    "updated": 1794776943040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyg6",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyg6.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 385,
+    "net": "us",
+    "code": "7000tyg6",
+    "ids": ",us7000tyg6,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 90,
+    "dmin": 7.246,
+    "rms": 0.75,
+    "gap": 41,
+    "magType": "mb",
+    "type": "earthquake",
+    "title": "M 5.0 - 256 km SSE of Ambon, Indonesia"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     128.7523,
+     -5.9449,
+     305.989
+    ]
+   },
+   "id": "us7000tyg6"
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 5,
+    "place": "74 km N of P\u0101r\u016bn, Afghanistan",
+    "time": 1794764916959,
+    "updated": 1794766098040,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000tyfh",
+    "detail": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us7000tyfh.geojson",
+    "felt": null,
+    "cdi": null,
+    "mmi": null,
+    "alert": null,
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 385,
+    "net": "us",
+    "code": "7000tyfh",
+    "ids": ",us7000tyfh,",
+    "sources": ",us,",
+    "types": ",origin,phase-data,",
+    "nst": 96,
+    "dmin": 2.165,
+    "rms": 0.67,
+    "gap": 55,
+    "magType": "mww",
+    "type": "earthquake",
+    "title": "M 5.0 - 74 km N of P\u0101r\u016bn, Afghanistan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     70.9503,
+     36.0947,
+     100.728
+    ]
+   },
+   "id": "us7000tyfh"
+  }
+ ],
+ "bbox": [
+  -76.0259,
+  -15.0306,
+  10,
+  160.494,
+  52.4937,
+  305.989
+ ]
+}

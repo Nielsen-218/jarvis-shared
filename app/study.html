@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Study</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 760px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  .bar { display: grid; gap: var(--s-3); }
+  section[hidden] { display: none; }
+  section { display: grid; gap: var(--s-3); }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .head { display: flex; align-items: center; gap: var(--s-2); }
+  .head b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .meter { height: 6px; border-radius: var(--r-pill); background: var(--bg-3); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width var(--dur-base) var(--ease-out); }
+  .meter.ok i { background: var(--ok); } .meter.warn i { background: var(--warn); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .stem { font: 500 var(--fs-lg)/var(--lh-lg) var(--font-ui); }
+  .opts { display: grid; gap: var(--s-2); }
+  .opt { display: flex; gap: var(--s-3); align-items: flex-start; width: 100%; text-align: left; padding: var(--s-3) var(--s-4); min-height: var(--tap);
+    border-radius: var(--r-2); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text-1); font: inherit; cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); }
+  .opt:hover { background: var(--bg-3); }
+  .opt .k { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--bg-3);
+    color: var(--text-2); font: 600 var(--fs-xs)/1 var(--font-ui); margin-top: 1px; }
+  .opt.right { border-color: var(--ok); background: var(--ok-soft); } .opt.right .k { background: var(--ok); color: #04160D; }
+  .opt.wrong { border-color: var(--danger); background: var(--danger-soft); } .opt.wrong .k { background: var(--danger); color: #1D0508; }
+  .opt:disabled { cursor: default; opacity: 1; }
+  .verdict { padding: var(--s-3) var(--s-4); border-radius: var(--r-2); border: 1px solid var(--line-2); display: grid; gap: var(--s-2); }
+  .verdict.ok { border-color: var(--ok); background: var(--ok-soft); } .verdict.no { border-color: var(--danger); background: var(--danger-soft); }
+  .verdict.half { border-color: var(--warn); background: var(--warn-soft); }
+  blockquote { border-left: 2px solid var(--line-2); padding-left: var(--s-3); color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .row2 { display: flex; gap: var(--s-2); flex-wrap: wrap; } .row2 > .ds-btn { flex: 1; }
+  .big { font: 600 40px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .stat { padding: var(--s-3); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); }
+  .stat b { display: block; font: 600 var(--fs-xl, 24px)/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--text-2); font-size: var(--fs-xs); }
+  .flash { min-height: 180px; align-content: center; text-align: center; }
+  .flash .back { color: var(--text-2); border-top: 1px solid var(--line-1); padding-top: var(--s-3); }
+  .rate { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-2); }
+  .day { display: grid; grid-template-columns: 64px 1fr; gap: var(--s-3); padding: var(--s-2) 0; border-top: 1px solid var(--line-1); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .day:first-child { border-top: 0; } .day time { color: var(--text-2); }
+  .day ul { padding-left: var(--s-4); display: grid; gap: 2px; }
+  .busy { display: flex; align-items: center; gap: var(--s-3); color: var(--text-2); font-size: var(--fs-sm); }
+  .ds-textarea { min-height: 96px; }
+  input[type=file] { color: var(--text-2); font-size: var(--fs-sm); max-width: 100%; }
+  @media (min-width: 620px) { .opts.two { grid-template-columns: 1fr 1fr; } }
+  /* ---- teach: the explanation ladder and the whiteboard ---- */
+  #teach [hidden] { display: none !important; }
+  .concepts { display: grid; gap: var(--s-3); }
+  .concepts h3 { font: 600 var(--fs-xs)/var(--lh-xs) var(--font-ui); color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
+  .ds-chip small { color: var(--text-3); margin-left: var(--s-1); font-size: var(--fs-xs); }
+  .teach { display: grid; gap: var(--s-3); }
+  .ladder { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--s-1); padding: var(--s-1); border-radius: var(--r-2);
+    background: var(--bg-1); border: 1px solid var(--line-1); }
+  .rung { position: relative; min-height: 40px; padding: 0 var(--s-1); border: 0; border-radius: var(--r-1); background: transparent; color: var(--text-2);
+    font: 500 var(--fs-xs)/1.15 var(--font-ui); cursor: pointer; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+  .rung:hover { color: var(--text-1); background: var(--bg-2); }
+  .rung[aria-current="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .rung:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .rung:disabled { cursor: progress; }
+  .rung .long { display: none; }
+  .board { --wb: var(--bg-0); --ink: var(--text-1); --ink-2: var(--text-2); --mark: var(--accent); --hot: var(--mark-2); --hot-soft: var(--mark-2-soft);
+    position: relative; aspect-ratio: 1000 / 560; border-radius: var(--r-3); background: var(--wb); border: 1px solid var(--line-2);
+    box-shadow: inset 0 0 0 5px var(--bg-3), var(--e-1); overflow: hidden; }
+  .board svg { display: block; width: 100%; height: 100%; }
+  .board .wait { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-2); font-size: var(--fs-sm); background: var(--wb); }
+  .board .wait[hidden] { display: none; }
+  .ink { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+  .wb-shape .body { fill: var(--bg-1); }
+  .kid .ink { stroke-width: 5; } .kid .wb-shape .body { fill: var(--hot-soft); } .kid .wb-text.cap { fill: var(--ink); font-weight: 600; }
+  .wb-shape.hl .ink { stroke: var(--hot); } .wb-shape.hl .body { fill: var(--hot-soft); }
+  .wb-shape.hl .wb-text { fill: var(--hot); }
+  .wb-text { font: 600 22px var(--font-display); fill: var(--ink); text-anchor: middle; }
+  .wb-text.cap { font-weight: 500; fill: var(--ink-2); }
+  .wb-text.note { fill: var(--mark); }
+  .wb-arrow .ink { stroke: var(--mark); stroke-width: 3.4; } .wb-arrow .head { fill: var(--mark); }
+  .wb-arrow .wb-text { fill: var(--mark); font-size: 19px; paint-order: stroke; stroke: var(--wb); stroke-width: 7px; stroke-linejoin: round; }
+  .wb-arrow.hl .ink { stroke: var(--hot); } .wb-arrow.hl .head { fill: var(--hot); }
+  .wb-line .ink { stroke: var(--ink-2); stroke-dasharray: none; }
+  .wb-token circle { fill: var(--hot); stroke: var(--bg-1); stroke-width: 3; }
+  .wb-token .wb-text { fill: var(--hot); font-size: 18px; paint-order: stroke; stroke: var(--wb); stroke-width: 6px; }
+  .in .ink { stroke-dasharray: 1; stroke-dashoffset: 1; animation: wb-draw calc(650ms / var(--spd, 1)) var(--ease-out) forwards; }
+  .in .body { animation: wb-fade calc(500ms / var(--spd, 1)) var(--ease-out) backwards; }
+  .in .wb-text, .in .head { opacity: 0; animation: wb-fade calc(320ms / var(--spd, 1)) var(--ease-out) calc(380ms / var(--spd, 1)) forwards; }
+  .out { opacity: 0; transition: opacity var(--dur-base) var(--ease-out); }
+  .bounce { transform-box: fill-box; transform-origin: 50% 100%; animation: wb-bounce calc(1100ms / var(--spd, 1)) var(--ease-in-out) 2; }
+  @keyframes wb-draw { to { stroke-dashoffset: 0; } }
+  @keyframes wb-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes wb-bounce { 0%, 100% { transform: translateY(0) scale(1, 1); } 12% { transform: translateY(0) scale(1.06, .92); } 40% { transform: translateY(-42px) scale(.97, 1.04); }
+    64% { transform: translateY(0) scale(1.04, .95); } 80% { transform: translateY(-14px); } }
+  main.wide { max-width: 1040px; }
+  .cap { min-height: calc(var(--lh-lg) * 3); font: 500 var(--fs-lg)/var(--lh-lg) var(--font-ui); color: var(--text-1); }
+  .cap.kid { font-size: var(--fs-xl); line-height: var(--lh-xl); min-height: calc(var(--lh-xl) * 2); }
+  .ctl { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+  .ctl .grow { flex: 1; min-width: 0; display: flex; gap: 6px; align-items: center; justify-content: center; }
+  .ctl .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--bg-3); border: 0; padding: 0; transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+  .ctl .pip.done { background: var(--text-3); } .ctl .pip.on { background: var(--accent); transform: scale(1.35); }
+  .ctl #b-play { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .ctl .ds-iconbtn:disabled { opacity: .4; cursor: default; }
+  .ctl .ds-iconbtn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  details.full { border-top: 1px solid var(--line-1); padding-top: var(--s-3); }
+  details.full summary { cursor: pointer; color: var(--text-2); font-size: var(--fs-sm); min-height: 28px; }
+  details.full p { margin-top: var(--s-2); }
+  @media (min-width: 620px) {
+    .teach { grid-template-columns: 150px 1fr; align-items: start; }
+    .ladder { grid-template-columns: 1fr; gap: 6px; padding: var(--s-2) var(--s-3); background: transparent; border: 0; }
+    .ladder::before, .ladder::after { content: ""; position: absolute; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--line-2); }
+    .ladder::before { left: 2px; } .ladder::after { right: 2px; }
+    .rung { min-height: 44px; background: var(--bg-2); border: 1px solid var(--line-1); font-size: var(--fs-sm); }
+    .rung::before, .rung::after { content: ""; position: absolute; top: 50%; width: var(--s-3); height: 4px; margin-top: -2px; background: var(--line-2); }
+    .rung::before { right: 100%; } .rung::after { left: 100%; }
+    .rung .long { display: inline; } .rung .short { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .in .ink { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; } .in .body, .in .wb-text, .in .head { animation: none; opacity: 1; }
+    .bounce { animation: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Study</h1>
+  <span class="ds-badge accent" id="due-badge" hidden></span>
+</header>
+<main>
+  <div class="bar">
+    <select class="ds-select" id="course" aria-label="Course"></select>
+    <div class="ds-tabs" role="tablist">
+      <button class="ds-tab on" data-tab="courses" role="tab">Material</button>
+      <button class="ds-tab" data-tab="teach" role="tab">Teach</button>
+      <button class="ds-tab" data-tab="quiz" role="tab">Quiz</button>
+      <button class="ds-tab" data-tab="cards" role="tab">Cards</button>
+      <button class="ds-tab" data-tab="progress" role="tab">Progress</button>
+    </div>
+  </div>
+  <section id="courses"><div class="ds-card"><div class="ds-skeleton" style="height:20px;width:50%"></div><div class="ds-skeleton" style="height:6px"></div><div class="ds-skeleton" style="height:44px"></div></div></section>
+  <section id="teach" hidden>
+    <div class="ds-card" id="t-pick">
+      <div class="head"><b>Teach me</b></div>
+      <p class="sub">Pick a concept and I draw it on the whiteboard while I explain. Start at college level and step down the ladder until it clicks.</p>
+      <form class="row2" id="t-form"><input class="ds-input" id="t-topic" placeholder="Any topic from this course" autocomplete="off" aria-label="Topic to explain" style="flex:1;min-width:0"><button class="ds-btn primary" style="flex:none">Explain</button></form>
+      <button class="ds-btn wide" id="t-last" hidden></button>
+      <div class="concepts" id="t-list"></div>
+    </div>
+    <div class="ds-card" id="t-view" hidden>
+      <div class="head"><button class="ds-btn ghost sm" id="t-back">Back</button><b id="t-title"></b><span class="ds-badge" id="t-src" hidden></span></div>
+      <div class="teach">
+        <nav class="ladder" id="t-ladder" aria-label="Explanation level, hardest first"></nav>
+        <div class="bar">
+          <div class="board ds-paper"><svg id="t-svg" viewBox="0 0 1000 560" role="img" aria-label="Whiteboard"></svg><div class="wait" id="t-wait" hidden><span class="busy"><span class="ds-spinner"></span><span id="t-wait-text"></span></span></div></div>
+          <p class="cap" id="t-cap" aria-live="polite"></p>
+          <div class="ctl">
+            <button class="ds-iconbtn" id="b-prev" aria-label="Previous step"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="ds-iconbtn primary" id="b-play" aria-label="Play"><svg class="ds-icon" viewBox="0 0 24 24" fill="currentColor"><path id="b-play-icon" d="M8 5v14l11-7z"/></svg></button>
+            <button class="ds-iconbtn" id="b-next" aria-label="Next step"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            <div class="grow" id="b-pips" aria-hidden="true"></div>
+            <button class="ds-iconbtn" id="b-replay" aria-label="Replay from the start"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v5h5"/></svg></button>
+            <button class="ds-btn sm" id="b-speed" aria-label="Speed">1×</button>
+            <button class="ds-iconbtn" id="b-listen" aria-label="Read each step aloud" aria-pressed="false"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="row2"><button class="ds-btn" id="t-simpler">Simpler</button><button class="ds-btn" id="t-deeper">More detail</button><button class="ds-btn" id="t-another">Another way</button></div>
+      <details class="full"><summary>The whole explanation</summary><p id="t-text"></p><p class="sub" id="t-limit"></p><p class="sub" id="t-check"></p><div class="chips" style="margin-top:var(--s-2)"><span class="ds-badge" id="t-cite"></span></div></details>
+      <div class="row2"><button class="ds-btn primary" id="t-quiz">Quiz me on this</button><button class="ds-btn" id="t-toquiz" hidden>Back to my quiz</button></div>
+    </div>
+  </section>
+  <section id="quiz" hidden></section>
+  <section id="cards" hidden></section>
+  <section id="progress" hidden></section>
+</main>
+
+<div class="ds-scrim" id="scrim" hidden></div>
+<div class="ds-sheet" id="sheet" hidden role="dialog" aria-labelledby="sheet-h">
+  <h2 id="sheet-h">Add material</h2>
+  <p>A textbook chapter, slides exported as PDF, or your own notes. I split it by chapter and remember the pages.</p>
+  <div class="ds-field" style="margin-top:var(--s-3)"><label for="m-course">Course</label><input class="ds-input" id="m-course" placeholder="e.g. Networking 101" autocomplete="off"></div>
+  <div class="ds-field" style="margin-top:var(--s-3)"><label for="m-title">Title (optional)</label><input class="ds-input" id="m-title" placeholder="e.g. Chapter 3 slides" autocomplete="off"></div>
+  <div class="ds-field" style="margin-top:var(--s-3)"><label for="m-file">File: PDF, text or markdown</label><input type="file" id="m-file" accept=".pdf,.txt,.md,.markdown,application/pdf,text/plain,text/markdown"></div>
+  <div class="ds-field" style="margin-top:var(--s-3)"><label for="m-text">Or paste notes</label><textarea class="ds-textarea" id="m-text" placeholder="Paste your class notes here"></textarea></div>
+  <p class="sub" id="m-msg" style="margin-top:var(--s-2)"></p>
+  <div class="ds-sheet-actions"><button class="ds-btn" id="m-cancel">Cancel</button><button class="ds-btn primary" id="m-add">Add</button></div>
+</div>
+<div class="ds-toast" id="toast" hidden></div>
+<audio id="player" hidden></audio>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const START_BOARD = new URLSearchParams(location.search).get("board") === "last";      // opened from "show me X on the whiteboard"
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let D = null, course = null, tab = "courses";
+let Q = null;            // the running quiz: {question, result, next, summary, setup}
+let C = null;            // card review: {due: [...], i, shown}
+const setup = { chapter: "", count: 5, kind: "mixed" };
+
+async function api(path, body, method) {
+  const opts = { method: method || (body ? "POST" : "GET"), headers: { Authorization: `Bearer ${token}` } };
+  if (body instanceof FormData) opts.body = body;
+  else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg, kind) { const t = $("#toast"); t.textContent = msg; t.className = "ds-toast " + (kind || ""); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3800); }
+const busy = label => `<div class="ds-card"><div class="busy"><span class="ds-spinner"></span>${esc(label)}</div></div>`;
+const empty = (title, text, action) => `<div class="ds-card"><div class="ds-empty"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v13"/><path d="M3 5h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6v14h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3H3z"/></svg><b>${esc(title)}</b><span>${esc(text)}</span>${action || ""}</div></div>`;
+const cur = () => D.courses.find(c => c.id === course) || D.courses[D.courses.length - 1];
+const meter = pct => `<div class="meter ${pct >= 80 ? "ok" : ""}"><i style="width:${Math.max(pct, 2)}%"></i></div>`;
+
+function show(name) {
+  tab = name;
+  document.querySelectorAll(".ds-tab").forEach(b => { const on = b.dataset.tab === name; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+  for (const id of ["courses", "teach", "quiz", "cards", "progress"]) $("#" + id).hidden = id !== name;
+  if (name !== "teach") wbPause();
+  document.querySelector("main").classList.toggle("wide", name === "teach");
+  if (!D) return;
+  ({ courses: drawCourses, teach: drawTeachHome, quiz: drawQuiz, cards: loadCards, progress: drawProgress })[name]();
+}
+document.querySelectorAll(".ds-tab").forEach(b => b.onclick = () => show(b.dataset.tab));
+
+function setData(data) {
+  D = data;
+  if (!course || !D.courses.some(c => c.id === course)) course = (D.courses.find(c => !c.builtin) || D.courses[0]).id;
+  $("#course").innerHTML = D.courses.map(c => `<option value="${esc(c.id)}" ${c.id === course ? "selected" : ""}>${esc(c.title)}</option>`).join("");
+  const badge = $("#due-badge"); badge.hidden = !D.due; badge.textContent = `${D.due} due`;
+}
+$("#course").onchange = e => { course = e.target.value; setup.chapter = ""; Q = null; C = null; wbPause(); T = null; TC = null; show(tab); };
+
+/* ---------- material ---------- */
+function drawCourses() {
+  const own = D.courses.filter(c => !c.builtin);
+  let html = own.length ? "" : empty("Add your first textbook or notes", "Upload a PDF or paste class notes, then ask for a quiz on any chapter. The IT Fundamentals course below is ready to use now.",
+    `<button class="ds-btn primary" data-add="">Add material</button>`);
+  for (const c of D.courses) {
+    const p = c.progress;
+    html += `<div class="ds-card"><div class="head"><b>${esc(c.title)}</b>${c.builtin ? `<span class="ds-badge">Built in</span>` : ""}<span class="ds-badge accent">${p.mastery}%</span></div>
+      ${meter(p.mastery)}
+      <div class="sub">${c.chapters} chapter${c.chapters === 1 ? "" : "s"} · ${p.answers} answered · ${p.due} card${p.due === 1 ? "" : "s"} due${c.exam_date ? ` · exam ${esc(c.exam_date)}` : ""}</div>
+      <div class="ds-list">${c.materials.map(m => `<div class="ds-row"><div class="grow"><div>${esc(m.title)}</div><small>${m.pages ? m.pages + " pages · " : ""}${m.chunks} passages${m.kind === "pdf" ? " · PDF" : ""}</small></div>
+        ${c.builtin ? "" : `<button class="ds-btn ghost sm" data-remove="${esc(m.id)}" data-name="${esc(m.title)}">Remove</button>`}</div>`).join("") || `<div class="sub">No material yet.</div>`}</div>
+      <div class="row2"><button class="ds-btn primary" data-quiz="${esc(c.id)}">Quiz me</button>${c.builtin ? "" : `<button class="ds-btn" data-add="${esc(c.title)}">Add material</button>`}</div></div>`;
+  }
+  if (own.length) html += `<button class="ds-btn wide" data-add="">New course</button>`;
+  if (!D.pdf) html += `<p class="sub">PDF reading is not available on this machine; text and markdown work.</p>`;
+  $("#courses").innerHTML = html;
+}
+$("#courses").onclick = async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.add !== undefined) openSheet(b.dataset.add);
+  else if (b.dataset.quiz) { course = b.dataset.quiz; $("#course").value = course; Q = null; show("quiz"); }
+  else if (b.dataset.remove) {
+    if (!confirm(`Remove "${b.dataset.name}" from this course? Your answers and cards stay.`)) return;
+    try { setData((await api("/api/study/material/" + encodeURIComponent(b.dataset.remove), null, "DELETE")).data); drawCourses(); toast("Removed", "ok"); } catch (err) { toast(err.message, "danger"); }
+  }
+};
+function openSheet(name) { $("#m-course").value = name || ""; $("#m-title").value = ""; $("#m-text").value = ""; $("#m-file").value = ""; $("#m-msg").textContent = ""; $("#scrim").hidden = $("#sheet").hidden = false; (name ? $("#m-title") : $("#m-course")).focus(); }
+function closeSheet() { $("#scrim").hidden = $("#sheet").hidden = true; }
+$("#m-cancel").onclick = $("#scrim").onclick = closeSheet;
+$("#m-add").onclick = async () => {
+  const name = $("#m-course").value.trim(), file = $("#m-file").files[0], text = $("#m-text").value;
+  if (!name) { $("#m-msg").textContent = "Name the course."; return; }
+  if (!file && !text.trim()) { $("#m-msg").textContent = "Choose a file or paste your notes."; return; }
+  const f = new FormData(); f.append("course", name); f.append("title", $("#m-title").value.trim()); f.append("text", text); if (file) f.append("file", file);
+  const btn = $("#m-add"); btn.disabled = true; $("#m-msg").innerHTML = `<span class="busy"><span class="ds-spinner"></span>Reading and splitting it by chapter…</span>`;
+  try {
+    const r = await api("/api/study/material", f); setData(r.data); course = r.added.course; $("#course").value = course; closeSheet(); drawCourses();
+    toast(r.added.duplicate ? "That is already in the course" : `Added: ${r.added.chunks} passages${r.added.chapters.length ? ", " + r.added.chapters.length + " chapters" : ""}`, "ok");
+  } catch (err) { $("#m-msg").textContent = err.message; } finally { btn.disabled = false; }
+};
+
+/* ---------- quiz ---------- */
+const chip = (group, value, label, on) => `<button class="ds-chip ${on ? "on" : ""}" data-${group}="${esc(value)}" aria-pressed="${on}">${esc(label)}</button>`;
+function drawQuiz() {
+  const el = $("#quiz"), c = cur();
+  if (!Q) {
+    el.innerHTML = `<div class="ds-card"><div class="head"><b>Quiz: ${esc(c.title)}</b></div>
+      <div class="ds-field"><label for="q-chapter">Chapter</label><select class="ds-select" id="q-chapter"><option value="">Every chapter, weak spots first</option>${c.chapter_names.map(n => `<option ${n === setup.chapter ? "selected" : ""}>${esc(n)}</option>`).join("")}</select></div>
+      <div class="ds-field"><label>Questions</label><div class="chips">${[5, 10, 15].map(n => chip("count", n, n, setup.count === n)).join("")}</div></div>
+      <div class="ds-field"><label>Type</label><div class="chips">${[["mixed", "Mixed"], ["mcq", "Multiple choice"], ["short", "Written"], ["scenario", "Scenario"]].map(([v, l]) => chip("kind", v, l, setup.kind === v)).join("")}</div></div>
+      <button class="ds-btn primary wide" id="q-start" ${c.chapters ? "" : "disabled"}>Start quiz</button>
+      ${c.chapters ? "" : `<p class="sub">This course has no material yet. Add some on the Material tab.</p>`}</div>`;
+    return;
+  }
+  if (Q.summary) {
+    const s = Q.summary, pct = Math.round(100 * s.right / Math.max(s.of, 1));
+    el.innerHTML = `<div class="ds-card"><div class="sub">Quiz finished</div><div class="big">${s.right}<span style="color:var(--text-3)"> / ${s.of}</span></div>${meter(pct)}
+      ${s.missed.length ? `<div class="sub">To review</div><div class="ds-list">${s.missed.map(m => `<div class="ds-row"><span class="ds-dot danger"></span><div class="grow"><div>${esc(m.concept)}</div><small>${esc(m.cite)}</small></div></div>`).join("")}</div>` : `<div class="sub">Nothing missed. Well done.</div>`}
+      <div class="row2"><button class="ds-btn primary" id="q-again">Another quiz</button><button class="ds-btn" id="q-cards">Make flashcards</button></div></div>`;
+    return;
+  }
+  const q = Q.question, r = Q.result, done = r && !Q.retry;
+  let body;
+  if (q.options) body = `<div class="opts ${q.options.every(o => o.length < 40) ? "two" : ""}">${q.options.map((o, i) => {
+      const cls = done ? (o === r.answer ? "right" : i === r.picked ? "wrong" : "") : "";
+      return `<button class="opt ${cls}" data-opt="${"ABCD"[i]}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[i]}</span><span>${esc(o)}</span></button>`; }).join("")}</div>`;
+  else body = done ? `<blockquote>${esc(Q.said)}</blockquote>` : `<textarea class="ds-textarea" id="q-text" placeholder="Answer in your own words">${esc(Q.retry ? Q.said : "")}</textarea>
+      <div class="row2"><button class="ds-btn primary" id="q-submit">Check my answer</button><button class="ds-btn ghost" data-say="I don't know">I don't know</button></div>`;
+  let verdict = "";
+  if (r) {
+    const cls = Q.retry ? "half" : r.correct ? "ok" : r.score ? "half" : "no";
+    verdict = `<div class="verdict ${cls}" role="status"><div>${esc(r.feedback)}</div>
+      ${done && !r.correct && r.answer ? `<div><span class="sub">Answer</span><div>${esc(r.answer)}</div></div>` : ""}
+      ${done && r.missing && r.missing.length ? `<div class="sub">You left out: ${esc(r.missing.join("; "))}</div>` : ""}
+      ${done && r.quote ? `<blockquote>${esc(r.quote)}</blockquote>` : ""}
+      ${done ? `<div class="chips"><span class="ds-badge">${esc(r.cite)}</span></div>` : ""}</div>`;
+  }
+  el.innerHTML = `<div class="ds-card"><div class="head"><span class="sub" style="flex:1">Question ${q.n} of ${q.of} · ${esc(q.chapter)}</span><button class="ds-btn ghost sm" id="q-stop">End</button></div>
+    ${meter(Math.round(100 * (q.n - (done ? 0 : 1)) / q.of))}<div class="stem">${esc(q.stem)}</div>${body}${verdict}
+    ${done ? `<div class="row2"><button class="ds-btn primary" id="q-next">${Q.next ? "Next question" : "See result"}</button><button class="ds-btn" id="q-explain">Explain it</button></div>` : ""}
+    <div id="q-more"></div></div>`;
+  const t = $("#q-text"); if (t) t.focus();
+}
+async function answer(text) {
+  if (!text.trim()) return;
+  const el = $("#quiz"); el.querySelectorAll("button, textarea").forEach(x => x.disabled = true);
+  $("#q-more").innerHTML = `<div class="busy"><span class="ds-spinner"></span>Checking…</div>`;
+  try {
+    const r = await api("/api/study/answer", { answer: text, id: Q.question.id, session: Q.session });
+    Q.result = r.result; Q.retry = r.retry; Q.said = text;
+    if (!r.retry) { Q.next = r.question || null; Q.done = r.summary || null; }
+  } catch (err) { toast(/no quiz/i.test(err.message) ? "This quiz has ended. Start a new one." : err.message, "danger"); if (/no quiz/i.test(err.message)) Q = null; }
+  drawQuiz();
+}
+$("#quiz").addEventListener("change", e => { if (e.target.id === "q-chapter") setup.chapter = e.target.value; });
+$("#quiz").onclick = async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.count) { setup.count = +b.dataset.count; drawQuiz(); }
+  else if (b.dataset.kind) { setup.kind = b.dataset.kind; drawQuiz(); }
+  else if (b.id === "q-start" || b.id === "q-again") {
+    Q = null; $("#quiz").innerHTML = busy("Writing your first question from the material…");
+    try { const r = await api("/api/study/quiz", { course, ...setup }); Q = { question: r.question, session: r.session }; } catch (err) { toast(err.message, "danger"); }
+    drawQuiz();
+  }
+  else if (b.dataset.opt) answer(b.dataset.opt);
+  else if (b.dataset.say) answer(b.dataset.say);
+  else if (b.id === "q-submit") answer($("#q-text").value);
+  else if (b.id === "q-next") { if (Q.next) Q = { question: Q.next, session: Q.session }; else { Q = { summary: Q.done }; refresh(); } drawQuiz(); }
+  else if (b.id === "q-explain") openTeach({ topic: "" }, { session: Q.session, fromQuiz: true });
+  else if (b.id === "q-stop") { try { await api("/api/study/stop", { session: Q.session }); } catch (err) {} Q = null; drawQuiz(); refresh(); }
+  else if (b.id === "q-cards") { await makeCards(setup.chapter); show("cards"); }
+};
+
+/* ---------- flashcards ---------- */
+async function loadCards() {
+  const el = $("#cards");
+  if (!C) { el.innerHTML = busy("Loading your cards…"); try { C = { due: (await api("/api/study/cards?course=" + encodeURIComponent(course))).due, i: 0, shown: false, done: 0 }; } catch (err) { el.innerHTML = empty("Could not load cards", err.message); return; } }
+  drawCards();
+}
+function drawCards() {
+  const el = $("#cards"), c = cur(), make = `<div class="ds-card"><div class="head"><b>Make flashcards</b></div>
+    <select class="ds-select" id="c-chapter"><option value="">Whole course</option>${c.chapter_names.map(n => `<option>${esc(n)}</option>`).join("")}</select>
+    <button class="ds-btn wide" id="c-make" ${c.chapters ? "" : "disabled"}>Make 8 cards</button></div>`;
+  if (C.i >= C.due.length) {
+    el.innerHTML = empty(C.done ? "That's every card due" : "No cards due", C.done ? `You reviewed ${C.done} card${C.done === 1 ? "" : "s"}. They come back when you are about to forget them.` : "Cards you make appear here on the day they should be reviewed.") + make;
+    return;
+  }
+  const card = C.due[C.i];
+  el.innerHTML = `<div class="sub">Card ${C.i + 1} of ${C.due.length}</div>${meter(Math.round(100 * C.i / C.due.length))}
+    <div class="ds-card flash"><div class="stem">${esc(card.front)}</div>${C.shown ? `<div class="back">${esc(card.back)}</div><div class="chips" style="justify-content:center"><span class="ds-badge">${esc(card.cite)}</span></div>` : ""}</div>
+    ${C.shown ? `<div class="sub" style="text-align:center">How well did you know it?</div><div class="rate">${[["again", "Again", "danger"], ["hard", "Hard", ""], ["good", "Good", ""], ["easy", "Easy", ""]].map(([v, l, k]) => `<button class="ds-btn ${k}" data-rate="${v}">${l}</button>`).join("")}</div>`
+      : `<button class="ds-btn primary wide" id="c-show">Show answer</button>`}`;
+}
+async function makeCards(chapter) {
+  $("#cards").innerHTML = busy("Writing cards from the material…");
+  try { const r = await api("/api/study/cards", { course, chapter: chapter || "", count: 8 }); C = { due: r.due, i: 0, shown: false, done: 0 }; toast(r.made.length ? `Made ${r.made.length} cards` : "You already have cards for all of that", "ok"); refresh(); }
+  catch (err) { toast(err.message, "danger"); }
+}
+$("#cards").onclick = async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.id === "c-show") { C.shown = true; drawCards(); }
+  else if (b.id === "c-make") { await makeCards($("#c-chapter").value); drawCards(); }
+  else if (b.dataset.rate) {
+    b.parentElement.querySelectorAll("button").forEach(x => x.disabled = true);
+    try { await api("/api/study/cards/review", { id: C.due[C.i].id, rating: b.dataset.rate }); C.i++; C.done++; C.shown = false; if (C.i >= C.due.length) refresh(); } catch (err) { toast(err.message, "danger"); }
+    drawCards();
+  }
+};
+
+/* ---------- progress ---------- */
+function drawProgress() {
+  const c = cur(), p = c.progress, el = $("#progress");
+  if (!p.answers && !p.cards) { el.innerHTML = empty("Nothing answered yet", "Take a quiz and this page shows what you know, what is weak, and what to review next.", `<button class="ds-btn primary" id="p-quiz">Start a quiz</button>`) + planCard(c); return; }
+  el.innerHTML = `<div class="stats"><div class="stat"><b>${p.mastery}%</b><span>Mastery</span></div><div class="stat"><b>${p.right}/${p.answers}</b><span>Right answers</span></div><div class="stat"><b>${p.due}</b><span>Cards due</span></div></div>
+    <div class="ds-card"><div class="head"><b>Chapters</b></div><div class="ds-list">${p.chapters.map(ch => `<div class="ds-row" style="display:grid;gap:var(--s-1)"><div class="head"><span style="flex:1;min-width:0">${esc(ch.chapter)}</span><span class="sub">${ch.seen ? ch.mastery + "%" : "Not started"}</span></div>${meter(ch.mastery)}
+      <small>${ch.seen} of ${ch.of} concepts met${ch.weak.length ? ` · weak: ${esc(ch.weak.slice(0, 3).join(", "))}` : ""}</small></div>`).join("")}</div></div>
+    <div class="ds-card"><div class="head"><b>Weak concepts</b></div>${p.weak.length ? `<div class="chips">${p.weak.map(w => `<button class="ds-chip" data-topic="${esc(w.concept)}">${esc(w.concept)}</button>`).join("")}</div><div class="sub">Tap one to have it explained on the whiteboard.</div>` : `<div class="sub">None among what you have answered.</div>`}</div>` + planCard(c);
+  drawPlan();
+}
+const planCard = c => `<div class="ds-card"><div class="head"><b>Exam plan</b></div><div class="ds-field"><label for="p-date">Exam date</label><input class="ds-input" type="date" id="p-date" value="${esc(c.exam_date || "")}"></div><div id="p-plan" class="sub">Set the date and I will spread the chapters over the days you have, weakest first.</div></div>`;
+async function drawPlan(date) {
+  const c = cur(), when = date !== undefined ? date : c.exam_date; if (!when) return;
+  try {
+    const p = await api("/api/study/plan", { course, exam_date: when }); if (date !== undefined) c.exam_date = when;
+    $("#p-plan").innerHTML = p.days.length ? `<div style="color:var(--text-1);margin-bottom:var(--s-2)">${p.days_left} day${p.days_left === 1 ? "" : "s"} to go</div>` + p.days.slice(0, 21).map(d => `<div class="day"><time>${esc(new Date(d.date + "T12:00").toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" }))}</time><ul>${d.tasks.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>`).join("")
+      : "That date has passed. Pick a new one.";
+  } catch (err) { $("#p-plan").textContent = err.message; }
+}
+$("#progress").addEventListener("change", e => { if (e.target.id === "p-date") drawPlan(e.target.value); });
+$("#progress").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.id === "p-quiz") show("quiz"); else if (b.dataset.topic) openTeach({ topic: b.dataset.topic }, { course });
+};
+
+/* ---------- teach: the ladder and the whiteboard ---------- */
+/* Everything the server sends here (the model's explanation, labels, captions) reaches the page through textContent
+   and setAttribute on nodes this code creates. No markup is ever built from it. */
+const NS = "http://www.w3.org/2000/svg";
+const svg = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const node = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const SHORT = { college: "College", high: "High", middle: "Middle", elementary: "Elem.", prek: "Pre-K", one: "Age 1" };
+const ICONS = {                                    // [tag, attributes, filled body?] in a 100 x 100 box
+  computer: [["rect", { x: 12, y: 16, width: 76, height: 50, rx: 6 }, 1], ["path", { d: "M50 66v14M30 82h40" }]],
+  phone: [["rect", { x: 30, y: 8, width: 40, height: 84, rx: 8 }, 1], ["path", { d: "M44 80h12" }]],
+  router: [["rect", { x: 10, y: 52, width: 80, height: 28, rx: 7 }, 1], ["path", { d: "M28 52L20 20M72 52l8-32M56 66h20" }], ["path", { d: "M24 66h.5M36 66h.5" }]],
+  server: [["rect", { x: 20, y: 10, width: 60, height: 24, rx: 5 }, 1], ["rect", { x: 20, y: 38, width: 60, height: 24, rx: 5 }, 1], ["rect", { x: 20, y: 66, width: 60, height: 24, rx: 5 }, 1],
+    ["path", { d: "M46 22h24M46 50h24M46 78h24" }], ["path", { d: "M31 22h.5M31 50h.5M31 78h.5" }]],
+  cloud: [["path", { d: "M28 76C8 76 6 50 25 47 26 26 54 18 64 37 83 31 97 52 86 67 82 74 76 76 71 76Z" }, 1]],
+  lock: [["rect", { x: 22, y: 44, width: 56, height: 44, rx: 7 }, 1], ["path", { d: "M34 44V32a16 16 0 0 1 32 0v12M50 62v10" }]],
+  key: [["circle", { cx: 30, cy: 50, r: 17 }, 1], ["path", { d: "M47 50h43M76 50v14M88 50v10" }]],
+  database: [["path", { d: "M20 24v52c0 6 13 11 30 11s30-5 30-11V24" }, 1], ["ellipse", { cx: 50, cy: 24, rx: 30, ry: 11 }, 1], ["path", { d: "M20 50c0 6 13 11 30 11s30-5 30-11" }]],
+  person: [["circle", { cx: 50, cy: 32, r: 19 }, 1], ["path", { d: "M16 92a34 30 0 0 1 68 0" }, 1], ["path", { d: "M43 37q7 6 14 0" }], ["path", { d: "M43 28h.5M57 28h.5" }]],
+};
+const B = { scene: null, i: 0, run: 0, playing: false, speed: 1, listen: false, at: {}, pairs: new Set(), m: 1, kid: false,
+  calm: matchMedia("(prefers-reduced-motion: reduce)").matches };
+let T = null;            // the open explanation: {x: the server's reply, session, course, fromQuiz}
+let TC = null;           // the concept list of the selected course
+
+function wbText(parent, text, x, y, o) {
+  text = String(text || "").trim(); if (!text) return { half: 0, rows: 0, size: 0 };
+  let size = (o.size || 22) * B.m; const maxW = o.width || 300, maxLines = o.lines || 2, least = 13 * B.m;
+  const wrap = sz => { const per = Math.max(4, Math.floor(maxW / (sz * 0.56))), rows = [""];
+    for (const w of text.split(" ")) { const cur = rows[rows.length - 1]; if (cur && (cur + " " + w).length > per) rows.push(w); else rows[rows.length - 1] = cur ? cur + " " + w : w; }
+    return rows; };
+  let rows = wrap(size);
+  const tall = () => o.height && rows.length * size * 1.2 > o.height;            // inside a box: never taller than the box
+  while ((rows.length > maxLines || tall() || rows.some(r => r.length * size * 0.56 > maxW)) && size > (o.height ? 11 : least)) { size -= 1.5; rows = wrap(size); }
+  rows = rows.slice(0, maxLines);
+  const half = Math.max(...rows.map(r => r.length)) * size * 0.56 / 2;
+  if (!o.free) x = clamp(x, half + 12, 1000 - half - 12);
+  const first = o.top ? y : y - (rows.length - 1) * size * 0.6;
+  const t = svg("text", { class: "wb-text " + (o.cls || ""), x, y: first, "dominant-baseline": "central" }, parent);
+  t.style.fontSize = size + "px";
+  rows.forEach((r, i) => { svg("tspan", { x, dy: i ? size * 1.2 : 0 }, t).textContent = r; });
+  return { half, rows: rows.length, size };
+}
+
+function wbShape(op) {
+  const g = svg("g", { class: "wb-shape", "data-id": op.id }, B.shapes);
+  let hw, hh, down = 0;
+  if (op.op === "box") {
+    svg("rect", { class: "ink body", x: op.x - op.w / 2, y: op.y - op.h / 2, width: op.w, height: op.h, rx: 14, pathLength: 1 }, g);
+    wbText(g, op.text, op.x, op.y, { size: clamp(op.h * 0.3, 17, 34), width: op.w - 26, lines: op.h >= 70 ? 2 : 1, height: op.h - 12 });
+    hw = op.w / 2; hh = op.h / 2;
+  } else if (op.op === "circle") {
+    svg("circle", { class: "ink body", cx: op.x, cy: op.y, r: op.r, pathLength: 1 }, g);
+    wbText(g, op.text, op.x, op.y, { size: clamp(op.r * 0.34, 17, 44), width: op.r * 1.7, lines: 2, height: op.r * 1.5 });
+    hw = hh = op.r;
+  } else if (op.op === "icon") {
+    const k = op.size / 100, inner = svg("g", { transform: `translate(${op.x - op.size / 2} ${op.y - op.size / 2}) scale(${k})` }, g);
+    for (const [tag, attrs, body] of ICONS[op.icon] || ICONS.computer) {
+      const e = svg(tag, { ...attrs, class: body ? "ink body" : "ink", pathLength: 1 }, inner);
+      e.style.strokeWidth = ((B.kid ? 5 : 3.2) / k) + "px";
+    }
+    const size = clamp(op.size * 0.17, 18, 36);
+    const cap = wbText(g, op.text, op.x, op.y + op.size / 2 + size * 0.75, { cls: "cap", size, width: Math.max(op.size * 2, 260), lines: 2, top: true });
+    hw = hh = op.size / 2; down = cap.rows ? cap.rows * cap.size * 1.2 + 6 : 0;
+  } else {
+    const t = wbText(g, op.text, op.x, op.y, { cls: "note", size: 22, width: 540, lines: 2 });
+    hw = t.half + 6; hh = 16 * t.rows;
+  }
+  B.at[op.id] = { x: op.x, y: op.y, hw, hh, down };
+  return g;
+}
+
+function wbEdge(a, b, pad) {                        // where the line from a to b leaves a
+  const dx = b.x - a.x, dy = b.y - a.y, hw = a.hw + pad, hh = a.hh + (dy > 0 ? a.down : 0) + pad;
+  const t = Math.min(dx ? hw / Math.abs(dx) : 9, dy ? hh / Math.abs(dy) : 9, 0.45);
+  return { x: a.x + dx * t, y: a.y + dy * t };
+}
+
+function wbArrow(op) {
+  const a = B.at[op.from], b = B.at[op.to]; if (!a || !b) return null;
+  let p = wbEdge(a, b, 10), q = wbEdge(b, a, 14);
+  const len = Math.hypot(q.x - p.x, q.y - p.y) || 1, ux = (q.x - p.x) / len, uy = (q.y - p.y) / len, nx = -uy, ny = ux;
+  const twin = B.pairs.has(op.to + ">" + op.from);
+  if (twin) { p = { x: p.x + nx * 14, y: p.y + ny * 14 }; q = { x: q.x + nx * 14, y: q.y + ny * 14 }; }
+  const g = svg("g", { class: "wb-arrow", "data-id": op.id }, B.arrows);
+  svg("path", { class: "ink", d: `M${p.x} ${p.y}L${q.x - ux * 12} ${q.y - uy * 12}`, pathLength: 1 }, g);
+  svg("polygon", { class: "head", points: `${q.x},${q.y} ${q.x - ux * 18 + nx * 8},${q.y - uy * 18 + ny * 8} ${q.x - ux * 18 - nx * 8},${q.y - uy * 18 - ny * 8}` }, g);
+  if (op.text) {
+    const size = 19 * B.m, width = Math.max(len * 0.95, 190), half = Math.min(op.text.length * size * 0.56, width) / 2;
+    const side = twin ? 1 : (ny < 0 ? 1 : -1);                 // beside the line, clear of it: a level text needs more room next to a slanted line
+    const off = Math.abs(uy) > 0.45 && !twin ? 0 : 8 + size * 0.62 * Math.abs(ux) + half * Math.abs(uy);   // a steep single arrow carries its label on the line
+    wbText(g, op.text, (p.x + q.x) / 2 + nx * side * off, (p.y + q.y) / 2 + ny * side * off, { size: 19, width, lines: 2 });
+  }
+  return g;
+}
+
+async function wbMove(op, run) {
+  const stops = op.path.map(id => B.at[id]).filter(Boolean); if (stops.length < 2) return;
+  const g = svg("g", { class: "wb-token" }, B.tokens);
+  svg("circle", { r: 14 }, g);
+  wbText(g, op.text, 0, -30, { size: 18, width: 220, lines: 1, free: true });
+  for (let s = 0; s + 1 < stops.length; s++) {
+    const p = wbEdge(stops[s], stops[s + 1], 2), q = wbEdge(stops[s + 1], stops[s], 2);
+    const ms = clamp(Math.hypot(q.x - p.x, q.y - p.y) * 2.2, 550, 1300) / B.speed, t0 = performance.now();
+    while (true) {
+      const t = clamp((performance.now() - t0) / ms, 0, 1), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      g.setAttribute("transform", `translate(${p.x + (q.x - p.x) * e} ${p.y + (q.y - p.y) * e})`);
+      if (t >= 1) break;
+      await new Promise(r => requestAnimationFrame(r));
+      if (run !== B.run) { g.remove(); return; }
+    }
+  }
+  g.classList.add("out"); setTimeout(() => g.remove(), 260);
+}
+
+const wbFind = id => B.svg.querySelector(`[data-id="${String(id).replace(/[^a-z0-9_-]/g, "")}"]`);
+function wbClear() { B.arrows.replaceChildren(); B.shapes.replaceChildren(); B.tokens.replaceChildren(); B.at = {}; }
+function wbInk(g, animate) { if (!g || !animate || B.calm) return; g.classList.add("in"); setTimeout(() => g.classList.remove("in"), 1400 / B.speed); }
+
+async function wbApply(step, animate, run) {
+  for (const g of B.svg.querySelectorAll(".hl")) g.classList.remove("hl");
+  const pace = ms => (animate && !B.calm ? sleep(ms / B.speed) : null);
+  for (const op of step.ops) {
+    if (run !== B.run) return;
+    if (op.op === "arrow") { wbInk(wbArrow(op), animate); await pace(480); }
+    else if (op.op === "line") { const g = svg("g", { class: "wb-line", "data-id": op.id }, B.arrows); svg("path", { class: "ink", d: `M${op.x1} ${op.y1}L${op.x2} ${op.y2}`, pathLength: 1 }, g); wbInk(g, animate); await pace(300); }
+    else if (op.op === "move") { if (animate && !B.calm) await wbMove(op, run); }
+    else if (op.op === "highlight") { const g = wbFind(op.target); if (g) g.classList.add("hl"); await pace(260); }
+    else if (op.op === "bounce") { const g = wbFind(op.target); if (g && animate && !B.calm) { g.classList.remove("bounce"); g.getBoundingClientRect(); g.classList.add("bounce"); await pace(700); } }
+    else if (op.op === "erase") { if (op.all) wbClear(); else { const g = wbFind(op.target); if (g) g.remove(); delete B.at[op.target]; } }
+    else { wbInk(wbShape(op), animate); await pace(300); }
+  }
+}
+
+let voiceDone = null;
+function stopVoice() { try { $("#player").pause(); } catch (e) {} if (voiceDone) { voiceDone(); voiceDone = null; } }
+async function speak(text, run) {
+  if (!text) return;
+  try {
+    const out = await api("/api/say", { text: text.slice(0, 400) });
+    if (run !== B.run) return;
+    if (!out.audio) { B.listen = false; wbCtl(); toast("The voice is not available right now."); return; }
+    const a = $("#player"); a.src = out.audio;
+    await new Promise(res => { voiceDone = res; a.onended = a.onerror = res; a.play().catch(res); setTimeout(res, 30000); });
+  } catch (e) {}
+}
+
+async function wbShow(i, animate) {
+  const run = ++B.run, steps = B.scene.steps, step = steps[i];
+  stopVoice(); B.i = i; wbClear();
+  B.m = clamp(640 / (B.svg.clientWidth || 640), 1, 1.5);       // a narrow board (a phone) gets larger writing
+  for (let k = 0; k < i; k++) await wbApply(steps[k], false, run);
+  if (run !== B.run) return false;
+  $("#t-cap").textContent = step.say; wbCtl();
+  const said = animate && B.listen ? speak(step.say, run) : null;
+  await wbApply(step, animate, run);
+  if (run !== B.run) return false;
+  if (animate) { if (said) { await said; await sleep(350); } else await sleep(clamp(900 + 48 * step.say.length, 1600, 9000) / B.speed); }
+  return run === B.run;
+}
+async function wbPlay(from) {
+  if (!B.scene) return;
+  const n = B.scene.steps.length; let i = from != null ? from : (B.i >= n - 1 ? 0 : B.i + 1);
+  B.playing = true; wbCtl();
+  while (B.playing && i < n) { if (!(await wbShow(i, true))) return; i++; }
+  B.playing = false; wbCtl();
+}
+function wbPause() { if (!B.scene || !B.playing) return; B.playing = false; wbShow(B.i, false); }
+function wbCtl() {
+  const n = B.scene ? B.scene.steps.length : 0;
+  $("#b-play-icon").setAttribute("d", B.playing ? "M7 5h4v14H7zM13 5h4v14h-4z" : "M8 5v14l11-7z");
+  $("#b-play").setAttribute("aria-label", B.playing ? "Pause" : "Play");
+  $("#b-prev").disabled = B.i <= 0; $("#b-next").disabled = B.i >= n - 1;
+  $("#b-speed").textContent = B.speed + "×"; $("#b-listen").setAttribute("aria-pressed", B.listen);
+  document.querySelectorAll("#b-pips .pip").forEach((p, k) => { p.classList.toggle("on", k === B.i); p.classList.toggle("done", k < B.i); });
+}
+function wbLoad(scene) {
+  B.run++; B.playing = false; stopVoice();
+  B.svg = $("#t-svg"); B.svg.replaceChildren();
+  B.arrows = svg("g", {}, B.svg); B.shapes = svg("g", {}, B.svg); B.tokens = svg("g", {}, B.svg);
+  B.scene = scene && scene.steps && scene.steps.length ? scene : null; B.i = 0; B.at = {};
+  B.kid = !!scene && (scene.rung === "prek" || scene.rung === "one"); B.svg.classList.toggle("kid", B.kid);
+  B.pairs = new Set(); const pips = $("#b-pips"); pips.replaceChildren();
+  if (!B.scene) { wbCtl(); return; }
+  for (const step of B.scene.steps) { pips.appendChild(node("span", "pip")); for (const op of step.ops) if (op.op === "arrow") B.pairs.add(op.from + ">" + op.to); }
+  B.svg.style.setProperty("--spd", B.speed);
+  if (B.calm) wbShow(0, false); else wbPlay(0);
+}
+$("#b-play").onclick = () => { if (B.playing) wbPause(); else wbPlay(); };
+$("#b-next").onclick = async () => { if (!B.scene || B.i >= B.scene.steps.length - 1) return; B.playing = false; await wbShow(B.i + 1, true); wbCtl(); };
+$("#b-prev").onclick = () => { if (!B.scene || B.i <= 0) return; B.playing = false; wbShow(B.i - 1, false); };
+$("#b-replay").onclick = () => wbPlay(0);
+$("#b-speed").onclick = () => { B.speed = { 1: 1.5, 1.5: 2, 2: 0.5, 0.5: 1 }[B.speed] || 1; if (B.svg) B.svg.style.setProperty("--spd", B.speed); wbCtl(); };
+$("#b-listen").onclick = () => { B.listen = !B.listen; if (!B.listen) stopVoice(); wbCtl(); if (B.listen && B.scene && !B.playing) wbPlay(B.i); };
+
+function teachWait(on, text) { $("#t-wait").hidden = !on; $("#t-wait-text").textContent = text || ""; document.querySelectorAll("#t-view .rung, #t-simpler, #t-deeper, #t-another").forEach(b => b.disabled = on); }
+function drawTeach(x) {
+  T.x = x;
+  $("#t-pick").hidden = true; $("#t-view").hidden = false;
+  $("#t-title").textContent = x.concept || x.topic;
+  const src = $("#t-src"), note = x.templated ? "Templated" : x.source === "passage" ? "Your material's words" : x.source === "model" ? "Written by Jarvis" : "";
+  src.hidden = !note; src.textContent = note;
+  const ladder = $("#t-ladder"); ladder.replaceChildren();
+  for (const r of x.ladder) {
+    const b = node("button", "rung"); b.dataset.rung = r.id; b.setAttribute("aria-current", r.id === x.level);
+    b.appendChild(node("span", "long", r.label)); b.appendChild(node("span", "short", SHORT[r.id] || r.label)); b.setAttribute("aria-label", r.label + " level");
+    ladder.appendChild(b);
+  }
+  $("#t-cap").classList.toggle("kid", x.level === "prek" || x.level === "one");
+  $("#t-text").textContent = x.text;
+  $("#t-limit").textContent = x.limit ? "Where the comparison stops working: " + x.limit : ""; $("#t-check").textContent = x.check ? "Check yourself: " + x.check : "";
+  $("#t-cite").textContent = x.cite; $("#t-toquiz").hidden = !(Q && Q.question);
+  teachWait(false);
+  $("#t-simpler").disabled = x.level === "one"; $("#t-deeper").disabled = x.level === "college";
+  wbLoad(x.board);
+  if (!B.scene) $("#t-cap").textContent = x.text;
+}
+async function openTeach(body, from) {
+  if (from) T = { session: from.session || "teach", course: from.course || "", fromQuiz: !!from.fromQuiz, x: null };
+  if (tab !== "teach") show("teach");
+  $("#t-pick").hidden = true; $("#t-view").hidden = false;
+  if (!T.x) { $("#t-title").textContent = body.topic || "Explanation"; $("#t-cap").textContent = ""; $("#t-ladder").replaceChildren(); wbLoad(null); }
+  B.run++; B.playing = false; stopVoice();
+  teachWait(true, "Working out how to draw it…");
+  try { drawTeach(await api("/api/study/explain", { topic: T.x ? T.x.topic : "", course: T.course, session: T.session, another: false, ...body })); }
+  catch (err) { teachWait(false); toast(err.message, "danger"); if (!T.x) { T = null; drawTeachHome(); } }
+}
+async function drawTeachHome() {
+  if (T && T.x) { $("#t-pick").hidden = true; $("#t-view").hidden = false; return; }
+  $("#t-view").hidden = true; $("#t-pick").hidden = false;
+  const list = $("#t-list");
+  if (!TC || TC.course !== course) {
+    list.replaceChildren(node("div", "ds-skeleton")); list.firstChild.style.height = "44px";
+    try { TC = await api("/api/study/concepts?course=" + encodeURIComponent(course)); } catch (err) { list.replaceChildren(node("p", "sub", err.message)); return; }
+  }
+  list.replaceChildren();
+  const rungs = Object.fromEntries(TC.ladder.map(r => [r.id, r.label]));
+  for (const ch of TC.chapters) {
+    if (!ch.concepts.length) continue;
+    const box = node("div", "concepts"); box.appendChild(node("h3", "", ch.chapter));
+    const chips = node("div", "chips");
+    for (const c of ch.concepts) { const b = node("button", "ds-chip", c.name); b.dataset.concept = c.name; if (c.rung) b.appendChild(node("small", "", rungs[c.rung] || "")); chips.appendChild(b); }
+    box.appendChild(chips); list.appendChild(box);
+  }
+  if (!list.children.length) list.appendChild(node("p", "sub", "Type any topic from this course above and I will explain it."));
+  try { const last = (await api("/api/study/board")).board, b = $("#t-last"); b.hidden = !last; if (last) { b.textContent = "Show what Jarvis just explained: " + (last.concept || last.topic); b.onclick = () => { T = { session: "teach", course: last.course || "", x: null }; drawTeach(last); }; } } catch (e) {}
+}
+$("#t-list").onclick = e => { const b = e.target.closest("[data-concept]"); if (b) openTeach({ topic: b.dataset.concept }, { course }); };
+$("#t-form").onsubmit = e => { e.preventDefault(); const t = $("#t-topic").value.trim(); if (t) openTeach({ topic: t }, { course }); };
+$("#t-ladder").onclick = e => { const b = e.target.closest("[data-rung]"); if (b && T && T.x && b.dataset.rung !== T.x.level) openTeach({ level: b.dataset.rung }); };
+$("#t-simpler").onclick = () => openTeach({ level: "simpler" });
+$("#t-deeper").onclick = () => openTeach({ level: "deeper" });
+$("#t-another").onclick = () => openTeach({ another: true });
+$("#t-back").onclick = () => { const back = T && T.fromQuiz; wbPause(); B.run++; stopVoice(); T = null; TC = null; if (back) show("quiz"); else drawTeachHome(); };
+$("#t-toquiz").onclick = () => show("quiz");
+$("#t-quiz").onclick = async () => {
+  const x = T && T.x; if (!x) return;
+  wbPause(); Q = null; show("quiz"); $("#quiz").replaceChildren(node("div", "ds-card")); $("#quiz").firstChild.appendChild(node("div", "busy", "Writing questions on " + (x.concept || x.topic) + "…"));
+  try { const r = await api("/api/study/quiz", { course: x.course || course, chapter: x.concept || x.topic, count: 3, kind: "mixed" }); Q = { question: r.question, session: r.session }; } catch (err) { toast(err.message, "danger"); }
+  drawQuiz();
+};
+/* ---------- end teach ---------- */
+
+async function refresh() { try { setData(await api("/api/study")); } catch (e) {} }
+(async () => {
+  if (!token) { $(".bar").hidden = true; $("#courses").innerHTML = empty("Link this phone first", "Open the Jarvis app and pair this device, then come back to study."); return; }
+  try {
+    setData(await api("/api/study"));
+    const last = START_BOARD ? (await api("/api/study/board")).board : null;
+    if (last) { show("teach"); T = { session: "teach", course: last.course || "", x: null }; drawTeach(last); } else show(START_BOARD ? "teach" : "courses");
+  }
+  catch (err) { $(".bar").hidden = true; $("#courses").innerHTML = empty("Study is not reachable", err.message, `<button class="ds-btn" onclick="location.reload()">Try again</button>`); }
+})();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+</script>
+</body>
+</html>

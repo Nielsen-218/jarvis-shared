@@ -1,0 +1,6 @@
+# Optional mentor adapter/test dependencies. No installer runs on app startup.
+# Existing core runtime requirements are declared in requirements.txt.
+mcp==2.3.0
+httpx
+pytest
+pywin32; platform_system == "Windows"

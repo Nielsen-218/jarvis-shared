@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Intelligence</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+:root { --blue: #2FA8FF; --blue-2: #7FD3FF; --gold: #E3B04B; --edge: rgba(47,168,255,.38); --edge-dim: rgba(47,168,255,.18); --glass: rgba(8,16,30,.86); }
+html { font-size: clamp(12px, 0.85vw, 16px); }
+* { box-sizing: border-box; }
+body { margin: 0; height: 100vh; overflow: hidden; background: #03060c; color: var(--text-1); font-family: var(--font-ui); display: flex; flex-direction: column; }
+button { font: inherit; color: inherit; background: none; border: 1px solid var(--edge-dim); border-radius: .5rem; padding: .35rem .7rem; cursor: pointer; }
+button:hover { border-color: var(--blue); background: rgba(47,168,255,.12); }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--blue-2); outline-offset: 2px; }
+button[aria-pressed="true"], button.on { border-color: var(--blue); background: rgba(47,168,255,.2); }
+button.gold { border-color: rgba(227,176,75,.6); color: #F6D98A; }
+button:disabled { opacity: .45; cursor: default; }
+a { color: var(--blue-2); }
+input[type=search] { background: rgba(4,10,20,.9); border: 1px solid var(--edge); border-radius: .55rem; color: inherit; font: inherit; padding: .4rem .7rem; min-width: 0; }
+
+header.bar { display: flex; align-items: center; gap: .6rem; padding: .5rem .8rem; border-bottom: 1px solid var(--edge-dim); flex: none; }
+header.bar h1 { margin: 0 .6rem 0 0; font: 600 1.05rem var(--font-display); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+header.bar h1 small { display: block; font: 500 .62rem var(--font-ui); letter-spacing: .12em; color: var(--blue-2); }
+.tabs { display: flex; gap: .3rem; } .tabs button { border-radius: .5rem; }
+.search { position: relative; flex: 1; max-width: 26rem; margin-left: auto; } .search input { width: 100%; }
+.results { position: absolute; top: 100%; left: 0; right: 0; z-index: 20; background: #07101e; border: 1px solid var(--edge); border-radius: .5rem; margin-top: .2rem; overflow: hidden; }
+.results button { display: block; width: 100%; text-align: left; border: 0; border-radius: 0; border-bottom: 1px solid var(--edge-dim); }
+.live { display: flex; align-items: center; gap: .4rem; font-size: .8rem; color: var(--text-2); }
+
+main { flex: 1; min-height: 0; display: grid; grid-template-columns: 17rem minmax(0, 1fr) 22rem; gap: .6rem; padding: .6rem; }
+main[data-tab="tools"] { grid-template-columns: minmax(0, 1fr); }
+main[data-tab="tools"] .layers, main[data-tab="tools"] .globe, main[data-tab="tools"] .dossier { display: none; }
+main:not([data-tab="tools"]) .tools { display: none; }
+.panel { background: linear-gradient(180deg, var(--glass), rgba(6,12,22,.8)); border: 1px solid var(--edge); border-radius: .8rem; min-height: 0; overflow: auto; }
+.panel h2 { margin: 0; padding: .7rem .8rem .4rem; font: 600 .8rem var(--font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--blue-2); }
+
+.layers details { border-top: 1px solid var(--edge-dim); } .layers summary { cursor: pointer; padding: .5rem .8rem; font: 600 .82rem var(--font-display); list-style: none; display: flex; justify-content: space-between; }
+.layers summary::after { content: "+"; color: var(--text-3); } .layers details[open] summary::after { content: "\2212"; }
+.layer { display: grid; grid-template-columns: 1fr auto; gap: 0 .5rem; padding: .35rem .8rem; align-items: center; }
+.layer label { font-size: .88rem; } .layer small { grid-column: 1 / -1; color: var(--text-3); font-size: .72rem; line-height: 1.3; }
+.layer small.bad { color: var(--warn); }
+.sw { appearance: none; width: 2.1rem; height: 1.15rem; border-radius: 1rem; background: #1a2330; border: 1px solid var(--edge-dim); position: relative; cursor: pointer; }
+.sw::after { content: ""; position: absolute; top: .1rem; left: .12rem; width: .85rem; height: .85rem; border-radius: 50%; background: var(--text-3); transition: transform .15s; }
+.sw:checked { background: rgba(47,168,255,.35); border-color: var(--blue); } .sw:checked::after { transform: translateX(.9rem); background: var(--blue-2); }
+.sw:disabled { opacity: .4; cursor: default; }
+
+.globe { position: relative; min-height: 0; border-radius: .8rem; overflow: hidden; border: 1px solid var(--edge); background: #000; }
+.globe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.globe .status { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 2rem; color: var(--text-2); gap: .8rem; z-index: 2; background: #03060c; }
+.globe .status.hide { display: none; }
+.hud { position: absolute; left: .7rem; bottom: .7rem; display: flex; gap: .4rem; z-index: 3; flex-wrap: wrap; }
+.hud button { background: rgba(4,10,20,.82); }
+.boot { display: grid; justify-items: center; gap: .55rem; }
+.boot b { font: 600 1.1rem var(--font-display); letter-spacing: .32em; color: var(--blue-2); }
+.boot ol { list-style: none; margin: .4rem 0 0; padding: 0; font: .78rem var(--font-mono); color: var(--text-2); text-align: left; min-width: 18rem; }
+.boot ol li::before { content: "\2713  "; color: var(--ok); } .boot ol li.fail::before { content: "\2715  "; color: var(--warn); }
+.rings { position: relative; width: 6rem; height: 6rem; } .rings i { position: absolute; inset: 0; border-radius: 50%; border: 1px solid var(--edge); }
+.rings i:nth-child(2) { inset: .8rem; border-color: rgba(227,176,75,.55); border-style: dashed; animation: spin 6s linear infinite; }
+.rings i:nth-child(3) { inset: 1.9rem; background: radial-gradient(circle, rgba(47,168,255,.55), transparent 70%); border: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.badge.mode { font: 600 .7rem var(--font-display); letter-spacing: .14em; text-transform: uppercase; border-color: rgba(227,176,75,.6); color: #F6D98A; padding: .2rem .6rem; }
+.reticle { position: absolute; inset: 0; pointer-events: none; z-index: 2; display: none; }
+body[data-preset="spy"] .reticle, body[data-preset="night"] .reticle, body[data-preset="thermal"] .reticle { display: block; }
+.reticle i { position: absolute; width: 2.4rem; height: 2.4rem; border: 2px solid rgba(127,211,255,.7); }
+.reticle i:nth-child(1) { top: 1rem; left: 1rem; border-right: 0; border-bottom: 0; } .reticle i:nth-child(2) { top: 1rem; right: 1rem; border-left: 0; border-bottom: 0; }
+.reticle i:nth-child(3) { bottom: 3.4rem; left: 1rem; border-right: 0; border-top: 0; } .reticle i:nth-child(4) { bottom: 3.4rem; right: 1rem; border-left: 0; border-top: 0; }
+.reticle::after { content: ""; position: absolute; left: 50%; top: 50%; width: 3rem; height: 3rem; margin: -1.5rem; border: 1px solid rgba(127,211,255,.55); border-radius: 50%;
+  background: linear-gradient(rgba(127,211,255,.55), rgba(127,211,255,.55)) center / 1px 100% no-repeat, linear-gradient(90deg, rgba(127,211,255,.55), rgba(127,211,255,.55)) center / 100% 1px no-repeat; }
+.reticle span { position: absolute; top: 1.3rem; left: 4rem; font: .72rem var(--font-mono); color: rgba(127,211,255,.85); letter-spacing: .12em; }
+.coords { position: absolute; right: .7rem; bottom: .7rem; z-index: 3; font: .72rem var(--font-mono); color: var(--text-2); background: rgba(4,10,20,.7); padding: .2rem .5rem; border-radius: .4rem; }
+
+.dossier { display: flex; flex-direction: column; }
+.dossier .body { padding: 0 .8rem .6rem; overflow: auto; flex: 1; min-height: 0; }
+.dossier h3 { margin: .2rem 0 .1rem; font: 600 1.05rem var(--font-display); } .dossier .sub { color: var(--text-2); font-size: .82rem; }
+.cam { position: relative; aspect-ratio: 16 / 9; margin: .5rem 0; border: 1px solid var(--line, #1d3a5c); border-radius: 8px; overflow: hidden; background: #000; }
+.cam iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.livedot { display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; background: #ff3b3b; margin-right: .35rem; box-shadow: 0 0 6px #ff3b3b; animation: lp 1.6s infinite; }
+@keyframes lp { 50% { opacity: .35; } } @media (prefers-reduced-motion: reduce) { .livedot { animation: none; } }
+.kv { display: grid; grid-template-columns: 6.2rem 1fr; gap: .25rem .6rem; font-size: .82rem; margin: .6rem 0; } .kv dt { color: var(--text-3); } .kv dd { margin: 0; overflow-wrap: anywhere; }
+.badge { display: inline-block; padding: .1rem .5rem; border-radius: 1rem; font-size: .7rem; border: 1px solid var(--edge-dim); margin-right: .3rem; }
+.badge.warn { color: var(--warn); border-color: rgba(233,179,80,.5); } .badge.ok { color: var(--ok); border-color: rgba(109,213,160,.5); } .badge.sim { color: #F6D98A; border-color: rgba(227,176,75,.6); }
+.acts { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
+.note { font-size: .76rem; color: var(--text-3); line-height: 1.4; margin: .5rem 0; }
+.list { display: grid; gap: .25rem; margin: .4rem 0; } .list button { text-align: left; padding: .3rem .5rem; font-size: .8rem; }
+.say { border-top: 1px solid var(--edge-dim); padding: .5rem .8rem; max-height: 9rem; overflow: auto; font-size: .82rem; flex: none; }
+.say p { margin: .25rem 0; } .say b { color: var(--gold); font-weight: 600; } .say .you b { color: var(--blue-2); }
+.askbar { display: flex; gap: .4rem; padding: .5rem .8rem; border-top: 1px solid var(--edge-dim); flex: none; } .askbar input { flex: 1; }
+
+.tools { padding: .8rem; overflow: auto; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: .8rem; }
+.card { border: 1px solid var(--edge-dim); border-radius: .8rem; padding: .9rem; background: rgba(8,16,30,.7); display: flex; flex-direction: column; gap: .5rem; }
+.card h3 { margin: 0; font: 600 1rem var(--font-display); } .card p { margin: 0; font-size: .84rem; color: var(--text-2); line-height: 1.45; }
+.card .tag { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+@media (max-width: 1100px) { main { grid-template-columns: 14rem minmax(0, 1fr); } .dossier { display: none; } }
+@media (max-width: 760px) { main { grid-template-columns: minmax(0, 1fr); } .layers { display: none; } header.bar h1 small, .live { display: none; } }   /* the globe never gets squeezed to nothing */
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1>World Intelligence<small>GLOBAL SITUATION &bull; PUBLIC DATA &bull; INVESTIGATION</small></h1>
+  <span class="badge mode" id="modeBadge" hidden></span>
+  <nav class="tabs" aria-label="World Intelligence sections">
+    <button data-tab="globe" aria-pressed="true">Globe</button>
+    <button data-tab="tools" aria-pressed="false">Tools</button>
+  </nav>
+  <form class="search" id="searchForm" role="search"><input type="search" id="q" placeholder="Search a place or coordinates (18.5, -72.3)" aria-label="Search a place or coordinates" autocomplete="off"><div class="results" id="results" hidden></div></form>
+  <label class="live" title="When off, JARVIS loads no live data feeds of its own"><input type="checkbox" id="liveSw" class="sw" checked> Live data</label>
+  <button id="wideBtn" title="Hide the Hub chrome for a distraction-free view" aria-pressed="false">Expand</button>
+  <button id="homeBtn">Back to Home</button>
+</header>
+
+<main id="main" data-tab="globe">
+  <section class="panel layers" id="layers" aria-label="Intelligence layers"><h2>Intelligence layers</h2><div id="layerList"></div></section>
+
+  <section class="globe" id="globeBox" aria-label="Interactive 3D globe">
+    <div class="status" id="gstatus"><div class="boot"><div class="rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <b id="bootTitle">WORLD INTELLIGENCE</b><span id="gmsg">Establishing uplink&hellip;</span><ol id="bootLog" aria-live="polite"></ol></div></div>
+    <div class="reticle" aria-hidden="true"><i></i><i></i><i></i><i></i><span id="retTxt"></span></div>
+    <iframe id="gev" title="Globe" allow="fullscreen"></iframe>
+    <div class="hud">
+      <button id="bReset" title="Whole-world view">Recenter</button>
+      <button id="bIn" title="Zoom in" aria-label="Zoom in">+</button>
+      <button id="bOut" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      <button id="bSpin" aria-pressed="false" title="Slowly rotate the globe">Rotate</button>
+      <button id="bMode" title="Switch between the 3D globe and a flat 2D map">2D</button>
+      <button id="bFs" title="Fullscreen globe">Fullscreen</button>
+    </div>
+    <div class="coords" id="coords" aria-live="off"></div>
+  </section>
+
+  <section class="panel dossier" id="dossier" aria-label="Investigation dossier">
+    <h2>Investigation dossier</h2>
+    <div class="body" id="dBody"></div>
+    <div class="say" id="say" aria-live="polite" hidden></div>
+    <form class="askbar" id="askForm"><input type="search" id="askQ" placeholder="Ask JARVIS about this region..." aria-label="Ask JARVIS about this region" autocomplete="off"><button class="gold">Ask</button></form>
+  </section>
+
+  <section class="panel tools" id="toolsPane" aria-label="Investigation tools">
+    <h2 style="padding-left:0">Investigation tools</h2>
+    <p class="note" style="margin-top:0">The globe above is built into JARVIS. Everything below is a <b>separate website</b> that opens in your browser; JARVIS does not control it or vouch for it.</p>
+    <div class="cards" id="cards"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s), esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+const ac = new AbortController();                       // cancelled on page hide so no request outlives the workspace
+async function api(path, body) {
+  const r = await fetch(path, { signal: ac.signal, ...(body === undefined ? { headers: { Authorization: `Bearer ${token}` } }
+    : { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body) }) });
+  if (!r.ok) throw new Error(String(r.status)); return r.json();
+}
+const hub = m => parent.postMessage({ jarvisWorld: m }, location.origin);
+let GEV_ORIGIN = "http://127.0.0.1:4173";   // the port comes from the server (JARVIS_GEV_PORT) once the layers load
+const WORLD = { lat: 20, lon: -30, altitude_m: 17_000_000, heading_deg: 0, pitch_deg: -90 };
+
+const TOOLS = [
+  { name: "God's Eye View", tag: "Built in", body: "The globe on this page. Advanced spatial tools (street-level, 3D cities, CCTV, radio) live in the full app, served from this PC.", local: true, btn: "Open full app in its own window" },
+  { name: "OSIRIS", tag: "External site", body: "Additional world-monitoring layers (movement, cameras, events, cables). Some layers may need an account; JARVIS does not sign in for you.", url: "https://www.osirisai.live/" },
+  { name: "World Monitor", tag: "External site", body: "Broader public geopolitical analysis: conflicts, alerts, infrastructure, news and economic context.", url: "https://www.worldmonitor.app/dashboard" },
+  { name: "Simulation Lab: NukeSimulation", tag: "Simulation, not real events", sim: true, body: "An educational simulator. Everything it shows is a hypothetical model, never a current event, live detection or official emergency prediction.", url: "https://nukesimulation.com/" },
+  { name: "Visual Lab: Decart Lucy", tag: "Experimental, AI-generated", sim: true, body: "Real-time AI visual transformation. Output is synthetic imagery and is not evidence of anything. May require a paid plan; JARVIS does not stream to it for you.", url: "https://lucy.decart.ai/" },
+];
+
+/* ---------- state ---------- */
+const S = { layers: [], on: new Set(), cam: { ...WORLD }, sel: null, feed: {}, ready: false, live: true, spin: 0, seq: 0, pending: new Map(), tab: "globe", status: {} };
+
+/* ---------- globe bridge ---------- */
+const frame = $("#gev");
+function toGev(view, timeout = 12000) {
+  return new Promise(res => {
+    if (!S.ready) return res({ ok: false, error: "The globe is not ready yet." });
+    const id = "v" + (++S.seq), t = setTimeout(() => { S.pending.delete(id); res({ ok: false, error: "The globe did not respond." }); }, timeout);
+    S.pending.set(id, r => { clearTimeout(t); res(r); });
+    frame.contentWindow.postMessage({ type: "gev:view", id, view }, GEV_ORIGIN);
+  });
+}
+function toGevMode(mode) {
+  return new Promise(res => {
+    if (!S.ready) return res({ ok: false, error: "The globe is not ready yet." });
+    const id = "m" + (++S.seq), t = setTimeout(() => { S.pending.delete(id); res({ ok: false, error: "The globe did not switch (is the JARVIS bridge patch applied?)." }); }, 6000);
+    S.pending.set(id, r => { clearTimeout(t); res(r); });
+    frame.contentWindow.postMessage({ type: "gev:mode", id, mode }, GEV_ORIGIN);
+  });
+}
+// The globe's moving-object layers draw with 3D camera maths: the flights layer stops the renderer in 2D (seen live
+// 2026-11-15, cameraPoseSignature), so 2D is offered only without them, and turning one on returns to 3D first.
+const NOT_IN_2D = ["aircraft", "maritime", "satellites"];
+async function setMode(mode) {
+  stopSpin();
+  const blocking = mode === "2d" ? NOT_IN_2D.filter(id => S.on.has(id)) : [];
+  if (blocking.length) {
+    const names = blocking.map(id => (S.layers.find(l => l.id === id) || {}).label || id).join(", ");
+    const r = { ok: false, error: `The flat 2D map can't show ${names}. Turn ${blocking.length > 1 ? "them" : "it"} off first, or stay in 3D.` };
+    note(r.error); return r;
+  }
+  const r = await toGevMode(mode);
+  if (r.ok === false && !r.error) r.error = `The globe didn't switch to ${mode.toUpperCase()}.`;
+  if (r.ok) { S.mode = mode; $("#bMode").textContent = mode === "2d" ? "3D" : "2D"; pushContext(); } else note(r.error || "Couldn't switch the map mode.");
+  return r;
+}
+const gevLayers = () => [...new Set(S.layers.filter(l => S.on.has(l.id)).flatMap(l => l.gev))];
+const camView = (over = {}) => ({ camera: { ...S.cam, ...over }, layers: gevLayers(), style: S.style || "normal" });
+async function applyView(over) {
+  const r = await toGev(camView(over));
+  if (r.ok !== false || r.steps) { if (over) Object.assign(S.cam, over); }
+  return r;
+}
+window.addEventListener("message", e => {
+  if (e.source === parent && e.origin === location.origin) return onHub(e.data);
+  if (e.source !== frame.contentWindow || e.origin !== GEV_ORIGIN || !e.data) return;
+  const d = e.data;
+  if (d.type === "gev:ready") {     // the globe starts its own fly-in to Austin 0.5 s after ready; a view sent once it began replaces it
+    S.ready = true; S.intro = setTimeout(endIntro, 900);
+  }
+  else if (d.type === "gev:view-applied" || d.type === "gev:mode-applied") { const f = S.pending.get(d.id); if (f) { S.pending.delete(d.id); f(d); } }
+  else if (d.type === "gev:camera" && S.intro) { if (d.altitude_m < 5000) endIntro(); }
+  else if (d.type === "gev:camera" && Number.isFinite(d.lat) && Number.isFinite(d.lon)) {
+    S.cam = { lat: d.lat, lon: d.lon, altitude_m: Math.max(1, d.altitude_m || S.cam.altitude_m), heading_deg: d.heading_deg || 0, pitch_deg: Number.isFinite(d.pitch_deg) ? d.pitch_deg : -90 };
+    $("#coords").textContent = `${d.lat.toFixed(2)}, ${d.lon.toFixed(2)}  alt ${fmtAlt(S.cam.altitude_m)}`; pushContext();
+    $("#retTxt").textContent = `${PRESETS[S.preset].label.toUpperCase()}  //  ${d.lat.toFixed(3)} ${d.lon.toFixed(3)}  //  ALT ${fmtAlt(S.cam.altitude_m).toUpperCase()}`;
+  } else if (d.type === "gev:pick") onPick(d.entity);
+});
+const PRESETS = {
+  standard: { label: "World Intelligence", style: "normal", layers: [] }, birdseye: { label: "Bird's-eye view", style: "normal", layers: [], reset: true },
+  situation: { label: "Situation room", style: "normal", layers: ["earthquakes", "alerts", "weather"], reset: true },
+  spy: { label: "Spy mode", style: "surveillance", layers: ["aircraft", "satellites"] }, thermal: { label: "Thermal", style: "thermal", layers: [] },
+  night: { label: "Night vision", style: "surveillance", layers: [] }, noir: { label: "Noir", style: "noir", layers: [] },
+  storm: { label: "Storm Watch", style: "normal", layers: ["stormwatch"], reset: true },
+};
+S.preset = PRESETS[new URLSearchParams(location.search).get("preset")] ? new URLSearchParams(location.search).get("preset") : "standard";
+function step(text, bad) { const li = document.createElement("li"); li.textContent = text; if (bad) li.className = "fail"; $("#bootLog").append(li); }
+async function usePreset(key, first) {
+  const p = PRESETS[key] || PRESETS.standard; S.preset = PRESETS[key] ? key : "standard"; S.style = p.style;
+  document.body.dataset.preset = S.preset; const b = $("#modeBadge"); b.hidden = S.preset === "standard"; b.textContent = p.label;
+  if (p.style !== "normal" || S.mode === "2d") { if (S.mode === "2d") await setMode("3d"); }
+  if (p.layers.length || p.reset) {
+    if (p.layers.length && S.mode === "2d" && p.layers.some(x => NOT_IN_2D.includes(x))) await setMode("3d");
+    p.layers.forEach(id => { if (!S.on.has(id)) { S.on.add(id); const l = S.layers.find(x => x.id === id); if (l && l.feed) loadFeed(l.feed); } }); paintLayers();
+  }
+  if (S.preset !== "standard" && new URLSearchParams(location.search).get("immersive") !== "0") { wide = 2; hub({ wide }); $("#wideBtn").setAttribute("aria-pressed", "true"); $("#wideBtn").textContent = "Restore Hub"; }
+  pushContext(true);
+  return applyView(first || p.reset ? { ...WORLD } : undefined);
+}
+function endIntro() { if (!S.intro) return; clearTimeout(S.intro); S.intro = 0; step("Globe engine ready"); usePreset(S.preset, true).then(r => { if (r.ok === false && !S.retried) { S.retried = true; return applyView({ ...WORLD }); } }).then(() => { step(PRESETS[S.preset].label + " engaged"); setTimeout(() => $("#gstatus").classList.add("hide"), 450); }); }
+const fmtAlt = m => m >= 1e6 ? (m / 1e6).toFixed(1) + "k km" : m >= 1000 ? (m / 1000).toFixed(0) + " km" : Math.round(m) + " m";
+
+/* ---------- layers ---------- */
+function paintLayers() {
+  const groups = {}; S.layers.forEach(l => (groups[l.group] ||= []).push(l));
+  $("#layerList").innerHTML = Object.entries(groups).map(([g, ls], i) => `<details ${i < 3 ? "open" : ""}><summary>${esc(g)}</summary>${ls.map(l => {
+    const f = l.feed && S.status[l.feed], bad = f && (!f.ok || f.stale), fresh = f && f.fetched ? ago(f.fetched) : "";
+    const meta = esc(l.note) + (S.on.has(l.id) && l.feed ? ` &middot; ${f && f.fetched ? (bad ? "stale, " : "") + "updated " + fresh : S.live ? "loading" : "live data off"}` : "");
+    return `<div class="layer"><label for="l_${l.id}">${esc(l.label)}</label><input class="sw" type="checkbox" id="l_${l.id}" data-l="${l.id}" ${S.on.has(l.id) ? "checked" : ""}><small class="${bad ? "bad" : ""}">${meta}</small></div>`;
+  }).join("")}</details>`).join("");
+}
+$("#layerList").addEventListener("change", e => { const id = e.target.dataset.l; if (id) setLayer(id, e.target.checked); });
+async function setLayer(id, on) {
+  if (on && S.mode === "2d" && NOT_IN_2D.includes(id)) { const back = await setMode("3d"); if (back.ok === false) { paintLayers(); return back; } }
+  on ? S.on.add(id) : S.on.delete(id);
+  const l = S.layers.find(x => x.id === id);
+  if (l && l.feed) { if (on) loadFeed(l.feed); else { delete S.feed[l.feed]; paintDossier(); } }
+  paintLayers(); pushContext();
+  const r = await applyView(); if (r.ok === false && r.error) note("Layer change failed: " + r.error);
+  return r;
+}
+const ago = t => { const s = Math.max(0, Date.now() / 1000 - t); return s < 90 ? "just now" : s < 5400 ? Math.round(s / 60) + " min ago" : Math.round(s / 3600) + " h ago"; };
+
+/* ---------- JARVIS-served feeds (earthquakes, alerts) ---------- */
+async function loadFeed(name) {
+  if (!S.live) return;
+  try { S.feed[name] = await api(`/api/world/feed/${name}?hours=${S.eqHours || 24}`); } catch (e) { if (e.name === "AbortError") return; S.feed[name] = { ok: false, items: [], error: "Feed unavailable" }; }
+  S.status[name] = { fetched: S.feed[name].fetched, ok: S.feed[name].ok !== false, stale: !!S.feed[name].stale };
+  paintLayers(); if (!S.sel) paintDossier();
+}
+const feedTimer = setInterval(() => { if (!document.hidden) ["earthquakes", "alerts", "stormwatch"].forEach(n => S.on.has(layerOf(n)) && loadFeed(n)); }, 180000);
+const layerOf = n => n;   // feed names equal layer ids
+
+/* ---------- selection & dossier ---------- */
+const KIND_NOTE = {
+  earthquake: ["Instrument-detected", "Magnitude and location are automatic estimates and are often revised in the first hours."],
+  alert: ["Official public alert (US NWS)", "Covers the United States only. Some alerts are county-coded and have no map position."],
+  place: ["Place name from a geocoder", "This is a location, not an event. Nothing has been reported here by selecting it."],
+  point: ["Coordinates you entered", "A point on the map, not an event."],
+  livecam: ["Public live webcam", "A tourism/landmark webcam streamed on YouTube by its owner. It can lag, pause or go offline, and JARVIS does not control what it shows."],
+  pinned: ["Your Storm Watch place", "Checked every 5 minutes for storms (NHC), strong earthquakes (USGS) and, in the US only, severe weather alerts (NWS). Haiti has no NWS coverage."],
+  storm: ["Official forecast (US National Hurricane Center)", "Forecast tracks are often 100 miles or more off by days 4-5; follow the official advisories and your national weather service."],
+  entity: ["Map marker from a third-party layer, unverified", "A marker shows what a public feed reports. It is not confirmation that a claim is accurate, and coverage of public tracking feeds is incomplete."],
+};
+function select(item) { S.sel = item; paintDossier(); pushContext(); }
+function onPick(e) {
+  if (!e) { if (S.sel && S.sel.kind === "entity") select(null); return; }
+  const near = nearestQuake(e.lat, e.lon);
+  select(near ? { ...near } : { kind: "entity", title: e.name || "Selected marker", lat: e.lat, lon: e.lon, provider: "God's Eye View layer", id: e.id });
+}
+function nearestQuake(lat, lon) {
+  const q = (S.feed.earthquakes && S.feed.earthquakes.items) || []; if (lat == null) return null; let best = null, bd = 25;
+  for (const i of q) { const d = hav(lat, lon, i.lat, i.lon); if (d < bd) { bd = d; best = i; } } return best;
+}
+const hav = (a, b, c, d) => { const p = Math.PI / 180, h = Math.sin((c - a) * p / 2) ** 2 + Math.cos(a * p) * Math.cos(c * p) * Math.sin((d - b) * p / 2) ** 2; return 12742 * Math.asin(Math.sqrt(h)); };
+const utc = t => new Date(t * 1000).toISOString().replace("T", " ").slice(0, 16) + " UTC";
+const safeUrl = u => { try { const p = new URL(u); return p.protocol === "https:" ? p.href : ""; } catch (e) { return ""; } };
+
+function paintDossier() {
+  const b = $("#dBody"), s = S.sel;
+  if (!s) {
+    const eq = S.feed.earthquakes, al = S.feed.alerts, sw = S.feed.stormwatch, rows = [];
+    if (sw && sw.ok !== false && sw.items) rows.push(`<dt>Storm Watch</dt><dd>${sw.count ? `<b class="${sw.danger ? "bad" : ""}">${sw.count} active near your places${sw.danger ? ` (${sw.danger} DANGER)` : ""}</b>` : sw.error ? "Nothing found, but part of the check failed" : "All clear near your places"}<br><small class="note">NHC, USGS, NWS${sw.fetched ? ", checked " + ago(sw.fetched) : ""}${sw.error ? ". " + esc(sw.error) + ": that part is unknown" : ""}</small></dd>`);
+    else if (S.on.has("stormwatch")) rows.push(`<dt>Storm Watch</dt><dd>${esc((sw && sw.error) || "Loading")}</dd>`);
+    if (eq && eq.ok !== false) { const top = (eq.items || [])[0]; rows.push(`<dt>Earthquakes</dt><dd>${eq.count || 0} in the last ${eq.window_hours}h (M2.5+)${top ? `; strongest M${top.magnitude}, ${esc(top.title.replace(/^M [\d.]+ - /, ""))}` : ""}<br><small class="note">USGS, checked ${ago(eq.fetched)}${eq.stale ? ", STALE" : ""}</small></dd>`); }
+    else if (S.on.has("earthquakes")) rows.push(`<dt>Earthquakes</dt><dd>${esc((eq && eq.error) || "Loading")}</dd>`);
+    if (al && al.ok !== false) rows.push(`<dt>US alerts</dt><dd>${al.count || 0} severe or extreme active<br><small class="note">US National Weather Service, checked ${ago(al.fetched)}${al.stale ? ", STALE" : ""}</small></dd>`);
+    b.innerHTML = `<h3>Global context</h3><p class="sub">Select a marker or a result to investigate it. Only data from enabled layers appears here; nothing is estimated.</p>
+      ${rows.length ? `<dl class="kv">${rows.join("")}</dl>` : `<p class="note">Turn on Earthquakes or Public alerts to see current counts here.</p>`}${eventList()}
+      <p class="note">${S.live ? "" : "Live data loading is switched off. "}All feeds can be delayed, incomplete or wrong.</p>${camsHtml()}${watchHtml()}`;
+    return;
+  }
+  if (s.kind === "livecam") {
+    const embed = (() => { try { const u = new URL(s.embed); return u.protocol === "https:" && u.hostname === "www.youtube-nocookie.com" ? u.href : ""; } catch (e) { return ""; } })();
+    b.innerHTML = `<h3><span class="livedot" aria-hidden="true"></span>${esc(s.title)}</h3><p class="sub">${esc(s.area || "")}</p>
+      ${embed ? `<div class="cam"><iframe src="${esc(embed)}" title="${esc(s.title)} live" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>` : ""}
+      <dl class="kv"><dt>Stream</dt><dd>${esc(s.description || "")}</dd><dt>Provider</dt><dd>${esc(s.provider || "")}</dd></dl>
+      <div class="acts"><button data-a="src" class="gold">Watch big on YouTube</button><button data-a="clear">Close</button></div>
+      <p class="note"><b>Known limits:</b> ${esc(KIND_NOTE.livecam[1])}</p>${camsHtml()}`;
+    return;
+  }
+  const [ver, lim] = KIND_NOTE[s.kind] || KIND_NOTE.entity, link = safeUrl(s.url);
+  const when = s.time ? `${utc(s.time)} <small class="faint">(when it happened)</small>` : "Not provided by this marker";
+  b.innerHTML = `<h3>${esc(s.title)}</h3><p class="sub">${esc(s.area || s.country || "")}</p>
+    <p><span class="badge ${s.kind === "entity" || s.level === "danger" ? "warn" : "ok"}">${esc(ver)}</span>${s.level === "danger" ? ` <span class="badge warn">DANGER</span>` : ""}</p>
+    <dl class="kv"><dt>Type</dt><dd>${esc(s.kind)}</dd>
+      <dt>Coordinates</dt><dd>${s.lat != null ? `${(+s.lat).toFixed(4)}, ${(+s.lon).toFixed(4)}` : "Not mapped"}</dd>
+      ${s.magnitude != null ? `<dt>Magnitude</dt><dd>${esc(s.magnitude)}${s.depth_km != null ? `, depth ${Math.round(s.depth_km)} km` : ""}</dd>` : ""}
+      ${s.severity ? `<dt>Severity</dt><dd>${esc(s.severity)}</dd>` : ""}
+      <dt>Occurred</dt><dd>${when}</dd>
+      ${S.feed[s.feed || (s.kind === "alert" ? "alerts" : "earthquakes")] && s.kind !== "place" && s.kind !== "point" ? `<dt>Last refresh</dt><dd>${ago((S.feed[s.feed || (s.kind === "alert" ? "alerts" : "earthquakes")] || {}).fetched || 0)}</dd>` : ""}
+      <dt>Provider</dt><dd>${esc(s.provider || "Unknown")}</dd></dl>
+    ${s.description ? `<p class="sub">${esc(s.description)}</p>` : ""}
+    <div class="acts"><button data-a="investigate" class="gold">Investigate</button><button data-a="focus" ${s.lat == null ? "disabled" : ""}>Focus</button><button data-a="save" ${s.lat == null ? "disabled" : ""}>Save</button>${link ? `<button data-a="src">Sources</button>` : ""}<button data-a="clear">Clear</button></div>
+    <p class="note"><b>Known limits:</b> ${esc(lim)}</p>`;
+}
+function eventList() {
+  const eq = (S.feed.earthquakes && S.feed.earthquakes.items || []).slice(0, 6), al = (S.feed.alerts && S.feed.alerts.items || []).filter(a => a.mapped).slice(0, 4);
+  const sw = (S.feed.stormwatch && S.feed.stormwatch.items || []);
+  if (!eq.length && !al.length && !sw.length) return "";
+  return `<div class="list">${sw.map((w, i) => `<button data-ev="sw${i}">${w.kind === "pinned" ? "&#128205; " : w.level === "danger" ? "DANGER &middot; " : "Storm Watch &middot; "}${esc(w.title)}</button>`).join("")}${eq.map((q, i) => `<button data-ev="eq${i}">M${q.magnitude} &middot; ${esc(q.title.replace(/^M [\d.]+ - /, ""))}</button>`).join("")}${al.map((a, i) => `<button data-ev="al${i}">${esc(a.title)} &middot; ${esc((a.area || "").slice(0, 40))}</button>`).join("")}</div>`;
+}
+function camsHtml() {
+  if (!S.cams || !S.cams.length) return "";
+  const groups = ["City", "Nature", "Space"].map(g => [g, S.cams.filter(c => (c.group || "City") === g)]).filter(([, l]) => l.length);
+  return `<h3 style="font-size:.85rem;margin-top:.8rem"><span class="livedot" aria-hidden="true"></span>Live cams</h3>` + groups.map(([g, l]) =>
+    `<p class="note" style="margin:.5rem 0 .2rem;letter-spacing:.08em;text-transform:uppercase">${{ City: "Cities", Nature: "Nature", Space: "Space" }[g]}</p><div class="list">${l.map(c => `<button data-cam="${esc(c.id)}">${esc(c.name)} &middot; ${esc(c.area)}</button>`).join("")}</div>`).join("");
+}
+async function playCam(id) {
+  let r; try { r = await api(`/api/world/livecam/${encodeURIComponent(id)}`); } catch (e) { return { ok: false, detail: "The live cam service didn't answer." }; }
+  if (r.lat != null) focusOn({ lat: r.lat, lon: r.lon }, r.moving ? 2_500_000 : 6000);   // the space station: seen from orbit
+  if (!r.ok) { note(r.detail || "That live cam isn't available right now."); return r; }
+  select({ kind: "livecam", title: r.name, area: r.moving ? `${r.area}, over ${(+r.lat).toFixed(1)}, ${(+r.lon).toFixed(1)} right now` : r.area, lat: r.lat, lon: r.lon, provider: `${r.channel} on YouTube`, url: r.watch, embed: r.embed, description: r.title });
+  return r;
+}
+function watchHtml() {
+  if (!S.watch || !S.watch.length) return "";
+  return `<h3 style="font-size:.85rem;margin-top:.8rem">Saved places</h3><div class="list">${S.watch.map(w => `<button data-w="${esc(w.id)}">${esc(w.title)}</button>`).join("")}</div>`;
+}
+$("#dBody").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.ev) { const k = b.dataset.ev, i = +k.slice(2), it = k.startsWith("sw") ? S.feed.stormwatch.items[i] : k.startsWith("eq") ? S.feed.earthquakes.items[i] : S.feed.alerts.items.filter(a => a.mapped)[i]; select(it); return focusOn(it); }
+  if (b.dataset.w) { const w = S.watch.find(x => x.id === b.dataset.w); if (w) { select({ ...w, kind: w.kind }); focusOn(w); } return; }
+  if (b.dataset.cam) { b.disabled = true; await playCam(b.dataset.cam); b.disabled = false; return; }
+  const s = S.sel; if (!s) return;
+  if (b.dataset.a === "clear") select(null);
+  else if (b.dataset.a === "focus") focusOn(s);
+  else if (b.dataset.a === "src") { const u = safeUrl(s.url); if (u) window.open(u, "_blank", "noopener"); }
+  else if (b.dataset.a === "save") { try { S.watch = (await api("/api/world/watchlist", { title: s.title, kind: s.kind, lat: s.lat, lon: s.lon, provider: s.provider, url: s.url })).items; note("Saved to your watchlist."); } catch (er) { note("Couldn't save that."); } }
+  else if (b.dataset.a === "investigate") ask(`Investigate this: ${s.title}${s.lat != null ? ` (${(+s.lat).toFixed(2)}, ${(+s.lon).toFixed(2)})` : ""}. Research it with current sources, link them, and separate confirmed facts from reports and unverified claims.`);
+});
+async function focusOn(it, alt) { if (it && it.lat != null) return applyView({ lat: +it.lat, lon: +it.lon, altitude_m: alt || (it.kind === "earthquake" ? 600_000 : 1_500_000), heading_deg: 0, pitch_deg: -90 }); }
+function note(t) { const el = $("#say"); el.hidden = false; el.insertAdjacentHTML("beforeend", `<p class="you"><i>${esc(t)}</i></p>`); el.scrollTop = 1e9; }
+
+/* ---------- JARVIS ---------- */
+function ask(text) { hub({ ask: text }); }   // the Hub logs the line and forwards both sides back here
+$("#askForm").onsubmit = e => { e.preventDefault(); const v = $("#askQ").value.trim(); if (!v) return; $("#askQ").value = ""; ask(v); };
+function say(who, text) { const el = $("#say"); el.hidden = false; el.insertAdjacentHTML("beforeend", `<p class="${who === "you" ? "you" : ""}"><b>${who === "you" ? "You" : "JARVIS"}</b> ${esc(text)}</p>`); while (el.children.length > 24) el.firstElementChild.remove(); el.scrollTop = 1e9; }
+let ctxTimer = 0;
+function pushContext(now) {
+  clearTimeout(ctxTimer);
+  ctxTimer = setTimeout(() => api("/api/world/context", { open: true, preset: S.preset, camera: { lat: S.cam.lat, lon: S.cam.lon, altitude_m: S.cam.altitude_m }, layers: [...S.on],
+    selection: S.sel ? { title: S.sel.title, kind: S.sel.kind, lat: S.sel.lat, lon: S.sel.lon, magnitude: S.sel.magnitude, time: S.sel.time, provider: S.sel.provider, url: S.sel.url, area: S.sel.area, description: S.sel.description } : null }).catch(() => {}), now ? 0 : 400);
+}
+const heartbeat = setInterval(() => { if (!document.hidden) pushContext(true); }, 30000);
+
+/* ---------- actions queued by voice/chat: executed here, acknowledged only when they really happened ---------- */
+async function runAction(a) {
+  const g = a.args || {}; stopSpin(); if (S.intro) endIntro();   // an action during the opening fly-in wins over it
+  try {
+    if (a.action === "goto") { const r = await applyView({ lat: g.lat, lon: g.lon, altitude_m: (g.altitude_km ? g.altitude_km * 1000 : 1_500_000), heading_deg: 0, pitch_deg: -90 }); select({ kind: "place", title: g.title, lat: g.lat, lon: g.lon, provider: "Open-Meteo / GeoNames" });
+      return ack(a, r.ok !== false, r.ok !== false ? `The globe is now centred on ${g.title}.` : r.error); }
+    if (a.action === "reset") { const r = await applyView({ ...WORLD }); select(null); return ack(a, r.ok !== false, r.ok !== false ? "Showing the whole world." : r.error); }
+    if (a.action === "zoom") { const r = await applyView({ altitude_m: S.cam.altitude_m * (g.direction === "out" ? 2.2 : 0.45) }); return ack(a, r.ok !== false, r.ok !== false ? `Zoomed ${g.direction}.` : r.error); }
+    if (a.action === "rotate") { startSpin(); return ack(a, true, "The globe is rotating. Say stop, or touch the globe, to halt it."); }
+    if (a.action === "layers") {
+      const want = new Set(g.hide ? [...S.on].filter(x => !g.hide.includes(x)) : g.only ? g.show : [...S.on, ...(g.show || [])]);
+      if (S.mode === "2d" && [...want].some(x => NOT_IN_2D.includes(x))) { const back = await setMode("3d"); if (back.ok === false) return ack(a, false, back.error); }
+      S.on = new Set([...want].filter(x => S.layers.some(l => l.id === x))); [...S.on].forEach(id => { const l = S.layers.find(x => x.id === id); if (l && l.feed) loadFeed(l.feed); });
+      paintLayers(); pushContext(); const r = await applyView(); const names = [...S.on].map(id => (S.layers.find(l => l.id === id) || {}).label).join(", ") || "none";
+      return ack(a, r.ok !== false, r.ok !== false ? `Layers now showing: ${names}.` : r.error); }
+    if (a.action === "preset") { const r = await usePreset(g.preset); return ack(a, r.ok !== false, r.ok !== false ? (PRESETS[S.preset].label + " engaged.") : r.error); }
+    if (a.action === "mode") { const r = await setMode(g.mode === "2d" ? "2d" : "3d"); return ack(a, !!r.ok, r.ok ? (g.mode === "2d" ? "Switched to the flat 2D map." : "Back to the 3D globe.") : r.error); }
+    if (a.action === "livecam") {
+      setTab("globe");
+      if (!g.id) { select(null); const names = (S.cams || []).map(c => c.name); return ack(a, names.length > 0, names.length ? `Landmark live cams are listed in the dossier: ${names.join(", ")}.` : "No live cams are loaded."); }
+      const r = await playCam(String(g.id));
+      return ack(a, !!r.ok, r.ok ? `${r.name}, live from ${r.channel}.` : (r.detail || "That live cam isn't available right now."));
+    }
+    if (a.action === "tools") { setTab("tools"); return ack(a, true, "The tools tab is open."); }
+    if (a.action === "close") { ack(a, true, "Going back to the Home screen."); return setTimeout(() => hub({ go: "home" }), 300); }
+    return ack(a, false, "That action isn't supported.");
+  } catch (e) { return ack(a, false, String(e.message || e)); }
+}
+const ack = (a, ok, detail) => api("/api/world/ack", { id: a.id, ok, detail: detail || "" }).catch(() => {});
+let polling = false;
+const actTimer = setInterval(async () => { if (polling || document.hidden) return; polling = true; try { for (const a of (await api("/api/world/actions")).actions || []) await runAction(a); } catch (e) {} polling = false; }, 1200);
+
+/* ---------- controls ---------- */
+const stopSpin = () => { if (S.spin) { clearInterval(S.spin); S.spin = 0; $("#bSpin").setAttribute("aria-pressed", "false"); } };
+function startSpin() { stopSpin(); $("#bSpin").setAttribute("aria-pressed", "true"); S.spin = setInterval(() => { if (!document.hidden) applyView({ lon: ((S.cam.lon + 20 + 540) % 360) - 180 }); }, 2600); }
+$("#bMode").onclick = () => setMode(S.mode === "2d" ? "3d" : "2d");
+$("#bSpin").onclick = () => S.spin ? stopSpin() : startSpin();
+$("#bReset").onclick = () => { stopSpin(); select(null); applyView({ ...WORLD }); };
+$("#bIn").onclick = () => { stopSpin(); applyView({ altitude_m: S.cam.altitude_m * 0.45 }); };
+$("#bOut").onclick = () => { stopSpin(); applyView({ altitude_m: S.cam.altitude_m * 2.2 }); };
+$("#bFs").onclick = () => { const el = $("#globeBox"); document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen && el.requestFullscreen().catch(() => note("Fullscreen isn't available here.")); };
+$("#homeBtn").onclick = () => hub({ go: "home" });
+var wide = 1; $("#wideBtn").onclick = () => { wide = wide === 1 ? 2 : 1; hub({ wide }); $("#wideBtn").setAttribute("aria-pressed", wide === 2); $("#wideBtn").textContent = wide === 2 ? "Restore Hub" : "Expand"; };
+$("#liveSw").onchange = async e => { S.live = e.target.checked; try { await api("/api/world/live", { on: S.live }); } catch (er) {} if (S.live) ["earthquakes", "alerts", "stormwatch"].forEach(n => S.on.has(n) && loadFeed(n)); else { S.feed = {}; paintDossier(); } paintLayers(); note(S.live ? "Live data on." : "Live data loading is off; the globe's own layers may still fetch."); };
+function setTab(t) { S.tab = t; $("#main").dataset.tab = t; document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.tab === t)); }
+document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("button"); if (b) setTab(b.dataset.tab); });
+$("#cards").innerHTML = TOOLS.map((t, i) => `<div class="card"><span class="tag">${t.sim ? `<span class="badge sim">${esc(t.tag)}</span>` : esc(t.tag)}</span><h3>${esc(t.name)}</h3><p>${esc(t.body)}</p><div><button data-t="${i}" class="${t.sim ? "gold" : ""}">${esc(t.btn || "Open in browser")}</button></div></div>`).join("");
+$("#cards").addEventListener("click", async e => {
+  const b = e.target.closest("[data-t]"); if (!b) return; const t = TOOLS[+b.dataset.t];
+  if (!t.local) return hub({ open: t.url });
+  b.disabled = true; const was = b.textContent; b.textContent = "Opening...";   // the full local God's Eye View, never its GitHub page
+  try { const r = await api("/api/world/full-app", {}); b.textContent = r.ok ? "Opened in its own window" : (r.detail || "Could not open it"); }
+  catch (err) { b.textContent = "Could not open it"; }
+  setTimeout(() => { b.textContent = was; b.disabled = false; }, 4000);
+});
+
+/* search */
+const results = $("#results");
+$("#searchForm").onsubmit = async e => {
+  e.preventDefault(); const q = $("#q").value.trim(); if (!q) return;
+  let r; try { r = await api("/api/world/search?q=" + encodeURIComponent(q)); } catch (er) { return note("Search failed."); }
+  const items = r.items || []; if (!items.length) { results.hidden = true; return note(`Nothing found for "${q}"${r.error ? ": " + r.error : ""}.`); }
+  if (items.length === 1) return pickPlace(items[0]);
+  results.innerHTML = items.map((p, i) => `<button type="button" data-p="${i}">${esc(p.title)}</button>`).join(""); results.hidden = false; results._items = items;
+};
+results.addEventListener("click", e => { const b = e.target.closest("[data-p]"); if (b) pickPlace(results._items[+b.dataset.p]); });
+function pickPlace(p) { results.hidden = true; stopSpin(); select({ ...p, kind: p.kind || "place" }); focusOn(p, p.kind === "point" ? 50_000 : 1_500_000); }
+document.addEventListener("click", e => { if (!e.target.closest(".search")) results.hidden = true; });
+
+/* messages from the Hub: JARVIS lines (voice or typed) */
+function onHub(d) { if (d && d.jarvisWorldPreset && S.ready) { usePreset(d.jarvisWorldPreset); return; } if (d && d.jarvisWorldSay) say(d.jarvisWorldSay.who, d.jarvisWorldSay.text); }
+addEventListener("keydown", e => { if (e.key === "Escape") { if (wide === 2) $("#wideBtn").click(); stopSpin(); } });
+
+/* ---------- boot: nothing heavy runs until this page opens; pagehide cancels and stops it ---------- */
+addEventListener("pagehide", () => { ac.abort(); clearInterval(feedTimer); clearInterval(heartbeat); clearInterval(actTimer); stopSpin(); frame.src = "about:blank"; });
+(async function boot() {
+  if (!token) { $("#gmsg").textContent = "Open the Command Center from Jarvis on the PC so it can sign in."; return; }
+  try {
+    const L = await api("/api/world/layers"); S.layers = L.layers; if (Number.isInteger(L.gev_port)) GEV_ORIGIN = `http://127.0.0.1:${L.gev_port}`; S.status = {}; paintLayers(); paintDossier();
+    S.watch = (await api("/api/world/watchlist")).items;
+    try { S.cams = (await api("/api/world/livecams")).items; paintDossier(); } catch (e) { S.cams = []; }
+    const sv =await api("/api/world/service", { on: true });
+    if (!sv.ok) { step("Globe service unavailable", true); $("#gstatus").innerHTML = `<b>The globe isn't available</b><span>${esc(sv.detail || "The globe service could not start.")}</span><span class="note">Nothing is shown in its place; no data is invented.</span>`; return; }
+    step("Globe service online");
+    frame.src = `${GEV_ORIGIN}/?embed=1`;   // no position hash: with one the globe never announced it was ready (live, 2026-11-15)
+    pushContext(true); paintDossier();
+    setTimeout(() => { if (!S.ready) $("#gmsg").textContent = "Still loading. The first start can take a little while."; }, 15000);
+  } catch (e) { if (e.name === "AbortError") return; $("#gmsg").textContent = String(e.message) === "404" ? "World Intelligence runs on the PC Hub." : "Jarvis's server isn't answering."; }
+})();
+</script>
+</body>
+</html>

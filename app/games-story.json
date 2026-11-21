@@ -1,0 +1,119 @@
+{
+  "kitchen": {
+    "chapter": 1,
+    "title": {
+      "ht": "Gato a pa la!",
+      "en": "The cake is missing!"
+    },
+    "body": {
+      "ht": "Granmè pare pou fèt la. Men sou tab la, se sèlman ti moso gato ki rete. Ki kote nou pral chèche?",
+      "en": "Grandma is ready for the party. But only cake crumbs remain on the table. Where will we look?"
+    },
+    "choices": [
+      {
+        "label": {
+          "ht": "Swiv ti moso gato yo",
+          "en": "Follow the crumbs"
+        },
+        "next": "garden"
+      },
+      {
+        "label": {
+          "ht": "Gade nan frijidè a",
+          "en": "Look in the fridge"
+        },
+        "next": "note"
+      }
+    ]
+  },
+  "garden": {
+    "chapter": 2,
+    "title": {
+      "ht": "Yon siy nan jaden an",
+      "en": "A clue in the garden"
+    },
+    "body": {
+      "ht": "Ti moso gato yo mennen bò yon chèz. Ti frè a kache dèyè li ak yon riban wouj. Li di li bezwen èd pou yon sipriz.",
+      "en": "The crumbs lead to a chair. Your little brother hides behind it with a red ribbon. He says he needs help with a surprise."
+    },
+    "choices": [
+      {
+        "label": {
+          "ht": "Ede l mare riban an",
+          "en": "Help him tie the ribbon"
+        },
+        "next": "surprise"
+      },
+      {
+        "label": {
+          "ht": "Mande l mennen nou jwenn gato a",
+          "en": "Ask him to take us to the cake"
+        },
+        "next": "picnic"
+      }
+    ]
+  },
+  "note": {
+    "chapter": 2,
+    "title": {
+      "ht": "Yon nòt byen frèt",
+      "en": "A very chilly note"
+    },
+    "body": {
+      "ht": "Pa gen gato! Gen yon nòt: “Fèt la deplase. Chèche kote fanmi an renmen chita ansanm.”",
+      "en": "No cake! A note says: “The party has moved. Look where the family likes to sit together.”"
+    },
+    "choices": [
+      {
+        "label": {
+          "ht": "Ale sou galri a",
+          "en": "Go to the porch"
+        },
+        "next": "picnic"
+      },
+      {
+        "label": {
+          "ht": "Rasanble tout moun nan salon an",
+          "en": "Gather everyone in the living room"
+        },
+        "next": "song"
+      }
+    ]
+  },
+  "surprise": {
+    "chapter": 3,
+    "title": {
+      "ht": "Sipriz pou Granmè!",
+      "en": "A surprise for Grandma!"
+    },
+    "body": {
+      "ht": "Riban an dekore tab la. Nou pote Granmè nan jaden an: gato a la! Paske nou te ede, tout moun pare pou rele “Sipriz!” ansanm.",
+      "en": "The ribbon decorates the table. We bring Grandma to the garden: there is the cake! Because we helped, everyone is ready to shout “Surprise!” together."
+    },
+    "choices": []
+  },
+  "picnic": {
+    "chapter": 3,
+    "title": {
+      "ht": "Yon fèt sou galri a",
+      "en": "A porch party"
+    },
+    "body": {
+      "ht": "Nou jwenn gato a sou galri a, byen kouvri. Nou pote chèz ak ji pou tout moun. Chwa nou fè fèt la tounen yon piknik an fanmi.",
+      "en": "We find the cake on the porch, safely covered. We bring chairs and juice for everyone. Our choice turns the party into a family picnic."
+    },
+    "choices": []
+  },
+  "song": {
+    "chapter": 3,
+    "title": {
+      "ht": "Chante a mennen gato a!",
+      "en": "The song brings the cake!"
+    },
+    "body": {
+      "ht": "Lè tout moun kòmanse chante nan salon an, ti frè a antre ak gato a. Li t ap tann chante a! Nou chwazi mizik olye nou kontinye chèche.",
+      "en": "When everyone starts singing in the living room, your little brother brings in the cake. He was waiting for the song! We chose music instead of continuing the search."
+    },
+    "choices": []
+  }
+}

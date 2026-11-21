@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>House</title>
+<link rel="stylesheet" href="/design-system.css">
+<style>
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; min-height: 100vh; background: var(--bg-0); color: var(--text-1); font-family: var(--font-ui); font-size: var(--fs-sm); }
+main { max-width: 1100px; margin: 0 auto; padding: calc(var(--s-4) + var(--safe-t)) var(--s-4) calc(var(--s-6) + var(--safe-b)); }
+header { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-3); }
+header h1 { font-family: var(--font-display); font-size: var(--fs-xl); margin: 0; flex: 1; }
+.back { color: var(--text-2); text-decoration: none; min-height: var(--tap); display: inline-flex; align-items: center; }
+.back[hidden] { display: none; }
+.chips { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.chip { min-height: 36px; padding: 0 var(--s-4); border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--bg-2);
+  color: var(--text-1); font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: var(--s-2); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-3); flex: none; }
+.dot.on { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+.dot.off { background: var(--danger); }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- the player ---------- */
+.stage { position: relative; background: #000; border-radius: var(--r-3); overflow: hidden; aspect-ratio: 16 / 9; border: 1px solid var(--line-1);
+  touch-action: none; user-select: none; -webkit-user-select: none; }
+.stage.fakefs { position: fixed; inset: 0; z-index: 9999; border-radius: 0; border: 0; aspect-ratio: auto; width: 100vw; height: 100dvh; }
+.stage:fullscreen, .stage:-webkit-full-screen { border-radius: 0; border: 0; aspect-ratio: auto; width: 100vw; height: 100vh; }
+.view { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+.view video, .view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.msg { position: absolute; inset: 0; display: none; place-items: center; text-align: center; padding: var(--s-5); color: var(--text-2); background: var(--bg-1);
+  white-space: pre-line; z-index: 3; }
+.msg.on { display: grid; }
+.top, .bottom { position: absolute; left: 0; right: 0; display: flex; align-items: center; gap: var(--s-2); padding: var(--s-3); z-index: 4;
+  transition: opacity var(--dur-base) var(--ease-out); }
+.top { top: 0; background: linear-gradient(rgba(0,0,0,.6), transparent); }
+.bottom { bottom: 0; background: linear-gradient(transparent, rgba(0,0,0,.78)); flex-wrap: wrap; backdrop-filter: blur(2px); }
+.stage.idle .top, .stage.idle .bottom, .stage.idle .pad, .stage.idle .zoomtag { opacity: 0; pointer-events: none; }
+.stage.idle { cursor: none; }
+.badge { padding: 2px var(--s-3); border-radius: var(--r-pill); font-size: var(--fs-xs); background: var(--scrim); color: #fff;
+  display: inline-flex; align-items: center; gap: var(--s-2); }
+.badge.live .dot { background: #ff3b3b; box-shadow: 0 0 8px #ff3b3b; animation: pulse 1.6s infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+.sp { flex: 1; }
+.ib { width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(0,0,0,.35); color: #fff; display: inline-grid; place-items: center;
+  cursor: pointer; flex: none; }
+.ib:hover { background: rgba(255,255,255,.18); }
+.ib[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.ib[hidden] { display: none; }
+.ib:focus-visible, .chip:focus-visible, .rec:focus-visible, .act:focus-visible, .ev:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.seek { flex: 1 1 100%; display: flex; align-items: center; gap: var(--s-2); color: #fff; font-family: var(--font-mono); font-size: var(--fs-xs); }
+.seek[hidden] { display: none; }
+.seek input { flex: 1; accent-color: var(--accent); }
+.speed { background: rgba(0,0,0,.35); color: #fff; border: 0; border-radius: var(--r-pill); padding: 6px 10px; font: inherit; font-size: var(--fs-xs); cursor: pointer; }
+.speed[hidden] { display: none; }
+.zoomtag { position: absolute; top: 56px; right: var(--s-3); z-index: 4; padding: 2px var(--s-3); border-radius: var(--r-pill); background: var(--scrim);
+  color: #fff; font-size: var(--fs-xs); font-family: var(--font-mono); }
+.zoomtag[hidden] { display: none; }
+/* pan / tilt pad */
+.pad { position: absolute; right: var(--s-3); bottom: 64px; z-index: 4; width: 132px; height: 132px; border-radius: 50%;
+  background: rgba(0,0,0,.38); backdrop-filter: blur(4px); display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); transition: opacity var(--dur-base); }
+.pad[hidden] { display: none; }
+.pad button { border: 0; background: transparent; color: #fff; display: grid; place-items: center; cursor: pointer; border-radius: 50%; }
+.pad button:hover { background: rgba(255,255,255,.15); }
+.pad button:active { background: var(--accent); color: var(--accent-ink); }
+.pad .c { font-size: 10px; font-weight: 600; letter-spacing: .04em; }
+.stage.aim { cursor: crosshair; }
+.ping { position: absolute; width: 46px; height: 46px; margin: -23px 0 0 -23px; border: 2px solid var(--accent); border-radius: 50%; z-index: 4;
+  pointer-events: none; animation: ping .7s var(--ease-out) forwards; }
+@keyframes ping { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+.toast { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; background: var(--scrim); color: #fff; padding: 8px 14px;
+  border-radius: var(--r-2); font-size: var(--fs-sm); pointer-events: none; opacity: 0; transition: opacity var(--dur-base); }
+.toast.on { opacity: 1; }
+.ib.talk { width: 52px; height: 52px; background: rgba(0,0,0,.45); }
+.ib.talk.rec { background: #ff3b3b; color: #fff; box-shadow: 0 0 0 6px rgba(255,59,59,.3); animation: pulse 1.2s infinite; }
+.opts { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-4); }
+.opts[hidden] { display: none; }
+.tog { min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--bg-1);
+  color: var(--text-1); font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.tog[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.tog .sw { width: 26px; height: 15px; border-radius: 99px; background: var(--bg-3); position: relative; }
+.tog .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--text-2); transition: left var(--dur-fast); }
+.tog[aria-pressed="true"] .sw { background: var(--accent); }
+.tog[aria-pressed="true"] .sw::after { left: 13px; background: var(--accent-ink); }
+.say { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
+.say[hidden] { display: none; }
+.say input { flex: 1; min-height: 40px; border-radius: var(--r-2); border: 1px solid var(--line-2); background: var(--bg-1); color: var(--text-1);
+  padding: 0 var(--s-3); font: inherit; }
+
+/* ---------- below the player ---------- */
+.bar { display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; margin: var(--s-3) 0 var(--s-4); color: var(--text-2); }
+a.act { display: inline-flex; align-items: center; text-decoration: none; }
+.act[hidden] { display: none; }
+.act { min-height: 40px; padding: 0 var(--s-4); border-radius: var(--r-2); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text-1);
+  font: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: var(--s-2); }
+.presets { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; margin: var(--s-5) 0 var(--s-3); }
+.presets[hidden] { display: none; }
+.preset { min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--bg-1); color: var(--text-1);
+  font: inherit; cursor: pointer; }
+.preset .x { margin-left: 6px; color: var(--text-3); }
+.muted { color: var(--text-3); font-size: var(--fs-xs); }
+h2 { font-size: var(--fs-md); margin: 0; }
+.sec { display: flex; align-items: center; gap: var(--s-3); margin: var(--s-5) 0 var(--s-3); flex-wrap: wrap; }
+.filters { display: flex; gap: var(--s-2); }
+.events { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); }
+.ev { position: relative; border-radius: var(--r-2); overflow: hidden; border: 1px solid var(--line-1); background: var(--bg-1); cursor: pointer; padding: 0;
+  color: var(--text-1); font: inherit; text-align: left; }
+.ev img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
+.ev .meta { padding: 6px 8px; display: flex; justify-content: space-between; gap: 6px; font-size: var(--fs-xs); }
+.ev .lab { text-transform: capitalize; font-weight: 600; }
+.ev .tag { position: absolute; top: 6px; left: 6px; background: var(--scrim); color: #fff; border-radius: var(--r-pill); padding: 1px 8px; font-size: 11px; }
+.day { color: var(--text-3); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; margin: var(--s-4) 0 var(--s-2); }
+.recs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--s-2); }
+.rec { min-height: 40px; border-radius: var(--r-2); border: 1px solid var(--line-1); background: var(--bg-1); color: var(--text-1); font: inherit;
+  font-family: var(--font-mono); cursor: pointer; }
+.rec[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.days { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; }
+.days::-webkit-scrollbar { display: none; }
+.tlwrap { overflow-x: auto; overscroll-behavior-x: contain; border-radius: var(--r-2); background: var(--bg-1); border: 1px solid var(--line-1);
+  padding: 10px 12px 6px; scrollbar-width: thin; }
+.tl { position: relative; min-width: 100%; }
+@media (max-width: 700px) { .tl { min-width: 760px; } }
+.tl-track { position: relative; height: 44px; border-radius: 8px; background: var(--bg-3); cursor: pointer; overflow: hidden; touch-action: pan-x; }
+.tl-rec { position: absolute; top: 0; bottom: 0; background: var(--accent-soft); border-left: 1px solid rgba(92,198,230,.25); pointer-events: none; }
+.tl-rec.card { background: rgba(240,180,60,.35); border-left-color: rgba(240,180,60,.6); }   /* filled from the camera's SD card */
+.rec.card { border-style: dashed; }
+.tl-ev { position: absolute; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 2px var(--bg-1); }
+.tl-ev.person { background: #ff5d6c; } .tl-ev.pet { background: #ffb547; } .tl-ev.car { background: #5ca8ff; } .tl-ev.sound { background: #b88cff; }
+.tl-now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ok); pointer-events: none; }
+.tl-play { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #fff; box-shadow: 0 0 6px #fff; pointer-events: none; }
+.tl-play[hidden] { display: none; }
+.tl-hover { position: absolute; top: -26px; transform: translateX(-50%); background: var(--scrim); color: #fff; font-size: 11px;
+  font-family: var(--font-mono); padding: 1px 6px; border-radius: 6px; pointer-events: none; white-space: nowrap; }
+.tl-hover[hidden] { display: none; }
+.tl-hours { position: relative; height: 18px; font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+.tl-hours span { position: absolute; transform: translateX(-50%); top: 3px; }
+.legend { display: flex; gap: var(--s-3); flex-wrap: wrap; color: var(--text-3); font-size: var(--fs-xs); margin-top: var(--s-2); }
+.legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+details.clips { margin-top: var(--s-4); }
+details.clips summary { cursor: pointer; color: var(--text-2); min-height: 36px; display: flex; align-items: center; }
+.note { color: var(--text-3); font-size: var(--fs-xs); margin-top: var(--s-5); }
+@media (max-width: 560px) { .pad { width: 112px; height: 112px; bottom: 60px; } .ib { width: 36px; height: 36px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="back" id="back" href="/" hidden>&larr; Jarvis</a>
+    <h1>House</h1>
+    <div class="chips" id="chips" role="group" aria-label="Cameras"></div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="view" id="view">
+      <video id="video" autoplay muted playsinline></video>
+      <img id="still" alt="" hidden>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div class="top">
+      <span class="badge" id="badge"><span class="dot"></span><span id="badgeText">Connecting</span></span>
+      <span class="sp"></span>
+      <button class="ib" id="privBtn" title="Privacy mode: stop recording and turn the camera away" aria-pressed="false" hidden><svg class="i" viewBox="0 0 24 24"><path d="M17.9 17.9A10 10 0 0 1 12 20c-7 0-11-8-11-8a18 18 0 0 1 5.1-5.9M9.9 4.2A9 9 0 0 1 12 4c7 0 11 8 11 8a18 18 0 0 1-2.2 3.2M1 1l22 22"/><path d="M14.1 14.1a3 3 0 1 1-4.2-4.2"/></svg></button>
+      <button class="ib" id="dayBtn" title="Day / night filter" hidden><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="ib" id="aimBtn" title="Tap the picture to aim the camera there" aria-pressed="false" hidden><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="1.5"/></svg></button>
+      <button class="ib" id="padBtn" title="Pan and tilt controls" aria-pressed="true" hidden><svg class="i" viewBox="0 0 24 24"><path d="M12 2l3 3h-6zM12 22l-3-3h6zM2 12l3-3v6zM22 12l-3 3V9z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+    <span class="zoomtag" id="zoomTag" hidden>1.0x</span>
+    <div class="pad" id="pad" hidden>
+      <button data-ptz="left_up" title="Up left"><svg class="i" viewBox="0 0 24 24"><path d="M17 17L7 7M7 15V7h8"/></svg></button>
+      <button data-ptz="up" title="Up"><svg class="i" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+      <button data-ptz="right_up" title="Up right"><svg class="i" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></button>
+      <button data-ptz="left" title="Left"><svg class="i" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <button data-ptz="center" class="c" title="Center">HOME</button>
+      <button data-ptz="right" title="Right"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button data-ptz="left_down" title="Down left"><svg class="i" viewBox="0 0 24 24"><path d="M17 7L7 17M15 17H7V9"/></svg></button>
+      <button data-ptz="down" title="Down"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></button>
+      <button data-ptz="right_down" title="Down right"><svg class="i" viewBox="0 0 24 24"><path d="M7 7l10 10M17 9v8H9"/></svg></button>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="bottom">
+      <div class="seek" id="seekRow" hidden><span id="tNow">0:00</span><input type="range" id="seek" min="0" max="1000" value="0" aria-label="Position"><span id="tEnd">0:00</span></div>
+      <button class="ib" id="playBtn" title="Play / pause (space)" hidden><svg class="i" viewBox="0 0 24 24" id="playIc"><path d="M6 4l14 8-14 8z"/></svg></button>
+      <button class="ib talk" id="talkBtn" title="Hold to talk through the camera (T)" hidden><svg class="i" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></button>
+      <button class="ib" id="muteBtn" title="Sound (M)"><svg class="i" viewBox="0 0 24 24" id="muteIc"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M23 9l-6 6M17 9l6 6"/></svg></button>
+      <select class="speed" id="speed" title="Playback speed" hidden><option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="2">2x</option><option value="4">4x</option><option value="8">8x</option></select>
+      <span class="sp"></span>
+      <button class="ib" id="liveBtn" title="Back to live" hidden><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19.1 4.9a10 10 0 0 1 0 14.2M4.9 19.1a10 10 0 0 1 0-14.2"/></svg></button>
+      <button class="ib" id="zoomOut" title="Zoom out (-)"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M21 21l-4.3-4.3"/></svg></button>
+      <button class="ib" id="zoomIn" title="Zoom in (+)"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M11 8v6M21 21l-4.3-4.3"/></svg></button>
+      <button class="ib" id="snapBtn" title="Save a snapshot (S)"><svg class="i" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
+      <a class="ib" id="dlBtn" title="Download this clip" hidden download><svg class="i" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></a>
+      <button class="ib" id="pipBtn" title="Picture in picture: keep watching in a small window (P)" hidden><svg class="i" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="11" width="8" height="7" rx="1" fill="currentColor"/></svg></button>
+      <button class="ib" id="fsBtn" title="Full screen (F)"><svg class="i" viewBox="0 0 24 24" id="fsIc"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span id="state">Checking the recorder...</span><span class="sp"></span>
+    <button class="act" id="reload">Refresh</button>
+  </div>
+  <section aria-labelledby="recTitle">
+    <div class="sec"><h2 id="recTitle">Timeline</h2><span class="muted">tap a moment to play it</span><span class="sp"></span>
+      <div class="days" id="days" role="group" aria-label="Day"></div></div>
+    <div class="tlwrap" id="tlWrap"><div class="tl" id="tl">
+      <div class="tl-track" id="tlTrack" role="slider" aria-label="Time of day" tabindex="0"></div>
+      <div class="tl-hours" id="tlHours"></div></div></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>recorded</span><span><i style="background:rgba(240,180,60,.8)"></i>camera card</span><span><i style="background:#ff5d6c"></i>person</span>
+      <span><i style="background:#ffb547"></i>pet</span><span><i style="background:#5ca8ff"></i>car</span><span><i style="background:#b88cff"></i>sound</span></div>
+    <details class="clips"><summary>All clips (5 minutes each, kept 30 days)</summary><div id="recs"><p class="note">Loading...</p></div></details>
+  </section>
+  <section aria-labelledby="evTitle">
+    <div class="sec"><h2 id="evTitle">Activity</h2><span class="muted" id="evNote"></span><span class="sp"></span>
+      <div class="filters" id="filters" role="group" aria-label="Show">
+        <button class="chip" data-f="" aria-pressed="true">All</button><button class="chip" data-f="person" aria-pressed="false">People</button>
+        <button class="chip" data-f="pet" aria-pressed="false">Pets</button><button class="chip" data-f="car" aria-pressed="false">Cars</button></div></div>
+    <div class="events" id="events"><p class="note">Loading...</p></div>
+  </section>
+  <div class="presets" id="presets" hidden></div>
+  <details class="clips" id="optsFold" open><summary>Camera settings: motion alerts, follow people, flip</summary>
+  <div class="opts" id="opts" hidden>
+    <button class="tog" id="tAlerts" aria-pressed="false" title="Phone alerts for people, pets, cars and sounds"><span class="sw"></span>Motion alerts</button>
+    <button class="tog" id="tNight" aria-pressed="false" title="Alerts also during quiet hours (night)"><span class="sw"></span>At night too</button>
+    <button class="tog" id="tFollow" aria-pressed="false" title="The camera turns to keep a person in the middle" hidden><span class="sw"></span>Follow people</button>
+    <button class="tog" id="tFlipH" aria-pressed="false" title="Left and right turn the wrong way? Flip them" hidden><span class="sw"></span>Flip left/right</button>
+    <button class="tog" id="tFlipV" aria-pressed="false" title="Up and down turn the wrong way? Flip them" hidden><span class="sw"></span>Flip up/down</button>
+  </div>
+  </details>
+  <form class="say" id="sayForm" hidden><input id="sayText" maxlength="300" placeholder="Type a message for Jarvis to say out of the camera" autocomplete="off">
+    <button class="act" type="submit">Say it</button></form>
+
+  <p class="note" id="foot">Recorded and analysed on your home lab. Nothing leaves the house.</p>
+</main>
+<script>
+"use strict";
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname + location.search); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+if (window.parent === window) $("#back").hidden = false;          // standalone (the phone browser): a way back to the app
+const params = new URLSearchParams(location.search);
+const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+let mjpegOn = false, mjpegT = 0;
+let liveTries = 0, lastT = -1, stuck = 0, ptzOK = false, ptzPos = null, evFilter = "", evItems = [];
+let cams = [], cam = /^[a-z0-9_]{1,32}$/.test(params.get("cam") || "") ? params.get("cam") : "", playing = null, stillTimer = 0;
+const q = path => path + (path.includes("?") ? "&" : "?") + "t=" + encodeURIComponent(token || "");
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? { headers: { Authorization: `Bearer ${token}` } }
+    : { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) { let d = ""; try { d = (await r.json()).detail; } catch (e) {} throw new Error(d || String(r.status)); }
+  return r.json();
+}
+const clock = s => { s = Math.max(0, Math.floor(s || 0)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+function ago(ts) {
+  if (!ts) return "never";
+  const m = Math.round((Date.now() / 1000 - ts) / 60);
+  return m < 2 ? "just now" : m < 90 ? `${m} minutes ago` : new Date(ts * 1000).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+}
+let toastT = 0;
+function toast(text) { const t = $("#toast"); t.textContent = text; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 1600); }
+function message(text) { $("#msg").textContent = text || ""; $("#msg").classList.toggle("on", !!text); }
+function badge(text, live) { $("#badgeText").textContent = text; $("#badge").classList.toggle("live", !!live); }
+function paintChips() {
+  $("#chips").innerHTML = cams.map(c => `<button class="chip" data-cam="${esc(c.id)}" aria-pressed="${c.id === cam}"><span class="dot ${c.recording ? "on" : "off"}"></span>${esc(c.label)}</button>`).join("");
+}
+
+/* ---------- controls show on activity, hide after 3 s (like a video app) ---------- */
+let idleT = 0;
+function wake() { $("#stage").classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(() => { if (!$("#stage").matches(":hover") || document.fullscreenElement) $("#stage").classList.add("idle"); }, 3200); }
+["pointermove", "pointerdown", "keydown"].forEach(e => $("#stage").addEventListener(e, wake));
+
+/* ---------- live / still / recording ---------- */
+function stopStill() {
+  clearInterval(stillTimer); stillTimer = 0; clearTimeout(mjpegT);
+  const img = $("#still"); if (mjpegOn) { img.removeAttribute("src"); mjpegOn = false; }   // closes the MJPEG connection
+  img.hidden = true;
+}
+function startMjpeg() {                      // iPhone (or a browser that can't play the MP4): smooth motion-JPEG, no sound
+  stopStill(); const img = $("#still"); img.hidden = false; vid.hidden = true; vid.removeAttribute("src"); vid.load();
+  badge(IOS ? "Live" : "Live · steady", true); mjpegOn = true;
+  img.onerror = () => { if (mjpegOn) { mjpegOn = false; startStill(); } };
+  img.onload = () => message("");
+  // 1280x720 for everyone, iPhones too: it is made on the Pi from the one stream the camera already sends. The small
+  // stream would make the camera serve a second one, which cost it ~30 % of its frame rate (2026-11-19).
+  img.src = q(`/api/house/mjpeg/${cam}?hd=1`) + "&_=" + Date.now();
+  mjpegT = setTimeout(() => { if (mjpegOn && !playing) startMjpeg(); }, 25 * 60 * 1000);   // views are cut at 30 min
+}
+function startStill() {                      // the browser can't play the live stream: a fresh frame every 2 seconds instead
+  stopStill(); const img = $("#still"); img.hidden = false; $("#video").hidden = true; badge("Live · stills", true);
+  const tick = () => { img.src = q(`/api/house/frame/${cam}`) + "&_=" + Date.now(); };
+  img.onerror = () => message("This camera isn't sending video right now."); img.onload = () => message("");
+  tick(); stillTimer = setInterval(tick, 2000);
+}
+/* ---------- low-delay live: feed the MP4 to the browser ourselves (Media Source) and stay ~0.3 s behind ----------
+   A plain <video src> keeps ~3.5 s of buffer before it plays (measured 2026-11-18) and can't be told otherwise. */
+let mse = null, mseFails = 0, mseRetryAt = 0, backupLag = 0;   // a passing network blip must never cost the low-delay player for good
+function stopMse() {
+  if (!mse) return;
+  const m = mse; mse = null;
+  try { m.ctl.abort(); } catch (e) {}
+  try { if (m.ms.readyState === "open") m.ms.endOfStream(); } catch (e) {}
+  URL.revokeObjectURL(m.url);
+}
+function findBox(u8, a, b, c, d) {
+  for (let i = 4; i + 8 < u8.length; i++) if (u8[i] === a && u8[i + 1] === b && u8[i + 2] === c && u8[i + 3] === d) return i;
+  return -1;
+}
+function codecsOf(u8) {                       // "avc1.PPCCLL[,mp4a.40.2]" from the init segment's avcC box
+  const i = findBox(u8, 0x61, 0x76, 0x63, 0x43);   // avcC
+  if (i < 0) return null;
+  const h = n => n.toString(16).padStart(2, "0");
+  let c = "avc1." + h(u8[i + 5]) + h(u8[i + 6]) + h(u8[i + 7]);
+  if (findBox(u8, 0x6d, 0x70, 0x34, 0x61) >= 0) c += ",mp4a.40.2";    // mp4a
+  return c;
+}
+async function startMse() {
+  stopMse();
+  const v = vid, ctl = new AbortController(), ms = new MediaSource(), url = URL.createObjectURL(ms);
+  const me = mse = { ms, ctl, url, sb: null };
+  v.src = url; v.hidden = false;
+  await new Promise(r => ms.addEventListener("sourceopen", r, { once: true }));
+  const resp = await fetch(q(`/api/house/live/${cam}`) + "&_=" + Date.now(), { signal: ctl.signal });
+  if (!resp.ok) throw new Error(String(resp.status));
+  const reader = resp.body.getReader(), queue = [];
+  let head = new Uint8Array(0);
+  const pump = () => {
+    if (me !== mse || !me.sb || me.sb.updating || !queue.length) return;
+    try { me.sb.appendBuffer(queue.shift()); } catch (e) { trim(true); }
+  };
+  const trim = force => {                     // keep the memory small: drop video more than a few seconds old
+    const sb = me.sb; if (!sb || sb.updating || !sb.buffered.length) return;
+    const s = sb.buffered.start(0), cur = v.currentTime;
+    if (force || cur - s > 20) { try { sb.remove(s, Math.max(s + 0.1, cur - 5)); } catch (e) {} }
+  };
+  v.play().catch(() => {});
+  while (me === mse) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    if (!me.sb) {                             // the init segment first: read the codecs, then open the buffer
+      const t = new Uint8Array(head.length + value.length); t.set(head); t.set(value, head.length); head = t;
+      const ready = findBox(head, 0x6d, 0x6f, 0x6f, 0x66) >= 0 || head.length > 65536;   // moof: the init part is complete
+      const codecs = ready ? codecsOf(head) : null;
+      if (!codecs) { if (head.length > 400000) throw new Error("no codec info"); continue; }
+      const mime = `video/mp4; codecs="${codecs}"`;
+      if (!MediaSource.isTypeSupported(mime)) throw new Error("unsupported " + mime);
+      me.sb = ms.addSourceBuffer(mime); me.sb.mode = "segments";
+      me.sb.addEventListener("updateend", pump);
+      queue.push(head); head = null;
+    } else queue.push(value);
+    pump();
+    if (v.buffered.length) {                  // stay live: ~0.6 s behind (less stalls on cellular), never 2 s
+      const lag = v.buffered.end(v.buffered.length - 1) - v.currentTime;
+      if (lag > 1.8) { v.currentTime = v.buffered.end(v.buffered.length - 1) - 0.6; v.playbackRate = 1; }
+      else if (lag > 0.9) v.playbackRate = 1.08;
+      else if (lag < 0.55) v.playbackRate = 1;
+      if (v.paused && !playing) v.play().catch(() => {});
+    }
+    trim(false);
+  }
+}
+/* ---------- instant live: show every frame the moment it arrives (WebCodecs) ----------
+   The camera's own app pauses 300-700 ms around keyframes (measured 2026-11-18: pings answer in 3 ms during the
+   pauses, so it isn't the Wi-Fi). WebRTC answers each pause by growing its playout buffer and shrinks it back very
+   slowly: after a few minutes it ran 1.3-2.5 s behind and kept growing (the owner saw 6-8 s). This player has no
+   buffer at all: the same MP4 stream as "fast", decoded by the browser's own decoder, each frame drawn as it comes.
+   A pause shows as a short hitch, never as delay. If it ever falls behind (a slow link), it reconnects to live. */
+const WC_OK = !!(window.VideoDecoder && window.EncodedVideoChunk && (window.MediaStreamTrackGenerator || HTMLCanvasElement.prototype.captureStream));
+let wc = null, wcRetryAt = 0, wcShort = 0;
+function stopWc() {
+  if (!wc) return;
+  const w = wc; wc = null;
+  clearInterval(w.watch);
+  try { w.ctl.abort(); } catch (e) {}
+  try { if (w.dec.state !== "closed") w.dec.close(); } catch (e) {}
+  try { w.track.stop(); } catch (e) {}
+  if (vid.srcObject) vid.srcObject = null;
+}
+const u32 = (u8, i) => ((u8[i] << 24) >>> 0) + (u8[i + 1] << 16) + (u8[i + 2] << 8) + u8[i + 3];
+const btype = (u8, i) => String.fromCharCode(u8[i + 4], u8[i + 5], u8[i + 6], u8[i + 7]);
+function* boxes(u8, s, e) {                  // [start, size, type] of each box between s and e
+  for (let i = s; i + 8 <= e;) { const n = u32(u8, i); if (n < 8 || i + n > e) return; yield [i, n, btype(u8, i)]; i += n; }
+}
+function wcInit(moov) {                       // video track id, its timescale, and the avcC (decoder setup) from the moov box
+  for (const [t, tn, tt] of boxes(moov, 8, moov.length)) {
+    if (tt !== "trak") continue;
+    let id = 0, scale = 90000, avcC = null;
+    const walk = (s, e) => { for (const [b, n, ty] of boxes(moov, s, e)) {
+      if (ty === "tkhd") id = u32(moov, b + (moov[b + 8] === 1 ? 28 : 20));
+      else if (ty === "mdhd") scale = u32(moov, b + (moov[b + 8] === 1 ? 28 : 20));
+      else if (ty === "avcC") avcC = moov.slice(b + 8, b + n);
+      else if (ty === "avc1") walk(b + 8 + 78, b + n);           // sample entry: 78 bytes of fields before its boxes
+      else if (ty === "mdia" || ty === "minf" || ty === "stbl") walk(b + 8, b + n);
+      else if (ty === "stsd") walk(b + 16, b + n);
+    } };
+    walk(t + 8, t + tn);
+    if (avcC) return { id, scale, avcC };
+  }
+  return null;
+}
+function wcSamples(moof, mdat, trackId) {     // the video samples of one fragment: [{key, data, dts}] (dts in track units)
+  const out = [];
+  for (const [f, fn, ft] of boxes(moof, 8, moof.length)) {
+    if (ft !== "traf") continue;
+    let id = 0, defDur = 0, defSize = 0, defFlags = 0, dts = 0, runs = [];
+    for (const [b, n, ty] of boxes(moof, f + 8, f + fn)) {
+      const fl = (moof[b + 9] << 16) | (moof[b + 10] << 8) | moof[b + 11];
+      if (ty === "tfhd") { id = u32(moof, b + 12); let r = b + 16;
+        if (fl & 1) r += 8; if (fl & 2) r += 4; if (fl & 8) { defDur = u32(moof, r); r += 4; } if (fl & 0x10) { defSize = u32(moof, r); r += 4; } if (fl & 0x20) defFlags = u32(moof, r); }
+      else if (ty === "tfdt") dts = moof[b + 8] === 1 ? u32(moof, b + 12) * 4294967296 + u32(moof, b + 16) : u32(moof, b + 12);
+      else if (ty === "trun") { const cnt = u32(moof, b + 12); let r = b + 16, off = null, first = null; const s = [];
+        if (fl & 1) { off = u32(moof, r) | 0; r += 4; } if (fl & 4) { first = u32(moof, r); r += 4; }
+        for (let k = 0; k < cnt; k++) { let dur = defDur, size = defSize, flags = defFlags;
+          if (fl & 0x100) { dur = u32(moof, r); r += 4; } if (fl & 0x200) { size = u32(moof, r); r += 4; }
+          if (fl & 0x400) { flags = u32(moof, r); r += 4; } else if (k === 0 && first !== null) flags = first; if (fl & 0x800) r += 4;
+          s.push({ dur, size, flags }); }
+        runs.push({ off, s }); }
+    }
+    if (id !== trackId) continue;
+    let o = 0;
+    for (const run of runs) {                 // data_offset counts from the start of moof; the mdat payload starts 8 bytes after it
+      if (run.off !== null) o = run.off - moof.length - 8;   // a run without one continues after the previous run
+      for (const x of run.s) {
+        if (o < 0 || o + x.size > mdat.length - 8) return out;
+        out.push({ key: !(x.flags & 0x10000), data: mdat.subarray(8 + o, 8 + o + x.size), dts });
+        o += x.size; dts += x.dur;
+      }
+    }
+  }
+  return out;
+}
+async function startWc() {
+  stopMse(); stopRtc(); stopWc();
+  const ctl = new AbortController();
+  let track, sink;
+  if (window.MediaStreamTrackGenerator) {   // Chrome/Edge/Android: frames go straight into a video track
+    track = new MediaStreamTrackGenerator({ kind: "video" }); const w = track.writable.getWriter();
+    sink = f => w.write(f).catch(() => f.close());
+  } else {                                  // others: draw onto a canvas and play the canvas as a stream
+    const cv = document.createElement("canvas"), cx = cv.getContext("2d");
+    track = cv.captureStream().getVideoTracks()[0];
+    sink = f => { if (cv.width !== f.displayWidth) { cv.width = f.displayWidth; cv.height = f.displayHeight; } cx.drawImage(f, 0, 0); f.close(); };
+  }
+  const me = wc = { ctl, track, dec: null, watch: 0, frames: 0, lastFrameAt: 0, lastByteAt: Date.now(), born: Date.now(), behind: 0 };
+  // One damaged frame from the camera ("Decoding error") closes a decoder. 2026-11-19: that dropped the instant player
+  // every few seconds. Now: a fresh decoder that starts again at the next keyframe; only 4 errors within 30 s
+  // reconnect (and 3 short sessions in a row fall back to the next player, see goLive).
+  me.errs = []; me.needKey = true;
+  const makeDec = () => new VideoDecoder({ output: f => { if (me !== wc) return f.close(); me.frames++; me.lastFrameAt = Date.now(); sink(f); },
+    error: () => {
+      if (me !== wc || playing) return;
+      const now = Date.now(); me.errs = me.errs.filter(t => now - t < 30e3).concat(now);
+      if (me.errs.length >= 4) { me.done = true; try { me.ctl.abort(); } catch (e) {} return; }   // reconnect fresh
+      me.dec = makeDec(); if (me.cfg) me.dec.configure(me.cfg); me.needKey = true;
+    } });
+  me.dec = makeDec();
+  const resp = await fetch(q(`/api/house/live/${cam}?video=1`) + "&_=" + Date.now(), { signal: ctl.signal });   // picture only: never waits for the mic
+  if (me !== wc) return;                      // replaced while connecting: leave the new player alone
+  if (!resp.ok) throw new Error(String(resp.status));
+  const reader = resp.body.getReader();
+  let buf = new Uint8Array(0), init = null, moof = null, slack = Infinity, ts = 0;
+  vid.removeAttribute("src"); vid.srcObject = new MediaStream([track]); vid.hidden = false; vid.play().catch(() => {});
+  badge("Connecting...", false);
+  // Frames stop (the camera restarted): 12 s for the first frame after a (re)connect, then 10 s without a picture or 6 s
+  // without any data = reconnect. NOT 3 s: in the dark the camera drops to ~10 fps with 1-2 s pauses, and after a damaged
+  // frame the next keyframe can be 3 s away; a 3 s watchdog reconnected over and over (2026-11-19) and each reconnect
+  // starts that wait again.
+  me.watch = setInterval(() => {
+    if (me !== wc) return clearInterval(me.watch);
+    if (me.frames && Date.now() - me.lastFrameAt < 3000) { if ($("#badgeText").textContent !== "Live · instant") { badge("Live · instant", true); message(""); } }
+    else if (me.frames ? (Date.now() - me.lastFrameAt >= 10000 || Date.now() - me.lastByteAt >= 6000)
+                       : (Date.now() - me.born > 12000 || me.errs.length >= 2)) {   // 2 errors, no picture: damaged stream, go steady now
+      clearInterval(me.watch); badge("Reconnecting...", false); me.done = true; try { me.ctl.abort(); } catch (e) {} }
+  }, 500);
+  while (me === wc) {
+    let value, done;
+    try { ({ value, done } = await reader.read()); } catch (e) { if (me.done) return; throw e; }   // our own freeze abort: reconnect
+    if (done || me !== wc) break;
+    me.lastByteAt = Date.now();
+    const t = new Uint8Array(buf.length + value.length); t.set(buf); t.set(value, buf.length); buf = t;
+    let off = 0;
+    for (;;) {
+      if (buf.length - off < 8) break;
+      const n = u32(buf, off), ty = btype(buf, off);
+      if (n < 8) throw new Error("bad stream");
+      if (buf.length - off < n) break;
+      const b = buf.subarray(off, off + n); off += n;
+      if (ty === "moov") {
+        init = wcInit(b); if (!init) throw new Error("no codec info");
+        const h = x => x.toString(16).padStart(2, "0"), a = init.avcC;
+        const cfg = { codec: `avc1.${h(a[1])}${h(a[2])}${h(a[3])}`, description: a, optimizeForLatency: true };
+        if (!(await VideoDecoder.isConfigSupported(cfg)).supported) throw new Error("unsupported " + cfg.codec);
+        if (me !== wc) return;
+        me.cfg = cfg; me.dec.configure(cfg);
+      } else if (ty === "moof") moof = b.slice();
+      else if (ty === "mdat" && moof && init) {
+        const now = performance.now();
+        for (const s of wcSamples(moof, b, init.id)) {
+          // live edge: arrival time minus the frame's own time. Its lowest value is "on time"; staying 2 s above that
+          // for 5 s means data is queueing somewhere on the way (a slow link): reconnect to live.
+          // The camera's clock runs a few % off real time, so "on time" may drift up by 10 % of the time passed.
+          const late = now - s.dts / init.scale * 1000;
+          if (me.lastNow) slack += (now - me.lastNow) * 0.1;
+          me.lastNow = now;
+          slack = Math.min(slack, late);
+          me.behind = late - slack > 4000 ? (me.behind || now) : 0;   // 4 s for 8 s: the camera's own 1-2 s pauses aren't "behind"
+          if (me.behind && now - me.behind > 8000) return;   // goLive (in .then) reconnects at the live edge
+          if (me.needKey && !s.key) continue;   // start (or restart after a skip or a damaged frame) on a keyframe
+          if (me.dec.state !== "configured") { me.needKey = true; continue; }
+          if (me.dec.decodeQueueSize > 4) { me.needKey = true; continue; }   // decoder behind: drop to the next keyframe
+          me.needKey = false;
+          try { me.dec.decode(new EncodedVideoChunk({ type: s.key ? "key" : "delta", timestamp: ts += 50000, data: s.data })); }
+          catch (e) { me.needKey = true; }
+        }
+        moof = null;
+      }
+    }
+    buf = buf.slice(off);
+  }
+}
+/* ---------- live sound for the instant player: a sound-only WebRTC connection, only while sound is on ---------- */
+let snd = null;
+function stopSound() { if (!snd) return; try { snd.pc.close(); } catch (e) {} snd.el.srcObject = null; snd = null; }
+async function syncSound() {
+  const want = !!wc && !vid.muted && !playing;
+  if (!want) return stopSound();
+  if (snd) return;
+  const pc = new RTCPeerConnection({ iceServers: [] }), el = new Audio(), me = snd = { pc, el };
+  try {
+    pc.addTransceiver("audio", { direction: "recvonly" });
+    pc.ontrack = e => { el.srcObject = new MediaStream([e.track]); el.play().catch(() => {}); };
+    pc.addEventListener("connectionstatechange", () => {          // dropped: connect again while sound is still wanted
+      if (snd === me && (pc.connectionState === "failed" || pc.connectionState === "disconnected")) { stopSound(); setTimeout(syncSound, 2000); } });
+    await pc.setLocalDescription(await pc.createOffer());
+    await iceGathered(pc, 1500);
+    const r = await fetch(`/api/house/webrtc/${cam}`, { method: "POST", body: pc.localDescription.sdp,
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/sdp" } });
+    if (!r.ok) throw new Error("signal " + r.status);
+    if (snd === me) await pc.setRemoteDescription({ type: "answer", sdp: await r.text() });
+  } catch (e) { if (snd === me) { stopSound(); toast("Live sound couldn't connect"); } }
+}
+/* ---------- WebRTC (what video calls use): next after the instant player. Falls back to Media Source. ---------- */
+let rtc = null, rtcRetryAt = 0, rtcMissed = false, rtcDelay = 0, jbD0 = 0, jbN0 = 0;   // rtcDelay: its playout delay now (s)   // rtcMissed: instant couldn't connect (tell him why)
+function stopRtc() {
+  if (!rtc) return;
+  const pc = rtc; rtc = null;
+  try { pc.close(); } catch (e) {}
+  if (vid.srcObject) vid.srcObject = null;
+}
+function iceGathered(pc, ms) {                 // the relay takes the whole offer at once: wait for our candidates first
+  return new Promise(res => { if (pc.iceGatheringState === "complete") return res();
+    const t = setTimeout(res, ms); pc.addEventListener("icegatheringstatechange", () => { if (pc.iceGatheringState === "complete") { clearTimeout(t); res(); } }); });
+}
+async function startRtc() {
+  stopMse(); stopRtc(); stopWc(); stopSound();
+  rtcDelay = 0; jbD0 = 0; jbN0 = 0;                       // a new connection counts from zero
+  const pc = new RTCPeerConnection({ iceServers: [] }), stream = new MediaStream();
+  rtc = pc;
+  pc.addTransceiver("video", { direction: "recvonly" });
+  pc.addTransceiver("audio", { direction: "recvonly" });
+  pc.ontrack = e => stream.addTrack(e.track);
+  await pc.setLocalDescription(await pc.createOffer());
+  await iceGathered(pc, 1500);
+  const r = await fetch(`/api/house/webrtc/${cam}`, { method: "POST", body: pc.localDescription.sdp,
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/sdp" } });
+  if (!r.ok) throw new Error("signal " + r.status);
+  await pc.setRemoteDescription({ type: "answer", sdp: await r.text() });
+  await new Promise((res, rej) => {
+    const t = setTimeout(() => rej(new Error("no connection")), 6000);
+    const check = () => { if (pc.connectionState === "connected") { clearTimeout(t); res(); }
+      else if (pc.connectionState === "failed" || pc.connectionState === "closed") { clearTimeout(t); rej(new Error(pc.connectionState)); } };
+    pc.addEventListener("connectionstatechange", check); check();
+  });
+  if (rtc !== pc) return;
+  vid.removeAttribute("src"); vid.srcObject = stream; vid.hidden = false; vid.play().catch(() => {});
+  // Frames stop while connected (the camera restarted): reconnect instead of sitting black. The first frame after a
+  // (re)connect can take a few seconds (the camera waits for a keyframe), so: 10 s for the first frame, then 3 s of no
+  // new frames = frozen. The badge says "instant" only while frames really arrive.
+  let lastFrames = 0, still = 0, gotFrame = false;
+  const born = Date.now();
+  badge("Connecting...", false);
+  const watch = setInterval(async () => {
+    if (rtc !== pc) return clearInterval(watch);
+    try {
+      let frames = 0;
+      (await pc.getStats()).forEach(s => { if (s.type === "inbound-rtp" && s.kind === "video") { frames = s.framesDecoded || 0;
+        if (s.jitterBufferEmittedCount > jbN0) { rtcDelay = (s.jitterBufferDelay - jbD0) / (s.jitterBufferEmittedCount - jbN0); }
+        if (s.jitterBufferEmittedCount - jbN0 > 100) { jbD0 = s.jitterBufferDelay; jbN0 = s.jitterBufferEmittedCount; } } });
+      if (rtc !== pc) return clearInterval(watch);        // replaced while we waited: never relabel another player
+      if (frames > lastFrames) { gotFrame = true; still = 0; lastFrames = frames;
+        if ($("#badgeText").textContent !== "Live · fast") { badge("Live · fast", true); message(""); } }
+      else if (gotFrame ? ++still >= 20 : Date.now() - born > 12000) {   // 10 s frozen (the dark camera pauses 1-2 s)
+        clearInterval(watch); badge("Reconnecting...", false); if (!playing) goLive(); }
+    } catch (e) {}
+  }, 500);
+  pc.addEventListener("connectionstatechange", () => {      // dropped (Wi-Fi to cellular, sleep): reconnect by itself
+    if (rtc === pc && (pc.connectionState === "failed" || pc.connectionState === "disconnected"))
+      setTimeout(() => { if (rtc === pc && !playing) goLive(); }, 1500);
+  });
+}
+function recordMode(on) {
+  $("#seekRow").hidden = !on; $("#playBtn").hidden = !on; $("#speed").hidden = !on; $("#liveBtn").hidden = !on; $("#dlBtn").hidden = !on;
+}
+function goLive() {
+  playing = null; recordMode(false); stopStill(); stopMse(); stopRtc(); stopWc(); stopSound(); message("");
+  $$(".rec").forEach(b => b.setAttribute("aria-pressed", "false"));
+  const v = $("#video"), info = cams.find(c => c.id === cam);
+  if (!info) { v.removeAttribute("src"); v.load(); message(cams.length ? "No such camera." : "No cameras are set up on the recorder yet."); badge("Offline"); return; }
+  if (info.privacy) { v.removeAttribute("src"); v.load(); badge("Privacy"); message("Privacy mode is on: not recording, no live view.\nTap the crossed-out eye to turn it off."); return; }
+  if (!info.recording) { v.removeAttribute("src"); v.load(); badge("Offline");
+    message(`The ${info.label.toLowerCase()} camera isn't sending video right now. Last video: ${ago(info.last_video_at)}.` + (info.error ? `\n${info.error}` : "")); return; }
+  if (IOS) return startMjpeg();
+  v.hidden = false; badge("Live", true); lastT = -1; stuck = 0; v.playbackRate = 1; v.onloadedmetadata = null;
+  if (WC_OK && Date.now() >= wcRetryAt) {      // instant: every frame shown as it arrives
+    const mine = {}; goLive.token = mine;
+    startWc().then(() => {                       // stream ended (cut after 30 min) or fell behind / froze: reconnect,
+      if (goLive.token !== mine || !wc || playing) return;   // but 3 short sessions in a row = use the next player for 30 s
+      // Decoded nothing: the camera is sending damaged frames (2026-11-19 evening: ~30 a minute when its scene is busy;
+      // every browser decoder stops at the first one, the video-call and Media Source players too). The small stream
+      // stays clean, so show it as motion-JPEG ("Live · steady"), which never sticks on a bad frame; instant again in 5 min.
+      if (wc.frames < 30) { wcShort = 0; stopWc(); wcRetryAt = Date.now() + 5 * 60e3; startMjpeg(); return; }   // < 30 frames = it failed
+      wcShort = Date.now() - wc.born < 60e3 ? wcShort + 1 : 0;
+      if (wcShort >= 3) { wcShort = 0; stopWc(); wcRetryAt = Date.now() + 5 * 60e3; startMjpeg(); return; }   // keeps failing: steady
+      goLive(); })
+      .catch(err => {
+        if (goLive.token !== mine || playing || (err && err.name === "AbortError")) return;
+        stopWc(); wcRetryAt = Date.now() + (/^(unsupported|no codec info)/.test(String(err && err.message)) ? 10 * 60e3 : 30e3); goLive();
+      });
+    syncSound();
+    return;
+  }
+  if (window.RTCPeerConnection && Date.now() >= rtcRetryAt) {   // video-call path next
+    const mine = {}; goLive.token = mine;
+    startRtc()      // the frame watchdog sets "Live · fast" once frames really arrive
+      .catch(() => { if (goLive.token !== mine || playing) return; stopRtc(); rtcRetryAt = Date.now() + 30e3; rtcMissed = true; goLive(); });
+    return;
+  }
+  if (rtcMissed) { rtcMissed = false;
+    toast(location.hostname.endsWith(".ts.net") ? "The video-call player needs the Tailscale app switched on; using the fast player meanwhile" : "The video-call player couldn't connect; using the fast player meanwhile"); }
+  if (window.MediaSource && Date.now() >= mseRetryAt) {   // low delay next
+    v.onerror = null; v.onended = null; v.onplaying = () => { liveTries = 0; mseFails = 0; };
+    const mine = {}; goLive.token = mine;
+    badge("Live · fast", true);
+    startMse().then(() => { if (goLive.token === mine && !playing) goLive(); })        // a view is cut after 30 min
+      .catch(err => {
+        if (goLive.token !== mine || playing) return;
+        stopMse();
+        const fatal = /^(unsupported|no codec info)/.test(String(err && err.message));   // this browser can't: backup
+        if (!fatal && ++mseFails <= 6) { setTimeout(() => { if (goLive.token === mine && !playing) goLive(); }, 1500 * mseFails); return; }   // ~30 s of tries
+        mseFails = 0; mseRetryAt = Date.now() + (fatal ? 10 * 60e3 : 30e3); goLive();   // backup for now, retry in 30 s
+      });
+    return;
+  }
+  badge("Live · backup", true);
+  v.onerror = () => { if (playing) return; if (liveTries++ < 2) setTimeout(goLive, 3000); else startMjpeg(); };
+  v.onended = () => { if (!playing) goLive(); };       // a view is cut after 30 minutes: reconnect by itself
+  v.onplaying = () => { liveTries = 0; };
+  v.src = q(`/api/house/live/${cam}`) + "&_=" + Date.now(); v.play().catch(() => {});
+}
+function play(rec, btn, offset) {
+  stopRtc(); stopMse(); stopWc(); stopSound(); stopStill(); message(""); playing = rec; recordMode(true); resetZoom();
+  $$(".rec").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+  const dl = $("#dlBtn"); dl.href = q(rec.url) + "&download=1"; dl.setAttribute("download", `${cam}-${rec.day}-${rec.file}`);
+  const v = $("#video"); v.hidden = false; v.onerror = () => message("That recording couldn't be played."); v.onended = null;
+  badge(`Recorded ${rec.day} ${(rec.start || "").slice(11, 16) || rec.file.slice(0, 5).replace("-", ":")}`);
+  v.src = q(rec.url); v.playbackRate = +$("#speed").value;
+  v.onloadedmetadata = () => { if (offset) v.currentTime = Math.min(offset, (v.duration || offset) - 1); v.playbackRate = +$("#speed").value; };
+  v.play().catch(() => {});
+}
+const vid = $("#video");
+vid.addEventListener("timeupdate", () => {
+  if (!playing || !isFinite(vid.duration)) return;
+  $("#tNow").textContent = clock(vid.currentTime); $("#tEnd").textContent = clock(vid.duration);
+  if (!seeking) $("#seek").value = Math.round(vid.currentTime / vid.duration * 1000);
+});
+vid.addEventListener("play", paintPlay); vid.addEventListener("pause", paintPlay);
+function paintPlay() { $("#playIc").innerHTML = vid.paused ? '<path d="M6 4l14 8-14 8z"/>' : '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>'; }
+let seeking = false;
+$("#seek").addEventListener("input", () => { seeking = true; if (isFinite(vid.duration)) $("#tNow").textContent = clock($("#seek").value / 1000 * vid.duration); });
+$("#seek").addEventListener("change", () => { if (isFinite(vid.duration)) vid.currentTime = $("#seek").value / 1000 * vid.duration; seeking = false; });
+$("#playBtn").onclick = () => { if (vid.paused) vid.play().catch(() => {}); else vid.pause(); };
+$("#speed").onchange = () => { vid.playbackRate = +$("#speed").value; };
+$("#liveBtn").onclick = goLive;
+
+/* ---------- sound ---------- */
+function paintMute() { if (typeof syncSound === "function") syncSound(); $("#muteIc").innerHTML = vid.muted ? '<path d="M11 5L6 9H2v6h4l5 4z"/><path d="M23 9l-6 6M17 9l6 6"/>'
+  : '<path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>'; }
+$("#muteBtn").onclick = () => { if (mjpegOn && !playing) return toast("Live sound isn't available on iPhone yet; recordings have sound");
+  vid.muted = !vid.muted; paintMute(); toast(vid.muted ? "Sound off" : "Sound on"); };
+
+/* ---------- digital zoom: pinch, wheel, double-tap, drag to look around ---------- */
+let Z = 1, X = 0, Y = 0;
+function applyZoom() {
+  const s = $("#stage").getBoundingClientRect(); Z = Math.min(4, Math.max(1, Z));
+  X = Math.min(0, Math.max(s.width * (1 - Z), X)); Y = Math.min(0, Math.max(s.height * (1 - Z), Y));
+  $("#view").style.transform = `translate(${X}px, ${Y}px) scale(${Z})`;
+  $("#zoomTag").hidden = Z <= 1.01; $("#zoomTag").textContent = Z.toFixed(1) + "x";
+}
+function zoomAt(nz, cx, cy) { const r = $("#stage").getBoundingClientRect(), px = cx - r.left, py = cy - r.top;
+  X = px - (px - X) * (nz / Z); Y = py - (py - Y) * (nz / Z); Z = nz; applyZoom(); }
+function resetZoom() { Z = 1; X = 0; Y = 0; applyZoom(); }
+function zoomStep(f) { const r = $("#stage").getBoundingClientRect(); zoomAt(Math.min(4, Math.max(1, Z * f)), r.left + r.width / 2, r.top + r.height / 2); }
+$("#zoomIn").onclick = () => zoomStep(1.5); $("#zoomOut").onclick = () => zoomStep(1 / 1.5);
+$("#stage").addEventListener("wheel", e => { e.preventDefault(); zoomAt(Math.min(4, Math.max(1, Z * (e.deltaY < 0 ? 1.15 : 1 / 1.15))), e.clientX, e.clientY); }, { passive: false });
+const pts = new Map(); let pinch = null, drag = null, lastTap = 0, tapT = 0, moved = false;
+$("#stage").addEventListener("pointerdown", e => {
+  if (e.target.closest("button, a, input, select, .pad")) return;
+  $("#stage").setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = false;
+  if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), z: Z }; drag = null; }
+  else if (pts.size === 1) drag = { x: e.clientX, y: e.clientY, X, Y };
+});
+$("#stage").addEventListener("pointermove", e => {
+  if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pinch && pts.size === 2) { const [a, b] = [...pts.values()]; zoomAt(pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, (a.x + b.x) / 2, (a.y + b.y) / 2); moved = true; }
+  else if (drag && Z > 1) { const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) moved = true; X = drag.X + dx; Y = drag.Y + dy; applyZoom(); }
+  else if (drag && Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 8) moved = true;
+});
+const endPtr = e => {
+  if (!pts.has(e.pointerId)) return; pts.delete(e.pointerId);
+  if (pts.size < 2) pinch = null;
+  if (pts.size === 0) { const wasDrag = moved; drag = null; if (!wasDrag && e.type === "pointerup") tap(e); }
+};
+$("#stage").addEventListener("pointerup", endPtr); $("#stage").addEventListener("pointercancel", endPtr);
+function tap(e) {                              // double tap: zoom 2.5x there / back; single tap in aim mode: turn the camera there
+  const now = Date.now();
+  if (now - lastTap < 300) { clearTimeout(tapT); lastTap = 0; if (Z > 1.05) resetZoom(); else zoomAt(2.5, e.clientX, e.clientY); return; }
+  lastTap = now;
+  if ($("#aimBtn").getAttribute("aria-pressed") === "true") { const cx = e.clientX, cy = e.clientY; tapT = setTimeout(() => aimAt(cx, cy), 280); }
+}
+
+/* ---------- full screen, landscape on a phone ---------- */
+const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement;
+async function toggleFs() {
+  const st = $("#stage");
+  if (st.classList.contains("fakefs")) { st.classList.remove("fakefs"); paintFs(); return; }
+  if (fsEl()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+  if (IOS || !(st.requestFullscreen || st.webkitRequestFullscreen)) { st.classList.add("fakefs"); paintFs(); toast("Turn your phone sideways"); return; }
+  try {
+    if (st.requestFullscreen) await st.requestFullscreen({ navigationUI: "hide" });
+    else if (st.webkitRequestFullscreen) st.webkitRequestFullscreen();
+    else if (vid.webkitEnterFullscreen) { vid.webkitEnterFullscreen(); return; }   // iPhone: the system player
+    if (screen.orientation && screen.orientation.lock && matchMedia("(pointer: coarse)").matches)
+      screen.orientation.lock("landscape").then(followGravity).catch(() => {});
+  } catch (e) { if (vid.webkitEnterFullscreen) vid.webkitEnterFullscreen(); }
+}
+/* A landscape lock picks ONE side; with auto-rotate off (or held the other way) the picture was upside down (owner,
+   2026-11-18). While full screen, follow how the phone is really held: the side that is up reads +g on the sensor's
+   x axis when the top points left (screen angle 90) and -g when it points right (angle 270); held the other way for
+   0.6 s = lock the other landscape side. */
+let gravityOn = false, wrongSince = 0;
+function onMotion(e) {
+  const g = e.accelerationIncludingGravity, o = screen.orientation;
+  if (!g || g.x == null || !o || !fsEl()) return;
+  const want = o.angle === 90 ? 1 : o.angle === 270 ? -1 : 0;
+  if (!want || Math.abs(g.x) < 6) { wrongSince = 0; return; }              // flat, or not clearly sideways: leave it
+  if (Math.sign(g.x) === want) { wrongSince = 0; return; }
+  if (!wrongSince) { wrongSince = Date.now(); return; }
+  if (Date.now() - wrongSince < 600) return;
+  wrongSince = 0;
+  o.lock(o.type === "landscape-primary" ? "landscape-secondary" : "landscape-primary").catch(() => {});
+}
+function followGravity() { if (!gravityOn && window.DeviceMotionEvent) { gravityOn = true; addEventListener("devicemotion", onMotion); } }
+function stopGravity() {
+  if (gravityOn) { gravityOn = false; removeEventListener("devicemotion", onMotion); }
+  if (!fsEl() && screen.orientation && screen.orientation.unlock) try { screen.orientation.unlock(); } catch (e) {}
+}
+document.addEventListener("fullscreenchange", () => { if (!fsEl()) stopGravity(); });
+function paintFs() { $("#fsIc").innerHTML = (fsEl() || $("#stage").classList.contains("fakefs")) ? '<path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/>'
+  : '<path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>'; setTimeout(applyZoom, 120); wake(); }
+document.addEventListener("fullscreenchange", paintFs); document.addEventListener("webkitfullscreenchange", paintFs);
+$("#fsBtn").onclick = toggleFs;
+
+/* ---------- snapshot ---------- */
+$("#snapBtn").onclick = () => {
+  // the MJPEG or still image when that is what's showing, else the video
+  const src = !$("#still").hidden ? $("#still") : vid, w = src.videoWidth || src.naturalWidth, h = src.videoHeight || src.naturalHeight;
+  if (!w) return toast("No picture yet");
+  const c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(src, 0, 0, w, h);
+  c.toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b);
+    a.download = `${cam}-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-")}.jpg`; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast("Snapshot saved"); }, "image/jpeg", 0.92);
+};
+
+/* ---------- pan / tilt ---------- */
+const FOV_H = 88, FOV_V = 50;                  // the CB401's field of view, near enough for tap-to-aim
+let ptzBusy = false;
+async function ptz(cmd, extra) {                // one move at a time: a held key or button never floods the camera
+  if (ptzBusy && cmd !== "pos") return null;
+  ptzBusy = true; const c = cam;
+  try { const r = await api(`/api/house/ptz/${c}`, Object.assign({ cmd }, extra || {})); if (c === cam) { ptzPos = r; paintDay(r.day); } return r; }
+  catch (e) { toast(e.message); throw e; }
+  finally { ptzBusy = false; }
+}
+async function aimAt(cx, cy) {
+  if (!ptzOK || !ptzPos) return;
+  const r = $("#stage").getBoundingClientRect();
+  const fx = ((cx - r.left - X) / Z) / r.width - 0.5, fy = ((cy - r.top - Y) / Z) / r.height - 0.5;   // through the digital zoom
+  const ping = document.createElement("div"); ping.className = "ping"; ping.style.left = (cx - r.left) + "px"; ping.style.top = (cy - r.top) + "px";
+  $("#stage").append(ping); setTimeout(() => ping.remove(), 800);
+  resetZoom();
+  await ptz("aim", { dx: +fx.toFixed(3), dy: +fy.toFixed(3) }).catch(() => {});
+}
+/* smooth turning: a tap moves 10 degrees; holding keeps steering ahead (~25 degrees a second); only the newest target is
+   ever sent, so a slow answer never queues up stale moves (the old pad dropped presses while one was in flight). */
+const DIRS = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1], left_up: [-1, -1], right_up: [1, -1], left_down: [-1, 1], right_down: [1, 1] };
+let target = null, sending = false, steerT = 0, steerCam = "";
+function flipOf() { const f = (S && S.flip && S.flip[cam]) || {}; return [f.pan ? -1 : 1, f.tilt ? -1 : 1]; }
+function nudge(dir, deg) {
+  if (!ptzOK || !DIRS[dir]) return;
+  const base = target || (ptzPos ? [ptzPos.pan, ptzPos.tilt] : [180, 90]), [fx, fy] = flipOf(), d = DIRS[dir];
+  target = [Math.max(0, Math.min(355, Math.round(base[0] + d[0] * deg * fx))), Math.max(0, Math.min(180, Math.round(base[1] + d[1] * deg * fy)))];
+  flushMove();
+}
+async function flushMove() {
+  if (sending || !target) return;
+  const [p, t] = target, c = cam; sending = true;
+  try { const r = await api(`/api/house/ptz/${c}`, { cmd: "t2p", pan: p, tilt: t }); if (c === cam) { ptzPos = r; paintDay(r.day); } }
+  catch (e) { toast(e.message); target = null; }
+  finally { sending = false; if (target && (target[0] !== p || target[1] !== t) && c === cam) flushMove(); else target = null; }
+}
+function steerStart(dir) { steerStop(); steerCam = cam; nudge(dir, 10); steerT = setInterval(() => { if (cam === steerCam) nudge(dir, 5); else steerStop(); }, 200); }
+function steerStop() { clearInterval(steerT); steerT = 0; }
+$$("#pad button").forEach(b => {
+  b.addEventListener("pointerdown", e => {
+    e.preventDefault(); try { b.setPointerCapture(e.pointerId); } catch (x) {}   // never let capture stop the press
+    if (b.dataset.ptz === "center") { api(`/api/house/presets/${cam}`, { action: "go", name: "home" }).then(r => { ptzPos = r; }).catch(x => toast(x.message)); return; }
+    steerStart(b.dataset.ptz);
+  });
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach(ev => b.addEventListener(ev, steerStop));
+});
+addEventListener("blur", steerStop);
+document.addEventListener("visibilitychange", () => { if (document.hidden) steerStop(); });
+$("#padBtn").onclick = () => { const on = $("#padBtn").getAttribute("aria-pressed") !== "true"; $("#padBtn").setAttribute("aria-pressed", String(on)); $("#pad").hidden = !on; };
+$("#aimBtn").onclick = () => { const on = $("#aimBtn").getAttribute("aria-pressed") !== "true"; $("#aimBtn").setAttribute("aria-pressed", String(on));
+  $("#stage").classList.toggle("aim", on); toast(on ? "Tap the picture to aim there" : "Aim off"); };
+function paintDay(day) { if (day === undefined) return; $("#dayBtn").dataset.day = day ? "1" : "0";
+  $("#dayBtn").innerHTML = day ? '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+  : '<svg class="i" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>'; }
+$("#dayBtn").onclick = async () => { const night = $("#dayBtn").dataset.day === "1"; await ptz(night ? "night" : "day").catch(() => {}); toast(night ? "Night mode" : "Day mode"); };
+async function loadPtz() {
+  ptzOK = false; ptzPos = null; ["#padBtn", "#aimBtn", "#dayBtn", "#talkBtn", "#sayForm"].forEach(s => $(s).hidden = true); $("#pad").hidden = true; $("#presets").hidden = true;
+  if (!cam) return;
+  const c = cam;
+  try { const r = await api(`/api/house/ptz/${c}`, { cmd: "pos" }); if (c !== cam) return; ptzPos = r; ptzOK = true; }
+  catch (e) { if (c !== cam) return; $("#presets").hidden = false; $("#presets").innerHTML = `<span class="muted">Turning: ${esc(e.message)}</span>`; return; }
+  ["#padBtn", "#aimBtn", "#dayBtn", "#talkBtn", "#sayForm"].forEach(s => $(s).hidden = false); $("#pad").hidden = $("#padBtn").getAttribute("aria-pressed") !== "true"; paintDay(ptzPos.day);
+  loadPresets();
+}
+async function loadPresets() {
+  const box = $("#presets"); box.hidden = false;
+  let p = {}; try { p = (await api(`/api/house/presets/${cam}`)).presets || {}; } catch (e) {}
+  box.innerHTML = `<span class="muted">Positions</span>` + Object.keys(p).sort().map(n => `<button class="preset" data-p="${esc(n)}">${esc(n)}<span class="x" data-del="${esc(n)}" title="Forget">&times;</span></button>`).join("")
+    + `<button class="preset" id="saveP">+ Save this view</button>`;
+  box.querySelectorAll("[data-p]").forEach(b => b.onclick = async e => {
+    const del = e.target.dataset.del;
+    if (del) { if (confirm(`Forget the position "${del}"?`)) { await api(`/api/house/presets/${cam}`, { action: "delete", name: del }).catch(x => toast(x.message)); loadPresets(); } return; }
+    try { ptzPos = await api(`/api/house/presets/${cam}`, { action: "go", name: b.dataset.p }); toast(`Turning to ${b.dataset.p}`); } catch (x) { toast(x.message); }
+  });
+  $("#saveP").onclick = async () => { const n = (prompt("Name this view (like door, couch, window):") || "").trim().toLowerCase(); if (!n) return;
+    try { await api(`/api/house/presets/${cam}`, { action: "save", name: n }); toast(`Saved "${n}"`); loadPresets(); } catch (x) { toast(x.message); } };
+}
+
+/* ---------- settings: alerts, night alerts, follow, flip; privacy ---------- */
+let S = null;
+const pressed = (id, on) => $(id).setAttribute("aria-pressed", String(!!on));
+function paintSettings() {
+  if (!S) return; $("#opts").hidden = false;
+  pressed("#tAlerts", S.alerts.on); pressed("#tNight", S.alerts.night); pressed("#tFollow", S.follow[cam]);
+  const f = S.flip[cam] || {}; pressed("#tFlipH", f.pan); pressed("#tFlipV", f.tilt);
+  ["#tFollow", "#tFlipH", "#tFlipV"].forEach(s => $(s).hidden = !ptzOK);
+  const info = cams.find(c => c.id === cam); pressed("#privBtn", info && info.privacy); $("#privBtn").hidden = !info;
+}
+async function loadSettings() { try { S = await api("/api/house/settings"); paintSettings(); } catch (e) {} }
+async function setS(patch, say) { try { S = await api("/api/house/settings", patch); paintSettings(); if (say) toast(say); } catch (e) { toast(e.message); } }
+$("#tAlerts").onclick = () => setS({ alerts: { on: !S.alerts.on } }, !S.alerts.on ? "Alerts on" : "Alerts off");
+$("#tNight").onclick = () => setS({ alerts: { night: !S.alerts.night } }, !S.alerts.night ? "Alerts at night too" : "Quiet at night");
+$("#tFollow").onclick = () => setS({ follow: { [cam]: !S.follow[cam] } }, !S.follow[cam] ? "Following people" : "Stopped following");
+$("#tFlipH").onclick = () => { const f = Object.assign({ pan: false, tilt: false }, S.flip[cam]); f.pan = !f.pan; setS({ flip: { [cam]: f } }, "Left and right flipped"); };
+$("#tFlipV").onclick = () => { const f = Object.assign({ pan: false, tilt: false }, S.flip[cam]); f.tilt = !f.tilt; setS({ flip: { [cam]: f } }, "Up and down flipped"); };
+$("#privBtn").onclick = async () => {
+  const info = cams.find(c => c.id === cam), on = !(info && info.privacy);
+  if (on && !confirm("Privacy mode: stop recording, turn off the live view and turn the camera away?")) return;
+  toast(on ? "Privacy on..." : "Privacy off...");
+  try { await api(`/api/house/privacy/${cam}`, { on }); } catch (e) { toast(e.message); }
+  load();
+};
+
+/* ---------- talk-back: hold the mic, speak, let go: it plays out of the camera ---------- */
+let rec = null, recChunks = [], recStart = 0, wasMuted = true;
+async function talkStart() {
+  if (rec || !ptzOK) return;
+  if (!navigator.mediaDevices || !window.MediaRecorder) return toast("This browser can't record the microphone");
+  let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+  catch (e) { return toast("Microphone blocked: allow it for Jarvis"); }
+  const mime = ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4"].find(m => MediaRecorder.isTypeSupported(m)) || "";
+  rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined); recChunks = []; recStart = Date.now();
+  wasMuted = vid.muted; vid.muted = true; paintMute();          // no echo of the room while he talks
+  rec.ondataavailable = e => { if (e.data.size) recChunks.push(e.data); };
+  rec.onstop = async () => {
+    stream.getTracks().forEach(t => t.stop()); const took = Date.now() - recStart, blob = new Blob(recChunks, { type: rec.mimeType || "audio/webm" }); rec = null;
+    $("#talkBtn").classList.remove("rec"); vid.muted = wasMuted; paintMute();
+    if (took < 400) return toast("Hold the mic while you talk");
+    toast("Sending...");
+    try { const r = await fetch(`/api/house/talk/${cam}`, { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": blob.type }, body: blob });
+      if (!r.ok) { let d = ""; try { d = (await r.json()).detail; } catch (e) {} throw new Error(d || r.status); } toast("Playing on the camera"); }
+    catch (e) { toast(String(e.message || e)); }
+  };
+  rec.start(); $("#talkBtn").classList.add("rec"); toast("Talking... let go to send");
+  setTimeout(() => { if (rec && Date.now() - recStart >= 59000) talkStop(); }, 60000);
+}
+function talkStop() { if (rec && rec.state === "recording") rec.stop(); }
+$("#talkBtn").addEventListener("pointerdown", e => { e.preventDefault(); talkStart(); });
+["pointerup", "pointerleave", "pointercancel"].forEach(ev => $("#talkBtn").addEventListener(ev, talkStop));
+$("#talkBtn").addEventListener("contextmenu", e => e.preventDefault());
+$("#sayForm").onsubmit = async e => {
+  e.preventDefault(); const text = $("#sayText").value.trim(); if (!text) return;
+  toast("Jarvis is saying it..."); try { await api(`/api/house/announce/${cam}`, { text }); $("#sayText").value = ""; toast("Said on the camera"); } catch (x) { toast(x.message); }
+};
+
+/* ---------- activity (motion / people / pets / cars) ---------- */
+const PET = new Set(["dog", "cat"]);
+function paintEvents() {
+  const box = $("#events"), show = evItems.filter(e => !evFilter || (evFilter === "pet" ? PET.has(e.label) : e.label === evFilter));
+  if (!show.length) { box.innerHTML = `<p class="note">${evItems.length ? "Nothing of that kind yet." : "Nothing detected yet. People, pets and cars show up here."}</p>`; return; }
+  box.innerHTML = show.map((e, i) => {
+    const t = new Date(e.start * 1000), when = t.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }),
+      day = t.toDateString() === new Date().toDateString() ? "Today" : t.toLocaleDateString([], { month: "short", day: "numeric" });
+    const img = e.snapshot ? `<img loading="lazy" alt="" src="${esc(q(e.snapshot))}">` : `<img alt="">`;
+    return `<button class="ev" data-i="${evItems.indexOf(e)}">${img}<span class="tag">${e.recording ? "Play" : "Snapshot"}</span>
+      <span class="meta"><span class="lab">${esc(e.label)}</span><span>${esc(day)} ${esc(when)}</span></span></button>`;
+  }).join("");
+  box.querySelectorAll(".ev").forEach(b => b.onclick = () => {
+    const e = evItems[+b.dataset.i];
+    if (e.recording) { play({ day: e.recording.day, file: e.recording.file, url: e.recording.url, start: e.recording.day + "T" + e.recording.file.slice(0, 8).replace(/-/g, ":") }, null, e.recording.offset);
+      $("#stage").scrollIntoView({ behavior: "smooth", block: "center" }); }
+    else if (e.snapshot) window.open(q(e.snapshot), "_blank");
+  });
+}
+async function loadEvents() {
+  if (!cam) { $("#events").innerHTML = ""; return; }
+  const c = cam;
+  try { const items = (await api(`/api/house/events/${c}?limit=200`)).items || []; if (c !== cam) return; evItems = items; paintTimeline();
+    const today = evItems.filter(e => new Date(e.start * 1000).toDateString() === new Date().toDateString());
+    $("#evNote").textContent = today.length ? `${today.length} today` : ""; paintEvents(); }
+  catch (e) { $("#events").innerHTML = `<p class="note">${esc(e.message)}</p>`; }
+}
+$("#filters").onclick = e => { const b = e.target.closest("[data-f]"); if (!b) return; evFilter = b.dataset.f;
+  $$("#filters .chip").forEach(c => c.setAttribute("aria-pressed", String(c === b))); paintEvents(); };
+
+/* ---------- recordings ---------- */
+/* ---------- timeline: a day at a glance, recorded spans + what was detected; tap a moment to play it ---------- */
+let recItems = [], tlDay = "";
+const SEG = 300, dayOf = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+const secsOf = name => { const [h, m, s] = name.slice(0, 8).split("-").map(Number); return h * 3600 + m * 60 + s; };
+const evKind = l => l === "person" ? "person" : (l === "dog" || l === "cat") ? "pet" : l === "car" ? "car" : "sound";
+const hhmm = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); return new Date(2000, 0, 1, h, m).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); };
+function paintTimeline() {
+  const days = [...new Set(recItems.map(it => it.day))].sort().reverse();
+  const today = dayOf(new Date());
+  if (!tlDay || !days.includes(tlDay)) tlDay = days.includes(today) ? today : (days[0] || today);
+  $("#days").innerHTML = days.slice(0, 31).map(d => {
+    const label = d === today ? "Today" : d === dayOf(new Date(Date.now() - 864e5)) ? "Yesterday"
+      : new Date(d + "T12:00").toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
+    return `<button class="chip" data-day="${esc(d)}" aria-pressed="${d === tlDay}">${esc(label)}</button>`; }).join("");
+  const tr = $("#tlTrack"); let html = "";
+  for (const it of recItems) if (it.day === tlDay) {
+    const s = secsOf(it.file); html += `<div class="tl-rec${it.card ? " card" : ""}" style="left:${(s / 864).toFixed(3)}%;width:${((it.seconds || SEG) / 864).toFixed(3)}%"></div>`;
+  }
+  for (const e of evItems) { const d = new Date(e.start * 1000); if (dayOf(d) !== tlDay) continue;
+    const s = d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+    html += `<div class="tl-ev ${evKind(e.label)}" style="left:${(s / 864).toFixed(3)}%" title="${esc(e.label)}"></div>`; }
+  if (tlDay === today) { const n = new Date(); html += `<div class="tl-now" style="left:${((n.getHours() * 3600 + n.getMinutes() * 60) / 864).toFixed(3)}%"></div>`; }
+  html += `<div class="tl-play" id="tlPlay" hidden></div><div class="tl-hover" id="tlHover" hidden></div>`;
+  tr.innerHTML = html;
+  $("#tlHours").innerHTML = [0, 3, 6, 9, 12, 15, 18, 21, 24].map(h => `<span style="left:${(h / 24 * 100).toFixed(2)}%">${h === 24 ? "" : hhmm(h * 3600).replace(":00", "")}</span>`).join("");
+  paintPlayhead();
+  if (!paintTimeline.scrolled && tlDay === today) {      // phones: start the scroll near "now"
+    const w = $("#tlWrap"); w.scrollLeft = Math.max(0, $("#tl").scrollWidth * (new Date().getHours() / 24) - w.clientWidth * 0.7); paintTimeline.scrolled = true; }
+}
+function paintPlayhead() {
+  const ph = $("#tlPlay"); if (!ph) return;
+  if (!playing || playing.day !== tlDay || !isFinite(vid.currentTime)) { ph.hidden = true; return; }
+  ph.hidden = false; ph.style.left = ((secsOf(playing.file) + vid.currentTime) / 864).toFixed(3) + "%";
+}
+function tlSecs(ev) { const r = $("#tlTrack").getBoundingClientRect(); return Math.max(0, Math.min(86399, (ev.clientX - r.left) / r.width * 86400)); }
+function playAt(day, s) {
+  const it = recItems.filter(x => x.day === day).find(x => s >= secsOf(x.file) && s < secsOf(x.file) + (x.seconds || SEG) + 10);
+  if (!it) return toast(`Nothing recorded at ${hhmm(s)}`);
+  play(it, null, Math.max(0, s - secsOf(it.file))); $("#stage").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+$("#days").onclick = e => { const b = e.target.closest("[data-day]"); if (!b) return; tlDay = b.dataset.day; paintTimeline(); };
+$("#tlTrack").addEventListener("click", e => playAt(tlDay, tlSecs(e)));
+$("#tlTrack").addEventListener("pointermove", e => { if (e.pointerType !== "mouse") return; const h = $("#tlHover"); if (!h) return;
+  const r = $("#tlTrack").getBoundingClientRect(); h.hidden = false; h.style.left = (e.clientX - r.left) + "px"; h.textContent = hhmm(tlSecs(e)); });
+$("#tlTrack").addEventListener("pointerleave", () => { const h = $("#tlHover"); if (h) h.hidden = true; });
+$("#tlTrack").addEventListener("keydown", e => {         // keyboard: left/right step 5 min through what was recorded
+  if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return; e.preventDefault();
+  const cur = playing ? secsOf(playing.file) + vid.currentTime : 86399; playAt(tlDay, Math.max(0, cur + (e.key === "ArrowLeft" ? -SEG : SEG))); });
+vid.addEventListener("timeupdate", paintPlayhead);
+
+/* ---------- picture in picture, and keep the screen on while watching ---------- */
+if (document.pictureInPictureEnabled) $("#pipBtn").hidden = false;
+$("#pipBtn").onclick = async () => {
+  try { if (document.pictureInPictureElement) await document.exitPictureInPicture();
+    else if (!vid.hidden && vid.readyState >= 2) await vid.requestPictureInPicture();
+    else toast("Picture in picture needs the video player (not available in this view)"); } catch (e) { toast("Picture in picture isn't available here"); }
+};
+let wakeLock = null;
+async function keepAwake() {
+  try { if ("wakeLock" in navigator && !document.hidden && !wakeLock) { wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => { wakeLock = null; }); } } catch (e) {}
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) keepAwake(); });
+vid.addEventListener("playing", keepAwake);
+
+async function loadRecs() {
+  const box = $("#recs");
+  if (!cam) { box.innerHTML = ""; return; }
+  try {
+    const r = await api(`/api/house/recordings/${cam}?limit=900`);
+    recItems = r.items || []; paintTimeline();
+    if (!r.items.length) { box.innerHTML = `<p class="note">Nothing recorded yet.</p>`; return; }
+    let html = "", day = "";
+    r.items.forEach((it, i) => {
+      if (it.day !== day) { if (day) html += "</div>"; day = it.day;
+        html += `<div class="day">${esc(new Date(it.day + "T12:00").toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" }))}</div><div class="recs">`; }
+      const t = new Date(it.start).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      html += `<button class="rec${it.card ? " card" : ""}" data-i="${i}" title="${esc(it.start)} · ${(it.size / 1e6).toFixed(1)} MB${it.card ? " · from the camera's SD card (the home lab missed this)" : ""}">${esc(t)}${it.card ? " · card" : ""}</button>`;
+    });
+    box.innerHTML = html + "</div>";
+    box.querySelectorAll(".rec").forEach(b => b.onclick = () => { play(r.items[+b.dataset.i], b); $("#stage").scrollIntoView({ behavior: "smooth", block: "center" }); });
+  } catch (e) { box.innerHTML = `<p class="note">${esc(e.message)}</p>`; }
+}
+
+/* ---------- loading and refresh ---------- */
+async function load() {
+  if (!token) { message("Open this from Jarvis so it can sign in."); $("#state").textContent = ""; return; }
+  try {
+    const s = await api("/api/house/cameras");
+    cams = s.cameras || [];
+    if (cams.length && !cams.some(c => c.id === cam)) cam = cams[0].id;
+    paintChips();
+    const d = s.disk || {};
+    $("#state").textContent = (s.recorder_up ? "Recording to the home lab" : "The recorder on the Pi isn't reporting")
+      + (d.free_gb != null ? ` · ${Math.round(d.free_gb)} GB free` : "") + (s.retention_days ? ` · kept ${s.retention_days} days` : "");
+  } catch (e) { cams = []; $("#state").textContent = e.message; }
+  if (!playing) goLive();
+  loadRecs(); loadEvents(); await loadPtz(); loadSettings();
+}
+$("#chips").onclick = e => { const b = e.target.closest("[data-cam]"); if (!b) return; cam = b.dataset.cam; history.replaceState(null, "", "?cam=" + cam);
+  paintChips(); playing = null; resetZoom(); goLive(); loadRecs(); loadEvents(); loadPtz().then(paintSettings); };
+$("#reload").onclick = load;
+addEventListener("pagehide", () => { stopRtc(); stopMse(); stopWc(); stopSound(); vid.removeAttribute("src"); vid.load(); stopStill(); });   // no stream outlives the page
+addEventListener("message", e => {             // the Command Center switches camera while the page is open
+  if (e.origin !== location.origin || !e.data || typeof e.data.jarvisHouse !== "string") return;
+  if (/^[a-z0-9_]{1,32}$/.test(e.data.jarvisHouse)) { cam = e.data.jarvisHouse; playing = null; load(); }
+});
+addEventListener("keydown", e => {
+  if (e.target.closest("input, select, textarea")) return;
+  const k = e.key, ar = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" }[k];
+  if (ar && ptzOK && !playing && (stageHot || fsEl())) { e.preventDefault(); if (!e.repeat) { steerStart(ar);
+      addEventListener("keyup", function up(ev) { if (ev.key === k) { steerStop(); removeEventListener("keyup", up); } }); } }
+  else if (k === "f" || k === "F") toggleFs();
+  else if (k === "m" || k === "M") $("#muteBtn").click();
+  else if (k === "p" || k === "P") $("#pipBtn").click();
+  else if (k === "s" || k === "S") $("#snapBtn").click();
+  else if ((k === "t" || k === "T") && !e.repeat) { talkStart(); addEventListener("keyup", function up(ev) { if (ev.key.toLowerCase() === "t") { talkStop(); removeEventListener("keyup", up); } }); }
+  else if (k === "+" || k === "=") zoomStep(1.5);
+  else if (k === "-") zoomStep(1 / 1.5);
+  else if (k === "0") resetZoom();
+  else if (k === " " && playing) { e.preventDefault(); $("#playBtn").click(); }
+  else if (ar && playing && isFinite(vid.duration)) { e.preventDefault(); vid.currentTime += ar === "left" ? -10 : ar === "right" ? 10 : 0; }
+});
+addEventListener("resize", applyZoom);
+let stageHot = false;                         // arrow keys turn the camera only while the pointer is on the picture
+$("#stage").addEventListener("pointerenter", () => { stageHot = true; }); $("#stage").addEventListener("pointerleave", () => { stageHot = false; });
+setInterval(() => {                         // live video frozen 10 s: reconnect; picture mode: try live video again
+  const info = cams.find(c => c.id === cam);
+  if (playing || document.hidden || !info || !info.recording) return;
+  if (mjpegOn && !IOS && WC_OK && wcRetryAt && Date.now() >= wcRetryAt) { goLive(); return; }   // steady -> try instant again
+  if (mjpegOn || wc) return;                  // the instant player watches itself
+  // back to instant, but never by cutting a healthy video-call view: only when it isn't running or its delay grew (> 1.5 s)
+  if (WC_OK && wcRetryAt && Date.now() >= wcRetryAt && !IOS && !vid.hidden && (!rtc || rtcDelay > 1.5)) { goLive(); return; }
+  if (!rtc && rtcRetryAt && Date.now() >= rtcRetryAt && window.RTCPeerConnection && !IOS && !vid.hidden) { goLive(); return; }
+  if (!mse && mseRetryAt && Date.now() >= mseRetryAt && window.MediaSource && !IOS && !vid.hidden) { goLive(); return; }   // back to low delay
+  if (stillTimer) { if (++stuck >= 6) { stuck = 0; liveTries = 0; goLive(); } return; }
+  if (!vid.hidden && vid.getAttribute("src")) { if (vid.currentTime === lastT) goLive(); else lastT = vid.currentTime; }
+}, 5000);
+setInterval(() => {                         // stay live: play a touch faster when behind, jump when far behind
+  if (playing || mse || wc || vid.hidden || !vid.buffered.length) return;     // the Media Source player steers itself
+  const lag = vid.buffered.end(vid.buffered.length - 1) - vid.currentTime;
+  backupLag = lag > 3 ? backupLag + 1 : 0;
+  if (backupLag >= 6) { backupLag = 0; goLive(); return; }    // seeking can't catch this player up: reconnect to live
+  if (lag > 1.5) { vid.currentTime = vid.buffered.end(vid.buffered.length - 1) - 0.25; vid.playbackRate = 1; }
+  else if (lag > 0.6) vid.playbackRate = 1.15;
+  else if (lag < 0.3) vid.playbackRate = 1;
+}, 500);
+setInterval(() => {                         // an offline camera is re-checked, so the view comes up by itself when it does
+  const info = cams.find(c => c.id === cam);
+  if (!playing && !document.hidden && (!info || !info.recording)) load();
+}, 30000);
+setInterval(() => { if (!document.hidden) loadEvents(); }, 60000);
+paintMute(); wake(); load();
+</script>
+</body>
+</html>

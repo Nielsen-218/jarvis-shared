@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Trainer</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: grid; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  .bar { display: flex; align-items: center; gap: var(--s-2); }
+  .bar h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  .ds-tabs { display: flex; gap: var(--s-1); } .ds-tabs .ds-tab { flex: 1; }
+  main { max-width: 760px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-8) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  section { display: grid; gap: var(--s-3); } [hidden] { display: none !important; }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+  .head b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .hero h2 { font: 600 var(--fs-xl)/var(--lh-xl) var(--font-display); letter-spacing: -0.01em; }
+  .hero .ds-btn.primary { min-height: 56px; font-size: var(--fs-md); font-weight: 600; }
+  .why { display: grid; grid-template-columns: auto 1fr; gap: var(--s-2) var(--s-3); align-items: start; padding: var(--s-3);
+    border-radius: var(--r-2); background: var(--warn-soft); border: 1px solid var(--line-1); }
+  .why p { font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .why.calm { background: var(--bg-2); }
+  .rows { display: grid; gap: var(--s-2); }
+  .ex { display: grid; grid-template-columns: 1fr auto; gap: 2px var(--s-3); align-items: center; padding: var(--s-3); border-radius: var(--r-2);
+    background: var(--bg-2); border: 1px solid var(--line-1); }
+  .ex b { font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui); } .ex small { grid-column: 1 / -1; color: var(--text-2); font-size: var(--fs-xs); }
+  .ex .num { font: 600 var(--fs-sm)/1 var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-1); white-space: nowrap; }
+  .ex.done { opacity: .62; } .ex.now { border-color: var(--accent); }
+  .meter { height: 6px; border-radius: var(--r-pill); background: var(--bg-3); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width var(--dur-base) var(--ease-out); }
+  .live { grid-template-columns: 1fr; }
+  .live .top { display: grid; grid-template-columns: 96px 1fr; gap: var(--s-3); align-items: center; }
+  svg.fig { width: 96px; height: 96px; background: var(--bg-2); border-radius: var(--r-3); border: 1px solid var(--line-1); }
+  .live h2 { font: 600 var(--fs-xl)/var(--lh-xl) var(--font-display); letter-spacing: -0.01em; }
+  .target { font: 600 var(--fs-2xl)/1.15 var(--font-display); font-variant-numeric: tabular-nums; }
+  .target small { font: 400 var(--fs-sm)/1 var(--font-ui); color: var(--text-2); }
+  .dots { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .dot { min-width: 56px; padding: var(--s-2); border-radius: var(--r-2); border: 1px solid var(--line-2); text-align: center;
+    font: 500 var(--fs-xs)/1.3 var(--font-mono); color: var(--text-3); }
+  .dot.done { background: var(--ok-soft); border-color: transparent; color: var(--ok); } .dot.now { border-color: var(--accent); color: var(--text-1); }
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .step { display: grid; gap: var(--s-1); } .step label { color: var(--text-2); font-size: var(--fs-xs); }
+  .step div { display: grid; grid-template-columns: var(--tap) 1fr var(--tap); gap: var(--s-1); }
+  .step input { text-align: center; font: 600 var(--fs-lg)/1 var(--font-mono); min-width: 0; padding: 0 var(--s-1); }
+  .chips { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+  .row2 { display: flex; gap: var(--s-2); flex-wrap: wrap; } .row2 > .ds-btn { flex: 1; }
+  .rest { display: grid; grid-template-columns: 72px 1fr auto; gap: var(--s-3); align-items: center; padding: var(--s-3); border-radius: var(--r-3);
+    background: var(--accent-soft); }
+  .rest svg { width: 72px; height: 72px; transform: rotate(-90deg); }
+  .rest circle { fill: none; stroke-width: 6; } .rest .trk { stroke: var(--bg-3); } .rest .arc { stroke: var(--accent); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .rest b { font: 600 var(--fs-2xl)/1 var(--font-mono); font-variant-numeric: tabular-nums; } .rest span { display: block; color: var(--text-2); font-size: var(--fs-xs); }
+  .cues p { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--text-2); } .cues b { color: var(--text-1); }
+  .pick { display: grid; gap: var(--s-2); } .pick > span { color: var(--text-2); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; }
+  .day { display: grid; grid-template-columns: 44px 1fr auto; gap: var(--s-3); align-items: center; padding: var(--s-3); border-radius: var(--r-2);
+    background: var(--bg-2); border: 1px solid var(--line-1); }
+  .day.today { border-color: var(--accent); } .day > b { font: 600 var(--fs-sm)/1 var(--font-mono); color: var(--text-2); }
+  .day p { font: 500 var(--fs-sm)/var(--lh-sm) var(--font-ui); } .day small { color: var(--text-2); font-size: var(--fs-xs); display: block; }
+  details.day { display: block; } details.day summary { display: grid; grid-template-columns: 44px 1fr auto; gap: var(--s-3); align-items: center; cursor: pointer; list-style: none; }
+  details.day summary::-webkit-details-marker { display: none; } details.day ul { margin: var(--s-3) 0 0 56px; padding: 0; list-style: none; display: grid; gap: var(--s-1); }
+  details.day li { display: flex; justify-content: space-between; gap: var(--s-3); font-size: var(--fs-xs); color: var(--text-2); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .stat { padding: var(--s-3); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); }
+  .stat b { display: block; font: 600 var(--fs-xl)/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--text-2); font-size: var(--fs-xs); }
+  .lift { display: grid; grid-template-columns: 1fr 120px; gap: var(--s-3); align-items: center; padding: var(--s-3); border-radius: var(--r-2);
+    background: var(--bg-2); border: 1px solid var(--line-1); }
+  .lift b { font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui); display: block; } .lift span { font: 600 var(--fs-lg)/1.2 var(--font-mono); }
+  .lift small { color: var(--text-2); font-size: var(--fs-xs); margin-left: var(--s-2); } .lift small.up { color: var(--ok); } .lift small.down { color: var(--danger); }
+  svg.spark { width: 120px; height: 44px; } svg.spark path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  svg.spark circle { fill: var(--accent); }
+  .vol { display: grid; grid-template-columns: 92px 1fr 34px; gap: var(--s-2); align-items: center; font-size: var(--fs-xs); color: var(--text-2); }
+  .vol svg { width: 100%; height: 14px; } .vol .band { fill: var(--accent-soft); } .vol .trk { fill: var(--bg-3); }
+  .vol .val { fill: var(--accent); } .vol .val.low { fill: var(--warn); } .vol .val.high { fill: var(--danger); }
+  .vol b { font: 600 var(--fs-xs)/1 var(--font-mono); color: var(--text-1); text-align: right; }
+  svg.weeks { width: 100%; height: 96px; } svg.weeks rect { fill: var(--accent); } svg.weeks rect.zero { fill: var(--bg-3); }
+  svg.weeks text { fill: var(--text-3); font: 500 10px var(--font-mono); text-anchor: middle; }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: var(--s-1) var(--s-4); font-size: var(--fs-sm); } .kv span { color: var(--text-2); }
+  .check { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); } .check label { display: grid; gap: var(--s-1); color: var(--text-2); font-size: var(--fs-xs); }
+  .busy { display: flex; align-items: center; gap: var(--s-2); color: var(--text-2); font-size: var(--fs-sm); }
+  a.plain { color: var(--accent); text-decoration: none; }
+  .drills { display: grid; gap: var(--s-2); } .phase { color: var(--text-3); font: 500 var(--fs-xs)/1 var(--font-ui); text-transform: uppercase; letter-spacing: .06em; margin-top: var(--s-1); }
+  details.drill { border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); }
+  details.drill[open] { border-color: var(--accent); } details.drill.checked { opacity: .62; }
+  details.drill summary { display: grid; grid-template-columns: 56px 1fr auto; gap: var(--s-3); align-items: center; padding: var(--s-2) var(--s-3); cursor: pointer; list-style: none; min-height: var(--tap); }
+  details.drill summary::-webkit-details-marker { display: none; }
+  details.drill summary b { font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui); display: block; } details.drill summary small { color: var(--text-2); font-size: var(--fs-xs); }
+  details.drill svg.fig { width: 56px; height: 56px; border-radius: var(--r-2); }
+  details.drill .cues { padding: 0 var(--s-3) var(--s-3); display: grid; gap: var(--s-1); }
+  .chart { width: 100%; height: auto; display: block; } .chart .grid { stroke: var(--line-1); stroke-width: 1; }
+  .chart .ln { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; } .chart .pt { fill: var(--accent); }
+  .chart.ok .ln { stroke: var(--ok); } .chart.ok .pt { fill: var(--ok); } .chart.warn .ln { stroke: var(--warn); } .chart.warn .pt { fill: var(--warn); }
+  .chart .goal { stroke: var(--ok); stroke-width: 1; stroke-dasharray: 4 4; } .chart text { fill: var(--text-3); font: 500 10px var(--font-mono); } .chart text.g { fill: var(--ok); text-anchor: end; }
+  .chart text.r { text-anchor: end; fill: var(--text-2); }
+  .chart-empty { color: var(--text-2); font-size: var(--fs-sm); }
+  details.wk > summary { cursor: pointer; font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); list-style: none; display: flex; gap: var(--s-2); align-items: center; }
+  details.wk > summary::-webkit-details-marker { display: none; } details.wk > summary span:first-child { flex: 1; } details.wk[open] > summary { margin-bottom: var(--s-3); }
+  @media (max-width: 380px) { .steps { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body class="ds">
+<header>
+  <div class="bar">
+    <a class="ds-iconbtn" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+    <h1>Trainer</h1>
+    <button class="ds-iconbtn" id="voice" aria-pressed="false" aria-label="Spoken cues" title="Spoken cues"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path id="voice-on" d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg></button>
+  </div>
+  <nav class="ds-tabs" role="tablist">
+    <button class="ds-tab on" role="tab" aria-selected="true" data-tab="today">Today</button>
+    <button class="ds-tab" role="tab" aria-selected="false" data-tab="week">Week</button>
+    <button class="ds-tab" role="tab" aria-selected="false" data-tab="progress">Progress</button>
+    <button class="ds-tab" role="tab" aria-selected="false" data-tab="more">More</button>
+  </nav>
+</header>
+<main>
+  <section id="today"><div class="ds-card"><div class="ds-skeleton" style="height:24px;width:55%"></div><div class="ds-skeleton" style="height:14px;width:80%"></div><div class="ds-skeleton" style="height:56px"></div></div>
+    <div class="ds-card"><div class="ds-skeleton" style="height:44px"></div><div class="ds-skeleton" style="height:44px"></div><div class="ds-skeleton" style="height:44px"></div></div></section>
+  <section id="week" hidden></section>
+  <section id="progress" hidden></section>
+  <section id="more" hidden></section>
+</main>
+<div class="ds-toast" id="toast" hidden></div>
+<audio id="player" hidden></audio>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let D = null, C = null, busy = false, lastMessage = "", showCues = false, editPlan = false, pickRir = null, draft = {};
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+let voiceOn = store.get("fit:voice", false);
+let choice = store.get("fit:choice", { goal: "", days_per_week: 4, session_minutes: 60, equipment: "gym", training_months: 6 });
+
+async function api(path, body) {
+  const opts = { method: body ? "POST" : "GET", headers: { Authorization: `Bearer ${token}` } };
+  if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg, kind) { const t = $("#toast"); t.textContent = msg; t.className = "ds-toast " + (kind || ""); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 4200); }
+const empty = (title, text, more = "") => `<div class="ds-card"><div class="ds-empty"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg><b>${esc(title)}</b><p>${esc(text)}</p>${more}</div></div>`;
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+const num = v => Number.isFinite(+v) ? String(+(+v).toFixed(1)) : "";
+
+/* ---------- animated how-to figures (stick figures; poses interpolated) ---------- */
+// joints: h head, n neck, s shoulder, p hip, eA/hA arm, kA/fA leg; the B side defaults to A
+const ST = { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[50,40], hA:[50,52], kA:[50,70], fA:[50,90] };
+const FRONT = { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[45,39], hA:[43,51], eB:[55,39], hB:[57,51], kA:[46,70], fA:[45,90], kB:[54,70], fB:[55,90] };
+const POSES = {
+  stand: [ST],
+  deadlift: [
+    { h:[64,38], n:[59,43], s:[57,44], p:[38,54], eA:[57,57], hA:[57,69], kA:[52,70], fA:[47,90], prop:"bar" },
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[51,40], hA:[52,54], kA:[50,70], fA:[48,90], prop:"bar" }],
+  rdl: [
+    { h:[50,16], n:[50,24], s:[50,27], p:[48,52], eA:[51,40], hA:[52,54], kA:[51,70], fA:[48,90], prop:"bar" },
+    { h:[68,36], n:[63,40], s:[60,42], p:[40,52], eA:[60,55], hA:[60,66], kA:[46,71], fA:[46,90], prop:"bar" }],
+  hand_release_pushup: [
+    { h:[82,54], n:[76,58], s:[72,60], p:[44,66], eA:[72,71], hA:[72,82], kA:[29,72], fA:[14,78] },
+    { h:[84,74], n:[78,77], s:[72,78], p:[44,79], eA:[64,72], hA:[72,82], kA:[29,80], fA:[14,81] },
+    { h:[84,74], n:[78,77], s:[72,78], p:[44,79], eA:[64,64], hA:[78,64], kA:[29,80], fA:[14,81] },
+    { h:[84,74], n:[78,77], s:[72,78], p:[44,79], eA:[64,72], hA:[72,82], kA:[29,80], fA:[14,81] }],
+  scap_pushup: [
+    { h:[82,55], n:[76,59], s:[72,61], p:[44,66], eA:[72,71], hA:[72,82], kA:[29,72], fA:[14,78] },
+    { h:[82,59], n:[76,63], s:[72,65], p:[44,67], eA:[72,73], hA:[72,82], kA:[29,72], fA:[14,78] }],
+  plank: [
+    { h:[82,62], n:[77,66], s:[72,68], p:[45,70], eA:[72,82], hA:[84,82], kA:[30,74], fA:[14,80] },
+    { h:[82,63], n:[77,67], s:[72,69], p:[45,69], eA:[72,82], hA:[84,82], kA:[30,74], fA:[14,80] }],
+  side_plank: [
+    { h:[80,52], n:[75,57], s:[72,60], p:[46,70], eA:[72,74], hA:[82,82], eB:[60,58], hB:[50,64], kA:[30,78], fA:[14,86] },
+    { h:[80,54], n:[75,59], s:[72,62], p:[46,76], eA:[72,74], hA:[82,82], eB:[60,62], hB:[50,70], kA:[30,81], fA:[14,86] }],
+  run: [
+    { h:[54,16], n:[53,24], s:[52,27], p:[49,52], eA:[60,38], hA:[66,32], eB:[42,40], hB:[40,50], kA:[60,66], fA:[56,84], kB:[44,70], fB:[30,78] },
+    { h:[54,18], n:[53,26], s:[52,29], p:[49,54], eA:[42,40], hA:[40,50], eB:[60,38], hB:[66,32], kA:[44,70], fA:[30,78], kB:[60,66], fB:[56,84] }],
+  high_knees: [
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[58,36], hA:[62,28], eB:[44,40], hB:[42,50], kA:[64,52], fA:[60,70], kB:[50,70], fB:[50,90] },
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[44,40], hA:[42,50], eB:[58,36], hB:[62,28], kA:[50,70], fA:[50,90], kB:[64,52], fB:[60,70] }],
+  sled_drag: [
+    { h:[40,26], n:[42,33], s:[44,35], p:[52,58], eA:[60,48], hA:[72,56], kA:[58,74], fA:[54,90], kB:[46,74], fB:[48,90], prop:"sled" },
+    { h:[38,26], n:[40,33], s:[42,35], p:[50,58], eA:[58,48], hA:[70,56], kA:[44,74], fA:[46,90], kB:[56,74], fB:[52,90], prop:"sled" }],
+  lateral_shuffle: [
+    { h:[50,22], n:[50,30], s:[50,33], p:[50,56], eA:[40,42], hA:[38,52], eB:[60,42], hB:[62,52], kA:[40,72], fA:[34,90], kB:[60,72], fB:[66,90] },
+    { h:[56,22], n:[56,30], s:[56,33], p:[56,56], eA:[46,42], hA:[44,52], eB:[66,42], hB:[68,52], kA:[52,72], fA:[50,90], kB:[62,72], fB:[64,90] }],
+  kettlebell_carry: [
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[50,40], hA:[50,54], kA:[56,70], fA:[54,90], kB:[46,71], fB:[40,88], prop:"bells" },
+    { h:[50,17], n:[50,25], s:[50,28], p:[50,53], eA:[50,41], hA:[50,55], kA:[46,71], fA:[40,88], kB:[56,70], fB:[54,90], prop:"bells" }],
+  squat: [
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[56,34], hA:[54,30], kA:[52,70], fA:[50,90], prop:"bell" },
+    { h:[56,36], n:[54,43], s:[53,45], p:[38,64], eA:[60,52], hA:[58,48], kA:[60,70], fA:[50,90], prop:"bell" }],
+  lunge: [
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[50,40], hA:[50,52], kA:[56,70], fA:[54,90], kB:[46,70], fB:[44,90] },
+    { h:[50,30], n:[50,38], s:[50,41], p:[50,64], eA:[50,54], hA:[50,64], kA:[66,72], fA:[66,90], kB:[40,86], fB:[26,90] }],
+  bulgarian_split_squat: [
+    { h:[54,16], n:[54,24], s:[54,27], p:[52,52], eA:[54,40], hA:[54,52], kA:[60,70], fA:[62,90], kB:[40,66], fB:[28,64], prop:"box" },
+    { h:[56,30], n:[56,38], s:[55,41], p:[50,66], eA:[55,54], hA:[55,65], kA:[66,72], fA:[64,90], kB:[40,84], fB:[28,64], prop:"box" }],
+  kettlebell_swing: [
+    { h:[64,40], n:[59,44], s:[57,45], p:[40,56], eA:[52,58], hA:[44,68], kA:[52,72], fA:[48,90], prop:"bell" },
+    { h:[50,16], n:[50,24], s:[50,27], p:[50,52], eA:[62,30], hA:[74,30], kA:[50,70], fA:[48,90], prop:"bell" }],
+  row: [
+    { h:[66,34], n:[61,38], s:[58,40], p:[38,52], eA:[58,54], hA:[58,66], kA:[48,70], fA:[44,90], prop:"bell" },
+    { h:[66,34], n:[61,38], s:[58,40], p:[38,52], eA:[46,46], hA:[52,54], kA:[48,70], fA:[44,90], prop:"bell" }],
+  chest_supported_row: [
+    { h:[66,40], n:[61,44], s:[58,46], p:[36,64], eA:[58,60], hA:[58,72], kA:[30,80], fA:[24,90], prop:"inclinepad" },
+    { h:[66,40], n:[61,44], s:[58,46], p:[36,64], eA:[46,52], hA:[52,60], kA:[30,80], fA:[24,90], prop:"inclinepad" }],
+  dead_bug: [
+    { h:[22,78], n:[28,78], s:[30,78], p:[56,78], eA:[30,64], hA:[30,52], kA:[56,62], fA:[70,62] },
+    { h:[22,78], n:[28,78], s:[30,78], p:[56,78], eA:[18,70], hA:[8,66], eB:[30,64], hB:[30,52], kA:[56,62], fA:[70,62], kB:[72,76], fB:[90,76] }],
+  bench_press: [
+    { h:[20,66], n:[26,66], s:[30,66], p:[56,66], eA:[30,56], hA:[30,46], kA:[70,66], fA:[74,90], prop:"bench" },
+    { h:[20,66], n:[26,66], s:[30,66], p:[56,66], eA:[22,60], hA:[30,58], kA:[70,66], fA:[74,90], prop:"bench" }],
+  incline_press: [
+    { h:[26,48], n:[31,52], s:[34,54], p:[56,70], eA:[36,42], hA:[38,32], kA:[70,68], fA:[74,90], prop:"incline" },
+    { h:[26,48], n:[31,52], s:[34,54], p:[56,70], eA:[26,52], hA:[34,48], kA:[70,68], fA:[74,90], prop:"incline" }],
+  chest_fly: [
+    { h:[20,66], n:[26,66], s:[30,66], p:[56,66], eA:[30,52], hA:[30,42], kA:[70,66], fA:[74,90], prop:"bench" },
+    { h:[20,66], n:[26,66], s:[30,66], p:[56,66], eA:[38,58], hA:[46,62], eB:[22,58], hB:[14,62], kA:[70,66], fA:[74,90], prop:"bench" }],
+  cable_crossover: [
+    { ...FRONT, eA:[38,44], hA:[30,56], eB:[62,44], hB:[70,56], prop:"cables" },
+    { ...FRONT, eA:[42,34], hA:[48,28], eB:[58,34], hB:[52,28], prop:"cables" }],
+  dip: [
+    { h:[56,16], n:[54,24], s:[52,27], p:[46,50], eA:[52,38], hA:[52,48], kA:[50,64], fA:[44,74], prop:"bars" },
+    { h:[60,30], n:[57,37], s:[55,40], p:[46,62], eA:[44,42], hA:[52,48], kA:[50,76], fA:[44,86], prop:"bars" }],
+  pull_up: [
+    { h:[50,30], n:[50,37], s:[50,40], p:[50,64], eA:[44,26], hA:[42,12], eB:[56,26], hB:[58,12], kA:[51,78], fA:[49,90], prop:"pullbar" },
+    { h:[50,14], n:[50,21], s:[50,24], p:[50,48], eA:[40,26], hA:[42,12], eB:[60,26], hB:[58,12], kA:[52,64], fA:[49,78], prop:"pullbar" }],
+  lateral_raise: [
+    { ...FRONT, eA:[45,39], hA:[44,51], eB:[55,39], hB:[56,51], prop:"db2" },
+    { ...FRONT, eA:[39,29], hA:[28,30], eB:[61,29], hB:[72,30], prop:"db2" }],
+  overhead_press: [
+    { ...FRONT, eA:[38,34], hA:[40,24], eB:[62,34], hB:[60,24], prop:"db2" },
+    { ...FRONT, eA:[42,15], hA:[44,4], eB:[58,15], hB:[56,4], prop:"db2" }],
+  face_pull: [
+    { ...ST, eA:[62,28], hA:[74,26], prop:"cable" },
+    { ...ST, eA:[42,24], hA:[54,20], prop:"cable" }],
+  rear_delt_fly: [
+    { h:[66,36], n:[61,40], s:[58,42], p:[38,54], eA:[59,54], hA:[60,64], kA:[48,71], fA:[44,90], prop:"bell" },
+    { h:[66,36], n:[61,40], s:[58,42], p:[38,54], eA:[58,36], hA:[58,28], kA:[48,71], fA:[44,90], prop:"bell" }],
+  curl: [
+    { ...ST, eA:[49,40], hA:[49,54], prop:"bell" },
+    { ...ST, eA:[49,40], hA:[58,31], prop:"bell" }],
+  overhead_triceps: [
+    { ...ST, eA:[54,12], hA:[42,20], prop:"bell" },
+    { ...ST, eA:[54,12], hA:[56,2], prop:"bell" }],
+  pushdown: [
+    { ...ST, eA:[52,40], hA:[62,32], prop:"cable2" },
+    { ...ST, eA:[52,40], hA:[56,55], prop:"cable2" }],
+  calf_raise: [
+    { ...ST, prop:"step" },
+    { h:[50,11], n:[50,19], s:[50,22], p:[50,47], eA:[50,35], hA:[50,47], kA:[50,65], fA:[50,85], prop:"step" }],
+  hanging_leg_raise: [
+    { h:[50,22], n:[50,29], s:[50,32], p:[50,56], eA:[46,20], hA:[44,8], eB:[54,20], hB:[56,8], kA:[51,72], fA:[50,88], prop:"pullbar" },
+    { h:[48,22], n:[48,29], s:[48,32], p:[50,56], eA:[46,20], hA:[44,8], eB:[54,20], hB:[56,8], kA:[64,50], fA:[78,44], prop:"pullbar" }],
+  hip_thrust: [
+    { h:[16,62], n:[21,64], s:[26,66], p:[40,82], eA:[32,74], hA:[38,80], kA:[58,70], fA:[62,90], prop:"lowbench" },
+    { h:[16,62], n:[21,64], s:[26,66], p:[44,66], eA:[34,70], hA:[42,68], kA:[60,64], fA:[62,90], prop:"lowbench" }],
+  glute_bridge: [
+    { h:[14,86], n:[20,86], s:[24,86], p:[46,86], eA:[30,88], hA:[38,88], kA:[60,72], fA:[66,90] },
+    { h:[14,86], n:[20,86], s:[24,86], p:[46,72], eA:[30,88], hA:[38,88], kA:[62,66], fA:[66,90] }],
+  hip_abduction: [
+    { ...FRONT },
+    { ...FRONT, kB:[62,68], fB:[71,86] }],
+  glute_kickback: [
+    { h:[79,61], n:[72,64], s:[69,66], p:[44,69], eA:[68,78], hA:[66,88], kA:[44,88], fA:[25,88], kB:[44,88], fB:[25,88] },
+    { h:[79,61], n:[72,64], s:[69,66], p:[44,69], eA:[68,78], hA:[66,88], kA:[25,70], fA:[6,69], kB:[44,88], fB:[25,88] }],
+  step_up: [
+    { h:[58,19], n:[55,27], s:[54,30], p:[48,54], eA:[56,42], hA:[58,53], kA:[66,60], fA:[66,80], kB:[45,72], fB:[43,90], prop:"stepbox" },
+    { h:[66,6], n:[66,14], s:[66,17], p:[65,42], eA:[66,29], hA:[66,42], kA:[66,61], fA:[66,80], kB:[67,61], fB:[53,74], prop:"stepbox" }],
+  jumping_jack: [
+    { ...FRONT, eA:[46,39], hA:[45,51], eB:[54,39], hB:[55,51], kA:[48,70], fA:[47,90], kB:[52,70], fB:[53,90] },
+    { ...FRONT, h:[50,13], n:[50,21], s:[50,24], p:[50,49], eA:[40,16], hA:[44,4], eB:[60,16], hB:[56,4], kA:[42,68], fA:[36,88], kB:[58,68], fB:[64,88] }],
+  arm_circles: [
+    { ...FRONT, eA:[38,26], hA:[26,24], eB:[62,26], hB:[74,24] },
+    { ...FRONT, eA:[38,28], hA:[27,34], eB:[62,28], hB:[73,34] },
+    { ...FRONT, eA:[38,30], hA:[26,30], eB:[62,30], hB:[74,30] },
+    { ...FRONT, eA:[38,26], hA:[28,20], eB:[62,26], hB:[72,20] }],
+  leg_swing: [
+    { ...ST, eA:[42,36], hA:[34,40], kB:[60,66], fB:[72,78], prop:"post" },
+    { ...ST, eA:[42,36], hA:[34,40], kB:[42,70], fB:[30,84], prop:"post" }],
+  worlds_greatest_stretch: [
+    { h:[64,44], n:[60,48], s:[58,50], p:[44,64], eA:[64,62], hA:[66,74], eB:[60,62], hB:[62,82], kA:[66,74], fA:[66,90], kB:[30,82], fB:[16,90] },
+    { h:[60,40], n:[57,46], s:[56,48], p:[44,64], eA:[58,34], hA:[60,20], eB:[60,62], hB:[62,82], kA:[66,74], fA:[66,90], kB:[30,82], fB:[16,90] }],
+  inchworm: [
+    { ...ST },
+    { h:[58,74], n:[56,68], s:[55,66], p:[48,48], eA:[56,76], hA:[58,88], kA:[48,70], fA:[48,90] },
+    { h:[82,62], n:[77,66], s:[72,68], p:[45,72], eA:[72,78], hA:[72,88], kA:[30,80], fA:[14,88] },
+    { h:[58,74], n:[56,68], s:[55,66], p:[48,48], eA:[56,76], hA:[58,88], kA:[48,70], fA:[48,90] }],
+  band_pull_apart: [
+    { ...FRONT, eA:[46,32], hA:[45,30], eB:[54,32], hB:[55,30], prop:"band" },
+    { ...FRONT, eA:[38,29], hA:[26,30], eB:[62,29], hB:[74,30], prop:"band" }],
+  cat_cow: [
+    { h:[80,68], n:[74,62], s:[68,60], p:[36,60], eA:[68,72], hA:[68,84], kA:[36,84], fA:[16,86] },
+    { h:[82,56], n:[76,62], s:[68,66], p:[36,66], eA:[68,76], hA:[68,84], kA:[36,84], fA:[16,86] }],
+  couch_stretch: [
+    { h:[52,30], n:[52,38], s:[52,41], p:[48,64], eA:[56,52], hA:[62,60], kA:[66,74], fA:[66,90], kB:[34,88], fB:[22,70], prop:"wall" },
+    { h:[53,29], n:[53,37], s:[53,40], p:[50,64], eA:[57,52], hA:[63,60], kA:[66,74], fA:[66,90], kB:[34,88], fB:[22,70], prop:"wall" }],
+  hamstring_stretch: [
+    { h:[50,52], n:[48,58], s:[46,60], p:[34,86], eA:[54,68], hA:[64,80], kA:[56,86], fA:[80,86] },
+    { h:[60,62], n:[56,66], s:[53,68], p:[34,86], eA:[62,76], hA:[74,84], kA:[56,86], fA:[80,86] }],
+  doorway_pec_stretch: [
+    { ...ST, eA:[60,27], hA:[60,12], prop:"door" },
+    { h:[47,16], n:[47,24], s:[47,27], p:[48,52], eA:[60,27], hA:[60,12], kA:[50,70], fA:[50,90], prop:"door" }],
+  childs_pose: [
+    { h:[64,80], n:[58,78], s:[54,76], p:[32,80], eA:[70,82], hA:[86,86], kA:[44,88], fA:[22,90] },
+    { h:[66,82], n:[60,80], s:[56,79], p:[30,82], eA:[72,84], hA:[88,87], kA:[44,88], fA:[22,90] }],
+  pigeon: [
+    { h:[52,46], n:[51,54], s:[50,57], p:[46,80], eA:[56,68], hA:[60,86], kA:[62,88], fA:[44,90], kB:[28,90], fB:[8,90] },
+    { h:[62,64], n:[58,68], s:[56,70], p:[46,82], eA:[68,78], hA:[76,88], kA:[62,88], fA:[44,90], kB:[28,90], fB:[8,90] }],
+  calf_stretch: [
+    { h:[64,22], n:[62,30], s:[60,32], p:[50,54], eA:[70,30], hA:[80,28], kA:[60,70], fA:[62,90], kB:[38,72], fB:[28,90], prop:"wall2" },
+    { h:[66,23], n:[64,31], s:[62,33], p:[52,55], eA:[72,31], hA:[80,28], kA:[62,70], fA:[62,90], kB:[38,72], fB:[28,90], prop:"wall2" }],
+  box_breathing: [
+    { h:[16,84], n:[22,84], s:[26,84], p:[54,84], eA:[34,86], hA:[42,86], kA:[70,86], fA:[86,86] },
+    { h:[16,83], n:[22,82], s:[26,82], p:[54,84], eA:[34,84], hA:[42,82], kA:[70,86], fA:[86,86] }],
+};
+POSES.ramp_sets = POSES.deadlift; POSES.sprint = POSES.run; POSES.farmer_carry = POSES.kettlebell_carry;
+const SPEED = { run: 520, sprint: 300, high_knees: 300, lateral_shuffle: 420, plank: 1600, side_plank: 1600, hand_release_pushup: 650,
+  sled_drag: 600, kettlebell_carry: 560, farmer_carry: 560, jumping_jack: 450, arm_circles: 300, leg_swing: 600, inchworm: 1100,
+  couch_stretch: 2600, hamstring_stretch: 2600, doorway_pec_stretch: 2600, childs_pose: 2600, pigeon: 2600, calf_stretch: 2600,
+  box_breathing: 4000, cat_cow: 1600, worlds_greatest_stretch: 1500, scap_pushup: 900, calf_raise: 1100 };
+const ALIAS = { pushup:"hand_release_pushup", hrp:"hand_release_pushup", mdl:"deadlift", drag:"sled_drag", shuffle:"lateral_shuffle",
+  carry:"kettlebell_carry", interval:"run", tempo:"run", mile:"run", jog:"run", stride:"sprint", swing:"kettlebell_swing",
+  deadbug:"dead_bug", hinge:"deadlift", romanian:"rdl", stiffleg:"rdl", incline:"incline_press", bench:"bench_press",
+  chestpress:"bench_press", fly:"chest_fly", flye:"chest_fly", crossover:"cable_crossover", lowtohigh:"cable_crossover",
+  pec:"chest_fly", splitsquat:"bulgarian_split_squat", bulgarian:"bulgarian_split_squat", pullup:"pull_up", chinup:"pull_up",
+  pulldown:"pull_up", latpull:"pull_up", lateral:"lateral_raise",   // not bare "lat": it matched "FLAT dumbbell press"
+  dumbbellpress:"bench_press", flatpress:"bench_press", floorpress:"bench_press", dbpress:"bench_press", sideraise:"lateral_raise", shoulderpress:"overhead_press",
+  ohp:"overhead_press", militarypress:"overhead_press", facepull:"face_pull", reardelt:"rear_delt_fly", reversefly:"rear_delt_fly",
+  bicep:"curl", skull:"overhead_triceps", overheadext:"overhead_triceps", triceps:"pushdown", pressdown:"pushdown",
+  calf:"calf_raise", legraise:"hanging_leg_raise", kneeraise:"hanging_leg_raise", sideplank:"side_plank", glutebridge:"glute_bridge",
+  hipthrust:"hip_thrust", askip:"high_knees", highknee:"high_knees", jumpingjack:"jumping_jack", hipflexor:"couch_stretch",
+  quadstretch:"couch_stretch", hamstring:"hamstring_stretch", childs:"childs_pose", breath:"box_breathing", walk:"run",
+  core:"dead_bug", rampup:"ramp_sets", buildup:"ramp_sets", warmupset:"ramp_sets", goblet:"squat",
+  abduction:"hip_abduction", abductor:"hip_abduction", kickback:"glute_kickback", stepup:"step_up",
+  tricepskickback:"pushdown", tricepkickback:"pushdown" };   // a triceps kickback is an arm move, not the glute kickback
+const MATCH = [...Object.keys(POSES).filter(k => k !== "stand").map(k => [k.replace(/_/g, ""), k]),
+               ...Object.entries(ALIAS)].sort((a, b) => b[0].length - a[0].length);
+function exKey(name) {
+  const raw = String(name || "");
+  if (POSES[raw]) return raw;
+  const n = raw.toLowerCase().replace(/[^a-z]/g, "");
+  for (const [m, k] of MATCH) if (n.includes(m)) return k;
+  return "";
+}
+const full = p => ({ ...p, eB: p.eB || p.eA, hB: p.hB || p.hA, kB: p.kB || p.kA, fB: p.fB || p.fA });
+const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const figures = [];
+function figure(key) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 100 100"); svg.setAttribute("class", "fig"); svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", (D && D.exercises[key] ? D.exercises[key].name : "exercise") + " animation");
+  svg.innerHTML = `<line x1="4" y1="91" x2="96" y2="91" stroke="#22384d" stroke-width="2"/><g class="prop"></g><g class="b" stroke-linecap="round" fill="none"></g><circle class="hd" r="6" fill="#4fc3f7"/>`;
+  figures.push({ svg, poses: (POSES[key] || POSES.stand).map(full), period: SPEED[key] || 900 });
+  return svg;
+}
+function propSvg(kind, P) {
+  const C = "#ffb300", G = "#22384d";
+  switch (kind) {
+    case "bar": return `<circle cx="${P.hA[0]}" cy="${P.hA[1] + 2}" r="9" fill="none" stroke="${C}" stroke-width="3"/>`;
+    case "bell": case "bells": return `<circle cx="${P.hA[0]}" cy="${P.hA[1] + 4.5}" r="4.5" fill="${C}"/>`;
+    case "db2": return `<circle cx="${P.hA[0]}" cy="${P.hA[1]}" r="4" fill="${C}"/><circle cx="${P.hB[0]}" cy="${P.hB[1]}" r="4" fill="${C}"/>`;
+    case "bench": return `<rect x="14" y="70" width="50" height="5" rx="2" fill="${G}"/><rect x="26" y="75" width="4" height="15" fill="${G}"/><rect x="50" y="75" width="4" height="15" fill="${G}"/><rect x="${P.hA[0] - 10}" y="${P.hA[1] - 2}" width="20" height="4" rx="2" fill="${C}"/>`;
+    case "lowbench": return `<rect x="6" y="68" width="26" height="5" rx="2" fill="${G}"/><rect x="16" y="73" width="4" height="17" fill="${G}"/><rect x="${P.p[0] - 9}" y="${P.p[1] - 5}" width="18" height="4" rx="2" fill="${C}"/>`;
+    case "incline": return `<line x1="22" y1="44" x2="58" y2="76" stroke="${G}" stroke-width="5" stroke-linecap="round"/><line x1="52" y1="76" x2="52" y2="90" stroke="${G}" stroke-width="4"/><circle cx="${P.hA[0]}" cy="${P.hA[1]}" r="4" fill="${C}"/>`;
+    case "inclinepad": return `<line x1="30" y1="74" x2="62" y2="50" stroke="${G}" stroke-width="5" stroke-linecap="round"/><line x1="40" y1="68" x2="40" y2="90" stroke="${G}" stroke-width="4"/><circle cx="${P.hA[0]}" cy="${P.hA[1] + 4}" r="4.5" fill="${C}"/>`;
+    case "bars": return `<line x1="40" y1="48" x2="66" y2="48" stroke="${G}" stroke-width="4" stroke-linecap="round"/><line x1="62" y1="48" x2="62" y2="90" stroke="${G}" stroke-width="3"/>`;
+    case "pullbar": return `<line x1="26" y1="10" x2="74" y2="10" stroke="${G}" stroke-width="4" stroke-linecap="round"/>`;
+    case "sled": return `<rect x="78" y="80" width="16" height="9" rx="2" fill="${C}"/><line x1="${P.hA[0]}" y1="${P.hA[1]}" x2="80" y2="84" stroke="${C}" stroke-width="1.5"/>`;
+    case "box": return `<rect x="14" y="64" width="22" height="27" rx="2" fill="${G}"/>`;
+    case "step": return `<rect x="36" y="88" width="28" height="3" fill="${G}"/>`;
+    case "stepbox": return `<rect x="58" y="80" width="26" height="11" rx="2" fill="${G}"/>`;
+    case "cable": return `<rect x="92" y="6" width="4" height="84" fill="${G}"/><line x1="92" y1="24" x2="${P.hA[0]}" y2="${P.hA[1]}" stroke="${C}" stroke-width="1.5"/>`;
+    case "cable2": return `<line x1="64" y1="4" x2="${P.hA[0]}" y2="${P.hA[1]}" stroke="${C}" stroke-width="1.5"/>`;
+    case "cables": return `<line x1="8" y1="88" x2="${P.hA[0]}" y2="${P.hA[1]}" stroke="${C}" stroke-width="1.2"/><line x1="92" y1="88" x2="${P.hB[0]}" y2="${P.hB[1]}" stroke="${C}" stroke-width="1.2"/>`;
+    case "band": return `<line x1="${P.hA[0]}" y1="${P.hA[1]}" x2="${P.hB[0]}" y2="${P.hB[1]}" stroke="${C}" stroke-width="2"/>`;
+    case "post": return `<rect x="28" y="30" width="4" height="60" fill="${G}"/>`;
+    case "wall": return `<rect x="10" y="40" width="5" height="51" fill="${G}"/>`;
+    case "wall2": return `<rect x="82" y="8" width="5" height="83" fill="${G}"/>`;
+    case "door": return `<rect x="62" y="4" width="5" height="87" fill="${G}"/>`;
+    default: return "";
+  }
+}
+function draw(f, now) {
+  const n = f.poses.length, pos = (now / f.period) % n, i = Math.floor(pos), t = pos - i;
+  const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;  // ease in-out
+  const a = f.poses[i % n], b = f.poses[(i + 1) % n], P = {};
+  for (const k of Object.keys(a)) if (Array.isArray(a[k])) P[k] = lerp(a[k], b[k] || a[k], e);
+  const seg = (u, v, c, w) => `<line x1="${P[u][0]}" y1="${P[u][1]}" x2="${P[v][0]}" y2="${P[v][1]}" stroke="${c}" stroke-width="${w}"/>`;
+  const back = "#2f6f8f", front = "#4fc3f7";
+  f.svg.querySelector(".b").innerHTML =
+    seg("s","eB",back,4) + seg("eB","hB",back,4) + seg("p","kB",back,5) + seg("kB","fB",back,5) +
+    seg("n","p",front,5) + seg("p","kA",front,5) + seg("kA","fA",front,5) + seg("s","eA",front,4) + seg("eA","hA",front,4);
+  const hd = f.svg.querySelector(".hd"); hd.setAttribute("cx", P.h[0]); hd.setAttribute("cy", P.h[1]);
+  f.svg.querySelector(".prop").innerHTML = propSvg(a.prop, P);
+}
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function loop(now) { for (const f of figures) if (f.svg.isConnected) draw(f, reduce ? 0 : now); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+
+
+/* ---------- sound, voice, rest timer ---------- */
+let actx = null;
+function unlock() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+function beep() {
+  try { unlock(); [0, .22, .44].forEach(t => { const o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = 880; g.gain.value = .12; o.connect(g); g.connect(actx.destination); o.start(actx.currentTime + t); o.stop(actx.currentTime + t + .14); }); } catch (e) {}
+  if (navigator.vibrate) navigator.vibrate([180, 90, 180]);
+}
+async function speak(text) {
+  if (!voiceOn || !text) return;
+  try { const out = await api("/api/say", { text: String(text).slice(0, 400) }); if (out.audio) { const a = $("#player"); a.src = out.audio; await a.play(); } } catch (e) {}
+}
+let rest = store.get("fit:rest", null), restT = null;
+function startRest(seconds, label) { if (!seconds) return; rest = { end: Date.now() + seconds * 1000, total: seconds, label: label || "" }; store.set("fit:rest", rest); tickRest(); }
+function stopRest() { rest = null; store.set("fit:rest", null); clearTimeout(restT); const el = $("#rest"); if (el) el.hidden = true; }
+function tickRest() {
+  clearTimeout(restT);
+  const el = $("#rest");
+  if (!rest) { if (el) el.hidden = true; return; }
+  const left = Math.max(0, Math.round((rest.end - Date.now()) / 1000));
+  if (left <= 0) { const was = rest; stopRest(); if (Date.now() - was.end < 5000) { beep(); speak(was.label ? "Rest is over. " + was.label : "Rest is over."); toast("Rest is over. Go."); } return; }
+  if (el) { el.hidden = false; el.querySelector("b").textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+    el.querySelector(".arc").style.strokeDashoffset = String(201 * (1 - left / Math.max(rest.total, 1))); }
+  restT = setTimeout(tickRest, 500);
+}
+
+/* ---------- small charts (inline SVG) ---------- */
+function spark(points) {
+  const v = points.map(p => p[1]); if (v.length < 2) return `<svg class="spark" viewBox="0 0 120 44" role="img" aria-label="One session so far"><circle cx="60" cy="22" r="3"/></svg>`;
+  const lo = Math.min(...v), hi = Math.max(...v), span = hi - lo || 1;
+  const xy = v.map((y, i) => [6 + 108 * i / (v.length - 1), 38 - 32 * (y - lo) / span]);
+  return `<svg class="spark" viewBox="0 0 120 44" role="img" aria-label="Estimated max from ${Math.round(v[0])} to ${Math.round(v[v.length - 1])} pounds"><path d="M${xy.map(p => p.map(n => n.toFixed(1)).join(" ")).join(" L")}"/><circle cx="${xy[xy.length - 1][0]}" cy="${xy[xy.length - 1][1].toFixed(1)}" r="3"/></svg>`;
+}
+function volumeRow(name, value, range) {
+  const max = Math.max(24, value), x = n => (100 * n / max).toFixed(1), cls = value < range[0] ? "low" : value > range[1] ? "high" : "";
+  return `<div class="vol"><span>${esc(name)}</span><svg viewBox="0 0 100 14" preserveAspectRatio="none" role="img" aria-label="${esc(name)} ${num(value)} sets, target ${range[0]} to ${range[1]}">
+    <rect class="trk" x="0" y="4" width="100" height="6" rx="3"/><rect class="band" x="${x(range[0])}" y="1" width="${x(range[1] - range[0])}" height="12" rx="2"/>
+    <rect class="val ${cls}" x="0" y="4" width="${x(value)}" height="6" rx="3"/></svg><b>${num(value)}</b></div>`;
+}
+function weekBars(weeks) {
+  const max = Math.max(1, ...weeks.map(w => w.sets)), bw = 100 / weeks.length;
+  return `<svg class="weeks" viewBox="0 0 100 48" preserveAspectRatio="none" role="img" aria-label="Sets logged per week">${weeks.map((w, i) => {
+    const h = w.sets ? Math.max(2, 34 * w.sets / max) : 1.5;
+    return `<rect class="${w.sets ? "" : "zero"}" x="${(i * bw + bw * .18).toFixed(1)}" y="${(36 - h).toFixed(1)}" width="${(bw * .64).toFixed(1)}" height="${h.toFixed(1)}" rx="1.2"/><text x="${(i * bw + bw / 2).toFixed(1)}" y="46" font-size="5">${esc(w.week.slice(5).replace("-", "/"))}</text>`;
+  }).join("")}</svg>`;
+}
+
+/* ---------- Garmin charts and warm-up / cool-down ---------- */
+const mmss = sec => `${Math.floor(sec / 60)}:${String(Math.round(sec % 60)).padStart(2, "0")}`;
+function lineChart(points, { tone = "", invert = false, fmt = v => num(v), goal = null, label = "chart" } = {}) {
+  if (!points.length) return `<p class="chart-empty">Nothing yet.</p>`;
+  const W = 320, H = 150, pad = 26, ys = points.map(p => p.y);
+  let lo = Math.min(...ys, goal ?? Infinity), hi = Math.max(...ys, goal ?? -Infinity);
+  if (lo === hi) { lo -= 1; hi += 1; }
+  const X = i => pad + (points.length === 1 ? (W - 2 * pad) / 2 : i * (W - 2 * pad) / (points.length - 1));
+  const Y = v => { const t = (v - lo) / (hi - lo); return invert ? pad / 2 + t * (H - pad * 1.5) : H - pad - t * (H - pad * 1.5); };
+  const d = points.map((p, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(p.y).toFixed(1)}`).join("");
+  const dots = points.map((p, i) => `<circle class="pt" cx="${X(i).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="3"><title>${esc(p.x)}: ${esc(fmt(p.y))}</title></circle>`).join("");
+  const g = goal != null ? `<line class="goal" x1="${pad}" x2="${W - pad}" y1="${Y(goal).toFixed(1)}" y2="${Y(goal).toFixed(1)}"/><text class="g" x="${W - pad}" y="${(Y(goal) - 4).toFixed(1)}">goal ${esc(fmt(goal))}</text>` : "";
+  const last = points[points.length - 1];
+  return `<svg class="chart ${tone}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}, latest ${esc(fmt(last.y))}"><line class="grid" x1="${pad}" x2="${W - pad}" y1="${H - pad}" y2="${H - pad}"/>${g}<path class="ln" d="${d}"/>${dots}
+    <text x="${pad}" y="${H - 6}">${esc(points[0].x)}</text><text class="r" x="${W - pad}" y="${H - 6}">${esc(last.x)} · ${esc(fmt(last.y))}</text></svg>`;
+}
+function garminCards() {
+  const g = D.garmin || {}, daily = (g.daily || []).slice(-1)[0] || {}, sleepRow = (g.sleep || []).slice(-1)[0], hrvRow = (g.hrv || []).slice(-1)[0];
+  const runs = (g.runs || []).filter(r => r.pace_s_per_mi).slice(-20).map(r => ({ x: String(r.date).slice(5), y: r.pace_s_per_mi }));
+  const byDay = {}; (g.sleep || []).forEach(r => byDay[r.date] = r.hours); (D.checkins || []).forEach(c => { if (c.sleep_hours) byDay[c.date] = c.sleep_hours; });
+  const sleep = Object.entries(byDay).sort().slice(-21).map(([d, h]) => ({ x: d.slice(5), y: h }));
+  const hrv = (g.hrv || []).filter(h => h.last_night).slice(-21).map(h => ({ x: String(h.date).slice(5), y: h.last_night }));
+  const energy = (D.checkins || []).filter(c => c.energy).slice(-21).map(c => ({ x: c.date.slice(5), y: c.energy }));
+  const hasGarmin = runs.length || hrv.length || (g.sleep || []).length || g.vo2max || (g.daily || []).length;
+  if (!hasGarmin && !sleep.length && !energy.length) return empty("No Garmin data yet", "Ask Jarvis to sync your Garmin and run pace, sleep and HRV charts appear here.");
+  const stat = (v, l) => v ? `<div class="stat"><b>${esc(v)}</b><span>${esc(l)}</span></div>` : "";
+  const stats = [stat(g.vo2max, "VO2 max"), stat(g.race_predictions && g.race_predictions["2mile_est"], "2-mile estimate"), stat(daily.resting_hr, "resting heart rate"),
+                 stat(daily.body_battery, "body battery"), stat(sleepRow && sleepRow.hours && sleepRow.hours + " h", "last night"), stat(hrvRow && hrvRow.last_night && hrvRow.last_night + " ms", "HRV last night")].join("");
+  const card = (title, sub, body) => `<div class="ds-card"><div class="head"><b>${title}</b><span class="sub">${sub}</span></div>${body}</div>`;
+  return (stats ? `<div class="stats">${stats}</div>` : "")
+    + card("Run pace", "min per mile, lower is faster", runs.length ? lineChart(runs, { invert: true, fmt: mmss, label: "Run pace" }) : `<p class="chart-empty">No runs from Garmin yet.</p>`)
+    + card("Sleep", "hours, check-ins fill the gaps", sleep.length ? lineChart(sleep, { tone: "ok", goal: 7, label: "Sleep hours" }) : `<p class="chart-empty">No sleep logged yet.</p>`)
+    + card("HRV", "ms, last night", hrv.length ? lineChart(hrv, { tone: "warn", label: "Heart rate variability" }) : `<p class="chart-empty">No HRV from Garmin yet.</p>`)
+    + (energy.length ? card("Energy", "morning check-in, 1 to 5", lineChart(energy, { tone: "ok", label: "Energy" })) : "");
+}
+const drillKey = () => "fit:drills:" + ((C && C.today && C.today.date) || "");
+function howTo(i) {
+  if (!i) return "";
+  const rows = [`<b>How:</b> ${esc(i.cues)}`];
+  if (i.muscles) rows.push(`<b>Works:</b> ${esc(i.muscles)}`);
+  if (i.mistakes) rows.push(`<b>Avoid:</b> ${esc(i.mistakes)}`);
+  if (i.tall) rows.push(`<b>For your height:</b> ${esc(i.tall)}`);
+  return rows.map(r => `<p>${r}</p>`).join("");
+}
+function drillRow(d, id, done) {
+  const key = exKey(d.exercise) || d.exercise, info = D.exercises[key], name = info ? info.name : d.exercise;
+  return `<details class="drill ${done[id] ? "checked" : ""}"><summary><span data-fig="${esc(key)}"></span><div><b>${esc(name)}</b><small>${esc(d.dose)}</small></div>
+    <button type="button" class="ds-chip" data-act="drill" data-id="${esc(id)}" aria-pressed="${!!done[id]}" aria-label="Mark ${esc(name)} done">Done</button></summary>
+    <div class="cues">${info ? howTo(info) : `<p>${esc(d.dose)}</p>`}</div></details>`;
+}
+function warmupCard(t) {
+  const w = t.warmup || []; if (!w.length) return "";
+  const done = store.get(drillKey(), {});
+  return `<div class="ds-card"><div class="head"><b>Warm-up</b><span class="sub">about 10 min · tap a move for how-to</span></div><div class="drills">`
+    + w.map((ph, pi) => `<div class="phase">${esc(ph.phase)}</div>` + (ph.items || []).map((d, di) => drillRow(d, `w${pi}.${di}`, done)).join("")).join("") + `</div></div>`;
+}
+function cooldownCard(t) {
+  const c = t.cooldown || []; if (!c.length) return "";
+  const done = store.get(drillKey(), {}), flow = !(t.items || []).length;
+  return `<div class="ds-card"><div class="head"><b>${flow ? "Mobility flow" : "Cool-down"}</b><span class="sub">slow breathing · tap a move for how-to</span></div><div class="drills">`
+    + c.map((d, di) => drillRow(d, `c.${di}`, done)).join("") + `</div></div>`;
+}
+function mountFigures(el) { el.querySelectorAll("[data-fig]").forEach(n => n.replaceWith(figure(n.dataset.fig))); }
+function allWeeksCard() {
+  const p = D.plan || {}; if (!p.weeks || !p.weeks.length) return "";
+  const cur = (C && C.today && C.today.week) || 1;
+  return `<div class="ds-card"><div class="head"><b>The whole plan</b><span class="sub">${plural(p.weeks.length, "week")} · every training day has a warm-up and cool-down</span></div>`
+    + p.weeks.map(w => `<details class="wk" ${w.week === cur ? "open" : ""}><summary><span>Week ${esc(w.week)} · ${esc(w.focus || "")}</span>${w.week === cur ? `<span class="ds-badge accent">Now</span>` : ""}</summary><div class="rows">`
+      + (w.days || []).map(d => `<details class="day"><summary><b>${esc(String(d.day).slice(0, 3))}</b><div><p>${esc(d.title)}</p>${d.why ? `<small>${esc(d.why)}</small>` : ""}</div><span class="sub">${plural((d.items || []).length, "move")}</span></summary>
+        <ul>${(d.items || []).map(i => `<li><span>${esc(i.exercise)}</span><span>${esc([i.sets && i.reps ? i.sets + " x " + i.reps : "", i.target].filter(Boolean).join(" · "))}</span></li>`).join("")}</ul></details>`).join("") + `</div></details>`).join("") + `</div>`;
+}
+
+/* ---------- today ---------- */
+const itemKey = it => POSES[it.key] ? it.key : exKey(it.exercise);
+const repsOf = it => it.hi && (it.kind || "lift") === "lift" ? `${it.lo}-${it.hi}` : (it.reps || "");
+const targetOf = it => `${it.count || it.sets} x ${repsOf(it)}${it.load ? ` @ ${num(it.load)} lb` : ""}`;
+function whyCards(list, calm) {
+  return (list || []).filter(a => a.reason).map(a => `<div class="why ${calm ? "calm" : ""}"><span class="ds-badge ${calm ? "" : "warn"}">${esc({ readiness: "Recovery", deload: "Lighter week", reentry: "Welcome back", moved: "Moved", dropped: "Dropped", load: "Load", swap: "Swap", plan: "Plan" }[a.kind] || "Changed")}</span><p>${esc(a.reason)}</p></div>`).join("");
+}
+function exRow(it, i, now) {
+  const done = (it.done || []).length;
+  return `<div class="ex ${it.skipped || done >= it.count ? "done" : ""} ${i === now ? "now" : ""}"><b>${esc(it.exercise)}</b><span class="num">${esc(targetOf(it))}</span>
+    <small>${it.skipped ? "Skipped" : done ? `${done} of ${plural(it.count, "set")} done` : it.last ? `Last time ${esc(it.last)}` : esc(it.target || "")}${it.planned_sets ? ` · planned ${esc(it.planned_sets)} sets` : ""}${it.rest ? ` · rest ${esc(it.rest)}` : ""}</small></div>`;
+}
+const chipRow = (name, options, value) => `<div class="chips" data-pick="${name}">${options.map(([v, label]) => `<button class="ds-chip" aria-pressed="${String(v) === String(value)}" data-v="${esc(v)}">${esc(label)}</button>`).join("")}</div>`;
+function planForm(first) {
+  const goals = Object.entries(C ? C.goals : {}).map(([k, v]) => [k, v[0].toUpperCase() + v.slice(1)]);
+  return `<div class="ds-card"><div class="head"><b>${first ? "Tell me what you are training for" : "Change the plan"}</b></div>
+    ${first ? `<p class="sub">I will build the week from your goal, your days and your equipment, set the loads from what you log, and tell you why whenever I change something.</p>` : ""}
+    <div class="pick"><span>Goal</span>${chipRow("goal", goals, choice.goal)}</div>
+    <div class="pick"><span>Days a week</span>${chipRow("days_per_week", [2, 3, 4, 5, 6].map(n => [n, n]), choice.days_per_week)}</div>
+    <div class="pick"><span>Minutes a session</span>${chipRow("session_minutes", [30, 45, 60, 75, 90].map(n => [n, n]), choice.session_minutes)}</div>
+    <div class="pick"><span>Equipment</span>${chipRow("equipment", [["gym", "Full gym"], ["home dumbbells bench bands", "Home dumbbells"], ["bodyweight only", "Bodyweight"]], choice.equipment)}</div>
+    <div class="pick"><span>Experience</span>${chipRow("training_months", [[6, "Under a year"], [24, "1 to 3 years"], [48, "Over 3 years"]], choice.training_months)}</div>
+    <div class="row2"><button class="ds-btn primary" data-act="build" ${choice.goal ? "" : "disabled"}>${busy ? `<span class="ds-spinner"></span>` : ""}Build my plan</button>${first ? "" : `<button class="ds-btn ghost" data-act="cancel-plan">Cancel</button>`}</div>
+    <p class="sub">Or just say it: "my goal is to build muscle, four days a week".</p></div>`;
+}
+function checkinCard() {
+  if (D.checkin) { const c = D.checkin; return `<div class="ds-card"><div class="head"><b>Morning check-in</b><span class="ds-badge ok">Done</span></div>
+    <p class="sub">${[c.sleep_hours ? `Slept ${c.sleep_hours} h` : "", c.energy ? `energy ${c.energy}/5` : "", c.soreness ? `soreness ${c.soreness}/5` : ""].filter(Boolean).join(" · ") || "Saved."}</p></div>`; }
+  return `<form class="ds-card" id="checkin"><div class="head"><b>Morning check-in</b><span class="sub">10 seconds; it sets today's volume</span></div>
+    <div class="check"><label>Sleep (hours)<input class="ds-input" name="sleep_hours" type="number" inputmode="decimal" min="0" max="14" step="0.5" placeholder="7.5"></label>
+    <label>Energy 1-5<input class="ds-input" name="energy" type="number" inputmode="numeric" min="1" max="5" placeholder="4"></label>
+    <label>Soreness 1-5<input class="ds-input" name="soreness" type="number" inputmode="numeric" min="1" max="5" placeholder="2"></label></div>
+    <button class="ds-btn" type="submit">Save check-in</button></form>`;
+}
+function liveCard(t) {
+  const n = t.session.current, items = t.items, total = items.reduce((a, i) => a + (i.skipped ? 0 : i.count), 0), done = items.reduce((a, i) => a + (i.skipped ? 0 : Math.min(i.count, i.done.length)), 0);
+  if (n === null || n === undefined) return `<div class="ds-card hero"><h2>Every set is logged</h2><div class="meter"><i style="width:100%"></i></div><button class="ds-btn primary wide" data-act="end">Finish and see the summary</button></div>`;
+  const it = items[n], lift = (it.kind || "lift") === "lift", prev = it.done[it.done.length - 1] || {}, info = D.exercises[itemKey(it)];
+  if (draft.key !== it.key + ":" + it.done.length) draft = { key: it.key + ":" + it.done.length, weight: prev.weight || it.load || "", reps: prev.reps || it.lo || "" };
+  const dots = Array.from({ length: it.count }, (_, i) => { const s = it.done[i]; return `<div class="dot ${s ? "done" : i === it.done.length ? "now" : ""}">${s ? (s.weight ? `${num(s.weight)}<br>x ${s.reps}` : lift ? `${s.reps} reps` : "done") : `Set ${i + 1}`}</div>`; }).join("");
+  return `<div class="ds-card live"><div class="head"><span class="ds-badge accent">Exercise ${n + 1} of ${items.length}</span><span class="sub" style="flex:1;text-align:right">${done} of ${plural(total, "set")}</span></div>
+    <div class="meter"><i style="width:${total ? Math.round(100 * done / total) : 0}%"></i></div>
+    <div class="top"><span id="fig"></span><div><h2>${esc(it.exercise)}</h2><p class="sub">Set ${it.done.length + 1} of ${it.count}${it.rest ? ` · rest ${esc(it.rest)}` : ""}</p></div></div>
+    <div class="target">${esc(repsOf(it))}${lift ? " reps" : ""}${it.load ? ` <small>at</small> ${num(it.load)} <small>lb</small>` : ""}${!lift && it.target ? `<br><small>${esc(it.target)}</small>` : ""}</div>
+    ${it.last ? `<p class="sub">Last time: ${esc(it.last)}</p>` : ""}${it.note ? `<p class="sub">${esc(it.note)}</p>` : ""}
+    <div class="dots">${dots}</div>
+    <div class="rest" id="rest" hidden><svg viewBox="0 0 72 72" aria-hidden="true"><circle class="trk" cx="36" cy="36" r="32"/><circle class="arc" cx="36" cy="36" r="32" stroke-dasharray="201" stroke-dashoffset="0"/></svg>
+      <div role="timer" aria-live="off"><b>0:00</b><span>Rest</span></div><div class="row2"><button class="ds-btn sm" data-act="rest-more">+15 s</button><button class="ds-btn sm" data-act="rest-skip">Skip</button></div></div>
+    ${lift ? `<div class="steps">
+      <div class="step"><label for="w">Weight (lb)</label><div><button class="ds-btn" data-step="weight" data-by="-5" aria-label="Less weight">-</button><input class="ds-input" id="w" type="number" inputmode="decimal" step="2.5" min="0" value="${esc(draft.weight)}"><button class="ds-btn" data-step="weight" data-by="5" aria-label="More weight">+</button></div></div>
+      <div class="step"><label for="r">Reps</label><div><button class="ds-btn" data-step="reps" data-by="-1" aria-label="Fewer reps">-</button><input class="ds-input" id="r" type="number" inputmode="numeric" min="1" value="${esc(draft.reps)}"><button class="ds-btn" data-step="reps" data-by="1" aria-label="More reps">+</button></div></div></div>
+      <div class="pick"><span>Reps left in the tank</span>${chipRow("rir", [[0, "0"], [1, "1"], [2, "2"], [3, "3"], [4, "4+"]], pickRir)}</div>` : ""}
+    <div class="row2"><button class="ds-btn primary" data-act="set" style="min-height:56px;flex:3">${busy ? `<span class="ds-spinner"></span>` : ""}${lift ? "Log set" : "Done"}</button>${lift ? `<button class="ds-btn danger" data-act="fail">Missed</button>` : ""}</div>
+    <div class="row2"><button class="ds-btn sm" data-act="cues" aria-expanded="${showCues}">How to</button><button class="ds-btn sm" data-act="swap">Swap</button><button class="ds-btn sm" data-act="skip">Skip</button><button class="ds-btn sm ghost" data-act="end">End workout</button></div>
+    ${showCues && info ? `<div class="cues"><p><b>How:</b> ${esc(info.cues)}</p>${info.mistakes ? `<p><b>Avoid:</b> ${esc(info.mistakes)}</p>` : ""}${info.muscles ? `<p><b>Works:</b> ${esc(info.muscles)}</p>` : ""}</div>` : ""}
+  </div>
+  <div class="ds-card"><div class="head"><b>Today's session</b></div><div class="rows">${items.map((x, i) => exRow(x, i, n)).join("")}</div></div>`;
+}
+function renderToday() { figures.length = 0; renderTodayInner(); mountFigures($("#today")); }
+function renderTodayInner() {
+  const el = $("#today");
+  if (!C) { el.innerHTML = empty("The trainer is not available", "The plan data could not be loaded. Pull down to try again."); return; }
+  const t = C.today, said = lastMessage ? `<div class="why calm"><span class="ds-badge accent">Jarvis</span><p>${esc(lastMessage)}</p></div>` : "";
+  if (editPlan || t.status === "none" || t.status === "ended") {
+    el.innerHTML = (t.status === "ended" ? `<div class="why calm"><span class="ds-badge">Plan</span><p>Your last plan has ended. Build the next block and I will start it from the loads you logged.</p></div>` : "") + said + planForm(!editPlan);
+    return;
+  }
+  if (t.session.open) { el.innerHTML = said + liveCard(t) + warmupCard(t) + cooldownCard(t); const fig = $("#fig"); if (fig) { figures.length = 0; fig.replaceWith(figure(itemKey(t.items[t.session.current] || {}) || "stand")); } tickRest(); return; }
+  if (t.status !== "train") {
+    const next = C.week.find(d => d.date > t.date && d.title);
+    el.innerHTML = said + `<div class="ds-card hero"><div class="head"><span class="ds-badge">Week ${esc(t.week ?? "")}</span><span class="sub">${esc(t.focus || "")}</span></div><h2>${t.status === "before" ? "Your plan starts soon" : "Rest day"}</h2>
+      <p class="sub">${next ? `Next: ${esc(next.title)} on ${esc(next.day)}.` : "Nothing else is planned this week."} Walk, stretch, sleep well.</p>${whyCards(t.adjustments)}</div>` + cooldownCard({ ...t, items: [] }) + checkinCard();
+    return;
+  }
+  const finished = t.session.ended || t.items.every(i => i.skipped || i.done.length >= i.count);
+  el.innerHTML = said + `<div class="ds-card hero"><div class="head"><span class="ds-badge accent">Week ${esc(t.week)}</span><span class="sub" style="flex:1">${esc(t.focus || "")}</span><span class="sub">${plural(t.items.length, "exercise")} · about ${t.minutes} min</span></div>
+    <h2>${esc(t.title)}</h2>${t.why ? `<p class="sub">${esc(t.why)}</p>` : ""}
+    ${whyCards(t.adjustments)}
+    <button class="ds-btn primary wide" data-act="start">${busy ? `<span class="ds-spinner"></span>` : ""}${finished ? "Open today's workout again" : t.items.some(i => i.done.length) ? "Continue workout" : "Start workout"}</button>
+    <p class="sub">Hands busy? Say "start my workout", then report each set: "8 at 135".</p></div>`
+    + (D.checkin ? "" : checkinCard()) + warmupCard(t)
+    + `<div class="ds-card"><div class="head"><b>What you will do</b></div><div class="rows">${t.items.map((x, i) => exRow(x, i, -1)).join("")}</div></div>` + cooldownCard(t) + (D.checkin ? checkinCard() : "");
+}
+
+/* ---------- week, progress, more ---------- */
+function renderWeek() {
+  const el = $("#week");
+  if (!C || !C.week.length) { el.innerHTML = empty("No plan yet", "Set a goal on the Today tab and the week appears here."); return; }
+  const state = d => d.done ? `<span class="ds-badge ok">Done</span>` : d.today ? `<span class="ds-badge accent">Today</span>` : d.missed ? `<span class="ds-badge warn">Missed</span>` : d.moved_from ? `<span class="ds-badge">Moved</span>` : "";
+  el.innerHTML = `<div class="ds-card"><div class="head"><b>${esc(C.plan.name || "This week")}</b><button class="ds-btn sm" data-act="edit-plan">Change plan</button></div>
+    ${C.plan.why ? `<p class="sub">${esc(C.plan.why)}</p>` : ""}${(C.plan.notes || []).map(n => `<p class="sub">${esc(n)}</p>`).join("")}
+    <div class="rows">${C.week.map(d => d.title ? `<details class="day ${d.today ? "today" : ""}"><summary><b>${esc(d.day)}</b><div><p>${esc(d.title)}</p><small>${plural(d.items.length, "exercise")}${d.moved_from ? ` · moved from ${esc(d.moved_from)}` : ""}</small></div>${state(d)}</summary>
+      <ul>${d.items.map(i => `<li><span>${esc(i.exercise)}</span><span>${esc(i.sets)} x ${esc(i.reps)}</span></li>`).join("")}</ul></details>`
+      : `<div class="day ${d.today ? "today" : ""}"><b>${esc(d.day)}</b><div><p class="sub">Rest</p></div>${state(d)}</div>`).join("")}</div></div>
+    ${allWeeksCard()}<div class="ds-card"><div class="head"><b>Why it changed</b></div>${C.changes.length ? C.changes.map(c => `<div class="why calm"><span class="ds-badge">${esc(c.date.slice(5).replace("-", "/"))}</span><p>${esc(c.reason)}</p></div>`).join("") : `<p class="sub">Nothing has been changed in the last two weeks. When I move a session, trim a day or change a load, the reason is listed here.</p>`}</div>`;
+}
+function renderProgress() {
+  const el = $("#progress");
+  if (!C) { el.innerHTML = empty("No progress yet", "Log a set and your numbers appear here.") + garminCards(); return; }
+  const p = C.progress, a = D.achievements || {}, wk = p.weeks[p.weeks.length - 1] || { sets: 0 };
+  const stats = `<div class="stats"><div class="stat"><b>${a.streak ?? 0}</b><span>workout streak</span></div><div class="stat"><b>${wk.sets}</b><span>sets this week</span></div><div class="stat"><b>${p.sets_total}</b><span>sets logged</span></div></div>`;
+  if (!p.sets_total) { el.innerHTML = stats + empty("No sets logged yet", "Start a workout and log your sets. Estimated strength per lift and weekly volume per muscle show up after the first session.") + garminCards(); return; }
+  const muscles = Object.entries(p.volume).sort((x, y) => y[1] - x[1]);
+  el.innerHTML = stats + `<div class="ds-card"><div class="head"><b>Estimated strength</b><span class="sub">one-rep max, from reps and reps left</span></div>
+    ${p.lifts.length ? `<div class="rows">${p.lifts.map(l => `<div class="lift"><div><b>${esc(l.name)}</b><span>${Math.round(l.now)} lb</span><small class="${l.change > 0 ? "up" : l.change < 0 ? "down" : ""}">${l.change > 0 ? "+" : ""}${l.change ? num(l.change) : "first session"}</small></div>${spark(l.points)}</div>`).join("")}</div>` : `<p class="sub">Sets of 10 reps or fewer with a weight give an estimate. Nothing qualifies yet.</p>`}</div>
+    <div class="ds-card"><div class="head"><b>Hard sets this week</b><span class="sub">target ${p.range[0]} to ${p.range[1]} per muscle</span></div><div class="rows">${muscles.map(([m, v]) => volumeRow(m[0].toUpperCase() + m.slice(1), v, p.range)).join("")}</div></div>
+    <div class="ds-card"><div class="head"><b>Sets per week</b></div>${weekBars(p.weeks)}</div>` + garminCards();
+}
+function renderMore() {
+  const p = D.profile || {}, g = C ? C.goal : {}, t = (D.aft_tests || [])[D.aft_tests.length - 1];
+  const kv = rows => `<div class="kv">${rows.filter(r => r[1]).map(r => `<span>${esc(r[0])}</span><b>${esc(r[1])}</b>`).join("")}</div>`;
+  $("#more").innerHTML = `<div class="ds-card"><div class="head"><b>Your training profile</b><button class="ds-btn sm" data-act="edit-plan">Change</button></div>
+    ${kv([["Goal", C && g.key ? C.goals[g.key] : "Not set"], ["Days a week", g.days], ["Minutes", g.minutes], ["Level", g.level], ["Equipment", g.equipment || p.equipment], ["Test date", p.test_date], ["Injuries", p.injuries]])}</div>
+    <div class="ds-card"><div class="head"><b>Army Fitness Test</b>${t && t.total ? `<span class="ds-badge accent">${esc(t.total)} / 500</span>` : ""}</div>
+    ${t ? kv([["Date", t.date], ...Object.entries(t.points || {}).map(([k, v]) => [k.toUpperCase(), `${v} pts`])]) : `<p class="sub">No test logged yet. Tell Jarvis your results after the next one and the points show here.</p>`}</div>
+    ${D.readiness ? `<div class="ds-card"><div class="head"><b>Recovery</b></div><p class="sub">${esc(D.readiness)}</p></div>` : ""}
+    ${(D.health || []).length ? `<div class="ds-card"><div class="head"><b>Health notes</b></div>${D.health.map(h => `<p class="sub"><b>${esc(h.title || "")}</b> ${esc(h.text || h.note || "")}</p>`).join("")}</div>` : ""}
+    <div class="ds-card"><p class="sub">Food is half of it. <a class="plain" href="/kitchen.html">Open the kitchen</a></p></div>`;
+}
+function renderAll() { renderToday(); renderWeek(); renderProgress(); renderMore(); $("#voice").setAttribute("aria-pressed", voiceOn); $("#voice-on").style.display = voiceOn ? "" : "none"; }
+
+/* ---------- actions ---------- */
+function take(out) { if (out.data) { D = out.data; C = D.coach; } if (out.message) { lastMessage = out.message; speak(out.message); } }
+async function coach(body) {
+  if (busy) return null; busy = true; renderToday();
+  try { const out = await api("/api/fitness/coach", body); take(out); return out; }
+  catch (e) { toast(e.message, "danger"); return null; }
+  finally { busy = false; renderAll(); }
+}
+async function logSet(failed) {
+  const t = C.today, it = t.items[t.session.current]; if (!it) return;
+  const lift = (it.kind || "lift") === "lift", body = { action: "set", exercise: it.key, failed: !!failed };
+  if (lift) { body.weight_lbs = parseFloat(($("#w") || {}).value) || 0; body.reps = parseInt(($("#r") || {}).value) || 0; if (pickRir !== null) body.rir = +pickRir; if (failed) body.rir = 0;
+    if (!body.reps) { toast("Enter the reps first."); return; } }
+  const before = it.done.length, out = await coach(body);
+  if (!out) return;
+  const now = C.today.items.find(i => i.key === it.key);
+  if (now && now.done.length > before) { pickRir = null; const cur = C.today.items[C.today.session.current]; if (C.today.session.open && it.rest_s) startRest(it.rest_s, cur ? cur.exercise : ""); else stopRest(); }
+  else toast(out.message || "That set was not saved.");
+}
+document.addEventListener("click", async e => {
+  const tab = e.target.closest("[data-tab]");
+  if (tab) { document.querySelectorAll("[data-tab]").forEach(b => { const on = b === tab; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); }); ["today", "week", "progress", "more"].forEach(id => $("#" + id).hidden = id !== tab.dataset.tab); store.set("fit:tab", tab.dataset.tab); return; }
+  const chip = e.target.closest("[data-pick] [data-v]");
+  if (chip) { const name = chip.parentElement.dataset.pick; if (name === "rir") { pickRir = pickRir === chip.dataset.v ? null : chip.dataset.v; } else { choice[name] = /^\d+$/.test(chip.dataset.v) ? +chip.dataset.v : chip.dataset.v; store.set("fit:choice", choice); }
+    keepDraft(); renderToday(); return; }
+  const step = e.target.closest("[data-step]");
+  if (step) { const box = step.dataset.step === "weight" ? $("#w") : $("#r"); box.value = Math.max(0, (parseFloat(box.value) || 0) + +step.dataset.by); keepDraft(); return; }
+  const act = (e.target.closest("[data-act]") || {}).dataset; if (!act) return;
+  if (act.act === "drill") { e.preventDefault(); e.stopPropagation(); const k = drillKey(), m = store.get(k, {}); m[act.id] = !m[act.id]; store.set(k, m); renderToday(); return; }
+  unlock();
+  if (act.act === "start") { if (C.today.session.open) return; await coach({ action: "start" }); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (act.act === "set") await logSet(false);
+  else if (act.act === "fail") await logSet(true);
+  else if (act.act === "skip") { stopRest(); await coach({ action: "skip" }); }
+  else if (act.act === "swap") { stopRest(); await coach({ action: "swap" }); }
+  else if (act.act === "end") { stopRest(); await coach({ action: "end" }); }
+  else if (act.act === "cues") { showCues = !showCues; keepDraft(); renderToday(); }
+  else if (act.act === "rest-more") { if (rest) { rest.end += 15000; rest.total += 15; store.set("fit:rest", rest); tickRest(); } }
+  else if (act.act === "rest-skip") stopRest();
+  else if (act.act === "edit-plan") { editPlan = true; document.querySelector('[data-tab="today"]').click(); renderToday(); }
+  else if (act.act === "cancel-plan") { editPlan = false; renderToday(); }
+  else if (act.act === "build") { const out = await coach({ action: C.today.status === "none" ? "goal" : "plan", ...choice }); if (out) { editPlan = false; renderAll(); } }
+});
+function keepDraft() { const w = $("#w"), r = $("#r"); if (w) draft.weight = w.value; if (r) draft.reps = r.value; }
+document.addEventListener("input", e => { if (e.target.id === "w" || e.target.id === "r") keepDraft(); });
+document.addEventListener("submit", async e => {
+  if (e.target.id !== "checkin") return; e.preventDefault();
+  const f = new FormData(e.target), body = {}; for (const [k, v] of f) if (v !== "") body[k] = v;
+  if (!Object.keys(body).length) { toast("Fill in at least one number."); return; }
+  try { const out = await api("/api/fitness/checkin", body); take({ data: out.data }); toast("Check-in saved."); renderAll(); } catch (err) { toast(err.message, "danger"); }
+});
+$("#voice").addEventListener("click", () => { voiceOn = !voiceOn; store.set("fit:voice", voiceOn); unlock(); renderAll(); toast(voiceOn ? "Spoken cues on." : "Spoken cues off."); });
+
+async function load(quiet) {
+  try { D = await api("/api/fitness"); C = D.coach; if (!quiet || !document.activeElement || !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) { keepDraft(); renderAll(); } }
+  catch (e) { if (!quiet) $("#today").innerHTML = empty("Could not load the trainer", e.message, `<button class="ds-btn" onclick="load()">Try again</button>`); }
+}
+const wantTab = new URLSearchParams(location.search).get("tab") || "";
+const startTab = /^[a-z]+$/.test(wantTab) ? wantTab : store.get("fit:tab", "today"); if (startTab !== "today") { const b = document.querySelector(`[data-tab="${startTab}"]`); if (b) b.click(); }
+/* The Command Center window asks for the workout by voice or tray: begin today's session once the plan has loaded. */
+window.addEventListener("message", async e => {
+  if (e.source !== parent || e.origin !== location.origin || !e.data || e.data.jarvisCC !== "start-workout") return;
+  for (let i = 0; i < 30 && !C; i++) await new Promise(r => setTimeout(r, 300));
+  if (C && C.today && C.today.status === "train" && !C.today.session.open) { document.querySelector('[data-tab="today"]').click(); await coach({ action: "start" }); }
+});
+load();
+setInterval(() => { if (!busy && document.visibilityState === "visible" && C && C.today.session.open) load(true); }, 15000);   // sets said out loud show up here
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && D) load(true); });
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+</script>
+</body>
+</html>

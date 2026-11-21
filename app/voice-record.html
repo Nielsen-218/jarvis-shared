@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Voice Recording</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 640px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .head { display: flex; align-items: center; gap: var(--s-2); }
+  .head b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .meter { height: 6px; border-radius: var(--r-pill); background: var(--bg-3); overflow: hidden; }
+  .meter i { display: block; height: 100%; border-radius: inherit; background: var(--accent); transition: width var(--dur-base) var(--ease-out); }
+  .meter.ok i { background: var(--ok); }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); }
+  .stat { padding: var(--s-3); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-1); }
+  .stat b { display: block; font: 600 var(--fs-xl, 24px)/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--text-2); font-size: var(--fs-xs); }
+  .line { font: 600 28px/1.3 var(--font-display); text-align: center; padding: var(--s-4) 0; text-wrap: balance; overflow-wrap: anywhere; }
+  .stage { display: grid; justify-items: center; gap: var(--s-3); }
+  .rec { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--line-2); background: var(--bg-2); cursor: pointer;
+    display: grid; place-items: center; transition: border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+  .rec i { display: block; width: 44px; height: 44px; border-radius: 50%; background: var(--danger); transition: border-radius var(--dur-fast) var(--ease-out), width var(--dur-fast) var(--ease-out), height var(--dur-fast) var(--ease-out); }
+  .rec.on { border-color: var(--danger); } .rec.on i { width: 32px; height: 32px; border-radius: var(--r-1, 6px); }
+  .rec:active { transform: scale(.96); } .rec:disabled { opacity: .5; cursor: default; }
+  .rec:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .level { width: 100%; height: 10px; border-radius: var(--r-pill); background: var(--bg-3); overflow: hidden; }
+  .level i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--ok); }
+  .level.hot i { background: var(--danger); } .level.low i { background: var(--warn); }
+  .row2 { display: flex; gap: var(--s-2); flex-wrap: wrap; width: 100%; } .row2 > .ds-btn { flex: 1; }
+  audio { width: 100%; }
+  .tips { padding-left: var(--s-4); display: grid; gap: var(--s-1, 4px); color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .busy { display: flex; align-items: center; gap: var(--s-3); color: var(--text-2); font-size: var(--fs-sm); }
+  .ds-textarea { min-height: 88px; font-size: var(--fs-lg); }
+  @media (min-width: 620px) { .line { font-size: 34px; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="ds-iconbtn ghost" href="/languages.html" aria-label="Back to Languages"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Record my Creole voice</h1>
+  <span class="ds-badge accent" id="count-badge" hidden></span>
+</header>
+<main>
+  <section id="progress"><div class="ds-card"><div class="ds-skeleton" style="height:20px;width:50%"></div><div class="ds-skeleton" style="height:6px"></div></div></section>
+  <section id="work"><div class="ds-card"><div class="ds-skeleton" style="height:88px"></div><div class="ds-skeleton" style="height:96px;width:96px;border-radius:50%;justify-self:center"></div></div></section>
+  <section>
+    <div class="ds-card">
+      <div class="head"><b>For a clean recording</b></div>
+      <ul class="tips">
+        <li>A quiet room: no fan, television or music.</li>
+        <li>Hold the phone 15 to 20 cm from your mouth, a little to the side.</li>
+        <li>Read at your natural pace, the way you speak at home.</li>
+        <li>One sentence a take. Press, read, press again.</li>
+        <li>If a sentence is not written the way you would say it, tap Edit and fix it first.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<div class="ds-toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+// Clean training audio: the browser's echo canceller, noise suppressor and automatic gain all change the voice.
+const MIC = { audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 } };
+const POS = "jarvis_kreyol_record_pos";
+let D = null, pos = 0, editing = false, busy = false;
+let stream = null, recorder = null, chunks = [], take = null, started = 0, peak = 0, meterOn = false, analyser = null, ctx = null;
+
+async function api(path, body, method) {
+  const opts = { method: method || (body ? "POST" : "GET"), headers: { Authorization: `Bearer ${token}` } };
+  if (body instanceof FormData) opts.body = body;
+  else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg, kind) { const t = $("#toast"); t.textContent = msg; t.className = "ds-toast " + (kind || ""); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 5200); }
+const empty = (title, text, action) => `<div class="ds-card"><div class="ds-empty"><svg class="ds-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg><b>${esc(title)}</b><span>${esc(text)}</span>${action || ""}</div></div>`;
+const clock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+const cur = () => D.sentences[pos];
+const firstOpen = () => { const i = D.sentences.findIndex(s => !s.take || s.take.state === "rejected"); return i < 0 ? D.sentences.length : i; };
+
+function setData(data) { D = data; drawProgress(); }
+function go(i) { pos = Math.max(0, Math.min(i, D.sentences.length)); take = null; editing = false; try { localStorage.setItem(POS, String(pos)); } catch (e) {} draw(); }
+
+function drawProgress() {
+  // The script is the first goal (the recipe trains on 80 to 150 clips); twenty minutes is the long one.
+  const pct = Math.min(100, Math.round(Math.max(D.kept / D.total, D.seconds / D.target_seconds) * 100));
+  const badge = $("#count-badge"); badge.hidden = false; badge.textContent = `${D.kept} of ${D.total}`;
+  $("#progress").innerHTML = `<div class="ds-card">
+    <div class="stats"><div class="stat"><b>${D.kept}</b><span>clips kept</span></div><div class="stat"><b>${clock(D.seconds)}</b><span>recorded</span></div><div class="stat"><b>${Math.max(0, D.total - D.kept)}</b><span>still to read</span></div></div>
+    <div class="meter ${pct >= 100 ? "ok" : ""}"><i style="width:${Math.max(pct, 2)}%"></i></div>
+    <p class="sub">${pct >= 100 ? "That is enough to train the voice." : D.kept >= 80 ? "Enough for a first training already. Finishing the script makes the voice steadier." : "The whole script is the goal; the aim over time is about twenty minutes of your reading. You can stop any time and carry on later."}${D.pending ? ` ${D.pending} waiting to be checked on the PC.` : ""}</p></div>`;
+}
+
+function draw() {
+  if (pos >= D.sentences.length) {
+    $("#work").innerHTML = empty("That is the whole script", "Thank you. Every sentence has been read. You can go back and redo any of them.", `<button class="ds-btn" data-act="first">Back to the first sentence</button>`);
+    return;
+  }
+  const s = cur(), t = s.take, recording = recorder && recorder.state === "recording";
+  let body;
+  if (editing) {
+    body = `<div class="ds-field"><label for="edit">Write it the way you would say it</label><textarea class="ds-textarea" id="edit" lang="ht" spellcheck="false" autocapitalize="sentences">${esc(s.text)}</textarea></div>
+      <div class="row2"><button class="ds-btn" data-act="edit-cancel">Cancel</button>${s.edited ? `<button class="ds-btn" data-act="edit-reset">Use the original</button>` : ""}<button class="ds-btn primary" data-act="edit-save">Save</button></div>`;
+  } else if (take) {
+    body = `<div class="stage"><audio id="play" controls src="${take.url}"></audio>
+      <p class="sub">${take.seconds.toFixed(1)} seconds. Listen once: is every word clear?</p>
+      <div class="row2"><button class="ds-btn" data-act="redo">Redo</button><button class="ds-btn primary" data-act="keep" ${busy ? "disabled" : ""}>${busy ? "Saving" : take.failed ? "Try again" : "Keep"}</button></div></div>`;
+  } else {
+    const state = !t ? "" : t.state === "rejected" ? `<span class="ds-badge danger">Redo needed</span>` : t.state === "pending" ? `<span class="ds-badge">Saved, to be checked</span>` : `<span class="ds-badge ok">Kept, ${t.seconds.toFixed(1)} s</span>`;
+    body = `<div class="stage">
+      <div class="level" id="level" aria-hidden="true"><i></i></div>
+      <button class="rec ${recording ? "on" : ""}" id="rec" aria-label="${recording ? "Stop recording" : "Start recording"}" aria-pressed="${recording}"><i></i></button>
+      <p class="sub" id="hint" aria-live="polite">${recording ? "Recording. Tap again when you have read it." : t && t.state === "rejected" ? esc(t.reason) : t ? "Already recorded. Tap to record it again." : "Tap, read the sentence, tap again."}</p>
+      ${state}
+      <div class="row2"><button class="ds-btn" data-act="prev" ${pos ? "" : "disabled"}>Back</button>${t ? `<button class="ds-btn" data-act="listen">Listen</button><button class="ds-btn" data-act="delete">Delete</button>` : ""}<button class="ds-btn" data-act="next">${t ? "Next" : "Skip"}</button></div></div>`;
+  }
+  $("#work").innerHTML = `<div class="ds-card">
+    <div class="head"><b>Sentence ${pos + 1} of ${D.sentences.length}</b>${s.edited ? `<span class="ds-badge accent">Your wording</span>` : ""}${editing || recording ? "" : `<button class="ds-btn sm" data-act="edit">Edit</button>`}</div>
+    ${editing ? "" : `<p class="line" lang="ht">${esc(s.text)}</p>`}${body}</div><audio id="kept" hidden></audio>`;
+  if (editing) $("#edit").focus();
+}
+
+/* ---------- recording ---------- */
+function mime() {
+  for (const m of ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4", "audio/webm"]) if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m;
+  return "";
+}
+async function openMic() {
+  if (stream) return stream;
+  if (!navigator.mediaDevices || !window.MediaRecorder) throw new Error("This browser cannot record here. Open the page over the secure Jarvis address in Chrome or Safari.");
+  try { stream = await navigator.mediaDevices.getUserMedia(MIC); }
+  catch (e) { throw new Error(e && e.name === "NotAllowedError" ? "The microphone is blocked. Allow it for this page in the browser settings, then tap record again." : "I could not open the microphone."); }
+  try {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = ctx.createAnalyser(); analyser.fftSize = 1024;
+    ctx.createMediaStreamSource(stream).connect(analyser);
+  } catch (e) { analyser = null; }
+  return stream;
+}
+function meterLoop() {
+  if (!meterOn) return;
+  const bar = $("#level");
+  if (analyser && bar) {
+    const buf = new Float32Array(analyser.fftSize); analyser.getFloatTimeDomainData(buf);
+    let p = 0; for (const v of buf) p = Math.max(p, Math.abs(v));
+    peak = Math.max(peak, p);
+    bar.firstElementChild.style.width = Math.min(100, Math.round(Math.sqrt(p) * 100)) + "%";
+    bar.className = "level" + (p > 0.97 ? " hot" : p < 0.03 ? " low" : "");
+  }
+  requestAnimationFrame(meterLoop);
+}
+async function startRec() {
+  try { await openMic(); } catch (e) { toast(e.message, "danger"); return; }
+  if (ctx && ctx.state === "suspended") { try { await ctx.resume(); } catch (e) {} }
+  const type = mime();
+  chunks = []; peak = 0;
+  recorder = new MediaRecorder(stream, type ? { mimeType: type, audioBitsPerSecond: 128000 } : {});
+  recorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  recorder.onstop = () => {
+    meterOn = false;
+    closeMic();              // the microphone is only open while a take is being recorded
+    const seconds = (performance.now() - started) / 1000, blob = new Blob(chunks, { type: recorder.mimeType || type || "audio/webm" });
+    if (seconds < 0.8 || !blob.size) { toast("That was too short. Tap, read the whole sentence, then tap again.", "danger"); draw(); return; }
+    take = { blob, seconds, url: URL.createObjectURL(blob), hot: peak > 0.985, low: peak > 0 && peak < 0.05 };
+    draw();
+    if (take.hot) toast("That take was very loud. Hold the phone a little further away and redo it.", "danger");
+    else if (take.low) toast("That take was very quiet. Hold the phone a little closer and redo it.", "danger");
+  };
+  started = performance.now();
+  recorder.start();
+  meterOn = true; draw(); meterLoop();
+}
+function stopRec() { if (recorder && recorder.state === "recording") recorder.stop(); }
+function closeMic() { meterOn = false; if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; if (ctx) { try { ctx.close(); } catch (e) {} ctx = null; analyser = null; } }
+addEventListener("pagehide", closeMic);
+// The phone locks or he switches app: stop the take and let go of the microphone. The next record opens it again.
+document.addEventListener("visibilitychange", () => { if (document.hidden) { if (recorder && recorder.state === "recording") stopRec(); else closeMic(); } });
+
+async function keep() {
+  if (!take || busy) return;
+  const s = cur(), form = new FormData(), type = take.blob.type || "audio/webm";
+  form.append("sentence", s.id); form.append("seconds", take.seconds.toFixed(2));
+  form.append("audio", take.blob, "take." + (type.includes("ogg") ? "ogg" : type.includes("mp4") ? "mp4" : "webm"));
+  busy = true; draw();
+  try {
+    const out = await api("/api/voice-record/take", form);
+    URL.revokeObjectURL(take.url); busy = false; setData(out.data); go(pos + 1);
+  } catch (e) { busy = false; take.failed = true; draw(); toast(e.message + " Your take is still here.", "danger"); }   // never thrown away: Try again or Redo
+}
+
+async function act(name) {
+  const s = D && cur();
+  try {
+    if (name === "first") go(0);
+    else if (name === "prev") go(pos - 1);
+    else if (name === "next") go(pos + 1);
+    else if (name === "redo") { if (take) URL.revokeObjectURL(take.url); take = null; draw(); }
+    else if (name === "keep") await keep();
+    else if (name === "edit") { editing = true; draw(); }
+    else if (name === "edit-cancel") { editing = false; draw(); }
+    else if (name === "edit-save" || name === "edit-reset") {
+      const out = await api("/api/voice-record/sentence", { id: s.id, text: name === "edit-reset" ? "" : $("#edit").value });
+      editing = false; setData(out.data); draw(); toast(cur().take && cur().take.state === "rejected" ? "Saved. Record this sentence again with the new wording." : "Saved.");
+    }
+    else if (name === "listen") { const a = $("#kept"); a.src = `/api/voice-record/take/${encodeURIComponent(s.take.id)}/audio?t=${encodeURIComponent(token || "")}`; await a.play(); }
+    else if (name === "delete") { const out = await api(`/api/voice-record/take/${encodeURIComponent(s.take.id)}`, null, "DELETE"); setData(out.data); draw(); toast("Deleted."); }
+  } catch (e) { toast(e.message, "danger"); }
+}
+$("#work").addEventListener("click", e => {
+  if (e.target.closest("#rec")) { recorder && recorder.state === "recording" ? stopRec() : startRec(); return; }
+  const b = e.target.closest("[data-act]"); if (b && !b.disabled) act(b.dataset.act);
+});
+
+(async () => {
+  try {
+    setData(await api("/api/voice-record"));
+    let saved = -1; try { saved = parseInt(localStorage.getItem(POS) || "-1", 10); } catch (e) {}
+    const open = firstOpen();
+    // Resume where he left off: the sentence he was on when it still needs a take, else the first one that does.
+    pos = saved >= 0 && saved < D.sentences.length && (!D.sentences[saved].take || saved >= open) ? saved : open;
+    draw();
+  } catch (e) {
+    $("#progress").innerHTML = "";
+    $("#work").innerHTML = empty("The recording page is not ready", e.message, `<a class="ds-btn" href="/">Open Jarvis</a>`);
+  }
+})();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+</script>
+</body>
+</html>

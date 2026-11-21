@@ -1,0 +1,3564 @@
+[
+  {
+    "id": "ji-kowosol",
+    "name": "Ji Kowosòl",
+    "english": "Fresh soursop juice with milk and nutmeg",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 12 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.95,
+    "ingredients": [
+      {
+        "item": "soursop pulp, seeds removed (frozen is fine)",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "cold water",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar or honey",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Pull out every black seed from the soursop (they are mildly toxic; never blend them).",
+      "Blend pulp with the milk and water until smooth, 1 minute.",
+      "Add sugar, vanilla and nutmeg, blend 10 seconds, taste, and add sugar only if needed (ripe fruit needs almost none).",
+      "Strain through a coarse sieve if you want it silky. Serve over ice."
+    ],
+    "batch_tip": "Freeze pulp flat in bags on Sunday; a glass is blended in 2 minutes any day.",
+    "leftovers": "Leftover juice freezes into popsicles the toddler loves.",
+    "macros": {
+      "kcal": 165,
+      "protein_g": 6,
+      "carbs_g": 26,
+      "fat_g": 4,
+      "fiber_g": 2,
+      "sodium_mg": 60
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Pour his glass before any extra sugar and dilute it half and half with water if it seems strong. Leave out the added sugar completely for him; ripe soursop is already sweet. Check for seeds.",
+    "swap": "Swap half the milk for plain Greek yogurt and a splash of water for about 6 g more protein per glass.",
+    "pairs_with": [
+      "pen-patat",
+      "akasan",
+      "mamba-bannann-shake"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of creamy ivory-white soursop juice dusted with nutmeg, ice cubes and a few pieces of soursop fruit beside it served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-chadek",
+    "name": "Ji Chadèk",
+    "english": "Fresh grapefruit juice with ginger and honey",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "grapefruit, ruby red",
+        "qty": "5 large",
+        "grams": 1700,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 15,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cold water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Roll each grapefruit on the counter, halve and squeeze (a hand juicer takes 5 minutes).",
+      "Grate the ginger and press its juice out through a sieve.",
+      "Stir the juice, ginger juice, honey and water together. Taste: it should be tart, not sharp.",
+      "Serve over ice."
+    ],
+    "batch_tip": "Squeeze for 3 days at once; vitamin C holds in a closed jar in the fridge for 3 days.",
+    "leftovers": "Freeze leftover juice in an ice tray for cooling water or smoothies.",
+    "macros": {
+      "kcal": 120,
+      "protein_g": 2,
+      "carbs_g": 28,
+      "fat_g": 0,
+      "fiber_g": 1,
+      "sodium_mg": 5
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "quick"
+    ],
+    "toddler": "Dilute 1 part juice to 2 parts water and skip the honey (no honey under 12 months). Grapefruit interacts with some medications, so skip it if anyone takes a statin or blood-pressure medicine.",
+    "swap": "Replace the honey with a ripe banana blended in for a thicker, filling breakfast drink.",
+    "pairs_with": [
+      "ze-brouye-ayisyen",
+      "pen-ak-ze-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pink-orange grapefruit juice with a halved grapefruit and a slice of ginger beside it served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family"
+    ]
+  },
+  {
+    "id": "ji-zoranj",
+    "name": "Ji Zoranj",
+    "english": "Fresh-squeezed orange juice",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.2,
+    "ingredients": [
+      {
+        "item": "oranges for juicing (Valencia)",
+        "qty": "12 large",
+        "grams": 2400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime",
+        "qty": "1",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Roll each orange firmly, halve and squeeze. Strain out the seeds; keep the pulp if you like it.",
+      "Add the water and squeeze in the lime.",
+      "Chill 10 minutes, or pour over ice and serve right away."
+    ],
+    "batch_tip": "Squeeze Sunday night for Monday through Wednesday mornings.",
+    "leftovers": "Leftover juice is a great marinade base for chicken or pork (add epis).",
+    "macros": {
+      "kcal": 115,
+      "protein_g": 2,
+      "carbs_g": 26,
+      "fat_g": 0.5,
+      "fiber_g": 1,
+      "sodium_mg": 5
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "pre-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Plain and unsweetened; 4 oz is plenty. Strain the pulp if he gags on it.",
+    "swap": "Add a handful of frozen mango and blend for a thicker pre-workout drink with more fiber.",
+    "pairs_with": [
+      "akasan",
+      "labouyi-avwan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a pitcher of bright orange juice with halved oranges and a few mint leaves served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-kawot-ak-betrav",
+    "name": "Ji Kawòt ak Bètrav",
+    "english": "Carrot-beet juice with apple and ginger",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 15,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "carrots",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "beets, medium, scrubbed",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green apple",
+        "qty": "2",
+        "grams": 360,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime",
+        "qty": "1",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Scrub carrots and beets (peel the beets if they are old). Chop everything small enough for the blender.",
+      "Blend with the water until very smooth, 90 seconds.",
+      "Pour through a fine sieve, pressing on the pulp. Add the lime juice.",
+      "Serve cold. Keep the pulp for fritters."
+    ],
+    "batch_tip": "The juice keeps 48 hours in a closed jar. Drink the beet juice 2 to 3 hours before a hard run or lift.",
+    "leftovers": "Pulp goes into scraps-vegetable-fritters.",
+    "macros": {
+      "kcal": 110,
+      "protein_g": 2,
+      "carbs_g": 24,
+      "fat_g": 0.5,
+      "fiber_g": 3,
+      "sodium_mg": 100
+    },
+    "tags": [
+      "budget",
+      "pre-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Dilute 1:1 with water. Beets turn his diaper pink or red; that is normal, not blood.",
+    "swap": "Add 1 tbsp ground flax per glass for omega-3 and fiber, or a scoop of unflavored protein.",
+    "pairs_with": [
+      "scraps-vegetable-fritters",
+      "ji-papay"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of deep ruby-red carrot-beet juice with whole carrots, a beet and apple slices beside the glasses served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-mango",
+    "name": "Ji Mango",
+    "english": "Fresh ripe mango juice",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "ripe mangoes (Francisque or Ataulfo)",
+        "qty": "4",
+        "grams": 1000,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime",
+        "qty": "2",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "sugar",
+        "qty": "1 tbsp",
+        "grams": 13,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube the mangoes; scrape the pit well, because the flavor is there.",
+      "Blend the mango with 1 cup of water, then stir in the rest of the water and the lime juice.",
+      "Taste, and add sugar only if the mangoes were under-ripe.",
+      "Serve over ice."
+    ],
+    "batch_tip": "Freeze cubed mango in bags in season; a bag becomes juice in 2 minutes.",
+    "leftovers": "Leftover juice into popsicle molds.",
+    "macros": {
+      "kcal": 150,
+      "protein_g": 2,
+      "carbs_g": 34,
+      "fat_g": 0.5,
+      "fiber_g": 3,
+      "sodium_mg": 10
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Skip the sugar completely. Ripe mango is a great first food; serve in a small open cup.",
+    "swap": "Blend in 1/2 cup Greek yogurt per glass for a mango lassi with about 8 g protein.",
+    "pairs_with": [
+      "mamba-bannann-shake",
+      "ji-papay"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden-orange mango juice with fresh mango cubes and a halved lime served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-zannanna",
+    "name": "Ji Zannanna",
+    "english": "Pineapple juice with the peel tea trick",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "snack",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "ripe pineapple",
+        "qty": "1 large",
+        "grams": 1400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "sugar",
+        "qty": "2 tbsp",
+        "grams": 26,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Scrub the pineapple skin well. Cut off the peel and core in thick strips and keep them.",
+      "Simmer peel, core, ginger and cinnamon in the water 15 minutes, then strain and cool: this peel tea carries a lot of flavor and costs nothing.",
+      "Blend the pineapple flesh with the cold tea until smooth. Strain if you like it light.",
+      "Sweeten only if needed. Serve over ice."
+    ],
+    "batch_tip": "The peel tea alone also drinks well chilled; make it while the pot is out.",
+    "leftovers": "Blend leftover juice with frozen banana for a quick smoothie.",
+    "macros": {
+      "kcal": 130,
+      "protein_g": 1,
+      "carbs_g": 30,
+      "fat_g": 0.5,
+      "fiber_g": 2,
+      "sodium_mg": 5
+    },
+    "tags": [
+      "budget",
+      "post-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Dilute 1:2 with water; pineapple is acidic and can irritate his chin. No added sugar.",
+    "swap": "Use coconut water instead of the water for extra potassium after a run.",
+    "pairs_with": [
+      "ji-sitwon",
+      "ji-sorel"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pale-yellow pineapple juice in a jug with cut pineapple rings and a cinnamon stick served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-sitwon",
+    "name": "Ji Sitwon / Limonad",
+    "english": "Lightly sweetened fresh limeade",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "snack",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.5,
+    "ingredients": [
+      {
+        "item": "limes",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "sugar",
+        "qty": "5 tbsp",
+        "grams": 65,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cold water",
+        "qty": "6 cups",
+        "grams": 1440,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fine salt",
+        "qty": "1 pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Roll the limes, halve and squeeze (about 3/4 cup juice).",
+      "Stir the sugar with 1 cup of the water until it dissolves.",
+      "Add the lime juice, the rest of the water and the salt (it helps rehydration after sweating).",
+      "Taste, adjust with water or sugar, serve over ice with mint."
+    ],
+    "batch_tip": "Make a lime-sugar syrup that keeps a week; dilute each glass to taste.",
+    "leftovers": "Freeze into ice cubes for flavored water.",
+    "macros": {
+      "kcal": 70,
+      "protein_g": 0,
+      "carbs_g": 17,
+      "fat_g": 0,
+      "fiber_g": 0.5,
+      "sodium_mg": 25
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "post-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Make his glass with half the sugar or none; diluted lime water is fine. Limes can sting a sore mouth, so offer plain water too.",
+    "swap": "For a post-workout version add 1/4 tsp more salt and 1 tbsp honey per glass.",
+    "pairs_with": [
+      "pwason-fri",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pale green limeade with floating lime wheels and ice served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-melon-dlo",
+    "name": "Ji Melon Dlo",
+    "english": "Fresh watermelon juice with lime",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "snack",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 12 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "seedless watermelon, flesh",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime",
+        "qty": "2",
+        "grams": 80,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh mint",
+        "qty": "few leaves",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fine salt",
+        "qty": "1 pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cube the watermelon and blend with the lime juice until smooth.",
+      "Strain if you like it light. Add the pinch of salt (it brings out sweetness and helps recovery).",
+      "Serve over ice with mint."
+    ],
+    "batch_tip": "Cube and freeze watermelon: no ice needed and it gets frosty.",
+    "leftovers": "Freeze leftover juice for popsicles.",
+    "macros": {
+      "kcal": 115,
+      "protein_g": 2,
+      "carbs_g": 26,
+      "fat_g": 0.5,
+      "fiber_g": 1,
+      "sodium_mg": 10
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "post-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "No sugar needed. Great on hot days; offer in an open cup.",
+    "swap": "Add 1/2 cup tart cherry juice for a recovery boost (citrulline plus polyphenols).",
+    "pairs_with": [
+      "ji-sitwon",
+      "ji-zannanna"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bright pink watermelon juice with watermelon cubes and a lime wedge served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-papay-kawot",
+    "name": "Ji Papay-Kawòt",
+    "english": "Papaya and carrot juice with orange",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "ripe papaya, seeds out",
+        "qty": "1 medium",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "oranges, juiced",
+        "qty": "2",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime",
+        "qty": "1",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube the papaya; blend with chopped carrots and water until very smooth.",
+      "Add the orange and lime juice and blend again 20 seconds.",
+      "Strain if the carrots leave grit. Serve cold."
+    ],
+    "batch_tip": "The batch keeps 2 days; papaya turns bitter if blended too long, so keep it under 2 minutes.",
+    "leftovers": "Freeze leftovers for smoothies.",
+    "macros": {
+      "kcal": 135,
+      "protein_g": 3,
+      "carbs_g": 28,
+      "fat_g": 1,
+      "fiber_g": 4,
+      "sodium_mg": 40
+    },
+    "tags": [
+      "budget",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Mild and sweet, no sugar needed. Papaya is gentle on digestion, which toddlers often need.",
+    "swap": "Blend in 1/2 cup Greek yogurt for about 8 g protein and creaminess.",
+    "pairs_with": [
+      "ji-papay",
+      "ji-mango"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of orange papaya-carrot juice with papaya slices and carrot sticks served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "ji-sorel",
+    "name": "Ji Sorèl",
+    "english": "Hibiscus (sorrel) drink with ginger, clove and orange peel",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "snack",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.7,
+    "ingredients": [
+      {
+        "item": "dried hibiscus flowers (sorrel)",
+        "qty": "1.5 cups",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh ginger, sliced",
+        "qty": "2 inches",
+        "grams": 30,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole cloves",
+        "qty": "6",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "orange peel",
+        "qty": "2 strips",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "sugar",
+        "qty": "1/3 cup",
+        "grams": 65,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "water",
+        "qty": "8 cups",
+        "grams": 1900,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil 4 cups water with ginger, cloves, cinnamon and orange peel for 5 minutes.",
+      "Add the hibiscus, turn off the heat, cover and steep 20 minutes (longer for a deeper flavor).",
+      "Strain into a jug, stir in the sugar while still warm, add the remaining 4 cups cold water.",
+      "Chill and serve over ice."
+    ],
+    "batch_tip": "It improves overnight and keeps 5 days in the fridge; steep a double batch.",
+    "leftovers": "Use the spent hibiscus for a second weak steep.",
+    "macros": {
+      "kcal": 65,
+      "protein_g": 0,
+      "carbs_g": 16,
+      "fat_g": 0,
+      "fiber_g": 0.5,
+      "sodium_mg": 10
+    },
+    "tags": [
+      "budget",
+      "post-workout",
+      "toddler-ok"
+    ],
+    "toddler": "Make his without sugar and well diluted. Hibiscus is tart and can mildly lower blood pressure; a small cup is fine.",
+    "swap": "Use 1/4 cup sugar and a squeeze of lime, or sweeten with pineapple juice.",
+    "pairs_with": [
+      "akra",
+      "pwason-gwo-sel"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of deep ruby-red hibiscus drink with ice, orange peel and a cinnamon stick served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "jenjanm",
+    "name": "Jenjanm (Homemade Ginger Beer)",
+    "english": "Spicy non-fermented ginger beer",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "snack",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler none or 2 oz diluted",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "fresh ginger",
+        "qty": "8 oz",
+        "grams": 225,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "4",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1/3 cup",
+        "grams": 70,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole cloves",
+        "qty": "4",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "water",
+        "qty": "8 cups",
+        "grams": 1900,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Scrub the ginger (no need to peel) and blend with 2 cups of the water. Strain, pressing hard.",
+      "Boil the strained ginger liquid with the cloves, cinnamon and brown sugar 10 minutes.",
+      "Cool, add 6 cups cold water and the lime juice.",
+      "Chill and serve over ice; the ginger settles, so stir before pouring."
+    ],
+    "batch_tip": "Make the ginger concentrate (steps 1-2) and keep it in a jar: 1 part concentrate to 3 parts water or seltzer.",
+    "leftovers": "Leftover ginger pulp goes into tea or stir-fries.",
+    "macros": {
+      "kcal": 65,
+      "protein_g": 0,
+      "carbs_g": 16,
+      "fat_g": 0,
+      "fiber_g": 0.5,
+      "sodium_mg": 15
+    },
+    "tags": [
+      "budget",
+      "pre-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "It is spicy. Offer only a small diluted taste or plain water.",
+    "swap": "Use seltzer instead of water for a fizzy version without extra sugar.",
+    "pairs_with": [
+      "ji-sitwon",
+      "ji-sorel"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of amber ginger beer with ice, lime wedges and ginger slices beside the glasses served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family"
+    ]
+  },
+  {
+    "id": "green-juice-pineapple",
+    "name": "Green Juice (Spinach, Pineapple, Cucumber, Lime)",
+    "english": "Mild green juice with pineapple sweetness",
+    "cuisine": "Caribbean",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 12 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.5,
+    "ingredients": [
+      {
+        "item": "baby spinach",
+        "qty": "5 oz",
+        "grams": 140,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "pineapple chunks",
+        "qty": "3 cups",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cucumber",
+        "qty": "1 large",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime",
+        "qty": "2",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "1.5 cups",
+        "grams": 360,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1/2 inch",
+        "grams": 8,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Blend the water, pineapple, cucumber, ginger and lime first.",
+      "Add the spinach in two handfuls and blend until smooth, 1 minute.",
+      "Taste: it should taste of fruit, not grass. Add more pineapple if needed.",
+      "Serve over ice right away."
+    ],
+    "batch_tip": "Freeze the spinach-pineapple mix in cups as smoothie packs.",
+    "leftovers": "Leftover juice into popsicles.",
+    "macros": {
+      "kcal": 120,
+      "protein_g": 3,
+      "carbs_g": 26,
+      "fat_g": 0.5,
+      "fiber_g": 4,
+      "sodium_mg": 50
+    },
+    "tags": [
+      "budget",
+      "no-cook",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Mostly fruit tasting; give 4 oz with a spoon of yogurt on the side. Skip the ginger for him.",
+    "swap": "Add 1/2 cup Greek yogurt or a scoop of unflavored whey for 12-20 g protein.",
+    "pairs_with": [
+      "ji-zannanna",
+      "ji-sitwon"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bright green juice with pineapple chunks, cucumber slices and spinach leaves served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "cherry-beet-recovery-juice",
+    "name": "Cherry-Beet Recovery Juice",
+    "english": "Tart cherry and beet juice for after hard sessions",
+    "cuisine": "Caribbean",
+    "category": "drink",
+    "meals": [
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 10 oz; toddler none",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.9,
+    "ingredients": [
+      {
+        "item": "tart cherry juice, unsweetened",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "beets, medium, scrubbed",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "oranges, juiced",
+        "qty": "2",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1/2 inch",
+        "grams": 8,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cold water",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Blend the beets with the water until fully smooth, then strain.",
+      "Stir in the tart cherry juice, the orange juice and the ginger juice.",
+      "Taste: add water if too tart. Chill.",
+      "Drink within 30-60 minutes after a hard lift or run."
+    ],
+    "batch_tip": "Keeps 3 days; make it after the long session or Sunday for the week.",
+    "leftovers": "Freeze into popsicles for sore days.",
+    "macros": {
+      "kcal": 125,
+      "protein_g": 2,
+      "carbs_g": 28,
+      "fat_g": 0.5,
+      "fiber_g": 2,
+      "sodium_mg": 60
+    },
+    "tags": [
+      "post-workout",
+      "quick"
+    ],
+    "toddler": "Not for him; tart cherry juice is strong and adds little. Offer orange juice instead.",
+    "swap": "Add 20 g whey protein to the glass, or a cup of Greek yogurt on the side.",
+    "pairs_with": [
+      "ji-kawot-ak-betrav",
+      "ji-melon-dlo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark crimson cherry-beet juice with whole cherries and a slice of beet in the glass served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "coconut-pineapple-electrolyte",
+    "name": "Coconut-Pineapple Electrolyte Drink",
+    "english": "Coconut water with pineapple, lime and salt for long runs",
+    "cuisine": "Caribbean",
+    "category": "drink",
+    "meals": [
+      "pre-workout",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 16 oz on long runs; toddler 3 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.8,
+    "ingredients": [
+      {
+        "item": "coconut water, unsweetened",
+        "qty": "6 cups",
+        "grams": 1440,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "pineapple juice (fresh or 100% juice)",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "3",
+        "grams": 120,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fine salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Stir the coconut water and pineapple juice together in a jug.",
+      "Add the lime juice and the salt; stir until dissolved.",
+      "Chill. Sip 8 oz per 30 minutes during a run longer than 60 minutes, or 16 oz in the 30 minutes after.",
+      "Shake before serving, since the salt settles."
+    ],
+    "batch_tip": "Pre-mix 3 bottles Saturday night for the Sunday long run.",
+    "leftovers": "Freeze in ice cube trays for hot-day rehydration cubes.",
+    "macros": {
+      "kcal": 110,
+      "protein_g": 1,
+      "carbs_g": 26,
+      "fat_g": 0.5,
+      "fiber_g": 1,
+      "sodium_mg": 230
+    },
+    "tags": [
+      "post-workout",
+      "pre-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Plain coconut water is fine for him; no extra salt and skip the pineapple if his mouth is sensitive.",
+    "swap": "For heavy sweaters add 1/4 tsp more salt and 1 tbsp honey per quart.",
+    "pairs_with": [
+      "ji-sitwon",
+      "ji-melon-dlo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pale coconut water and pineapple drink in sports bottles and a jug, with lime wedges and a coconut half served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "soursop-banana-protein-smoothie",
+    "name": "Soursop-Banana Protein Smoothie",
+    "english": "Soursop, banana and Greek yogurt recovery smoothie",
+    "cuisine": "Haitian",
+    "category": "drink",
+    "meals": [
+      "post-workout",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 14 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.6,
+    "ingredients": [
+      {
+        "item": "frozen soursop pulp, no seeds",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "ripe bananas",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "nonfat Greek yogurt",
+        "qty": "2 cups",
+        "grams": 460,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "milk, 2%",
+        "qty": "1.5 cups",
+        "grams": 360,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "nonfat dry milk powder",
+        "qty": "1/2 cup",
+        "grams": 35,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Add the milk and yogurt to the blender first, then the fruit, milk powder and honey.",
+      "Blend until smooth, 60-90 seconds; add ice or a splash of milk to adjust.",
+      "Dust with nutmeg and pour. Drink within 30 minutes of training."
+    ],
+    "batch_tip": "Bag the fruit with the dry milk powder in freezer bags; add milk and yogurt and blend.",
+    "leftovers": "Leftover goes into popsicle molds.",
+    "macros": {
+      "kcal": 220,
+      "protein_g": 15,
+      "carbs_g": 36,
+      "fat_g": 2,
+      "fiber_g": 3,
+      "sodium_mg": 120
+    },
+    "tags": [
+      "budget",
+      "post-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Serve his portion with no honey, in a cup with a straw. Check the soursop for seeds.",
+    "swap": "Add 1 scoop of unflavored whey for about 25 g protein per glass.",
+    "pairs_with": [
+      "ji-kowosol",
+      "akasan-shake-pwoteyin"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick creamy off-white soursop banana smoothie with banana slices, nutmeg and a straw served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "oat-banana-breakfast-smoothie",
+    "name": "Oat-Banana Breakfast Smoothie",
+    "english": "Oats, banana, peanut butter and milk smoothie",
+    "cuisine": "Caribbean",
+    "category": "drink",
+    "meals": [
+      "breakfast",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 14 oz; toddler 4 oz",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.0,
+    "ingredients": [
+      {
+        "item": "rolled oats",
+        "qty": "1.5 cups",
+        "grams": 135,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "ripe bananas",
+        "qty": "3",
+        "grams": 360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "peanut butter, smooth",
+        "qty": "3 tbsp",
+        "grams": 48,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Soak the oats in the milk 5 minutes (or overnight) so they blend smooth.",
+      "Blend the oats and milk 30 seconds.",
+      "Add the bananas, peanut butter, cinnamon and vanilla; blend 60 seconds until creamy.",
+      "Pour into glasses. Add ice if you like it cold."
+    ],
+    "batch_tip": "Soak the oats in milk in the fridge the night before; breakfast takes 90 seconds.",
+    "leftovers": "Heat leftover smoothie in a pot and it is warm oat porridge.",
+    "macros": {
+      "kcal": 315,
+      "protein_g": 13,
+      "carbs_g": 43,
+      "fat_g": 10,
+      "fiber_g": 6,
+      "sodium_mg": 120
+    },
+    "tags": [
+      "budget",
+      "pre-workout",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Fine as is; confirm there is no peanut allergy history first. Serve thick, with a spoon.",
+    "swap": "Add 1/2 cup Greek yogurt or a scoop of whey for 12-20 g more protein.",
+    "pairs_with": [
+      "labouyi-avwan",
+      "ji-zoranj"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick tan oat-banana smoothie in glasses with sliced banana, scattered oats and a dusting of cinnamon served family-style in a tall glass jug with glasses on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "family",
+      "son"
+    ]
+  },
+  {
+    "id": "steak-garlic-mashed",
+    "name": "Pan-Seared Steak with Garlic Mashed Potatoes",
+    "english": "Sirloin steak with garlic mashed potatoes",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz steak + 1 cup mash; toddler 2 oz sliced steak + 1/2 cup mash",
+    "active_min": 20,
+    "total_min": 45,
+    "difficulty": 2,
+    "cost_per_serving_usd": 5.4,
+    "ingredients": [
+      {
+        "item": "top sirloin steak, 1 inch thick",
+        "qty": "2.25 lb",
+        "grams": 1020,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk, warm",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "4 tbsp",
+        "grams": 57,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "garlic",
+        "qty": "8 cloves",
+        "grams": 24,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "neutral oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "coarse salt",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Salt the steaks and rest at room temperature 30 minutes. Peel and cube potatoes with 4 cloves garlic.",
+      "Boil potatoes and garlic in salted water until fork-tender, 15 minutes. Drain and steam dry 2 minutes.",
+      "Mash with warm milk and 3 tbsp butter until creamy; keep covered.",
+      "Heat a cast-iron pan very hot, add the oil, sear steaks 3-4 minutes a side for medium-rare (130F).",
+      "Add 1 tbsp butter and 4 smashed garlic cloves to the pan, baste 1 minute. Rest steaks 8 minutes, slice against the grain."
+    ],
+    "batch_tip": "Cook a double batch of mash for the week. Buy a whole sirloin roast, cut it into steaks and freeze the extras.",
+    "leftovers": "Slice the cold steak thin for a sandwich with pikliz, or chop it into bistek tomorrow.",
+    "macros": {
+      "kcal": 480,
+      "protein_g": 42,
+      "carbs_g": 37,
+      "fat_g": 18,
+      "fiber_g": 3,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cut his steak into thumb-sized strips against the grain and cook his piece to medium; no added salt on his portion.",
+    "swap": "Swap half the mash for roasted broccoli, or stir 1/2 cup Greek yogurt into the mash for about 6 g more protein.",
+    "pairs_with": [
+      "pikliz",
+      "legim",
+      "pire-pomdeter"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a sliced medium-rare sirloin steak with a golden crust next to a mound of creamy garlic mashed potatoes served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "bistek-ak-zonyon-ak-pire",
+    "name": "Bistèk ak Zonyon ak Pire",
+    "english": "Haitian-style steak with onions and mashed potatoes",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 5 oz steak + 1 cup mash; toddler 2 oz steak + 1/2 cup mash",
+    "active_min": 25,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.6,
+    "ingredients": [
+      {
+        "item": "top round or sirloin tip steak, thin",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "yellow onions, sliced",
+        "qty": "3 large",
+        "grams": 540,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime juice",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 32,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole milk",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "3 tbsp",
+        "grams": 43,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "neutral oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cut the steak into palm-sized pieces. Rinse with lime and water, drain, and marinate in epis, lime and salt 30 minutes to overnight.",
+      "Boil peeled potatoes in salted water 15-18 minutes; drain and mash with warm milk and butter.",
+      "Sear the steak in hot oil in two batches, 2 minutes a side. Move to a plate.",
+      "In the same pan soften the onions with tomato paste and 1/2 cup water 10 minutes until jammy.",
+      "Return the steak to the onions for 2 minutes; add scotch bonnet at the end for the adults only. Serve over the mash."
+    ],
+    "batch_tip": "Marinate the steak the night before. Double the onions: they keep 4 days.",
+    "leftovers": "Tuck steak and onions into bread with pikliz for lunch tomorrow.",
+    "macros": {
+      "kcal": 450,
+      "protein_g": 38,
+      "carbs_g": 38,
+      "fat_g": 16,
+      "fiber_g": 4,
+      "sodium_mg": 540
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Pull his portion before the scotch bonnet goes in; cut small and cook through. Mash is his favorite part.",
+    "swap": "Use lean round steak and replace half the mash with sautéed cabbage on a rest day (about 20 g fewer carbs).",
+    "pairs_with": [
+      "pikliz",
+      "legim",
+      "epis",
+      "pire-pomdeter"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thin seared steak strips smothered in glossy golden-brown onions beside a scoop of white mashed potatoes served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "steak-sweet-potato-mash-green-beans",
+    "name": "Steak with Sweet Potato Mash and Green Beans",
+    "english": "Sirloin steak, sweet potato mash and garlicky green beans",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 oz steak + 3/4 cup mash + 1 cup green beans; toddler 2 oz steak + 1/2 cup mash + a few beans",
+    "active_min": 20,
+    "total_min": 45,
+    "difficulty": 2,
+    "cost_per_serving_usd": 5.6,
+    "ingredients": [
+      {
+        "item": "top sirloin steak",
+        "qty": "2.25 lb",
+        "grams": 1020,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sweet potatoes",
+        "qty": "2.5 lb",
+        "grams": 1130,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green beans, fresh or frozen",
+        "qty": "1.25 lb",
+        "grams": 570,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "butter",
+        "qty": "3 tbsp",
+        "grams": 43,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "orange juice or milk",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "neutral oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Rest the salted steaks at room temperature 30 minutes. Peel and cube sweet potatoes; boil until soft, 15 minutes.",
+      "Mash with butter, juice and cinnamon.",
+      "Sear steaks in hot oil 3-4 minutes a side; rest 8 minutes.",
+      "Sauté green beans with garlic in the same pan 5-6 minutes until bright and just tender.",
+      "Slice the steak against the grain and plate with mash and beans."
+    ],
+    "batch_tip": "Roast a tray of sweet potatoes on Sunday and mash them on demand.",
+    "leftovers": "Chop leftover steak into the mash for a skillet hash.",
+    "macros": {
+      "kcal": 455,
+      "protein_g": 42,
+      "carbs_g": 40,
+      "fat_g": 14,
+      "fiber_g": 8,
+      "sodium_mg": 430
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cut the beans short; sweet potato mash is a natural favorite. Cook his steak to medium.",
+    "swap": "Use frozen green beans to save time and money.",
+    "pairs_with": [
+      "pikliz",
+      "epis",
+      "pire-patat"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of sliced pink steak resting beside bright orange sweet potato mash and glossy green beans served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "sheet-pan-steak-bites-potatoes",
+    "name": "Sheet-Pan Steak Bites with Roasted Potatoes",
+    "english": "Garlic steak bites, crispy potatoes and peppers on one pan",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups steak and potatoes; toddler 1/2 cup with small pieces",
+    "active_min": 15,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 4.9,
+    "ingredients": [
+      {
+        "item": "top sirloin, cut into 1-inch cubes",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "baby potatoes, halved",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell peppers, mixed",
+        "qty": "3",
+        "grams": 450,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "red onion",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "6 cloves",
+        "grams": 18,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "3 tbsp",
+        "grams": 42,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "paprika",
+        "qty": "2 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "dried thyme",
+        "qty": "1 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Heat the oven to 450F with the sheet pan inside. Toss the potatoes with 2 tbsp oil, half the paprika and salt.",
+      "Roast the potatoes 15 minutes, turning once, while you prep the rest.",
+      "Toss steak cubes, peppers, onion and garlic with the remaining oil, paprika, thyme and salt.",
+      "Add everything to the hot pan and roast 10-12 minutes until the steak is browned and the potatoes crisp.",
+      "Finish with lime and scallions."
+    ],
+    "batch_tip": "Roast a double pan and use half in tomorrow's rice bowls.",
+    "leftovers": "Pile leftovers into a tortilla with pikliz.",
+    "macros": {
+      "kcal": 455,
+      "protein_g": 40,
+      "carbs_g": 36,
+      "fat_g": 17,
+      "fiber_g": 5,
+      "sodium_mg": 430
+    },
+    "tags": [
+      "high-protein",
+      "one-pot",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cut his steak pieces small and cook through; no black pepper on his portion.",
+    "swap": "Replace half the potatoes with broccoli to cut carbs on rest days.",
+    "pairs_with": [
+      "pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a sheet pan of browned steak cubes, crisp golden baby potatoes and colorful pepper strips served family-style in a white ceramic baking dish on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "steak-plantain-power-bowl",
+    "name": "Steak and Plantain Power Bowl",
+    "english": "Sliced steak, fried ripe plantains, black beans and rice",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 full bowl; toddler 1/3 bowl, steak minced",
+    "active_min": 25,
+    "total_min": 50,
+    "difficulty": 2,
+    "cost_per_serving_usd": 4.9,
+    "ingredients": [
+      {
+        "item": "top sirloin or flank steak",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "ripe plantains",
+        "qty": "3",
+        "grams": 750,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "black beans, canned, rinsed",
+        "qty": "1 can (15 oz)",
+        "grams": 425,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "cooked white rice",
+        "qty": "5 cups",
+        "grams": 790,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "ripe avocado",
+        "qty": "1",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "neutral oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "epis",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Marinate the steak in epis, lime and salt while you prep (30 minutes).",
+      "Slice plantains on the bias; pan-fry in a little oil 2 minutes a side until deeply golden. Drain on paper.",
+      "Warm the black beans with a splash of water and a pinch of cumin.",
+      "Sear the steak 3-4 minutes a side; rest 8 minutes; slice thin against the grain.",
+      "Build bowls: rice, beans, steak, plantains, avocado slices and lime."
+    ],
+    "batch_tip": "Cook the rice and beans Sunday; sear the steak and fry plantains to order.",
+    "leftovers": "Leftover bowl components make fried rice the next day.",
+    "macros": {
+      "kcal": 605,
+      "protein_g": 44,
+      "carbs_g": 62,
+      "fat_g": 20,
+      "fiber_g": 9,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Mash a few plantain pieces and the beans; steak in tiny strips. Avocado is a great toddler food.",
+    "swap": "For a rest day halve the rice and double the greens.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan",
+      "bannann-peze"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of white rice topped with sliced steak, golden fried plantains, black beans and avocado fans served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "chuck-steak-pineapple-lime",
+    "name": "Budget Chuck Steak with Pineapple-Lime Marinade and Potatoes",
+    "english": "Tenderized chuck steak, quick-marinated, with garlic potatoes",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 5 oz sliced steak + 1 cup potatoes + vegetable; toddler small slices",
+    "active_min": 25,
+    "total_min": 70,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.1,
+    "ingredients": [
+      {
+        "item": "beef chuck steak (or flank), 1 inch",
+        "qty": "2.25 lb",
+        "grams": 1020,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "pineapple juice",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "6 cloves",
+        "grams": 18,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "2.5 lb",
+        "grams": 1130,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "broccoli or cabbage",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "3 tbsp",
+        "grams": 42,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Poke the steak all over with a fork; marinate with pineapple juice, lime, garlic and salt 2-8 hours (the enzymes tenderize it; do not exceed 8 hours).",
+      "Cut potatoes into wedges, toss with oil and roast at 425F 35 minutes.",
+      "Pat the steak dry, sear in a hot pan 4 minutes a side or broil 5 minutes a side for medium.",
+      "Rest 10 minutes and slice very thin against the grain; thin slices are what make chuck tender.",
+      "Steam the broccoli for the last 5 minutes. Serve together."
+    ],
+    "batch_tip": "Chuck goes on sale at $5-6/lb; marinate three steaks and freeze them in the marinade.",
+    "leftovers": "Slice leftovers for a stir-fried rice bowl.",
+    "macros": {
+      "kcal": 425,
+      "protein_g": 36,
+      "carbs_g": 32,
+      "fat_g": 17,
+      "fiber_g": 5,
+      "sodium_mg": 420
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Slice very thin or finely chop for him; it can be chewy otherwise.",
+    "swap": "Flank steak ($8-9/lb) is more tender; chuck eye is the best budget cut.",
+    "pairs_with": [
+      "pikliz",
+      "diri-blan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thin slices of marinated chuck steak fanned on a plate with golden roasted potato wedges and broccoli served family-style in a enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "owner",
+      "family"
+    ]
+  },
+  {
+    "id": "pire-pomdeter",
+    "name": "Pire Pòmdetè",
+    "english": "Creamy kid-friendly mashed potatoes",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/2 cup",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.5,
+    "ingredients": [
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk, warm",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "4 tbsp",
+        "grams": 57,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube potatoes; cover with cold salted water.",
+      "Bring to a boil and cook 15 minutes until a fork slides in with no resistance.",
+      "Drain well and let steam dry 2 minutes, then return to the hot pot.",
+      "Mash with the warm milk and butter until completely smooth; add salt to taste."
+    ],
+    "batch_tip": "Make 2 batches: mash freezes flat in bags for 3 months.",
+    "leftovers": "Form leftovers into patties and pan-fry for breakfast.",
+    "macros": {
+      "kcal": 205,
+      "protein_g": 4,
+      "carbs_g": 34,
+      "fat_g": 6,
+      "fiber_g": 3,
+      "sodium_mg": 220
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "freezer",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "This is his dish: hold the salt for his portion and serve warm, not hot; loosen with milk for a young toddler; leave out garlic and pepper.",
+    "swap": "For the adults, stir in 1/2 cup plain Greek yogurt and 1 tsp black pepper per batch.",
+    "pairs_with": [
+      "steak-garlic-mashed",
+      "bistek-ak-zonyon-ak-pire",
+      "poul-fri"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a mound of creamy smooth white mashed potatoes with a pat of melting butter served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "son"
+    ]
+  },
+  {
+    "id": "pire-patat",
+    "name": "Pire Patat",
+    "english": "Sweet potato mash with cinnamon",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 3/4 cup; toddler 1/2 cup",
+    "active_min": 10,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "sweet potatoes",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "3 tbsp",
+        "grams": 43,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "cinnamon",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1 pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube the sweet potatoes; boil 15-18 minutes until very soft.",
+      "Drain and mash with butter and milk until smooth.",
+      "Stir in the cinnamon. Taste: it should be naturally sweet."
+    ],
+    "batch_tip": "Roast sweet potatoes whole at 400F on Sunday for the week and mash on demand.",
+    "leftovers": "Make sweet potato pancakes with an egg and 2 tbsp flour.",
+    "macros": {
+      "kcal": 210,
+      "protein_g": 3,
+      "carbs_g": 38,
+      "fat_g": 5,
+      "fiber_g": 5,
+      "sodium_mg": 100
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "freezer",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "A classic first food: no salt, no sugar; thin with a little milk if he is under 2.",
+    "swap": "Stir in 1/2 cup Greek yogurt for about 6 g more protein.",
+    "pairs_with": [
+      "steak-sweet-potato-mash-green-beans",
+      "poul-o-four-epis"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a smooth bowl of bright orange sweet potato mash with a dusting of cinnamon and a pat of butter served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "son"
+    ]
+  },
+  {
+    "id": "pire-pomdeter-legim",
+    "name": "Pire Pòmdetè ak Legim",
+    "english": "Mashed potatoes with hidden cauliflower and carrot",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/2 cup",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cauliflower florets",
+        "qty": "1 medium head",
+        "grams": 450,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "3",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk, warm",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "3 tbsp",
+        "grams": 43,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube the potatoes and carrots; add the cauliflower for the last 8 minutes.",
+      "Boil everything in salted water until very soft, 15-18 minutes.",
+      "Drain well, steam dry 2 minutes, then mash with warm milk and butter.",
+      "For the smoothest mash, use a hand blender 20 seconds; the vegetables vanish."
+    ],
+    "batch_tip": "Cook a big pot; the vegetables vanish in the mash and the batch freezes.",
+    "leftovers": "Use leftovers as the topping for a shepherd's-pie style dish.",
+    "macros": {
+      "kcal": 175,
+      "protein_g": 4,
+      "carbs_g": 28,
+      "fat_g": 5,
+      "fiber_g": 4,
+      "sodium_mg": 200
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "freezer",
+      "toddler-ok"
+    ],
+    "toddler": "The vegetables disappear into the potato and the carrot makes it sweeter; keep it very smooth for him and salt-free.",
+    "swap": "Use half potato, half cauliflower on rest days to drop about 10 g carbs per portion.",
+    "pairs_with": [
+      "steak-garlic-mashed",
+      "bistek-ak-zonyon-ak-pire"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a pale-orange flecked creamy mash in a bowl with a butter pat and a sprig of parsley served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "son"
+    ]
+  },
+  {
+    "id": "pire-pwoteyin",
+    "name": "Pire Pwoteyin (Protein Mashed Potatoes)",
+    "english": "Mashed potatoes with Greek yogurt and milk powder",
+    "cuisine": "Haitian",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/2 cup",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.8,
+    "ingredients": [
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "3 lb",
+        "grams": 1360,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "nonfat Greek yogurt",
+        "qty": "1 cup",
+        "grams": 230,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "nonfat dry milk powder",
+        "qty": "1/4 cup",
+        "grams": 17,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "butter",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "garlic powder",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and cube potatoes; boil in salted water 15 minutes until tender.",
+      "Drain, steam dry 2 minutes, and return to the pot over low heat.",
+      "Mash with the butter, then stir in the yogurt and milk powder until creamy.",
+      "Season with garlic powder and salt. Do not boil after the yogurt goes in."
+    ],
+    "batch_tip": "Make a double batch and portion into freezer bags; reheat with a splash of milk.",
+    "leftovers": "Fold into a breakfast skillet with eggs.",
+    "macros": {
+      "kcal": 240,
+      "protein_g": 11,
+      "carbs_g": 38,
+      "fat_g": 5,
+      "fiber_g": 3,
+      "sodium_mg": 260
+    },
+    "tags": [
+      "batch",
+      "budget",
+      "freezer",
+      "quick",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Same dish for him; skip the garlic powder and added salt, and thin with milk if needed.",
+    "swap": "Use 2 tbsp unflavored whey isolate in place of milk powder for about 12 g more protein.",
+    "pairs_with": [
+      "steak-garlic-mashed",
+      "bistek-ak-zonyon-ak-pire",
+      "poul-fri"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a creamy white fluffy mash topped with chopped chives and a pat of butter served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "son",
+      "owner"
+    ]
+  },
+  {
+    "id": "labouyi-farin",
+    "name": "Labouyi Farin",
+    "english": "Haitian wheat-flour porridge with spices",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.45,
+    "ingredients": [
+      {
+        "item": "all-purpose flour",
+        "qty": "1 cup",
+        "grams": 125,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "whole milk",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "4 tbsp",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "2",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1 pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Bring 3 cups water, the cinnamon, star anise and salt to a simmer.",
+      "Whisk the flour with 1 cup cold water until no lumps remain; pour slowly into the pot, stirring constantly.",
+      "Cook 10-12 minutes stirring until thick and the flour taste is gone.",
+      "Add milk, sugar, vanilla and nutmeg; simmer 5 minutes more. Remove the spices and serve warm."
+    ],
+    "batch_tip": "Cook a big pot Sunday night and reheat with milk through the week.",
+    "leftovers": "Slice chilled leftover labouyi and pan-fry like polenta cakes.",
+    "macros": {
+      "kcal": 215,
+      "protein_g": 7,
+      "carbs_g": 38,
+      "fat_g": 4,
+      "fiber_g": 1,
+      "sodium_mg": 90
+    },
+    "tags": [
+      "budget",
+      "quick",
+      "toddler-ok"
+    ],
+    "toddler": "Serve warm, not hot, with less sugar; the spices are mild. Skip the star anise for him if he is under 12 months.",
+    "swap": "High-protein: stir 1/2 cup nonfat dry milk powder or 2 scoops unflavored whey into the pot at the end, or top each bowl with 1/2 cup Greek yogurt.",
+    "pairs_with": [
+      "akasan",
+      "pen-ak-ze-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of creamy beige porridge with a light dusting of cinnamon and a star anise pod served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "labouyi-avwan",
+    "name": "Labouyi Avwan",
+    "english": "Haitian-style oatmeal with cinnamon, vanilla and lime zest",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 5,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.7,
+    "ingredients": [
+      {
+        "item": "rolled oats",
+        "qty": "2 cups",
+        "grams": 180,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "whole milk",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "lime zest",
+        "qty": "1 lime",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1 pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Bring the water, milk, cinnamon stick, salt and half the lime zest to a gentle simmer.",
+      "Stir in the oats and simmer 10-12 minutes, stirring often, until creamy.",
+      "Remove the cinnamon stick; stir in vanilla, nutmeg and brown sugar.",
+      "Serve warm with a little extra milk and the rest of the lime zest on top."
+    ],
+    "batch_tip": "Cook a pot of 4 servings Sunday and reheat with milk; or make overnight oats with the same spices.",
+    "leftovers": "Press leftover porridge into a pan, chill, slice and pan-fry.",
+    "macros": {
+      "kcal": 290,
+      "protein_g": 11,
+      "carbs_g": 44,
+      "fat_g": 8,
+      "fiber_g": 5,
+      "sodium_mg": 120
+    },
+    "tags": [
+      "budget",
+      "pre-workout",
+      "quick",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Mild and creamy; cool well. Skip the sugar for him if he likes the milk.",
+    "swap": "High-protein: stir 2 scoops unflavored whey or 1 cup Greek yogurt in off the heat, and top with peanut butter.",
+    "pairs_with": [
+      "labouyi-farin",
+      "akasan",
+      "ji-zoranj"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of creamy oatmeal with lime zest, cinnamon and a splash of milk served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "labouyi-patat",
+    "name": "Labouyi Patat",
+    "english": "Haitian sweet potato porridge",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.9,
+    "ingredients": [
+      {
+        "item": "sweet potatoes, peeled and cubed",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole milk",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "2",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "2 tbsp",
+        "grams": 26,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil the sweet potatoes with the cinnamon and star anise in the water until very soft, 15 minutes.",
+      "Remove the whole spices, then blend or mash the potatoes with their cooking water until smooth.",
+      "Return to the pot; add milk, nutmeg, vanilla and brown sugar; simmer 8 minutes, stirring.",
+      "Thin with milk if it gets too thick. Serve warm."
+    ],
+    "batch_tip": "Cook extra sweet potatoes at dinner and blend into porridge the next morning.",
+    "leftovers": "Freeze in muffin cups for toddler breakfast pucks.",
+    "macros": {
+      "kcal": 245,
+      "protein_g": 6,
+      "carbs_g": 46,
+      "fat_g": 4,
+      "fiber_g": 5,
+      "sodium_mg": 60
+    },
+    "tags": [
+      "budget",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Naturally sweet, so skip the sugar for him; great when cooled to warm.",
+    "swap": "High-protein: stir in 1/2 cup nonfat dry milk powder or 1 scoop unflavored whey after cooking, or serve with a soft-boiled egg on the side.",
+    "pairs_with": [
+      "labouyi-farin",
+      "labouyi-avwan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of bright orange creamy sweet potato porridge with cinnamon served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "labouyi-diri",
+    "name": "Labouyi Diri",
+    "english": "Haitian rice porridge with milk and spices",
+    "cuisine": "Haitian",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.6,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "1 cup",
+        "grams": 185,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "whole milk",
+        "qty": "3 cups",
+        "grams": 720,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "water",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick",
+        "qty": "1",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "star anise",
+        "qty": "1",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "nutmeg",
+        "qty": "1/2 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vanilla extract",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sugar",
+        "qty": "3 tbsp",
+        "grams": 38,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Rinse the rice. Simmer with the water, cinnamon and star anise, covered, 20 minutes until very soft.",
+      "Mash a few spoonfuls against the pot to thicken it.",
+      "Add milk, nutmeg and sugar; simmer 10 minutes more, stirring.",
+      "Add vanilla off the heat. Serve warm."
+    ],
+    "batch_tip": "Cook extra white rice Sunday and turn it into porridge with milk and spices in 10 minutes.",
+    "leftovers": "Chill leftovers and eat as rice pudding.",
+    "macros": {
+      "kcal": 250,
+      "protein_g": 7,
+      "carbs_g": 46,
+      "fat_g": 4,
+      "fiber_g": 1,
+      "sodium_mg": 90
+    },
+    "tags": [
+      "budget",
+      "toddler-ok"
+    ],
+    "toddler": "Soft and gentle; cool well. Keep the sugar for the adults.",
+    "swap": "High-protein: whisk 2 eggs into the hot porridge off the heat, or add 1/2 cup Greek yogurt and a scoop of whey.",
+    "pairs_with": [
+      "labouyi-farin",
+      "akasan"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of white creamy rice porridge with cinnamon and a star anise pod served family-style in a ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "espageti-ak-aranso",
+    "name": "Espageti ak Aransò",
+    "english": "Haitian spaghetti with smoked herring",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.2,
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "smoked herring (aransò), boned",
+        "qty": "3 fillets",
+        "grams": 200,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 48,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "yellow onion, sliced",
+        "qty": "1 large",
+        "grams": 180,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "apple cider vinegar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Boil the herring in water 10 minutes to remove salt; drain, flake off the bones and skin.",
+      "Cook the spaghetti in unsalted water until al dente; reserve 1 cup of the water.",
+      "Heat the oil, soften the onion and pepper with epis 5 minutes, add tomato paste and fry 2 minutes.",
+      "Add the herring and a splash of vinegar; sauté 3 minutes.",
+      "Toss with the spaghetti, adding the pasta water as needed. Scotch bonnet on the side."
+    ],
+    "batch_tip": "Soak and flake herring in bulk and freeze 1/2-cup portions.",
+    "leftovers": "Fry leftover spaghetti in a pan with an egg for breakfast.",
+    "macros": {
+      "kcal": 490,
+      "protein_g": 22,
+      "carbs_g": 74,
+      "fat_g": 12,
+      "fiber_g": 4,
+      "sodium_mg": 720
+    },
+    "tags": [
+      "budget",
+      "toddler-ok"
+    ],
+    "toddler": "Boil the herring well so it is not salty, and check carefully for fish bones before serving his portion.",
+    "swap": "Add a drained can of sardines or 2 scrambled eggs for about 10 g more protein.",
+    "pairs_with": [
+      "pikliz",
+      "ze-bouyi-ak-pikliz",
+      "aranso"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of glistening red-orange spaghetti with flaked smoked herring, red onions and bell pepper strips served family-style in a wide shallow pasta bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "espageti-ak-poul",
+    "name": "Espageti ak Poul",
+    "english": "Haitian spaghetti with chicken",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 20,
+    "total_min": 40,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.8,
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "boneless chicken breast or thighs, cubed",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 48,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "yellow onion",
+        "qty": "1 large",
+        "grams": 180,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "chicken bouillon",
+        "qty": "1 cube",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Marinate the cubed chicken in 2 tbsp epis, salt and lime for 20 minutes.",
+      "Cook the spaghetti until al dente; reserve 1 cup water.",
+      "Brown the chicken in oil 6-8 minutes; remove. Soften the onion and pepper with the remaining epis; fry the tomato paste 2 minutes.",
+      "Return the chicken, add the bouillon and 1 cup pasta water, simmer 5 minutes.",
+      "Toss with the spaghetti and serve; scotch bonnet on the side."
+    ],
+    "batch_tip": "Cook a double batch of chicken and freeze half for fast dinners.",
+    "leftovers": "Leftovers become a spaghetti-chicken frittata.",
+    "macros": {
+      "kcal": 555,
+      "protein_g": 42,
+      "carbs_g": 74,
+      "fat_g": 10,
+      "fiber_g": 4,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cut his chicken very small and serve before the scotch bonnet; go light on salt.",
+    "swap": "Use all breast meat for lower fat; add 1/2 cup grated parmesan at the end.",
+    "pairs_with": [
+      "pikliz",
+      "legim"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of spaghetti coated in orange tomato sauce with golden chicken pieces, onion and green pepper served family-style in a wide shallow pasta bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "espageti-ak-legim",
+    "name": "Espageti ak Legim",
+    "english": "Haitian spaghetti with vegetables and beans",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups; toddler 3/4 cup",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.1,
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "qty": "1 lb",
+        "grams": 454,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "cabbage, shredded",
+        "qty": "1/2 small",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots, grated",
+        "qty": "3",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell peppers, sliced",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "white or red beans, canned and rinsed",
+        "qty": "1 can (15 oz)",
+        "grams": 425,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 48,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "3 tbsp",
+        "grams": 42,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "parmesan, grated",
+        "qty": "1/3 cup",
+        "grams": 30,
+        "key": false,
+        "aisle": "dairy"
+      }
+    ],
+    "steps": [
+      "Cook the spaghetti until al dente; reserve 1 cup water.",
+      "Heat the oil, sauté peppers with epis 4 minutes, add carrots and cabbage and cook 8 minutes until soft.",
+      "Stir in the tomato paste, beans and 1/2 cup pasta water; simmer 5 minutes.",
+      "Toss with spaghetti and parmesan; scotch bonnet on the side."
+    ],
+    "batch_tip": "Chop all the vegetables Sunday; the sauce keeps 4 days.",
+    "leftovers": "Scramble leftovers with an egg for breakfast.",
+    "macros": {
+      "kcal": 490,
+      "protein_g": 20,
+      "carbs_g": 82,
+      "fat_g": 9,
+      "fiber_g": 10,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "budget",
+      "one-pot",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cook the vegetables very soft; mash a few beans in for him; go light on salt.",
+    "swap": "Add a pound of sautéed turkey or chicken sausage for about 15 g more protein.",
+    "pairs_with": [
+      "pikliz",
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of tomato-coated spaghetti with colorful shreds of cabbage, carrot, pepper and white beans served family-style in a wide shallow pasta bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "bouyi-viv-sos-pwason",
+    "name": "Bouyi Viv ak Sòs Pwason",
+    "english": "Boiled sweet potato, potato, green banana and plantain with fish sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups viv + 6 oz fish; toddler 3/4 cup viv + small fish",
+    "active_min": 25,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.8,
+    "ingredients": [
+      {
+        "item": "sweet potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green bananas",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green plantain",
+        "qty": "1",
+        "grams": 250,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "tilapia or cod fillets",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 32,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onions, sliced",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Rinse the fish with lime and water; marinate in 2 tbsp epis and salt 20 minutes.",
+      "Boil the peeled plantain and green bananas in salted water 12 minutes, add the potatoes and sweet potatoes for 15 minutes more until tender; drain.",
+      "Sauté onion, pepper and the remaining epis in the oil 5 minutes, add the tomato paste and 1 cup water.",
+      "Lay the fish in the sauce, cover and simmer 8 minutes until it flakes; add scotch bonnet at the end for the adults.",
+      "Serve the sauce over the viv with pikliz."
+    ],
+    "batch_tip": "Boil a large pot of viv and reheat it in the microwave through the week.",
+    "leftovers": "Flake leftover fish into rice or an omelet.",
+    "macros": {
+      "kcal": 585,
+      "protein_g": 42,
+      "carbs_g": 84,
+      "fat_g": 9,
+      "fiber_g": 10,
+      "sodium_mg": 520
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Mash a small piece of each viv for him; fish cooked through and flaked; sauce without scotch bonnet; check for bones.",
+    "swap": "Use baked cod or salmon; add a cup of beans on the side for about 15 g more protein.",
+    "pairs_with": [
+      "pikliz",
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a platter of boiled sweet potato, potato, green banana and plantain beside fish in a red-orange onion sauce served family-style in a wide serving platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "viv-ak-ze-ak-zaboka",
+    "name": "Viv ak Ze ak Zaboka",
+    "english": "Boiled viv with eggs and avocado",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.25 cups viv + 3 eggs + 1/3 avocado; toddler 3/4 cup viv + 1 egg",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.2,
+    "ingredients": [
+      {
+        "item": "sweet potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green bananas",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green plantain",
+        "qty": "1",
+        "grams": 250,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "eggs",
+        "qty": "13",
+        "grams": 650,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "avocados",
+        "qty": "2",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "pikliz",
+        "qty": "1 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "limes",
+        "qty": "2",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Peel and boil the plantain and bananas in salted water 12 minutes, add the potatoes and sweet potatoes, cook 15 minutes more until tender; drain.",
+      "Meanwhile hard-boil the eggs: 10 minutes at a gentle boil, then cool in cold water.",
+      "Slice the avocado and squeeze lime over it so it stays green.",
+      "Serve everything family-style with pikliz."
+    ],
+    "batch_tip": "Boil a dozen eggs and the viv Sunday; breakfast is ready all week.",
+    "leftovers": "Mash leftovers with the eggs for a breakfast hash.",
+    "macros": {
+      "kcal": 605,
+      "protein_g": 27,
+      "carbs_g": 68,
+      "fat_g": 25,
+      "fiber_g": 10,
+      "sodium_mg": 420
+    },
+    "tags": [
+      "toddler-ok"
+    ],
+    "toddler": "Mash an egg yolk and avocado with a bit of potato; chop the egg small.",
+    "swap": "Add 1 can of sardines or 3 oz smoked salmon per adult for about 20 g more protein and omega-3.",
+    "pairs_with": [
+      "pikliz",
+      "ze-bouyi-ak-pikliz"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a family platter of boiled sweet potato, potato, plantain and banana with halved boiled eggs and avocado slices served family-style in a wide serving platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  },
+  {
+    "id": "viv-ak-sos-vyann",
+    "name": "Viv ak Sòs Vyann",
+    "english": "Boiled viv with a rich beef (or chicken) sauce",
+    "cuisine": "Haitian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups viv + 1 cup sauce; toddler 3/4 cup viv + 1/2 cup sauce",
+    "active_min": 25,
+    "total_min": 75,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.4,
+    "ingredients": [
+      {
+        "item": "sweet potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "Yukon Gold potatoes",
+        "qty": "1.5 lb",
+        "grams": 680,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green bananas",
+        "qty": "2",
+        "grams": 240,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green plantain",
+        "qty": "1",
+        "grams": 250,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "beef chuck for stew (or boneless chicken thighs)",
+        "qty": "2 lb",
+        "grams": 907,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "epis",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 48,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onions",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots",
+        "qty": "2",
+        "grams": 160,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "beef bouillon",
+        "qty": "1 cube",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cut the beef into 1-inch cubes, rinse with lime and marinate in epis and salt 30 minutes (or overnight).",
+      "Brown the beef in oil in a heavy pot 8 minutes; add onions, pepper and tomato paste, fry 3 minutes.",
+      "Add 3 cups water and the bouillon; cover and simmer 45-50 minutes until tender (25 minutes for chicken); add carrots for the last 15 minutes.",
+      "Boil the plantain and bananas 12 minutes, add the potatoes and sweet potatoes, cook 15 minutes more; drain.",
+      "Serve the viv with the sauce; scotch bonnet on the side."
+    ],
+    "batch_tip": "Make the sauce one day ahead; the flavor improves overnight.",
+    "leftovers": "Use the leftover beef and sauce in sandwiches or over rice.",
+    "macros": {
+      "kcal": 615,
+      "protein_g": 42,
+      "carbs_g": 80,
+      "fat_g": 14,
+      "fiber_g": 10,
+      "sodium_mg": 640
+    },
+    "tags": [
+      "high-protein",
+      "toddler-ok",
+      "training-day"
+    ],
+    "toddler": "Cut the beef very small or shred it; serve a little of each viv, mashed; no scotch bonnet in his portion.",
+    "swap": "Chicken thighs cook faster and cost less; use sirloin tips for a leaner option; add beans on the side.",
+    "pairs_with": [
+      "pikliz",
+      "epis"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a family platter of boiled viv beside a bowl of rich brown beef stew with carrots served family-style in a wide serving platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos.",
+    "family_favorite": [
+      "wife",
+      "owner"
+    ]
+  }
+]

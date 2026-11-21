@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Memory</title>
+<meta name="theme-color" content="#050b12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  :root { --bg:#050b12; --panel:#0b1622; --panel2:#0f1d2c; --line:#17283a; --text:#dceefb; --muted:#7f9db5;
+          --cyan:#4fc3f7; --green:#5ee08a; --amber:#ffb300; --red:#ff5252;
+          --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px); }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body { background:var(--bg); color:var(--text); font:15px/1.45 -apple-system,"Segoe UI",Roboto,system-ui,sans-serif; }
+  button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+  input, textarea { font:inherit; color:var(--text); background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:10px 12px; width:100%; }
+  input:focus, textarea:focus { outline:none; border-color:var(--cyan); }
+  header { position:sticky; top:0; z-index:5; background:rgba(5,11,18,.94); backdrop-filter:blur(8px);
+           padding:calc(10px + var(--safe-t)) 16px 10px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; }
+  header a { color:var(--cyan); text-decoration:none; font-size:22px; line-height:1; padding:4px 6px 4px 0; }
+  header b { letter-spacing:.2em; color:var(--cyan); font-size:13px; } header span { display:block; color:var(--muted); font-size:12px; }
+  main { padding:14px 16px calc(28px + var(--safe-b)); max-width:760px; margin:0 auto; }
+  h2 { font-size:12.5px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; margin:22px 0 10px; font-weight:600; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:14px; margin-bottom:12px; }
+  .muted { color:var(--muted); font-size:13px; }
+  .actions { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .act { display:flex; flex-direction:column; align-items:center; gap:6px; padding:16px 6px; border-radius:14px; background:var(--panel2);
+         border:1px solid var(--line); font-weight:600; font-size:14px; cursor:pointer; }
+  .act svg { width:28px; height:28px; }
+  .act.rec { color:var(--red); border-color:rgba(255,82,82,.35); }
+  .recbar { display:none; align-items:center; gap:12px; padding:14px; border-radius:16px; background:rgba(255,82,82,.1);
+            border:1px solid rgba(255,82,82,.5); margin-bottom:12px; }
+  .recbar.on { display:flex; }
+  .dot { width:14px; height:14px; border-radius:50%; background:var(--red); animation:pulse 1s infinite; flex:none; }
+  @keyframes pulse { 50% { opacity:.25; } }
+  .recbar .t { font-size:22px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .recbar .l { flex:1; font-size:13px; color:var(--muted); }
+  .stop { padding:12px 18px; border-radius:12px; background:var(--red); color:#fff; font-weight:700; }
+  video.preview { width:100%; border-radius:12px; margin-bottom:12px; display:none; background:#000; }
+  .btn { padding:11px 16px; border-radius:12px; background:var(--cyan); color:#00131f; font-weight:700; white-space:nowrap; }
+  .row { display:flex; gap:10px; align-items:center; margin-top:8px; }
+  .item { cursor:pointer; }
+  .item .top { display:flex; gap:10px; align-items:flex-start; }
+  .item .ic { width:36px; height:36px; border-radius:10px; background:var(--panel2); display:grid; place-items:center; flex:none; color:var(--cyan); }
+  .item .ic svg { width:18px; height:18px; }
+  .item b { display:block; font-size:15px; }
+  .item .body { display:none; margin-top:10px; cursor:default; }
+  .item.open .body { display:block; }
+  .item audio, .item video, .item img { width:100%; border-radius:10px; margin-top:6px; }
+  .item pre { white-space:pre-wrap; font:13px/1.5 inherit; color:var(--text); background:var(--panel2); border-radius:10px; padding:10px; max-height:280px; overflow:auto; margin-top:8px; }
+  .badge { font-size:11px; padding:2px 8px; border-radius:20px; background:var(--panel2); color:var(--amber); margin-left:6px; font-weight:500; }
+  .del { color:var(--red); font-size:13px; margin-top:10px; }
+  .progress { height:6px; background:var(--panel2); border-radius:6px; overflow:hidden; margin-top:10px; display:none; }
+  .progress i { display:block; height:100%; background:var(--cyan); width:0; }
+  .toast { position:fixed; left:50%; bottom:calc(20px + var(--safe-b)); transform:translateX(-50%); background:var(--panel2);
+           border:1px solid var(--line); padding:10px 16px; border-radius:12px; font-size:14px; display:none; z-index:9; max-width:90vw; }
+  .empty { text-align:center; color:var(--muted); padding:24px 10px; }
+  /* --- Today (Daily Awareness) --- */
+  .today-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .pill { display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; letter-spacing:.08em; padding:6px 11px;
+          border-radius:20px; background:var(--panel2); border:1px solid var(--line); color:var(--muted); }
+  .pill i { width:9px; height:9px; border-radius:50%; background:var(--muted); }
+  .pill.on { color:var(--green); border-color:rgba(94,224,138,.4); } .pill.on i { background:var(--green); animation:pulse 1.4s infinite; }
+  .pill.paused { color:var(--amber); border-color:rgba(255,179,0,.4); } .pill.paused i { background:var(--amber); }
+  .today-head .muted { flex:1; min-width:120px; }
+  .ctl { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .ctl button { padding:10px 14px; border-radius:12px; background:var(--panel2); border:1px solid var(--line); font-weight:600; font-size:14px; }
+  .ctl button.go { background:var(--green); color:#04140a; border-color:transparent; }
+  .ctl button.warn { color:var(--red); }
+  .ask { display:flex; gap:8px; margin-top:12px; }
+  .answer { margin-top:10px; padding:11px 13px; border-radius:12px; background:var(--panel2); border-left:3px solid var(--cyan); font-size:14.5px; display:none; }
+  .answer.on { display:block; }
+  .hour { font-size:11.5px; letter-spacing:.14em; color:var(--muted); margin:14px 0 6px; font-weight:700; }
+  .line { display:flex; gap:10px; padding:8px 10px; border-radius:10px; cursor:pointer; align-items:flex-start; }
+  .line:hover { background:var(--panel2); }
+  .line.sel { background:rgba(79,195,247,.12); outline:1px solid rgba(79,195,247,.45); }
+  .line time { flex:none; width:42px; color:var(--muted); font-size:12.5px; font-variant-numeric:tabular-nums; padding-top:1px; }
+  .line .w { font-weight:700; font-size:13px; margin-right:4px; }
+  .line .w.jarvis { color:var(--cyan); } .line .room { font-size:10.5px; color:var(--amber); margin-left:4px; font-weight:600; }
+  .line .tx { font-size:14px; }
+  .selbar { position:sticky; bottom:calc(10px + var(--safe-b)); display:none; gap:8px; align-items:center; background:var(--panel2); border:1px solid var(--line);
+            border-radius:14px; padding:10px 12px; margin-top:10px; box-shadow:0 8px 24px #000a; }
+  .selbar.on { display:flex; } .selbar span { flex:1; font-size:13.5px; color:var(--muted); }
+  .sheet-bg { position:fixed; inset:0; background:#000a; z-index:10; display:none; align-items:flex-end; }
+  .sheet-bg.on { display:flex; }
+  .sheet { width:100%; max-width:560px; margin:0 auto; background:var(--panel); border:1px solid var(--line); border-radius:20px 20px 0 0;
+           padding:18px 18px calc(18px + var(--safe-b)); }
+  .sheet h3 { font-size:17px; margin-bottom:6px; }
+  .sheet label { display:flex; gap:10px; align-items:flex-start; padding:10px 0; font-size:14.5px; cursor:pointer; }
+  .sheet input[type=checkbox] { width:20px; height:20px; flex:none; margin-top:1px; accent-color:var(--green); }
+  .privacy { font-size:12.5px; color:var(--muted); margin-top:10px; line-height:1.5; }
+  @media (prefers-reduced-motion: reduce) { .dot, .pill.on i { animation:none; } }
+</style>
+</head>
+<body>
+<header><a href="/" aria-label="Back to Jarvis">‹</a><div><b>J.A.R.V.I.S. · MEMORY</b><span id="where">Things you asked me to remember</span></div></header>
+<main>
+  <h2 style="margin-top:6px">Today · last 24 hours</h2>
+  <div class="card" id="today">
+    <div class="today-head" id="listenRow" hidden>
+      <span class="pill" id="pill" role="status" aria-live="polite"><i aria-hidden="true"></i><span id="pillText">OFF</span></span>
+      <span class="muted" id="pillNote"></span>
+    </div>
+    <div class="ctl" id="ctl" hidden></div>
+    <div class="ask"><input id="askToday" placeholder="Ask: “what did we say at 8?”" aria-label="Ask about today">
+      <button class="btn" id="askGo">Ask</button></div>
+    <div class="answer" id="answer" aria-live="polite"></div>
+    <input id="qToday" type="search" placeholder="Search today…" aria-label="Search today" style="margin-top:12px">
+    <div id="timeline"></div>
+    <div class="selbar" id="selbar"><span id="selCount"></span><button class="btn" id="keepSel">Keep</button>
+      <button class="btn" id="delSel" style="background:var(--red);color:#fff">Delete</button></div>
+    <div class="ctl"><button id="forget15">Forget last 15 min</button><button class="warn" id="forgetAll">Forget today</button></div>
+    <p class="privacy">Conversations with Jarvis stay here for 24 hours, then they're gone. Room listening is off unless you
+      start it, only your household's voices are kept, and nothing outlives a day unless you tap <b>Keep</b>.</p>
+  </div>
+  <h2>Save a memory</h2>
+  <div class="recbar" id="recbar" role="status" aria-live="polite">
+    <span class="dot" aria-hidden="true"></span><span class="t" id="rt">0:00</span>
+    <span class="l">Recording. Let people know they're being recorded.</span>
+    <button class="stop" id="stop">Stop &amp; save</button>
+  </div>
+  <video class="preview" id="preview" muted playsinline></video>
+  <div class="card">
+    <div class="actions">
+      <button class="act rec" id="recAudio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Record</button>
+      <button class="act" id="recVideo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Video</button>
+      <label class="act" for="photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo</label>
+    </div>
+    <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+    <input id="note" placeholder="What is this? (optional, helps me find it)" style="margin-top:12px" aria-label="Note about this memory">
+    <div class="progress" id="prog"><i></i></div>
+  </div>
+  <div class="card">
+    <textarea id="text" rows="2" placeholder="Or type something to remember: where you parked, a promise, a number…" aria-label="Note to remember"></textarea>
+    <div class="row"><button class="btn" id="saveNote">Remember this</button><span class="muted">Later just ask: “what did I say about…”</span></div>
+  </div>
+  <h2>Your memories</h2>
+  <input id="q" type="search" placeholder="Search: car, brakes, receipt…" aria-label="Search memories">
+  <div id="list" style="margin-top:12px"></div>
+</main>
+<div class="toast" id="toast"></div>
+<div class="sheet-bg" id="consent" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+  <div class="sheet">
+    <h3 id="consentTitle">Start Daily Awareness?</h3>
+    <div class="muted">Jarvis will keep a 24-hour transcript of what's said near the PC, so you can ask about it later.
+      It's transcribed on the PC and never leaves your devices.</div>
+    <label><input type="checkbox" id="cKnows"> Everyone in the room knows Jarvis is listening.</label>
+    <label><input type="checkbox" id="cGuests"> Include guests' voices too (otherwise only household voices are kept).</label>
+    <div class="ctl"><button class="go" id="cStart" disabled>Start listening</button><button id="cCancel">Cancel</button></div>
+  </div>
+</div>
+<script>
+// Confirm / prompt as a design-system sheet (.ds-sheet) instead of the browser's native dialog.
+// Resolves true or false; with `input` set it resolves the typed text, or null when cancelled.
+function dsDialog({ title, body = "", ok = "OK", cancel = "Cancel", danger = false, input = null }) {
+  return new Promise(resolve => {
+    const e = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `<div class="ds-scrim"></div><div class="ds-sheet" role="alertdialog" aria-modal="true" aria-labelledby="ds-dlg-t"><h2 id="ds-dlg-t">${e(title)}</h2>${body ? `<p>${e(body)}</p>` : ""}${input !== null ? `<input class="ds-input" aria-labelledby="ds-dlg-t" value="${e(input)}">` : ""}<div class="ds-sheet-actions"><button type="button" class="ds-btn" data-a="no">${e(cancel)}</button><button type="button" class="ds-btn ${danger ? "danger solid" : "primary"}" data-a="yes">${e(ok)}</button></div></div>`;
+    document.body.append(wrap);
+    const field = wrap.querySelector("input"), prev = document.activeElement;
+    const done = yes => {
+      document.removeEventListener("keydown", key, true); wrap.remove();
+      try { prev && prev.focus && prev.focus(); } catch (x) {}
+      resolve(input !== null ? (yes ? field.value : null) : yes);
+    };
+    const key = ev => {
+      if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); done(false); }
+      else if (ev.key === "Enter" && field && document.activeElement === field) { ev.preventDefault(); done(true); }
+    };
+    document.addEventListener("keydown", key, true);
+    wrap.querySelector(".ds-scrim").onclick = () => done(false);
+    wrap.querySelector('[data-a="no"]').onclick = () => done(false);
+    wrap.querySelector('[data-a="yes"]').onclick = () => done(true);
+    if (field) { field.focus(); field.select(); } else wrap.querySelector(danger ? '[data-a="no"]' : '[data-a="yes"]').focus();
+  });
+}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+function toast(t) { const el = $("#toast"); el.textContent = t; el.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.display = "none", 3200); }
+async function api(path, opts = {}) {
+  const r = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), Authorization: `Bearer ${token}` } });
+  if (r.status === 401) { location.href = "/"; throw new Error("unlinked"); }
+  return r.json();
+}
+const ICON = {
+  audio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/></svg>',
+  video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>',
+  photo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  note: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h5"/></svg>' };
+const when = iso => new Date(iso).toLocaleString([], { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+const dur = s => s ? ` · ${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}` : "";
+
+/* ---------- upload with progress ---------- */
+function upload(blob, kind, filename) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData(); fd.append("file", blob, filename); fd.append("kind", kind); fd.append("note", $("#note").value);
+    const x = new XMLHttpRequest(); x.open("POST", "/api/memory/upload"); x.setRequestHeader("Authorization", `Bearer ${token}`);
+    const bar = $("#prog"); bar.style.display = "block"; bar.firstElementChild.style.width = "0";
+    x.upload.onprogress = e => { if (e.lengthComputable) bar.firstElementChild.style.width = Math.round(100 * e.loaded / e.total) + "%"; };
+    x.onload = () => { bar.style.display = "none"; x.status < 300 ? resolve(JSON.parse(x.responseText)) : reject(new Error(String(x.status))); };
+    x.onerror = () => { bar.style.display = "none"; reject(new Error("no connection")); };
+    x.send(fd);
+  });
+}
+
+/* ---------- recording: only while you press Record, always with the red bar showing ---------- */
+let rec = null, chunks = [], stream = null, t0 = 0, tick = null, kindNow = "audio", wake = null;
+const LIMIT = { audio: 60 * 60, video: 10 * 60 };  // seconds
+function pickMime(kind) {
+  const c = kind === "video" ? ["video/webm;codecs=vp9,opus", "video/webm", "video/mp4"] : ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
+  return c.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
+}
+async function start(kind) {
+  if (rec) return;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia(kind === "video" ? { audio: true, video: { facingMode: "environment" } } : { audio: true });
+  } catch (e) { toast("I need microphone" + (kind === "video" ? " and camera" : "") + " permission for that."); return; }
+  kindNow = kind; chunks = [];
+  const mime = pickMime(kind);
+  rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+  rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+  rec.onstop = save;
+  rec.start(1000);
+  if (kind === "video") { const v = $("#preview"); v.srcObject = stream; v.style.display = "block"; v.play(); }
+  t0 = Date.now(); $("#rt").textContent = "0:00"; $("#recbar").classList.add("on");
+  tick = setInterval(() => { const s = Math.floor((Date.now() - t0) / 1000); $("#rt").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    if (s >= LIMIT[kind]) stop(); }, 250);
+  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request("screen"); } catch (e) {}
+}
+function stop() { if (rec && rec.state !== "inactive") rec.stop(); }
+async function save() {
+  clearInterval(tick); $("#recbar").classList.remove("on"); const v = $("#preview"); v.style.display = "none"; v.srcObject = null;
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  try { if (wake) await wake.release(); } catch (e) {}
+  const type = rec.mimeType || (kindNow === "video" ? "video/webm" : "audio/webm"); rec = null;
+  const blob = new Blob(chunks, { type }), ext = type.includes("mp4") ? ".mp4" : type.includes("ogg") ? ".ogg" : ".webm";
+  if (blob.size < 2000) { toast("That was too short to save."); return; }
+  toast("Saving…");
+  try { await upload(blob, kindNow, "memory" + ext); toast("Saved. I'm transcribing it now."); $("#note").value = ""; load(); }
+  catch (e) { toast("Upload failed (" + e.message + "). Stay on this page and try again."); }
+}
+$("#recAudio").onclick = () => start("audio");
+$("#recVideo").onclick = () => start("video");
+$("#stop").onclick = stop;
+$("#photo").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  toast("Saving photo…");
+  try { await upload(f, "photo", f.name || "photo.jpg"); toast("Saved. I'm reading the photo now."); $("#note").value = ""; load(); }
+  catch (err) { toast("Upload failed (" + err.message + ")."); }
+  e.target.value = "";
+};
+$("#saveNote").onclick = async () => {
+  const text = $("#text").value.trim(); if (!text) { toast("Type what to remember first."); return; }
+  await api("/api/memory/note", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
+  $("#text").value = ""; toast("Remembered."); load();
+};
+
+/* ---------- list / search ---------- */
+function itemCard(i) {
+  const el = document.createElement("div"); el.className = "card item";
+  const title = i.title || (i.kind === "note" ? (i.transcript || "").slice(0, 60) : "Untitled");
+  el.innerHTML = `<div class="top"><span class="ic">${ICON[i.kind] || ""}</span><div style="flex:1">
+      <b>${esc(title)}${i.status !== "ready" ? `<span class="badge">${i.status === "error" ? "will retry" : "processing"}</span>` : ""}</b>
+      <div class="muted">${esc(when(i.created))}${dur(i.seconds)}${i.note ? " · " + esc(i.note) : ""}</div>
+      ${i.summary ? `<div style="margin-top:4px;font-size:14px">${esc(i.summary)}</div>` : ""}</div></div><div class="body"></div>`;
+  el.querySelector(".top").onclick = () => {
+    const body = el.querySelector(".body");
+    if (!body.innerHTML) {
+      const src = `/api/memory/file/${encodeURIComponent(i.id)}?t=${encodeURIComponent(token)}`;
+      body.innerHTML = (i.kind === "audio" ? `<audio controls preload="none" src="${src}"></audio>`
+        : i.kind === "video" ? `<video controls preload="metadata" playsinline src="${src}"></video>`
+        : i.kind === "photo" ? `<img alt="${esc(title)}" src="${src}" loading="lazy">` : "") +
+        (i.transcript ? `<pre>${esc(i.transcript)}</pre>` : "") + `<button class="del">Delete this memory</button>`;
+      body.querySelector(".del").onclick = async () => {
+        if (!await dsDialog({ title: "Delete this memory and its recording for good?", ok: "Delete", danger: true })) return;
+        await api(`/api/memory/item/${encodeURIComponent(i.id)}`, { method: "DELETE" }); toast("Deleted."); load();
+      };
+    }
+    el.classList.toggle("open");
+  };
+  return el;
+}
+let searchT = null;
+async function load() {
+  const q = $("#q").value.trim();
+  const r = await api(`/api/memory/search?limit=40&q=${encodeURIComponent(q)}`);
+  const list = $("#list"); list.innerHTML = "";
+  if (!r.items.length) { list.innerHTML = `<div class="card empty">${q ? "Nothing matches that." : "Nothing yet. Press Record, take a photo or type a note, then ask me about it any time."}</div>`; return; }
+  r.items.forEach(i => list.appendChild(itemCard(i)));
+  clearTimeout(load.t);
+  if (r.items.some(i => i.status === "processing")) load.t = setTimeout(load, 8000);
+}
+$("#q").oninput = () => { clearTimeout(searchT); searchT = setTimeout(load, 300); };
+
+/* ---------- Today: Daily Awareness (rolling 24 hours) ---------- */
+const sel = new Set();
+const post = (path, body) => api(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+const clock = t => new Date(t * 1000).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+const short = t => clock(t).replace(/\s?[AP]\.?M\.?$/i, "");   // the hour heading above already says AM/PM
+function renderSession(s, canListen) {
+  $("#listenRow").hidden = $("#ctl").hidden = !canListen;
+  if (!canListen || !s) return;
+  const state = s.state || "off";
+  $("#pill").className = "pill " + state;
+  $("#pillText").textContent = { on: "LISTENING", paused: "PAUSED", off: "ROOM LISTENING OFF" }[state] || state.toUpperCase();
+  $("#pillNote").textContent = s.stale ? "PC unreachable — showing its last known state"
+    : state === "on" ? `since ${clock(s.since)} · ${s.guests ? "guests included" : "household voices only"}`
+    : state === "paused" ? `paused at ${clock(s.since)}` : "Only conversations with Jarvis are kept.";
+  const b = (id, label, cls = "") => `<button id="${id}" class="${cls}">${label}</button>`;
+  $("#ctl").innerHTML = state === "on" ? b("cPause", "⏸ Pause") + b("cStop", "Stop", "warn")
+    : state === "paused" ? b("cResume", "▶ Resume", "go") + b("cStop", "Stop", "warn") : b("cOpen", "● Start room listening", "go");
+  const act = async a => { try { const r = await post("/api/awareness/session", { action: a }); renderSession(r.session, true); toast({ pause: "Paused.", resume: "Listening again.", stop: "Room listening stopped." }[a]); } catch (e) { toast("Couldn't reach the PC."); } };
+  if ($("#cPause")) $("#cPause").onclick = () => act("pause");
+  if ($("#cResume")) $("#cResume").onclick = () => act("resume");
+  if ($("#cStop")) $("#cStop").onclick = () => act("stop");
+  if ($("#cOpen")) $("#cOpen").onclick = () => { $("#cKnows").checked = $("#cGuests").checked = false; $("#cStart").disabled = true; $("#consent").classList.add("on"); };
+}
+$("#cKnows").onchange = () => $("#cStart").disabled = !$("#cKnows").checked;
+$("#cCancel").onclick = () => $("#consent").classList.remove("on");
+$("#cStart").onclick = async () => {
+  const r = await fetch("/api/awareness/session", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "start", consent: $("#cKnows").checked, guests: $("#cGuests").checked }) });
+  const j = await r.json(); $("#consent").classList.remove("on");
+  if (r.ok) { renderSession(j.session, true); toast("Listening. Ask me about it any time today."); } else toast(j.detail || "Couldn't start.");
+};
+function renderTimeline(entries, q) {
+  const tl = $("#timeline"); tl.innerHTML = "";
+  if (!entries.length) { tl.innerHTML = `<div class="empty">${q ? "Nothing today matches that." : "Nothing in the last 24 hours yet. Talk to Jarvis, or start room listening."}</div>`; return; }
+  let hour = null;
+  for (const e of entries) {
+    const h = new Date(e.t * 1000).toLocaleTimeString([], { hour: "numeric" });
+    if (h !== hour) { hour = h; const d = document.createElement("div"); d.className = "hour"; d.textContent = h; tl.appendChild(d); }
+    const el = document.createElement("div"); el.className = "line" + (sel.has(e.id) ? " sel" : ""); el.tabIndex = 0; el.setAttribute("role", "checkbox"); el.setAttribute("aria-checked", sel.has(e.id));
+    el.innerHTML = `<time datetime="${new Date(e.t * 1000).toISOString()}" title="${clock(e.t)}">${short(e.t)}</time><div><span class="w ${e.who === "Jarvis" ? "jarvis" : ""}">${esc(e.who)}</span>${e.source === "room" ? `<span class="room">ROOM</span>` : ""}<div class="tx">${esc(e.text)}</div></div>`;
+    const toggle = () => { sel.has(e.id) ? sel.delete(e.id) : sel.add(e.id); el.classList.toggle("sel"); el.setAttribute("aria-checked", sel.has(e.id)); updateSel(); };
+    el.onclick = toggle; el.onkeydown = ev => { if (ev.key === " " || ev.key === "Enter") { ev.preventDefault(); toggle(); } };
+    tl.appendChild(el);
+  }
+}
+function updateSel() { $("#selbar").classList.toggle("on", sel.size > 0); $("#selCount").textContent = `${sel.size} selected`; }
+async function loadToday() {
+  const q = $("#qToday").value.trim();
+  try { const r = await api(`/api/awareness?q=${encodeURIComponent(q)}`); renderSession(r.session, r.can_listen); renderTimeline(r.entries, q); }
+  catch (e) { $("#timeline").innerHTML = `<div class="empty">Couldn't load today (${esc(e.message)}).</div>`; }
+}
+let todayT = null;
+$("#qToday").oninput = () => { clearTimeout(todayT); todayT = setTimeout(loadToday, 300); };
+$("#askGo").onclick = async () => {
+  const text = $("#askToday").value.trim(); if (!text) return;
+  const a = $("#answer"); a.textContent = "Thinking…"; a.classList.add("on");
+  try { const r = await post("/api/chat", { text, speak: false }); a.textContent = r.reply || "No answer."; loadToday(); }
+  catch (e) { a.textContent = "Couldn't reach Jarvis."; }
+};
+$("#askToday").onkeydown = e => { if (e.key === "Enter") $("#askGo").click(); };
+$("#keepSel").onclick = async () => { const r = await post("/api/awareness/keep", { ids: [...sel] }); toast(r.message || "Kept."); sel.clear(); updateSel(); loadToday(); load(); };
+// a machine's conversation thread file was held (core.awareness.ThreadNotForgotten): never a plain "forgot"
+// The selection stays: Delete again in a moment finishes it (core.thread keeps what the busy file still owes).
+const kept = r => r.thread_kept ? " But a conversation file was busy, so Jarvis may still remember those words: press it again in a moment." : "";
+$("#delSel").onclick = async () => { if (!await dsDialog({ title: `Delete ${sel.size} line(s) now?`, ok: "Delete", danger: true })) return; const r = await post("/api/awareness/delete", { ids: [...sel] }); toast(`Deleted ${r.deleted}.` + (r.complete ? "" : " One machine was offline; its copy ages out within 24 h.") + kept(r)); if (!r.thread_kept) sel.clear(); updateSel(); loadToday(); };
+$("#forget15").onclick = async () => { const r = await post("/api/awareness/delete", { minutes: 15 }); toast(`Forgot the last 15 minutes (${r.deleted} lines).` + kept(r)); loadToday(); };
+$("#forgetAll").onclick = async () => { if (!await dsDialog({ title: "Forget everything from the last 24 hours?", ok: "Forget", danger: true })) return; const r = await post("/api/awareness/delete", { everything: true }); toast(`Forgot today (${r.deleted} lines).` + kept(r)); sel.clear(); updateSel(); loadToday(); };
+document.addEventListener("visibilitychange", () => { if (!document.hidden && token) loadToday(); });
+setInterval(() => { if (!document.hidden && token && !sel.size) loadToday(); }, 30000);
+(async () => {
+  if (!token) { $("#list").innerHTML = `<div class="card empty">Open the Jarvis app and link this phone first.</div>`; return; }
+  try {
+    const s = await api("/api/memory/stats");
+    $("#where").textContent = (s.on_drive ? "Saved on the 2 TB drive" : "Saved on the laptop") + (s.free_gb != null ? ` · ${s.free_gb} GB free` : "");
+    load(); loadToday();
+  } catch (e) { $("#list").innerHTML = `<div class="card empty">Couldn't reach Jarvis (${esc(e.message)}).</div>`; }
+  if (location.hash === "#record") start("audio");
+})();
+</script>
+</body>
+</html>

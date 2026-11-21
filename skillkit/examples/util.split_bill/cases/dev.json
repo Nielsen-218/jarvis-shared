@@ -1,0 +1,135 @@
+[
+ {
+  "id": "d1",
+  "params": {
+   "total": "87.50",
+   "tip_percent": "18",
+   "people": 3
+  },
+  "expect": {
+   "output": {
+    "total_cents": 10325,
+    "shares_cents": [
+     3442,
+     3442,
+     3441
+    ]
+   }
+  }
+ },
+ {
+  "id": "d2",
+  "params": {
+   "total": "19.99",
+   "tip_percent": "20",
+   "people": 2
+  },
+  "expect": {
+   "output": {
+    "total_cents": 2399,
+    "shares_cents": [
+     1200,
+     1199
+    ]
+   }
+  }
+ },
+ {
+  "id": "d3",
+  "params": {
+   "total": "0.50",
+   "tip_percent": "0",
+   "people": 5
+  },
+  "expect": {
+   "output": {
+    "total_cents": 50,
+    "shares_cents": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ]
+   }
+  }
+ },
+ {
+  "id": "d4",
+  "params": {
+   "total": "0.01",
+   "tip_percent": "0",
+   "people": 5
+  },
+  "expect": {
+   "error": "not_enough_money"
+  }
+ },
+ {
+  "id": "d5",
+  "params": {
+   "total": "10.00",
+   "tip_percent": "12.5",
+   "people": 3
+  },
+  "expect": {
+   "output": {
+    "total_cents": 1125,
+    "shares_cents": [
+     375,
+     375,
+     375
+    ]
+   }
+  }
+ },
+ {
+  "id": "d6",
+  "params": {
+   "total": "0.01",
+   "tip_percent": "0",
+   "people": 2
+  },
+  "expect": {
+   "error": "not_enough_money"
+  }
+ },
+ {
+  "id": "r4",
+  "text": "split $120 among 4 people with a 20% tip",
+  "route": true,
+  "params": {
+   "total": "120",
+   "tip_percent": "20",
+   "people": 4
+  }
+ },
+ {
+  "id": "r5",
+  "text": "can you split a $87.50 dinner bill 3 ways",
+  "route": true,
+  "params": {
+   "total": "87.50",
+   "people": 3
+  }
+ },
+ {
+  "id": "r6",
+  "text": "split this three ways",
+  "route": true,
+  "asks": [
+   "total"
+  ],
+  "params": {}
+ },
+ {
+  "id": "r7",
+  "text": "split the screen into two windows",
+  "route": false
+ },
+ {
+  "id": "r8",
+  "text": "split the string by commas",
+  "route": false
+ }
+]

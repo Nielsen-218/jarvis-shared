@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teach Jarvis · Learning Library</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 760px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-6) + var(--safe-b)); display: grid; gap: var(--s-4); }
+  section { display: grid; gap: var(--s-3); align-content: start; } [hidden] { display: none !important; }
+  .ds-card { padding: var(--s-4); display: grid; gap: var(--s-3); }
+  .head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+  .head b { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); overflow-wrap: anywhere; }
+  .h { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-ui); letter-spacing: -0.01em; }
+  .status { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) var(--s-4); border-radius: var(--r-2);
+    border: 1px solid var(--line-2); background: var(--bg-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .status.ok { border-color: var(--ok); background: var(--ok-soft); } .status.err { border-color: var(--danger); background: var(--danger-soft); }
+  .status.busy { color: var(--text-2); }
+  .ds-textarea { min-height: 140px; }
+  input[type=file] { color: var(--text-2); font-size: var(--fs-sm); max-width: 100%; }
+  input[type=file]::file-selector-button { margin-right: var(--s-3); min-height: 36px; padding: 0 var(--s-3); border-radius: var(--r-1); border: 1px solid var(--line-2); background: var(--bg-3); color: var(--text-1); font: 600 var(--fs-xs)/1 var(--font-ui); cursor: pointer; }
+  input[type=file]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-1); }
+  .row2 { display: flex; gap: var(--s-2); } .row2 .ds-input { flex: 1; min-width: 0; }
+  .item { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-2) 0; border-top: 1px solid var(--line-1); }
+  .item:first-child { border-top: 0; }
+  .item .grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  details > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; font: 500 var(--fs-sm)/var(--lh-sm) var(--font-ui); color: var(--accent); border-radius: var(--r-1); }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 400 var(--fs-xs)/var(--lh-sm) var(--font-mono); color: var(--text-2);
+    background: var(--bg-1); border: 1px solid var(--line-1); border-radius: var(--r-2); padding: var(--s-3); margin-top: var(--s-2); max-height: 320px; overflow: auto; }
+  .busy { display: flex; align-items: center; gap: var(--s-3); color: var(--text-2); font-size: var(--fs-sm); }
+</style>
+</head>
+<body class="ds">
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Teach Jarvis</h1>
+</header>
+<main>
+  <p class="sub">Learning library, kept on this computer. Save a lesson, upload a source, or import a public reference. Indexed material is unverified until practiced and tested. Uploaded code is kept as reference text.</p>
+  <div role="status" aria-live="polite"><p id="message" class="status" hidden></p></div>
+  <section><div class="ds-card"><h2 class="h">Add material</h2>
+    <form id="teach" style="display:grid;gap:var(--s-3)">
+      <div class="ds-field"><label for="title">Title</label><input class="ds-input" id="title" required maxlength="200"></div>
+      <div class="ds-field"><label for="topic">Topic or language</label><input class="ds-input" id="topic" required maxlength="100"></div>
+      <div class="ds-field"><label for="license">License or permission to use</label><input class="ds-input" id="license" required maxlength="200" placeholder="For example: owner-authored"></div>
+      <div class="ds-field"><label for="content">Lesson text</label><textarea class="ds-textarea" id="content"></textarea></div>
+      <div class="ds-field"><label for="source">Source attribution or public HTTPS URL</label><input class="ds-input" id="source" maxlength="500" placeholder="Author, reference, or https://…"></div>
+      <div class="ds-field"><label for="file">File: PDF, UTF-8 text, Markdown, code, up to 5 MiB</label><input id="file" type="file" accept=".pdf,.txt,.md,.py,.cpp,.cc,.c,.h,.hpp,.cs,.js,.ts,.java,.rs,.go,.lua,.json"></div>
+      <p class="sub">PDFs need selectable text, at most 100 pages. Videos, scanned PDFs and repository cloning are not supported yet. Choose a file, write a lesson, or leave text empty to fetch the URL.</p>
+      <button class="ds-btn primary wide">Save and index locally</button>
+    </form></div></section>
+  <section><div class="ds-card"><h2 class="h">Lessons and evidence</h2>
+    <form id="find" class="row2"><input class="ds-input" id="query" maxlength="300" placeholder="Search retained knowledge" aria-label="Search retained knowledge"><button class="ds-btn">Search</button></form>
+    <div id="lessons" aria-busy="true"><div class="ds-skeleton" style="height:20px;width:50%"></div><div class="ds-skeleton" style="height:44px;margin-top:8px"></div></div></div></section>
+  <section><div class="ds-card"><h2 class="h">Mentors</h2>
+    <p class="sub">Local Codex and Claude Code use the same scoped CLI. The OS owner grants credentials; remote mentors are not connected automatically.</p>
+    <div id="mentors"></div>
+    <details><summary>Recent audit</summary><pre id="audit"></pre></details></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let token=''; try{token=localStorage.getItem('jarvis_token')||''}catch(e){}
+const fragment=new URLSearchParams(location.hash.slice(1));
+if(fragment.get('t')){token=fragment.get('t');try{localStorage.setItem('jarvis_token',token)}catch(e){}history.replaceState(null,'',location.pathname)}
+async function api(path,options={}){
+  if(!token)throw Error('Link this phone in the Jarvis app first.');
+  options.headers={Authorization:'Bearer '+token,...options.headers};
+  const r=await fetch('/api/teaching'+path,options);
+  let v={};try{v=await r.json()}catch(e){}
+  if(!r.ok)throw Error(r.status===401?'Link this phone in the Jarvis app first.':typeof v.detail==='string'?v.detail:'Request failed (error '+r.status+').');
+  return v}
+function text(tag,value,parent,cls){const el=document.createElement(tag);el.textContent=value;if(cls)el.className=cls;parent.append(el);return el}
+function say(msg,kind){const m=$('message');m.className='status '+(kind||'');m.replaceChildren();if(kind==='busy'){const s=document.createElement('span');s.className='ds-spinner';m.append(s)}m.append(msg);m.hidden=!msg}
+function emptyState(parent,title,msg){const e=document.createElement('div');e.className='ds-empty';text('b',title,e);text('span',msg,e);parent.append(e)}
+async function load(){
+  $('lessons').setAttribute('aria-busy','true');
+  try{const data=await api('?q='+encodeURIComponent($('query').value));$('lessons').replaceChildren();
+    for(const l of data.lessons){const p=l.payload,a=text('article','',$('lessons'),'ds-card');a.style.marginBottom='var(--s-3)';
+      const h=text('div','',a,'head');text('b',p.title,h);text('span',l.state,h,'ds-badge '+(l.state==='indexed'?'ok':'warn'));
+      text('p',l.mentor+' · revision '+l.revision+' · version '+p.version,a,'sub');text('p',p.source+' · '+p.license,a,'sub');
+      const d=text('details','',a);text('summary','Material and test evidence',d);text('pre',Object.entries(p).filter(([k,v])=>v).map(([k,v])=>k.toUpperCase()+'\n'+v).join('\n\n'),d);text('pre',JSON.stringify(l.attempts,null,2),d)}
+    if(!data.lessons.length)emptyState($('lessons'),$('query').value?'No matching lessons':'No lessons yet',$('query').value?'Try a different word, or clear the search.':'Add material above and it shows up here once it is indexed.');
+    $('mentors').replaceChildren();
+    if(!data.mentors.length)text('p','No mentors are set up yet.',$('mentors'),'sub');
+    for(const m of data.mentors){const row=text('div','',$('mentors'),'item'),info=text('div','',row,'grow');
+      const state=m.revoked?'revoked':new Date(m.expires*1000)<new Date()?'expired':'configured';
+      text('b',m.id,info);text('div',m.scopes,info,'sub');text('span',state,row,'ds-badge '+(state==='configured'?'ok':'warn'));
+      if(!m.revoked){const b=text('button','Revoke',row,'ds-btn sm danger');b.type='button';b.setAttribute('aria-label','Revoke mentor '+m.id);b.onclick=async()=>{try{await api('/revoke',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mentor:m.id})});await load()}catch(e){say(e.message,'err')}}}}
+    $('audit').textContent=JSON.stringify(data.audit,null,2)
+  }catch(e){$('lessons').replaceChildren();emptyState($('lessons'),'The library did not load',e.message+' Check your connection, then search again.');say(e.message,'err')}
+  finally{$('lessons').setAttribute('aria-busy','false')}}
+$('find').onsubmit=e=>{e.preventDefault();load()};
+$('teach').onsubmit=async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;say('Indexing…','busy');try{
+const body={title:$('title').value,topic:$('topic').value,license:$('license').value,source:$('source').value,version:'1',content:$('content').value};const f=$('file').files[0];
+let result;
+if(f){if(f.size>5*1024*1024)throw Error('File exceeds 5 MiB');const form=new FormData();form.set('file',f);for(const k of ['title','topic','license'])form.set(k,body[k]);result=await api('/file',{method:'POST',body:form})}
+else result=await api(body.content?'/lesson':'/url',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+say(result.state==='received_unindexed'?'Saved locally; library indexing is pending. Resubmitting the same lesson safely retries indexing.':'Saved and indexed locally. This material has not been independently verified.',result.state==='received_unindexed'?'':'ok');await load()
+}catch(e){say(e.message,'err')}finally{b.disabled=false}};
+load();
+</script>
+</body>
+</html>

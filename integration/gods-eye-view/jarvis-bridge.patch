@@ -1,0 +1,65 @@
+diff --git a/src/app/embed.js b/src/app/embed.js
+index 32541f8..4090f1b 100644
+--- a/src/app/embed.js
++++ b/src/app/embed.js
+@@ -547,11 +547,60 @@ export function installViews({
+       );
+   };
+   windowRef.addEventListener('message', onMessage);
++  // JARVIS bridge: report where the camera rests and which entity the user picked, to the framing page only.
++  const stopJarvisBridge = (() => {
++    if (!peer || peer === windowRef) return () => {};
++    const send = (m) => {
++      try { peer.postMessage(m, '*'); } catch { /* the framing page is gone */ }
++    };
++    let timer = 0;
++    const reportCamera = () => {
++      clearTimeout(timer);
++      timer = setTimeout(() => {
++        const c = viewer.camera.positionCartographic;
++        if (!c) return;
++        send({ type: 'gev:camera', lat: Cesium.Math.toDegrees(c.latitude), lon: Cesium.Math.toDegrees(c.longitude),
++          altitude_m: c.height, heading_deg: Cesium.Math.toDegrees(viewer.camera.heading), pitch_deg: Cesium.Math.toDegrees(viewer.camera.pitch) });
++      }, 250);
++    };
++    const reportPick = () => {
++      const e = viewer.selectedEntity;
++      if (!e) return send({ type: 'gev:pick', entity: null });
++      let lat = null, lon = null;
++      try {
++        const p = e.position?.getValue?.(viewer.clock.currentTime);
++        if (p) { const g = Cesium.Cartographic.fromCartesian(p); lat = Cesium.Math.toDegrees(g.latitude); lon = Cesium.Math.toDegrees(g.longitude); }
++      } catch { /* no position */ }
++      send({ type: 'gev:pick', entity: { id: String(e.id || '').slice(0, 80), name: String(e.name || '').slice(0, 120), lat, lon } });
++    };
++    // 2D/3D: the framing page asks with { type: 'gev:mode', id, mode: '2d' | '3d' }; answered once the morph completes.
++    const onMode = (event) => {
++      if (event.source !== peer || event.data?.type !== 'gev:mode') return;
++      const { id = null, mode } = event.data;
++      const want = mode === '2d' ? Cesium.SceneMode.SCENE2D : mode === '3d' ? Cesium.SceneMode.SCENE3D : null;
++      if (want === null) return send({ type: 'gev:mode-applied', id, ok: false, error: 'mode must be 2d or 3d' });
++      if (viewer.scene.mode === want) return send({ type: 'gev:mode-applied', id, ok: true, mode });
++      const done = () => { viewer.scene.morphComplete.removeEventListener(done); send({ type: 'gev:mode-applied', id, ok: viewer.scene.mode === want, mode }); };
++      viewer.scene.morphComplete.addEventListener(done);
++      try { want === Cesium.SceneMode.SCENE2D ? viewer.scene.morphTo2D(0.8) : viewer.scene.morphTo3D(0.8); }
++      catch (error) { viewer.scene.morphComplete.removeEventListener(done); send({ type: 'gev:mode-applied', id, ok: false, error: String(error?.message || error) }); }
++    };
++    windowRef.addEventListener('message', onMode);
++    viewer.camera.moveEnd.addEventListener(reportCamera);
++    viewer.selectedEntityChanged.addEventListener(reportPick);
++    return () => {
++      clearTimeout(timer);
++      viewer.camera.moveEnd.removeEventListener(reportCamera);
++      viewer.selectedEntityChanged.removeEventListener(reportPick);
++      windowRef.removeEventListener('message', onMode);
++    };
++  })();
+   void ready.then(() => {
+     if (!signal?.aborted) post({ type: EMBED_READY_MESSAGE });
+   });
+   return () => {
+     stopRendering();
++    stopJarvisBridge();
+     stopNavigatedRestores();
+     windowRef.removeEventListener('message', onMessage);
+   };

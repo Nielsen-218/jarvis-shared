@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jarvis Wardrobe</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  [hidden] { display: none !important; }
+  button { font: inherit; color: inherit; }
+  header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .people { display: flex; padding: 3px; gap: 2px; border-radius: var(--r-pill); background: var(--bg-1); border: 1px solid var(--line-1); }
+  .people button { display: flex; align-items: center; gap: var(--s-2); min-height: 36px; padding: 0 var(--s-3) 0 4px; border: 0; border-radius: var(--r-pill);
+    background: transparent; color: var(--text-2); font: 500 var(--fs-sm)/1 var(--font-ui); cursor: pointer; }
+  .people button[aria-pressed="true"] { background: var(--bg-3); color: var(--text-1); }
+  .people i { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; overflow: hidden; background: var(--bg-3); color: var(--text-2);
+    font: 600 var(--fs-xs)/1 var(--font-ui); font-style: normal; }
+  .people button[aria-pressed="true"] i { background: var(--accent); color: var(--accent-ink); }
+  .people i img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  main { max-width: 1240px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-7) + var(--safe-b)); display: grid; gap: var(--s-5); }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .cap { font: 600 var(--fs-xs)/var(--lh-xs) var(--font-ui); color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; }
+
+  /* ---- the stage: the person ---- */
+  .left { display: grid; gap: var(--s-3); align-content: start; min-width: 0; }
+  .stage { position: relative; aspect-ratio: 3 / 4; max-height: 68vh; width: 100%; margin: 0 auto; border-radius: var(--r-4); overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 18%, #f1f3f6 0%, #d9dee5 55%, #bcc4cf 100%); box-shadow: var(--e-2); border: 1px solid var(--line-1); }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; user-select: none; -webkit-user-drag: none; }
+  .stage img.cover { object-fit: cover; object-position: center top; }
+  .stage .blur { position: absolute; inset: -24px; background-size: cover; background-position: center top; filter: blur(22px) brightness(.82) saturate(.9); }
+  .stage img.whole { object-fit: contain; object-position: center; }
+  .stage .after { position: absolute; inset: 0; background: inherit; clip-path: inset(0 0 0 var(--cut, 50%)); }
+  .stage .rule { position: absolute; top: 0; bottom: 0; left: var(--cut, 50%); width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .18); pointer-events: none; }
+  .stage .rule::after { content: ""; position: absolute; top: 50%; left: 50%; width: 36px; height: 36px; margin: -18px; border-radius: 50%; background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .35); background-image: linear-gradient(90deg, transparent 12px, #5a6676 12px 14px, transparent 14px 22px, #5a6676 22px 24px, transparent 24px);
+    background-size: 100% 12px; background-repeat: no-repeat; background-position: center; }
+  .stage input[type=range] { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; touch-action: pan-y; }
+  .tag { position: absolute; top: var(--s-3); padding: 4px var(--s-2); border-radius: var(--r-1); background: rgba(8, 12, 18, .72); color: #fff;
+    font: 600 var(--fs-xs)/var(--lh-xs) var(--font-ui); letter-spacing: .04em; text-transform: uppercase; pointer-events: none; }
+  .tag.l { left: var(--s-3); } .tag.r { right: var(--s-3); }
+  .stage .tools { position: absolute; left: var(--s-3); right: var(--s-3); bottom: var(--s-3); display: flex; gap: var(--s-2); justify-content: flex-end; }
+  .stage .tools .ds-btn { background: rgba(8, 12, 18, .78); border-color: transparent; color: #fff; backdrop-filter: blur(6px); }
+  .stage .tools .ds-btn.danger { color: #ffb4bb; }
+  .stage.two { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--bg-3); }
+  .stage.two .pane { position: relative; background: radial-gradient(120% 90% at 50% 18%, #f1f3f6 0%, #d9dee5 55%, #bcc4cf 100%); border: 0; padding: 0; cursor: pointer; }
+  .stage.two .pane.on { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .stage.two .pane b { position: absolute; left: var(--s-2); right: var(--s-2); bottom: var(--s-2); padding: 4px var(--s-2); border-radius: var(--r-1);
+    background: rgba(8, 12, 18, .72); color: #fff; font: 500 var(--fs-xs)/var(--lh-xs) var(--font-ui); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nophoto { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--s-3); padding: var(--s-5); text-align: center;
+    background: var(--bg-1); color: var(--text-2); }
+  .nophoto svg.fig { width: 96px; height: 150px; color: var(--bg-3); }
+  .nophoto b { color: var(--text-1); font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); }
+  .nophoto p { max-width: 30ch; font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .row { display: flex; gap: var(--s-2); flex-wrap: wrap; align-items: center; }
+  .row.fill > .ds-btn { flex: 1; }
+
+  .strip { display: flex; gap: var(--s-2); overflow-x: auto; padding: 2px; scrollbar-width: none; } .strip::-webkit-scrollbar { display: none; }
+  .fit { position: relative; flex: none; width: 60px; height: 80px; padding: 0; border-radius: var(--r-2); overflow: hidden; border: 1px solid var(--line-2); cursor: pointer;
+    background: linear-gradient(#eef0f3, #cfd5dd); }
+  .fit img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .fit[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .fit.me { background: var(--bg-2); }
+
+  .tray { display: grid; gap: var(--s-3); padding: var(--s-3); border-radius: var(--r-3); background: var(--bg-1); border: 1px solid var(--line-1); }
+  .tray .pieces { display: flex; gap: var(--s-2); align-items: center; min-height: 56px; overflow-x: auto; scrollbar-width: none; }
+  .piece { position: relative; flex: none; width: 56px; height: 56px; border-radius: var(--r-2); background: linear-gradient(#f4f5f7, #dfe3e9); border: 0; padding: 0; cursor: pointer; overflow: hidden; }
+  .piece img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+  .piece.photo img, .tile .pic.photo img { object-fit: cover; padding: 0; }
+  .piece.none { display: grid; place-items: center; color: #5d6877; }
+  .piece::after { content: ""; position: absolute; top: 3px; right: 3px; width: 16px; height: 16px; border-radius: 50%;
+    background-image: linear-gradient(45deg, transparent 44%, #fff 44% 56%, transparent 56%), linear-gradient(-45deg, transparent 44%, #fff 44% 56%, transparent 56%); background-color: rgba(8, 12, 18, .78); }
+  .tray .hint { color: var(--text-3); font-size: var(--fs-sm); }
+
+  .notice { display: flex; gap: var(--s-3); align-items: flex-start; padding: var(--s-3) var(--s-4); border-radius: var(--r-2); border: 1px solid var(--line-2);
+    background: var(--bg-2); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .notice.warn { border-color: color-mix(in srgb, var(--warn) 50%, transparent); background: var(--warn-soft); }
+  .notice.bad { border-color: color-mix(in srgb, var(--danger) 50%, transparent); background: var(--danger-soft); }
+  .notice.ok { border-color: color-mix(in srgb, var(--ok) 50%, transparent); background: var(--ok-soft); }
+  .notice .grow { flex: 1; min-width: 0; } .notice b { display: block; font-weight: 600; }
+  .notice .secs { font: 600 var(--fs-sm)/var(--lh-sm) var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-1); white-space: nowrap; }
+  .notice .ds-icon { flex: none; margin-top: 1px; } .notice .ds-spinner { flex: none; margin-top: 1px; }
+  .bar { height: 3px; border-radius: 2px; background: var(--bg-3); overflow: hidden; margin-top: var(--s-2); }
+  .bar i { display: block; height: 100%; background: var(--accent); border-radius: inherit; transition: width 1s linear; }
+
+  /* ---- the right side ---- */
+  .right { display: grid; gap: var(--s-4); align-content: start; min-width: 0; }
+  .filters { display: grid; gap: var(--s-2); }
+  .chips { display: flex; gap: var(--s-2); overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; } .chips::-webkit-scrollbar { display: none; }
+  .chips.wrap { flex-wrap: wrap; overflow: visible; }
+  .ds-chip { flex: none; } .ds-chip small { color: var(--text-3); margin-left: 2px; font-size: var(--fs-xs); }
+  .search { position: relative; } .search .ds-icon { position: absolute; left: var(--s-3); top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+  .search .ds-input { padding-left: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: var(--s-3); }
+  .tile { position: relative; display: grid; gap: var(--s-1); align-content: start; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; min-width: 0; }
+  .tile .pic { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-3); overflow: hidden; background: linear-gradient(#f6f7f9, #e1e5ea);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .04); transition: transform var(--dur-fast) var(--ease-out); }
+  .tile:active .pic { transform: scale(.98); }
+  .tile .pic img { width: 100%; height: 100%; object-fit: contain; padding: 10%; filter: drop-shadow(0 6px 8px rgba(20, 30, 50, .18)); }
+  .tile .pic.photo img { filter: none; }
+  .tile .pic.none { display: grid; place-content: center; justify-items: center; gap: 6px; color: #5d6877;
+    background: linear-gradient(color-mix(in srgb, var(--tint, #cfd5dd) 26%, #f6f7f9), color-mix(in srgb, var(--tint, #cfd5dd) 44%, #e1e5ea)); }
+  .tile .pic.none small { font: 500 11px/14px var(--font-ui); color: #5d6877; }
+  .tile.on .pic { box-shadow: 0 0 0 3px var(--accent); }
+  .tile .check { position: absolute; top: 8px; left: 8px; width: 24px; height: 24px; border-radius: 50%; display: none; place-items: center; background: var(--accent); color: var(--accent-ink); }
+  .tile.on .check { display: grid; }
+  .tile .more { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, .82); color: #2a3340; }
+  .tile .state { position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 3px 6px; border-radius: var(--r-1); background: rgba(8, 12, 18, .8); color: #fff;
+    font: 500 11px/14px var(--font-ui); display: flex; gap: 6px; align-items: center; }
+  .tile .state .ds-spinner { width: 10px; height: 10px; border-width: 1.5px; }
+  .tile .name { font: 500 var(--fs-sm)/var(--lh-sm) var(--font-ui); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .tile .meta { display: flex; gap: 6px; align-items: center; color: var(--text-3); font-size: var(--fs-xs); line-height: var(--lh-xs); min-width: 0; white-space: nowrap; overflow: hidden; }
+  .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); }
+  .tile.add .pic { background: var(--bg-1); border: 1.5px dashed var(--line-2); box-shadow: none; display: grid; place-content: center; justify-items: center; gap: var(--s-2); color: var(--accent); }
+  .tile.add .pic span { font: 600 var(--fs-sm)/1 var(--font-ui); }
+
+  .looks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); }
+  .look { display: grid; gap: var(--s-2); padding: var(--s-2); border-radius: var(--r-3); background: var(--bg-1); border: 1px solid var(--line-1); min-width: 0; }
+  .look .pic { position: relative; aspect-ratio: 3 / 4; border-radius: var(--r-2); overflow: hidden; background: linear-gradient(#f1f3f6, #cfd5dd); border: 0; padding: 0; cursor: pointer; }
+  .look .pic > img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .look .quad { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 2px; height: 100%; background: #dfe3e9; }
+  .look .quad span { background: linear-gradient(#f6f7f9, #e4e7ec); display: grid; place-items: center; overflow: hidden; }
+  .look .quad img { width: 100%; height: 100%; object-fit: contain; padding: 8%; }
+  .look .quad .photo img { object-fit: cover; padding: 0; }
+  .look .star { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; border-radius: 50%; border: 0; display: grid; place-items: center; cursor: pointer;
+    background: rgba(8, 12, 18, .7); color: #fff; } .look .star.on { color: var(--warn); } .look .star.on svg { fill: currentColor; }
+  .look .t { display: flex; gap: var(--s-1); align-items: center; padding: 0 var(--s-1); } .look .t b { flex: 1; min-width: 0; font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .look .row { padding: 0 2px 2px; } .look .row .ds-btn { flex: 1; padding: 0 var(--s-2); }
+
+  .card { display: grid; gap: var(--s-3); padding: var(--s-4); border-radius: var(--r-3); background: var(--bg-1); border: 1px solid var(--line-1); }
+  .card h2 { font: 600 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  .pick { display: grid; gap: var(--s-3); padding: var(--s-4); border-radius: var(--r-3); background: var(--bg-1); border: 1px solid var(--line-1); }
+  .pick.best { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .pick .pieces { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .pick .piece { width: 72px; height: 84px; cursor: default; } .pick .piece::after { display: none; }
+  .day { display: grid; grid-template-columns: 48px 44px 1fr auto; gap: var(--s-3); align-items: center; padding: var(--s-2) var(--s-3); border-radius: var(--r-3);
+    background: var(--bg-1); border: 1px solid var(--line-1); min-height: 68px; }
+  .day.today { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .day .d { text-align: center; } .day .d b { display: block; font: 600 var(--fs-lg)/1.1 var(--font-display); } .day .d span { color: var(--text-3); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; }
+  .day .th { width: 44px; height: 56px; border-radius: var(--r-1); overflow: hidden; background: var(--bg-2); border: 1px dashed var(--line-2); }
+  .day .th.has { border: 0; background: linear-gradient(#f1f3f6, #cfd5dd); } .day .th img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .day .n { min-width: 0; } .day .n b { display: block; font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .day .n span { color: var(--text-3); font-size: var(--fs-xs); }
+  .sheet-list { display: grid; gap: var(--s-2); margin-top: var(--s-3); max-height: 46vh; overflow-y: auto; }
+  .sheet-list button { display: flex; gap: var(--s-3); align-items: center; padding: var(--s-2); border-radius: var(--r-2); border: 1px solid var(--line-1); background: var(--bg-3); cursor: pointer; text-align: left; min-height: var(--tap); }
+  .sheet-list img, .sheet-list .ph { width: 36px; height: 48px; border-radius: 4px; object-fit: cover; object-position: top; background: var(--bg-2); flex: none; }
+  .ds-sheet .ds-field { margin-top: var(--s-3); } .ds-sheet .prev { display: block; width: 96px; height: 120px; object-fit: contain; border-radius: var(--r-2); background: linear-gradient(#f6f7f9, #e1e5ea); margin: var(--s-3) auto 0; }
+  .ds-sheet .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .menu { position: absolute; right: var(--s-4); top: calc(100% - 4px); min-width: 220px; padding: var(--s-1); border-radius: var(--r-2); background: var(--bg-2); border: 1px solid var(--line-2); box-shadow: var(--e-2); display: grid; }
+  .menu a, .menu button { display: flex; gap: var(--s-3); align-items: center; min-height: var(--tap); padding: 0 var(--s-3); border: 0; border-radius: var(--r-1); background: none; color: var(--text-1);
+    font: 500 var(--fs-sm)/1 var(--font-ui); text-decoration: none; cursor: pointer; text-align: left; } .menu a:hover, .menu button:hover { background: var(--bg-3); }
+
+  @media (max-width: 480px) {
+    .people button { padding-right: var(--s-2); } .people button[aria-pressed="false"] span { display: none; } .people button[aria-pressed="false"] { padding: 0 4px; }
+    .stage { max-height: 56vh; }
+  }
+  @media (min-width: 900px) {
+    main { grid-template-columns: minmax(360px, 440px) 1fr; gap: var(--s-6); padding-top: var(--s-5); }
+    .left { position: sticky; top: 76px; }
+    .stage { max-height: calc(100vh - 330px); width: auto; height: calc(100vh - 330px); max-width: 100%; min-height: 380px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: var(--s-4); }
+    .looks { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--s-4); }
+    .ds-tabs { max-width: 460px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="ds-iconbtn ghost" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Wardrobe</h1>
+  <div class="people" id="people" role="group" aria-label="Whose wardrobe" hidden></div>
+  <button class="ds-iconbtn ghost" id="menuBtn" aria-label="More" aria-expanded="false"><svg class="ds-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></button>
+  <div class="menu" id="menu" hidden>
+    <button id="mPhoto"></button>
+    <a href="/wardrobe-3d.html" id="m3d"></a>
+  </div>
+</header>
+
+<main>
+  <div class="left">
+    <div id="stage"><div class="stage"><div class="nophoto"><span class="ds-spinner"></span></div></div></div>
+    <div class="strip" id="results" hidden></div>
+    <div id="notices" style="display:grid;gap:var(--s-2)"></div>
+    <div class="tray" id="tray" hidden></div>
+  </div>
+  <div class="right">
+    <div class="ds-tabs" role="tablist">
+      <button class="ds-tab on" role="tab" data-tab="closet" aria-selected="true">Closet</button>
+      <button class="ds-tab" role="tab" data-tab="looks" aria-selected="false">Looks</button>
+      <button class="ds-tab" role="tab" data-tab="stylist" aria-selected="false">Stylist</button>
+      <button class="ds-tab" role="tab" data-tab="plan" aria-selected="false">Plan</button>
+    </div>
+    <section id="closet"></section>
+    <section id="looks" hidden></section>
+    <section id="stylist" hidden></section>
+    <section id="plan" hidden></section>
+  </div>
+</main>
+
+<input type="file" id="fCam" accept="image/*" capture="environment" hidden>
+<input type="file" id="fPick" accept="image/*" hidden>
+<div id="sheetHost"></div>
+<div class="ds-toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+let person = ""; try { person = sessionStorage.getItem("wardrobe_person") || ""; } catch (e) {}
+
+let S = null;                       // the selected person's state from /api/closet
+let outfit = [];                    // garment ids composed for the try-on
+let view = { fit: null, cmp: null, cut: 50 };   // what the stage shows: a try-on, or two side by side {a, b, slot}
+let tab = "closet", cat = "all", season = "", query = "";
+let picks = null, styleReq = { occasion: "Everyday", weather: "" };
+let jobs = [], seen = {}, pollT = null, tickT = null, dismissed = {};
+
+const I = {
+  cam: '<path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/>',
+  img: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>', x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  dots: '<circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>',
+  spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>',
+  star: '<path d="M12 4l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.7-5 2.7.9-5.6-4-3.9 5.6-.8z"/>',
+  hanger: '<path d="M12 8a2 2 0 1 1 2-2"/><path d="M12 8v2l8.5 6.2a1 1 0 0 1-.6 1.8H4.1a1 1 0 0 1-.6-1.8L12 10"/>',
+  game: '<rect x="2.5" y="7" width="19" height="10" rx="5"/><path d="M7 10.5v3M5.5 12h3"/><circle cx="16" cy="11" r=".8"/><circle cx="18" cy="13" r=".8"/>',
+  warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v5M12 17.5v.5"/>', cube: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>', cal: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  cols: '<rect x="3" y="4" width="8" height="16" rx="1.5"/><rect x="13" y="4" width="8" height="16" rx="1.5"/>',
+};
+const ic = (n, cls = "") => `<svg class="ds-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+const FIGURE = '<svg class="fig" viewBox="0 0 96 150" fill="currentColor" aria-hidden="true"><circle cx="48" cy="18" r="14"/><path d="M26 44c0-6 5-10 11-10h22c6 0 11 4 11 10l4 42c.4 4-5 6-7 2l-5-30v86c0 8-11 8-12 0l-2-44-2 44c-1 8-12 8-12 0V58l-5 30c-2 4-7.400 2-7-2z"/></svg>';
+
+async function api(path, body) {
+  const opts = { method: body ? "POST" : "GET", headers: { Authorization: `Bearer ${token}` } };
+  if (body instanceof FormData) opts.body = body;
+  else if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  const r = await fetch(path, opts);
+  if (!r.ok) { let m = "Something went wrong."; try { m = (await r.json()).detail || m; } catch (e) {} throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : m); }
+  return r.json();
+}
+let toastT; function toast(msg, kind) { const t = $("#toast"); t.textContent = msg; t.className = "ds-toast " + (kind || ""); t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 4200); }
+const file = rel => rel ? `/api/closet/file/${encodeURIComponent(S.person)}/${rel.split("/").map(encodeURIComponent).join("/")}?t=${encodeURIComponent(token)}` : "";
+const who = () => (S.people.find(p => p.id === S.person) || {}).name || "you";
+const mine = () => (S.people.find(p => p.id === S.person) || {}).me;
+const whose = () => mine() ? "your" : `${who()}'s`;
+const G = id => S.closet.find(g => g.id === id);
+const key = ids => [...new Set(ids)].sort().join("+");
+const count = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+const SLOTS = [["all", "All"], ["top", "Tops"], ["bottom", "Bottoms"], ["outer", "Layers"], ["shoes", "Shoes"], ["acc", "Accessories"]];
+const slotGroup = g => ["hat", "watch", "neck", "eyes"].includes(g.slot) ? "acc" : g.slot;
+const SEASON = { all: "All year", warm: "Warm weather", cold: "Cold weather" };
+
+// ---- sheets instead of native dialogs ----
+const sheet = (html, onReady) => dsDialog(html, onReady);
+function dsDialog(html, onReady) {
+  const host = $("#sheetHost");
+  host.innerHTML = `<div class="ds-scrim"></div><div class="ds-sheet" role="dialog" aria-modal="true">${html}</div>`;
+  const close = () => { host.innerHTML = ""; };
+  host.querySelector(".ds-scrim").onclick = close;
+  host.querySelectorAll("[data-close]").forEach(b => b.onclick = close);
+  onReady && onReady(host.querySelector(".ds-sheet"), close);
+  return close;
+}
+function askConfirm(title, body, yes, danger) {
+  return new Promise(res => sheet(`<h2>${esc(title)}</h2>${body ? `<p>${esc(body)}</p>` : ""}<div class="ds-sheet-actions"><button class="ds-btn" id="no">Cancel</button><button class="ds-btn ${danger ? "danger solid" : "primary"}" id="yes">${esc(yes)}</button></div>`,
+    (el, close) => { el.querySelector("#no").onclick = () => { close(); res(false); }; el.querySelector("#yes").onclick = () => { close(); res(true); }; }));
+}
+function askText(title, label, value, yes) {
+  return new Promise(res => sheet(`<h2>${esc(title)}</h2><div class="ds-field"><label for="askIn">${esc(label)}</label><input class="ds-input" id="askIn" maxlength="60" value="${esc(value || "")}"></div><div class="ds-sheet-actions"><button class="ds-btn" id="no">Cancel</button><button class="ds-btn primary" id="yes">${esc(yes)}</button></div>`,
+    (el, close) => { const inp = el.querySelector("#askIn"); inp.focus(); inp.select();
+      const done = v => { close(); res(v); };
+      el.querySelector("#no").onclick = () => done(null); el.querySelector("#yes").onclick = () => done(inp.value.trim());
+      inp.onkeydown = e => { if (e.key === "Enter") done(inp.value.trim()); }; }));
+}
+
+// ---- loading and the person switcher ----
+async function load(keep) {
+  try {
+    S = await api("/api/closet" + (person ? `?person=${encodeURIComponent(person)}` : ""));
+  } catch (e) {
+    $("#stage").innerHTML = `<div class="stage"><div class="nophoto">${ic("warn", "lg")}<b>The wardrobe didn't open</b><p>${esc(e.message)}</p><button class="ds-btn" onclick="load()">Try again</button></div></div>`;
+    return;
+  }
+  if (person !== S.person || !S.photo) cropped = false;
+  person = S.person;
+  outfit = keep ? outfit.filter(G) : [];
+  if (!keep) { view = { fit: null, cmp: null, cut: 50 }; picks = null; }
+  jobs = S.jobs; jobs.forEach(j => { if (j.state === "done" || j.state === "failed") seen[j.id] = seen[j.id] || j.state; });
+  draw(); poll();
+}
+function setState(s) { S = { ...S, ...s }; outfit = outfit.filter(G); draw(); }
+function draw() { drawPeople(); drawStage(); drawResults(); drawNotices(); drawTray(); drawTab(); }
+
+function drawPeople() {
+  const el = $("#people");
+  el.hidden = S.people.length < 2;
+  el.innerHTML = S.people.map(p => `<button aria-pressed="${p.id === S.person}" data-p="${esc(p.id)}"><i>${esc((p.name || "?")[0].toUpperCase())}</i><span>${esc(p.name)}</span></button>`).join("");
+  el.querySelectorAll("button").forEach(b => b.onclick = () => { if (b.dataset.p === S.person) return; person = b.dataset.p; try { sessionStorage.setItem("wardrobe_person", person); } catch (e) {} load(); });
+  $("#mPhoto").innerHTML = ic("cam") + (S.photo ? "Replace the full-body photo" : "Add a full-body photo");
+  $("#m3d").innerHTML = ic("cube") + "3D room (classic)";
+}
+$("#menuBtn").onclick = e => { e.stopPropagation(); const m = $("#menu"); m.hidden = !m.hidden; $("#menuBtn").setAttribute("aria-expanded", !m.hidden); };
+document.addEventListener("click", () => { $("#menu").hidden = true; $("#menuBtn").setAttribute("aria-expanded", "false"); });
+$("#mPhoto").onclick = () => photoSheet();
+
+// ---- pictures from the phone: shrink before upload, keep the camera's rotation ----
+async function shrink(f, max = 1800) {
+  let bmp;
+  try { bmp = await createImageBitmap(f, { imageOrientation: "from-image" }); } catch (e) { throw new Error("That file isn't a picture I can read."); }
+  const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas"); c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  return c;
+}
+function choose(camera) {
+  return new Promise(res => { const inp = camera ? $("#fCam") : $("#fPick"); inp.value = ""; inp.onchange = () => res(inp.files[0] || null); inp.click(); });
+}
+function sourceSheet(title, text, onFile) {
+  sheet(`<h2>${esc(title)}</h2><p>${esc(text)}</p><div class="ds-sheet-actions" style="flex-direction:column"><button class="ds-btn primary wide" id="sCam">${ic("cam")}Take a photo</button><button class="ds-btn wide" id="sPick">${ic("img")}Choose from the gallery</button><button class="ds-btn ghost wide" data-close>Cancel</button></div>`,
+    (el, close) => { for (const [id, cam] of [["#sCam", true], ["#sPick", false]]) el.querySelector(id).onclick = async () => { const f = await choose(cam); if (f) { close(); onFile(f); } }; });
+}
+function photoSheet() {
+  sourceSheet(S.photo ? "Replace the full-body photo" : "Add a full-body photo",
+    `Stand straight, head to toe in the frame, plain background, even light. Every try-on dresses this photo of ${mine() ? "you" : who()}.`, async f => {
+      try {
+        toast("Saving the photo");
+        const c = await shrink(f, 2048); const blob = await new Promise(r => c.toBlob(r, "image/jpeg", .92));
+        const fd = new FormData(); fd.append("file", blob, "me.jpg");
+        const s = await api(`/api/closet/photo?person=${encodeURIComponent(S.person)}`, fd);
+        view.fit = null; view.cmp = null; setState(s); toast("Photo saved. Pick pieces and try them on.", "ok");
+      } catch (e) { toast(e.message, "danger"); }
+    });
+}
+
+// ---- the stage ----
+const fitById = id => S.fits.find(f => f.id === id);
+const base = alt => `<span class="blur" style="background-image:url('${file(S.photo)}')"></span><img class="whole" src="${file(S.photo)}" alt="${alt}" onload="shape(this)">`;
+let cropped = false;
+function shape(img) { const was = cropped; cropped = img.naturalHeight / img.naturalWidth < 1.3; if (was !== cropped) drawNotices(); }
+function drawStage() {
+  const el = $("#stage");
+  if (!S.photo) {
+    el.innerHTML = `<div class="stage"><div class="nophoto">${FIGURE}<b>${mine() ? "Start with a photo of you" : `Start with a photo of ${esc(who())}`}</b>
+      <p>One full-body photo, head to toe. Try-ons put ${esc(whose())} real clothes on this picture, so it looks like ${mine() ? "you" : esc(who())}, not a mannequin.</p>
+      <div class="row" style="justify-content:center"><button class="ds-btn primary" id="addPhoto">${ic("cam")}Add a photo</button></div></div></div>`;
+    $("#addPhoto").onclick = photoSheet; return;
+  }
+  if (view.cmp) {
+    const pane = (slot, id) => { const f = fitById(id); return `<button class="pane ${view.cmp.slot === slot ? "on" : ""}" data-slot="${slot}" aria-label="Look ${slot.toUpperCase()}">${f ? `<img src="${file(f.image)}" alt="">` : `<img class="cover" src="${file(S.photo)}" alt="">`}<b>${f ? esc(fitName(f)) : "Tap a result below"}</b></button>`; };
+    el.innerHTML = `<div class="stage two">${pane("a", view.cmp.a)}${pane("b", view.cmp.b)}</div><div class="row" style="margin-top:var(--s-2)"><span class="sub" style="flex:1">Tap a side, then a result below.</span><button class="ds-btn sm" id="cmpDone">Done comparing</button></div>`;
+    el.querySelectorAll(".pane").forEach(p => p.onclick = () => { view.cmp.slot = p.dataset.slot; drawStage(); });
+    $("#cmpDone").onclick = () => { view.fit = view.cmp.a; view.cmp = null; drawStage(); drawResults(); }; return;
+  }
+  const f = fitById(view.fit);
+  if (!f) { view.fit = null; el.innerHTML = `<div class="stage">${base(`Full-body photo of ${esc(who())}`)}<span class="tag l">${mine() ? "You" : esc(who())}</span></div>`; return; }
+  el.innerHTML = `<div class="stage" style="--cut:${view.cut}%">${base("Before")}<div class="after"><img src="${file(f.image)}" alt="Try-on result"></div><div class="rule"></div>
+    <span class="tag l">Before</span><span class="tag r">Try-on</span><input type="range" min="0" max="100" value="${view.cut}" aria-label="Before and after">
+    <div class="tools"><button class="ds-btn sm" id="fWear">Wear these</button><button class="ds-btn sm" id="fCmp">${ic("cols", "sm")}Compare</button><button class="ds-btn sm danger" id="fDel">Delete</button></div></div>`;
+  const st = el.querySelector(".stage");
+  el.querySelector("input").oninput = e => { view.cut = +e.target.value; st.style.setProperty("--cut", view.cut + "%"); };
+  $("#fWear").onclick = () => { outfit = f.items.filter(G); drawTray(); drawTab(); toast("Those pieces are in the outfit."); };
+  $("#fCmp").onclick = () => { const other = S.fits.find(x => x.id !== f.id); view.cmp = { a: f.id, b: other ? other.id : null, slot: "b" }; drawStage(); drawResults(); };
+  $("#fDel").onclick = async () => { if (!await askConfirm("Delete this try-on?", "The picture is removed for good. Your clothes and looks stay.", "Delete", true)) return;
+    try { const s = await api("/api/closet/fit/delete", { person: S.person, id: f.id }); view.fit = null; setState(s); } catch (e) { toast(e.message, "danger"); } };
+}
+function fitName(f) { const lk = S.looks.find(l => l.key === f.key); return lk ? lk.name : f.items.map(i => (G(i) || {}).name).filter(Boolean).slice(0, 2).join(" + ") || "Try-on"; }
+function drawResults() {
+  const el = $("#results");
+  if (!S.photo || !S.fits.length) { el.hidden = true; return; }
+  el.hidden = false;
+  const k = key(outfit), ordered = [...S.fits.filter(f => f.key === k), ...S.fits.filter(f => f.key !== k)];
+  const on = id => view.cmp ? (view.cmp.a === id || view.cmp.b === id) : view.fit === id;
+  el.innerHTML = `<button class="fit me" aria-pressed="${!view.cmp && !view.fit}" data-fit="" aria-label="The photo"><img src="${file(S.photo)}" alt=""></button>` +
+    ordered.map(f => `<button class="fit" aria-pressed="${on(f.id)}" data-fit="${f.id}" title="${esc(fitName(f))}"><img loading="lazy" src="${file(f.image)}" alt="${esc(fitName(f))}"></button>`).join("");
+  el.querySelectorAll(".fit").forEach(b => b.onclick = () => {
+    const id = b.dataset.fit || null;
+    if (view.cmp) { if (!id) return; view.cmp[view.cmp.slot] = id; view.cmp.slot = view.cmp.slot === "a" ? "b" : "a"; }
+    else { view.fit = id; view.cut = 50; }
+    drawStage(); drawResults();
+  });
+}
+
+// ---- the outfit being composed, and the try-on ----
+function toggle(id) { const g = G(id); if (!g) return;
+  if (outfit.includes(id)) outfit = outfit.filter(x => x !== id);
+  else { outfit = outfit.filter(x => G(x).slot !== g.slot); outfit.push(id); }       // one piece per slot: tapping another top swaps it
+  drawTray(); drawResults(); document.querySelectorAll("#closet .tile[data-id]").forEach(t => t.classList.toggle("on", outfit.includes(t.dataset.id)));
+}
+const thumb = (g, note) => g.image ? `<img loading="lazy" src="${file(g.image)}" alt="${esc(g.name)}">` : ic("hanger", "lg") + (note ? "<small>No photo yet</small>" : "");
+const cls = g => g.image ? (g.cutout ? "" : "photo") : "none";
+function drawTray() {
+  const el = $("#tray");
+  el.hidden = !S.closet.length && !outfit.length;
+  if (el.hidden) return;
+  const usable = outfit.filter(i => G(i).photo), extra = Math.max(0, usable.length - 3), nop = outfit.length - usable.length;
+  const active = jobs.find(j => j.state !== "done" && j.state !== "failed" && key(j.items) === key(outfit));
+  let hint = "";
+  if (outfit.length && !S.photo) hint = "Add a full-body photo to try these on.";
+  else if (extra || nop) hint = `A try-on renders three pieces at a time, clothes first${nop ? "; pieces without a photo are left out" : ""}.`;
+  el.innerHTML = `<div class="pieces">${outfit.length ? outfit.map(i => `<button class="piece ${cls(G(i))}" data-id="${i}" aria-label="Remove ${esc(G(i).name)}">${thumb(G(i))}</button>`).join("")
+      : `<span class="hint">Tap pieces in the closet to build an outfit.</span>`}</div>
+    ${hint ? `<p class="sub">${esc(hint)}</p>` : ""}
+    <div class="row fill"><button class="ds-btn primary" id="tryBtn" ${!outfit.length || active ? "disabled" : ""}>${ic("spark")}${active ? "In the queue" : "Try it on"}</button>
+    <button class="ds-btn" id="saveBtn" ${outfit.length ? "" : "disabled"}>Save look</button></div>`;
+  el.querySelectorAll(".piece").forEach(b => b.onclick = () => toggle(b.dataset.id));
+  $("#tryBtn").onclick = () => tryOn(outfit);
+  $("#saveBtn").onclick = saveLook;
+}
+async function tryOn(ids) {
+  if (!S.photo) { photoSheet(); return; }
+  try {
+    const r = await api("/api/closet/tryon", { person: S.person, items: ids });
+    S.gpu = r.gpu; jobs = [...jobs.filter(j => j.id !== r.job.id), r.job]; delete dismissed[r.job.id];
+    drawNotices(); drawTray(); poll();
+    if (r.job.state === "queued" && r.gpu.game) toast(`Queued. It starts when ${r.gpu.game} closes.`);
+  } catch (e) { toast(e.message, "danger"); }
+}
+async function saveLook() {
+  const name = await askText("Save this look", "Name", "", "Save"); if (name === null) return;
+  try { setState(await api("/api/closet/look", { person: S.person, op: "save", name: name || "My look", items: outfit })); toast("Look saved.", "ok"); } catch (e) { toast(e.message, "danger"); }
+}
+
+// ---- honest progress ----
+function drawNotices() {
+  const el = $("#notices"); let h = "";
+  if (S.gpu.game) h += `<div class="notice warn">${ic("game")}<div class="grow"><b>${esc(S.gpu.game)} is running</b>A game keeps the graphics card, so try-ons wait in the queue and start when it closes.</div></div>`;
+  if (S.photo && cropped && !dismissed.crop) h += `<div class="notice">${ic("cam")}<div class="grow"><b>This photo isn't head to toe</b>Try-ons work best on a full-body photo: standing straight, feet in the frame.</div><button class="ds-btn sm" id="nPhoto">Replace</button><button class="ds-iconbtn sm ghost" data-dismiss="crop" aria-label="Dismiss">${ic("x", "sm")}</button></div>`;
+  const stamp = Date.now() / 1000;
+  for (const j of jobs) {
+    if (dismissed[j.id]) continue;
+    const names = j.rendered.map(i => (G(i) || {}).name).filter(Boolean).join(", ");
+    const secs = (j.elapsed || 0) + (j.state === "rendering" ? Math.round(stamp - j._at) : 0), waited = (j.waited || 0) + (j.state === "queued" ? Math.round(stamp - j._at) : 0);
+    if (j.state === "rendering") h += `<div class="notice"><span class="ds-spinner"></span><div class="grow"><b>Rendering the try-on</b>${esc(names)}. ${esc(j.phase || "Starting")}. Usually 30 to 90 seconds on the PC.<div class="bar"><i style="width:${Math.max(4, Math.min(97, j.progress ? j.progress * 100 : secs / 90 * 100))}%"></i></div></div><span class="secs">${secs} s</span></div>`;
+    else if (j.state === "queued") h += `<div class="notice ${/busy|running/i.test(j.detail) ? "warn" : ""}"><span class="ds-dot warn" style="margin-top:6px"></span><div class="grow"><b>Queued${j.position > 1 ? `, number ${j.position}` : ""}</b>${esc(j.detail === "Queued." || (S.gpu.game && /running/i.test(j.detail)) ? names : j.detail)}</div><span class="secs">${waited} s</span><button class="ds-btn sm ghost" data-cancel="${j.id}">Cancel</button></div>`;
+    else if (j.state === "failed" && j.detail !== "Cancelled.") h += `<div class="notice bad">${ic("warn")}<div class="grow"><b>The try-on didn't finish</b>${esc(j.detail)}</div><button class="ds-btn sm ghost" data-retry="${j.id}">Retry</button><button class="ds-iconbtn sm ghost" data-dismiss="${j.id}" aria-label="Dismiss">${ic("x", "sm")}</button></div>`;
+    else if (j.state === "done" && j.left_out.length && !dismissed["n" + j.id]) h += `<div class="notice ok">${ic("check")}<div class="grow"><b>${esc(j.detail)}</b>Rendered ${esc(names)}. Left out: ${j.left_out.map(i => `${esc((G(i) || {}).name || i)} (${esc((j.left_reasons || {})[i] || "not used")})`).join("; ")}</div><button class="ds-iconbtn sm ghost" data-dismiss="n${j.id}" aria-label="Dismiss">${ic("x", "sm")}</button></div>`;
+  }
+  el.innerHTML = h;
+  el.querySelectorAll("[data-cancel]").forEach(b => b.onclick = async () => { try { const r = await api("/api/closet/jobs/cancel", { person: S.person, id: b.dataset.cancel }); stampJobs(r.jobs); drawNotices(); drawTray(); } catch (e) { toast(e.message, "danger"); } });
+  const np = el.querySelector("#nPhoto"); if (np) np.onclick = photoSheet;
+  el.querySelectorAll("[data-dismiss]").forEach(b => b.onclick = () => { dismissed[b.dataset.dismiss] = 1; drawNotices(); });
+  el.querySelectorAll("[data-retry]").forEach(b => b.onclick = () => { const j = jobs.find(x => x.id === b.dataset.retry); dismissed[j.id] = 1; tryOn(j.items); });
+}
+function stampJobs(list) { const at = Date.now() / 1000; jobs = list.map(j => ({ ...j, _at: at })); }
+function poll() {
+  clearTimeout(pollT); clearInterval(tickT);
+  jobs.forEach(j => { j._at = j._at || Date.now() / 1000; });
+  const active = jobs.some(j => j.state === "queued" || j.state === "rendering");
+  const digitising = S.closet.some(g => g.job && (g.job.state === "working" || (g.job.state === "waiting" && !g.pending)));
+  if (active) tickT = setInterval(drawNotices, 1000);
+  if (!active && !digitising) return;
+  pollT = setTimeout(async () => {
+    try {
+      if (active) {
+        const r = await api(`/api/closet/jobs?person=${encodeURIComponent(S.person)}`);
+        S.gpu = r.gpu; stampJobs(r.jobs);
+        const fresh = jobs.filter(j => (j.state === "done" || j.state === "failed") && !seen[j.id]);
+        fresh.forEach(j => seen[j.id] = j.state);
+        const done = fresh.filter(j => j.state === "done").pop();
+        if (done) { S.fits = r.fits; S.looks = (await api(`/api/closet?person=${encodeURIComponent(S.person)}`)).looks; view.fit = done.fit; view.cmp = null; view.cut = 50; drawStage(); drawResults(); toast(done.detail, "ok"); if (tab !== "closet") drawTab(); }
+        drawNotices(); drawTray();
+      }
+      if (digitising) { const s = await api(`/api/closet?person=${encodeURIComponent(S.person)}`); S.closet = s.closet; if (tab === "closet") drawCloset(); }
+    } catch (e) {}
+    poll();
+  }, active ? 2000 : 4000);
+}
+
+// ---- tabs ----
+document.querySelectorAll(".ds-tab").forEach(b => b.onclick = () => show(b.dataset.tab));
+function show(name) {
+  tab = name;
+  document.querySelectorAll(".ds-tab").forEach(b => { const on = b.dataset.tab === name; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); });
+  for (const id of ["closet", "looks", "stylist", "plan"]) $("#" + id).hidden = id !== name;
+  drawTab();
+}
+function drawTab() { ({ closet: drawCloset, looks: drawLooks, stylist: drawStylist, plan: drawPlan })[tab](); }
+const emptyBox = (icon, title, text, btn) => `<div class="card"><div class="ds-empty">${ic(icon)}<b>${esc(title)}</b><span>${esc(text)}</span>${btn || ""}</div></div>`;
+
+// ---- closet ----
+function drawCloset() {
+  const el = $("#closet");
+  if (!S.closet.length) {
+    el.innerHTML = emptyBox("hanger", mine() ? "Your closet is empty" : `${who()}'s closet is empty`,
+      "Photograph a piece laid flat or on a hanger, on a plain background. Jarvis cuts it out and tags it.", `<button class="ds-btn primary" id="addFirst" style="margin-top:var(--s-3)">${ic("cam")}Add the first piece</button>`);
+    $("#addFirst").onclick = addGarment; return;
+  }
+  const q = query.trim().toLowerCase();
+  const list = S.closet.filter(g => (cat === "all" || slotGroup(g) === cat) && (!season || g.season === season || g.season === "all")
+    && (!q || `${g.name} ${g.colors_text} ${g.category} ${g.description} ${g.template}`.toLowerCase().includes(q)));
+  const n = c => c === "all" ? S.closet.length : S.closet.filter(g => slotGroup(g) === c).length;
+  el.innerHTML = `<div class="filters"><div class="search">${ic("search", "sm")}<input class="ds-input" id="q" type="search" placeholder="Search ${esc(whose())} closet" value="${esc(query)}" aria-label="Search the closet"></div>
+    <div class="chips">${SLOTS.filter(([c]) => c === "all" || n(c)).map(([c, l]) => `<button class="ds-chip" aria-pressed="${cat === c}" data-cat="${c}">${l}<small>${n(c)}</small></button>`).join("")}
+    <span style="width:1px;background:var(--line-2);flex:none;margin:6px 2px"></span>${[["warm", "Warm"], ["cold", "Cold"]].map(([s, l]) => `<button class="ds-chip" aria-pressed="${season === s}" data-season="${s}">${l}</button>`).join("")}</div></div>
+    ${prepareBar()}<div class="grid" style="margin-top:var(--s-4)"><button class="tile add" id="addTile"><span class="pic">${ic("plus", "lg")}<span>Add a piece</span></span></button>${list.map(tile).join("")}</div>
+    ${list.length ? "" : `<p class="sub" style="margin-top:var(--s-4);text-align:center">Nothing matches. Clear the search or pick another filter.</p>`}`;
+  const inp = $("#q"); inp.oninput = () => { query = inp.value; const pos = inp.selectionStart; drawCloset(); const again = $("#q"); again.focus(); again.setSelectionRange(pos, pos); };
+  el.querySelectorAll("[data-cat]").forEach(b => b.onclick = () => { cat = b.dataset.cat; drawCloset(); });
+  el.querySelectorAll("[data-season]").forEach(b => b.onclick = () => { season = season === b.dataset.season ? "" : b.dataset.season; drawCloset(); });
+  $("#addTile").onclick = addGarment;
+  const pb = $("#prepBtn"); if (pb) pb.onclick = prepareCloset;
+  el.querySelectorAll(".tile[data-id]").forEach(t => { t.onclick = () => toggle(t.dataset.id); t.querySelector(".more").onclick = e => { e.stopPropagation(); editGarment(t.dataset.id); }; });
+}
+function prepareBar() {
+  const p = S.prepare || {}, bare = S.closet.filter(g => g.photo && !g.cutout).length, nophoto = S.closet.filter(g => !g.photo).length;
+  const note = p.state === "working" ? `${esc(p.detail)} (${p.done} of ${p.total})` : p.state === "failed" ? esc(p.detail)
+    : bare ? `${bare} piece${bare > 1 ? "s" : ""} still show the raw photo.` : "";
+  const hint = nophoto ? ` ${nophoto} piece${nophoto > 1 ? "s have" : " has"} no photo, so a try-on can't use ${nophoto > 1 ? "them" : "it"}: open one and add a photo.` : "";
+  if (!note && !hint) return "";
+  return `<div class="notice" style="margin-top:var(--s-3)"><div class="grow">${note}${hint}</div>${bare && p.state !== "working" ? `<button class="ds-btn sm" id="prepBtn">Prepare my closet</button>` : ""}</div>`;
+}
+async function prepareCloset() {
+  try {
+    const r = await api("/api/closet/prepare", { person: S.person }); S.prepare = r.prepare; drawCloset(); toast("Preparing your closet in the background.", "ok");
+    const tick = async () => { const q = await api(`/api/closet/prepare?person=${encodeURIComponent(S.person)}`); S.prepare = q.prepare;
+      if (q.prepare.state === "working") { drawCloset(); setTimeout(tick, 2500); }
+      else { const s = await api(`/api/closet?person=${encodeURIComponent(S.person)}`); S.closet = s.closet; S.prepare = s.prepare; drawCloset(); toast(q.prepare.detail, q.prepare.state === "failed" ? "danger" : "ok"); } };
+    setTimeout(tick, 2500);
+  } catch (e) { toast(e.message, "danger"); }
+}
+function tile(g) {
+  const working = g.job && (g.job.state === "working" || g.job.state === "waiting"), bad = g.job && g.job.state === "error";
+  const st = g.pending ? "Saved. Waiting for the PC" : working ? "Digitising" : bad ? "Needs another photo" : g.guessed ? "Check the type" : "";
+  return `<div class="tile ${outfit.includes(g.id) ? "on" : ""}" data-id="${g.id}" role="button" tabindex="0" aria-label="${esc(g.name)}">
+    <span class="pic ${cls(g)}" style="--tint:${esc(g.colors[0] || "#cfd5dd")}">${thumb(g, true)}<span class="check">${ic("check", "sm")}</span>
+    <button class="more" aria-label="Edit ${esc(g.name)}">${ic("dots", "sm")}</button>${st ? `<span class="state">${working ? '<span class="ds-spinner"></span>' : ""}${st}</span>` : ""}</span>
+    <span class="name">${esc(g.name)}</span><span class="meta">${g.colors.slice(0, 2).map(c => `<i class="sw" style="background:${esc(c)}"></i>`).join("")}<span>${esc(g.season === "all" ? (g.category || "") : SEASON[g.season])}</span></span></div>`;
+}
+function addGarment() {
+  sourceSheet(mine() ? "Add a piece to your closet" : `Add a piece to ${who()}'s closet`, "One garment per photo, the whole piece in the frame. Flat on a bed or on a hanger works best.", async f => {
+    try {
+      toast("Adding it to the closet");
+      const c = await shrink(f); const r = await api("/api/closet/garment", { person: S.person, op: "add", args: { photo: c.toDataURL("image/jpeg", .9) } });
+      setState(r.state); poll();
+      toast(r.queued ? "Saved. Your PC will digitise it when it is on." : "Added. Cutting it out and tagging it now.", "ok");
+    } catch (e) { toast(e.message, "danger"); }
+  });
+}
+function editGarment(id) {
+  const g = G(id); if (!g) return;
+  const cats = ["top", "bottom", "outerwear", "shoes", "accessory", "full-body"];
+  sheet(`<h2>Edit this piece</h2><p>${esc(g.job && g.job.detail && g.job.state !== "done" ? g.job.detail : g.cutout ? "Cut out and tagged automatically. Fix anything that is wrong." : S.cutouts || !g.photo ? "Tagged automatically. Fix anything that is wrong." : "The photo is shown as taken: the background remover isn't installed on this machine.")}</p>
+    ${g.image ? `<img class="prev" src="${file(g.image)}" alt="">` : ""}
+    <div class="ds-field"><label for="eName">Name</label><input class="ds-input" id="eName" maxlength="80" value="${esc(g.name)}"></div>
+    <div class="two"><div class="ds-field"><label for="eCat">Category</label><select class="ds-select" id="eCat">${cats.map(c => `<option ${c === g.category ? "selected" : ""}>${c}</option>`).join("")}${cats.includes(g.category) ? "" : `<option selected>${esc(g.category)}</option>`}</select></div>
+    <div class="ds-field"><label for="eSeason">Season</label><select class="ds-select" id="eSeason">${Object.entries(SEASON).map(([k, l]) => `<option value="${k}" ${k === g.season ? "selected" : ""}>${l}</option>`).join("")}</select></div></div>
+    <div class="ds-field"><label for="eCol">Colours</label><input class="ds-input" id="eCol" maxlength="80" value="${esc(g.colors_text)}" placeholder="navy, white"></div>
+    <div class="row fill" style="margin-top:var(--s-4)"><button class="ds-btn sm" id="ePhoto">${ic("cam", "sm")}New photo</button><button class="ds-btn sm danger" id="eDel">Remove</button></div>
+    <div class="ds-sheet-actions"><button class="ds-btn" data-close>Cancel</button><button class="ds-btn primary" id="eSave">Save</button></div>`, (el, close) => {
+    const send = async (op, args, okMsg) => { try { const r = await api("/api/closet/garment", { person: S.person, op, args: { id, ...args } }); close(); setState(r.state); poll(); toast(okMsg, "ok"); } catch (e) { toast(e.message, "danger"); } };
+    el.querySelector("#eSave").onclick = () => send("update", { name: el.querySelector("#eName").value.trim() || g.name, category: el.querySelector("#eCat").value, season: el.querySelector("#eSeason").value, colors: el.querySelector("#eCol").value.trim() }, "Saved.");
+    el.querySelector("#ePhoto").onclick = async () => { const f = await choose(false); if (!f) return; try { const c = await shrink(f); send("photo", { photo: c.toDataURL("image/jpeg", .9) }, "New photo saved. Digitising it now."); } catch (e) { toast(e.message, "danger"); } };
+    el.querySelector("#eDel").onclick = async () => { close(); if (await askConfirm(`Remove ${g.name} from the closet?`, "Its photo is deleted. Saved looks that use it lose this piece.", "Remove", true)) send("delete", {}, "Removed."); };
+  });
+}
+
+// ---- looks ----
+function lookPic(l) {
+  if (l.image) return `<img loading="lazy" src="${file(l.image)}" alt="${esc(l.name)}">`;
+  const gs = l.items.map(G).filter(Boolean).slice(0, 4);
+  return `<span class="quad">${gs.map(g => `<span class="${cls(g)}">${g.image ? `<img loading="lazy" src="${file(g.image)}" alt="">` : ""}</span>`).join("")}</span>`;
+}
+function drawLooks() {
+  const el = $("#looks");
+  if (!S.looks.length) { el.innerHTML = emptyBox("star", "No saved looks yet", "Build an outfit in the closet, then save it. Saved looks can be tried on, compared and planned for a day."); return; }
+  const list = [...S.looks].sort((a, b) => b.favorite - a.favorite);
+  el.innerHTML = `<div class="looks">${list.map(l => `<div class="look" data-id="${l.id}"><button class="pic" data-act="open" aria-label="Open ${esc(l.name)}">${lookPic(l)}</button>
+    <div class="t"><b>${esc(l.name)}</b><button class="ds-iconbtn sm ghost ${l.favorite ? "on" : ""}" data-act="fav" aria-label="${l.favorite ? "Remove from favourites" : "Add to favourites"}" style="${l.favorite ? "color:var(--warn)" : ""}"><svg class="ds-icon sm" viewBox="0 0 24 24" fill="${l.favorite ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">${I.star}</svg></button>
+    <button class="ds-iconbtn sm ghost" data-act="more" aria-label="More for ${esc(l.name)}">${ic("dots", "sm")}</button></div>
+    <div class="row"><button class="ds-btn sm" data-act="wear">Wear</button><button class="ds-btn sm primary" data-act="try">${l.image ? "Try again" : "Try on"}</button></div></div>`).join("")}</div>`;
+  el.querySelectorAll(".look").forEach(card => { const l = S.looks.find(x => x.id === card.dataset.id);
+    card.querySelectorAll("[data-act]").forEach(b => b.onclick = () => lookAct(l, b.dataset.act)); });
+}
+async function lookAct(l, act) {
+  const post = async body => { try { setState(await api("/api/closet/look", { person: S.person, id: l.id, ...body })); return true; } catch (e) { toast(e.message, "danger"); return false; } };
+  if (act === "wear" || act === "open") { outfit = l.items.filter(G); const f = S.fits.find(x => x.key === l.key); view.cmp = null; view.fit = f ? f.id : null; draw(); if (act === "wear") toast(`${l.name} is in the outfit.`); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (act === "try") { outfit = l.items.filter(G); drawTray(); tryOn(outfit); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (act === "fav") post({ op: "update", favorite: !l.favorite });
+  else if (act === "more") sheet(`<h2>${esc(l.name)}</h2><p>${esc(count(l.items.length, "piece"))}${l.occasion ? ", " + esc(l.occasion) : ""}</p><div class="ds-sheet-actions" style="flex-direction:column"><button class="ds-btn wide" id="lPlan">${ic("cal")}Plan it for a day</button><button class="ds-btn wide" id="lName">Rename</button><button class="ds-btn wide danger" id="lDel">Delete the look</button><button class="ds-btn ghost wide" data-close>Close</button></div>`, (el, close) => {
+    el.querySelector("#lPlan").onclick = () => { close(); daySheet(l); };
+    el.querySelector("#lName").onclick = async () => { close(); const n = await askText("Rename this look", "Name", l.name, "Save"); if (n) post({ op: "update", name: n }); };
+    el.querySelector("#lDel").onclick = async () => { close(); if (await askConfirm(`Delete the look "${l.name}"?`, "Its try-on pictures and your clothes stay.", "Delete", true)) post({ op: "delete" }); };
+  });
+}
+
+// ---- stylist ----
+const OCC = ["Everyday", "Work", "Date night", "Church", "Party", "Formal", "Gym", "Lounge"], WEATHER = [["", "Any weather"], ["warm", "Warm"], ["cold", "Cold"], ["rain", "Rain"]];
+function pickCard(p, best, label) {
+  return `<div class="pick ${best ? "best" : ""}"><div><span class="cap">${esc(label)}</span><h2 style="font:600 var(--fs-md)/var(--lh-md) var(--font-ui);margin-top:2px">${esc(p.name)}</h2></div>
+    <div class="pieces">${p.items.map(G).filter(Boolean).map(g => `<span class="piece ${cls(g)}" title="${esc(g.name)}">${thumb(g)}</span>`).join("")}</div>
+    <p class="sub">${esc(p.why)}</p><div class="row fill"><button class="ds-btn" data-wear='${esc(JSON.stringify(p.items))}'>Wear this</button><button class="ds-btn primary" data-try='${esc(JSON.stringify(p.items))}'>${ic("spark")}Try it on</button></div></div>`;
+}
+function drawStylist() {
+  const el = $("#stylist");
+  let out = "";
+  if (picks) out = picks.picks.length ? picks.picks.map((p, i) => pickCard(p, !i, i ? `Option ${i + 1}` : "Best match")).join("") : emptyBox("hanger", "Not enough to style yet", picks.message);
+  else if (S.picked && S.picked.items.some(G)) out = pickCard(S.picked, true, "Jarvis picked");
+  el.innerHTML = `<div class="card"><h2>What should ${mine() ? "I" : esc(who())} wear?</h2>
+    <div><span class="cap">Occasion</span><div class="chips wrap" style="margin-top:var(--s-2)">${OCC.map(o => `<button class="ds-chip" aria-pressed="${styleReq.occasion === o}" data-occ="${o}">${o}</button>`).join("")}</div></div>
+    <input class="ds-input" id="occText" maxlength="120" placeholder="Or say it your way: dinner with friends, with my white sneakers" value="${esc(OCC.includes(styleReq.occasion) ? "" : styleReq.occasion)}" aria-label="Occasion in your own words">
+    <div><span class="cap">Weather</span><div class="chips wrap" style="margin-top:var(--s-2)">${WEATHER.map(([w, l]) => `<button class="ds-chip" aria-pressed="${styleReq.weather === w}" data-w="${w}">${l}</button>`).join("")}</div></div>
+    <button class="ds-btn primary" id="styleBtn" ${S.closet.length ? "" : "disabled"}>${ic("spark")}Style ${mine() ? "me" : esc(who())}</button>
+    <p class="sub">${S.closet.length ? `Chosen from ${esc(whose())} own ${esc(count(S.closet.length, "piece"))} by colour and occasion. No internet, no guessing.` : "Add a few pieces to the closet first."}</p></div>
+    <div style="display:grid;gap:var(--s-3);margin-top:var(--s-4)">${out}</div>`;
+  el.querySelectorAll("[data-occ]").forEach(b => b.onclick = () => { styleReq.occasion = b.dataset.occ; drawStylist(); });
+  el.querySelectorAll("[data-w]").forEach(b => b.onclick = () => { styleReq.weather = b.dataset.w; drawStylist(); });
+  $("#occText").oninput = e => { styleReq.occasion = e.target.value.trim() || "Everyday"; el.querySelectorAll("[data-occ]").forEach(b => b.setAttribute("aria-pressed", b.dataset.occ === styleReq.occasion)); };
+  $("#occText").onkeydown = e => { if (e.key === "Enter") $("#styleBtn").click(); };
+  $("#styleBtn").onclick = async () => { const b = $("#styleBtn"); b.disabled = true;
+    try { picks = await api("/api/closet/style", { person: S.person, occasion: styleReq.occasion, weather: styleReq.weather }); } catch (e) { toast(e.message, "danger"); } drawStylist(); };
+  const wear = ids => { outfit = ids.filter(G); view.fit = (S.fits.find(f => f.key === key(outfit)) || {}).id || null; view.cmp = null; drawStage(); drawResults(); drawTray(); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  el.querySelectorAll("[data-wear]").forEach(b => b.onclick = () => { wear(JSON.parse(b.dataset.wear)); toast("It's in the outfit. Try it on or save it."); });
+  el.querySelectorAll("[data-try]").forEach(b => b.onclick = () => { wear(JSON.parse(b.dataset.try)); tryOn(outfit); });
+}
+
+// ---- plan ----
+function drawPlan() {
+  $("#plan").innerHTML = `<div style="display:grid;gap:var(--s-2)">${S.week.map(d => `<div class="day ${d.today ? "today" : ""}"><div class="d"><span>${d.today ? "Today" : esc(d.weekday)}</span><b>${d.day}</b></div>
+    <div class="th ${d.image ? "has" : ""}">${d.image ? `<img src="${file(d.image)}" alt="">` : ""}</div>
+    <div class="n"><b>${d.name ? esc(d.name) : "Nothing planned"}</b><span>${d.look_id ? "Saved look" : d.name ? "Planned by voice" : "Pick a saved look"}</span></div>
+    <button class="ds-btn sm ${d.look_id ? "ghost" : ""}" data-day="${d.date}">${d.look_id ? "Change" : "Choose"}</button></div>`).join("")}</div>
+    ${S.looks.length ? "" : `<p class="sub" style="margin-top:var(--s-3)">Save a look first, then give it a day.</p>`}`;
+  $("#plan").querySelectorAll("[data-day]").forEach(b => b.onclick = () => lookSheet(S.week.find(d => d.date === b.dataset.day)));
+}
+async function setPlan(date, look_id) { try { S.week = (await api("/api/closet/plan", { person: S.person, date, look_id })).week; if (tab === "plan") drawPlan(); toast(look_id ? "Planned." : "Cleared.", "ok"); } catch (e) { toast(e.message, "danger"); } }
+function lookSheet(d) {
+  if (!S.looks.length) { toast("Save a look first, then give it a day."); return; }
+  sheet(`<h2>${d.today ? "Today" : esc(d.weekday + " " + d.day)}</h2><p>Which look?</p><div class="sheet-list">${S.looks.map(l => `<button data-l="${l.id}">${l.image ? `<img src="${file(l.image)}" alt="">` : `<span class="ph"></span>`}<span>${esc(l.name)}</span></button>`).join("")}</div>
+    <div class="ds-sheet-actions">${d.look_id || d.name ? `<button class="ds-btn danger" id="pClear">Clear the day</button>` : ""}<button class="ds-btn" data-close>Cancel</button></div>`, (el, close) => {
+    el.querySelectorAll("[data-l]").forEach(b => b.onclick = () => { close(); setPlan(d.date, b.dataset.l); });
+    const c = el.querySelector("#pClear"); if (c) c.onclick = () => { close(); setPlan(d.date, ""); };
+  });
+}
+function daySheet(l) {
+  sheet(`<h2>Plan "${esc(l.name)}"</h2><p>Which day?</p><div class="sheet-list">${S.week.map(d => `<button data-d="${d.date}"><span style="width:76px;font-weight:600">${d.today ? "Today" : esc(d.weekday + " " + d.day)}</span><span class="sub">${d.name ? esc(d.name) : "Free"}</span></button>`).join("")}</div>
+    <div class="ds-sheet-actions"><button class="ds-btn" data-close>Cancel</button></div>`, (el, close) => el.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { close(); setPlan(b.dataset.d, l.id); }));
+}
+
+const start = location.hash.slice(1);
+if (["looks", "stylist", "plan"].includes(start)) { tab = start; document.querySelectorAll(".ds-tab").forEach(b => { const on = b.dataset.tab === tab; b.classList.toggle("on", on); b.setAttribute("aria-selected", on); }); for (const id of ["closet", "looks", "stylist", "plan"]) $("#" + id).hidden = id !== tab; }
+load();
+document.addEventListener("visibilitychange", () => { if (!document.hidden && S) load(true); });
+</script>
+</body>
+</html>

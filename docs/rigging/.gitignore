@@ -1,0 +1,10 @@
+# generated binaries / big renders: reproducible from hub/rig_acceptance.py; never commit model weights or assets
+*.glb
+*.fbx
+*.blend
+rest.png
+anim_f12.png
+fit_front.png
+fit_side.png
+*.bones.json
+i2g/

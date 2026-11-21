@@ -1,0 +1,147 @@
+{
+  "note": "Rigging benchmark. split=dev: used while building/tuning the pipeline. split=heldout: NEVER look at its failures to tune thresholds; it only measures. Paths: ~ = home, @ = this repo.",
+  "cases": [
+    {
+      "name": "synthetic_humanoid",
+      "path": "@/docs/rigging/synth/synthetic_humanoid.glb",
+      "kind": "humanoid",
+      "split": "dev",
+      "type": "synthetic"
+    },
+    {
+      "name": "synthetic_disjoint",
+      "path": "@/docs/rigging/synth/synthetic_humanoid_disjoint.glb",
+      "kind": "humanoid",
+      "split": "dev",
+      "type": "synthetic"
+    },
+    {
+      "name": "synthetic_quadruped",
+      "path": "@/docs/rigging/synth/synthetic_quadruped.glb",
+      "kind": "quadruped",
+      "split": "dev",
+      "type": "synthetic"
+    },
+    {
+      "name": "vanguard",
+      "path": "~/Downloads/Shadow world 3d models/characters/Meshy_AI_Shadow_Vanguard_20261031_texture_remesh_tri.blend",
+      "kind": "humanoid",
+      "split": "dev",
+      "type": "owner_character"
+    },
+    {
+      "name": "neon_sentinel",
+      "path": "~/Downloads/Meshy_AI_Neon_Sentinel_All_Animations.glb",
+      "kind": "humanoid",
+      "split": "dev",
+      "type": "owner_character"
+    },
+    {
+      "name": "red_sweater",
+      "path": "~/Downloads/Shadow world 3d models/characters/Meshy_AI_Barefoot_Man_in_Red_Sweater_20261031_texture.blend",
+      "kind": "humanoid",
+      "split": "heldout",
+      "type": "owner_character"
+    },
+    {
+      "name": "pink_confidence",
+      "path": "~/Downloads/Shadow world 3d models/characters/Meshy_AI_Pink_Confidence_Look_20261029_texture.blend",
+      "kind": "humanoid",
+      "split": "heldout",
+      "type": "owner_character",
+      "challenge": "dense 5.4M-face scan: heat weighting fails on the raw and proxy mesh, voxel-weld skin tears; a standing challenge for the learning engine"
+    },
+    {
+      "name": "elf_model",
+      "path": "~/Downloads/3d elf model.glb",
+      "kind": "",
+      "split": "heldout",
+      "type": "downloaded"
+    },
+    {
+      "name": "comfyui_00008",
+      "path": "~/Downloads/ComfyUI_00008_.glb",
+      "kind": "",
+      "split": "heldout",
+      "type": "generated"
+    },
+    {
+      "name": "creature_dragon",
+      "path": "@/docs/rigging/synth/creature_dragon.glb",
+      "kind": "creature",
+      "split": "dev",
+      "type": "synthetic_creature"
+    },
+    {
+      "name": "creature_spider",
+      "path": "@/docs/rigging/synth/creature_spider.glb",
+      "kind": "creature",
+      "split": "dev",
+      "type": "synthetic_creature"
+    },
+    {
+      "name": "creature_serpent",
+      "path": "@/docs/rigging/synth/creature_serpent.glb",
+      "kind": "creature",
+      "split": "dev",
+      "type": "synthetic_creature"
+    },
+    {
+      "name": "creature_bird",
+      "path": "@/docs/rigging/synth/creature_bird.glb",
+      "kind": "creature",
+      "split": "dev",
+      "type": "synthetic_creature"
+    },
+    {
+      "name": "heldout_tripod",
+      "path": "@/docs/rigging/synth/heldout_tripod.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "heldout_crab",
+      "path": "@/docs/rigging/synth/heldout_crab.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "heldout_manta",
+      "path": "@/docs/rigging/synth/heldout_manta.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "heldout_centipede",
+      "path": "@/docs/rigging/synth/heldout_centipede.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "heldout_hydra",
+      "path": "@/docs/rigging/synth/heldout_hydra.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "heldout_starfish",
+      "path": "@/docs/rigging/synth/heldout_starfish.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "synthetic_creature_unseen"
+    },
+    {
+      "name": "gen_crystal_tortoise",
+      "path": "@/data/dojo/blender/fresh/crystal_tortoise.glb",
+      "kind": "creature",
+      "split": "heldout",
+      "type": "generated_unseen",
+      "note": "made by JARVIS on the real GPU from the description 'a six-legged crystal tortoise with two long tentacle arms and a tall fin on its back' (FLUX -> Hunyuan3D). Local file, not in git."
+    }
+  ]
+}

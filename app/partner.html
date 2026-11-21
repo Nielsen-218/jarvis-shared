@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JARVIS · Partner</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg-0); color: var(--text-1); font: 400 var(--fs-md)/var(--lh-md) var(--font-ui); }
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: var(--s-2);
+    padding: calc(var(--s-2) + var(--safe-t)) var(--s-4) var(--s-2); background: color-mix(in srgb, var(--bg-0) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line-1); }
+  header h1 { font: 600 var(--fs-lg)/var(--lh-lg) var(--font-display); flex: 1; }
+  main { max-width: 640px; margin: 0 auto; padding: var(--s-4) var(--s-4) calc(var(--s-7) + var(--safe-b)); display: grid; gap: var(--s-5); }
+  [hidden] { display: none !important; }
+  section > h2 { display: flex; align-items: baseline; gap: var(--s-2); font: 600 var(--fs-md)/var(--lh-md) var(--font-display);
+    color: var(--text-1); margin-bottom: var(--s-2); }
+  section > h2 .n { color: var(--text-3); font: 500 var(--fs-xs)/1 var(--font-ui); }
+  .sub { color: var(--text-2); font-size: var(--fs-sm); line-height: var(--lh-sm); overflow-wrap: anywhere; }
+  .faint { color: var(--text-3); font-size: var(--fs-xs); line-height: var(--lh-xs); }
+  .list { display: grid; gap: var(--s-2); }
+  .ds-card { padding: var(--s-3) var(--s-4); display: grid; gap: var(--s-2); }
+  .row { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+  .grow { flex: 1; min-width: 0; }
+  .title { font-weight: 600; overflow-wrap: anywhere; }
+  .btns { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .btns .ds-btn { flex: 1 1 auto; }
+
+  /* the report */
+  #report { border-left: 3px solid var(--accent); }
+  #report .text { white-space: pre-line; font-size: var(--fs-md); line-height: var(--lh-md); }
+  #report .text.clamp { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .more { justify-self: start; border: 0; background: none; color: var(--accent); font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui);
+    padding: var(--s-1) 0; min-height: 32px; cursor: pointer; }
+  .seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: var(--r-pill); padding: 2px; gap: 2px; }
+  .seg button { border: 0; background: transparent; color: var(--text-2); font: 600 var(--fs-xs)/1 var(--font-ui); padding: 7px 12px;
+    border-radius: var(--r-pill); cursor: pointer; min-height: 30px; }
+  .seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+
+  /* what I got wrong yesterday */
+  #review { border-left: 3px solid var(--warn); }
+  #review.clean { border-left-color: var(--ok); }
+  #review ul { margin: 0; padding-left: var(--s-4); display: grid; gap: var(--s-1); }
+  #review li { overflow-wrap: anywhere; }
+
+  /* goals */
+  .proposed { border-color: color-mix(in srgb, var(--warn) 40%, var(--line-1)); }
+  .step { display: grid; gap: 2px; padding: var(--s-2) var(--s-3); border-radius: var(--r-2); background: var(--bg-1);
+    border: 1px dashed var(--line-2); cursor: pointer; text-align: left; color: inherit; font: inherit; width: 100%; }
+  .step:hover { border-color: var(--accent); }
+  .step .lbl { font: 600 11px/14px var(--font-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .step.none .val { color: var(--text-3); font-style: italic; }
+  .edit { display: grid; gap: var(--s-2); }
+  .addbox { display: grid; gap: var(--s-2); }
+  .addbox .row .ds-input { flex: 1 1 200px; }
+  details > summary { cursor: pointer; list-style: none; color: var(--text-2); font: 600 var(--fs-sm)/var(--lh-sm) var(--font-ui);
+    padding: var(--s-2) 0; min-height: var(--tap); display: flex; align-items: center; gap: var(--s-2); }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg); transition: transform var(--dur-fast) var(--ease-out); margin-right: 4px; }
+  details[open] > summary::before { transform: rotate(45deg); }
+  .closed .title { font-weight: 500; color: var(--text-2); }
+  .closed.dropped .title { text-decoration: line-through; text-decoration-color: var(--text-3); }
+
+  /* what I owe you */
+  .owed .what { font-weight: 500; overflow-wrap: anywhere; }
+  .owed.failed { border-color: color-mix(in srgb, var(--danger) 35%, var(--line-1)); }
+  .empty { padding: var(--s-4); text-align: center; color: var(--text-2); font-size: var(--fs-sm); border: 1px dashed var(--line-2);
+    border-radius: var(--r-3); }
+  .err { color: var(--danger); font-size: var(--fs-sm); }
+  .skel { height: 76px; border-radius: var(--r-3); }
+  @media (min-width: 900px) { main { max-width: 760px; } }
+</style>
+</head>
+<body class="ds">
+<header>
+  <a class="ds-iconbtn ghost" id="back" href="/" aria-label="Back to Jarvis"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></a>
+  <h1>Partner</h1>
+  <button class="ds-iconbtn ghost" id="refresh" aria-label="Refresh"><svg class="ds-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></button>
+</header>
+<main>
+  <p class="err" id="msg" role="alert" hidden></p>
+  <div id="loading" class="list"><div class="ds-skeleton skel"></div><div class="ds-skeleton skel"></div><div class="ds-skeleton skel"></div></div>
+
+  <section id="reportSec" hidden aria-labelledby="reportH">
+    <h2 id="reportH"><span class="grow">This morning's report</span>
+      <span class="seg" id="reportSeg" role="group" aria-label="Which report" hidden>
+        <button type="button" data-view="said" aria-pressed="true">As said</button><button type="button" data-view="now" aria-pressed="false">Right now</button>
+      </span></h2>
+    <div class="ds-card" id="report"><p class="faint" id="reportWhen"></p><p class="text clamp" id="reportText"></p><button type="button" class="more" id="reportMore" hidden>Read all</button></div>
+  </section>
+
+  <section id="reviewSec" hidden aria-labelledby="reviewH">
+    <h2 id="reviewH">What I got wrong yesterday</h2>
+    <div class="ds-card" id="review"><p class="faint" id="reviewWhen"></p><ul id="reviewList"></ul><p class="sub" id="reviewClean" hidden></p>
+      <p class="faint" id="reviewNote" hidden></p></div>
+  </section>
+
+  <section id="goalsSec" hidden aria-labelledby="goalsH">
+    <h2 id="goalsH">Your goals <span class="n" id="goalsN"></span></h2>
+    <div id="proposedWrap" hidden>
+      <p class="sub" style="margin-bottom:var(--s-2)">I think these might be your goals. Only you decide: tap one answer for each.</p>
+      <div class="list" id="proposed"></div>
+    </div>
+    <div class="list" id="active" style="margin-top:var(--s-3)"></div>
+    <form class="ds-card addbox" id="addForm" style="margin-top:var(--s-3)" autocomplete="off">
+      <label class="sub" for="addText"><b style="color:var(--text-1)">Add a goal</b></label>
+      <div class="row">
+        <input class="ds-input" id="addText" maxlength="200" placeholder="e.g. Get the insurance website live" required>
+        <button class="ds-btn primary" id="addBtn">Add</button>
+      </div>
+      <input class="ds-input" id="addStep" maxlength="200" placeholder="First next step (optional)">
+    </form>
+    <details id="closedWrap" hidden><summary>Done and dropped <span class="n faint" id="closedN"></span></summary><div class="list" id="closed"></div></details>
+  </section>
+
+  <section id="owedSec" hidden aria-labelledby="owedH">
+    <h2 id="owedH">What I owe you <span class="n" id="owedN"></span></h2>
+    <p class="sub" style="margin-bottom:var(--s-2)">Only things I really started: a mission, a reminder, a work order. If one went wrong, it says so.</p>
+    <div class="list" id="owedOpen"></div>
+    <details id="recentWrap" hidden open><summary>Recently finished <span class="n faint" id="recentN"></span></summary><div class="list" id="owedRecent"></div></details>
+  </section>
+</main>
+<div class="ds-toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname + location.search); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+if (window.parent !== window) $("#back").hidden = true;          // inside the PC Hub: the Hub has its own way back
+let data = null, reportView = "said", reportOpen = false, editing = null, busy = false;
+
+async function api(path, body) {
+  const opt = { headers: { Authorization: "Bearer " + token } };
+  if (body !== undefined) { opt.method = "POST"; opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+  const r = await fetch(path, opt);
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok) throw new Error(r.status === 401 ? "Link this phone in the Jarvis app first." : (typeof j.detail === "string" && j.detail) || "Jarvis couldn't do that (error " + r.status + ").");
+  return j;
+}
+const cap = s => { s = String(s || ""); return s.charAt(0).toUpperCase() + s.slice(1); };
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+function say(text) { const m = $("#msg"); m.textContent = text || ""; m.hidden = !text; }
+let toastTimer = 0;
+function toast(text, kind) { const t = $("#toast"); t.textContent = text; t.className = "ds-toast" + (kind ? " " + kind : ""); t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 3200); }
+
+function ago(ts, now) {
+  const s = Math.max(0, (now || Date.now() / 1000) - Number(ts || 0));
+  if (s < 90) return "just now"; if (s < 3600) return Math.round(s / 60) + " min ago";
+  if (s < 86400) return Math.round(s / 3600) + " h ago"; const d = Math.round(s / 86400); return d + (d === 1 ? " day ago" : " days ago");
+}
+function until(ts, now) {
+  const s = Number(ts || 0) - (now || Date.now() / 1000); if (s <= 0) return "";
+  if (s < 3600) return "in " + Math.max(1, Math.round(s / 60)) + " min"; if (s < 86400) return "in " + Math.round(s / 3600) + " h";
+  return "in " + Math.round(s / 86400) + " days";
+}
+function clock(ts) { const d = new Date(Number(ts) * 1000), today = new Date();
+  const t = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  return d.toDateString() === today.toDateString() ? "today at " + t : d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + ", " + t; }
+
+/* ---------- report ---------- */
+function renderReport() {
+  const r = data.report || {}, said = r.said, hasNow = !!(r.now || "").trim();
+  $("#reportSec").hidden = !said && !hasNow;
+  $("#reportSeg").hidden = !(said && hasNow);
+  const view = said && (reportView === "said" || !hasNow) ? "said" : "now";
+  document.querySelectorAll("#reportSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+  $("#reportH").firstElementChild.textContent = view === "said" && r.said_today ? "This morning's report" : view === "said" ? "Last report" : "Where things stand";
+  $("#reportWhen").textContent = view === "said" ? "Said " + clock(said.at) + (said.machine === "pc" ? " on the PC" : "")
+    : (said && r.said_today ? "Built just now, not said aloud" : "Not said aloud yet today. This is what I'd tell you right now.");
+  const t = $("#reportText"); t.textContent = view === "said" ? said.text : r.now;
+  t.classList.toggle("clamp", !reportOpen);
+  $("#reportMore").textContent = reportOpen ? "Show less" : "Read all";
+  $("#reportMore").hidden = !reportOpen && t.scrollHeight <= t.clientHeight + 2;
+}
+
+/* ---------- what I got wrong yesterday ---------- */
+function renderReview() {
+  const r = data.self_review;
+  $("#reviewSec").hidden = !r;
+  if (!r) return;
+  const day = new Date(r.day + "T12:00:00").toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" });
+  $("#reviewWhen").textContent = "From my own log of " + day + (r.said ? " · told you " + clock(r.said) : "");
+  $("#review").classList.toggle("clean", !!r.clean);
+  $("#reviewList").innerHTML = (r.items || []).map(i => `<li>${esc(i.text)}${i.said ? ` <span class="faint">(you said: “${esc(i.said)}”)</span>` : ""}</li>`).join("");
+  $("#reviewList").hidden = !!r.clean;
+  $("#reviewClean").hidden = !r.clean;
+  $("#reviewClean").textContent = r.turns ? "Nothing I could find. A clean day." : "We didn't talk at the PC that day.";
+  $("#reviewNote").hidden = !r.uncertain;
+  $("#reviewNote").textContent = r.uncertain ? "I couldn't tell which day " + r.uncertain + (r.uncertain === 1 ? " line" : " lines") + " belonged to, so I left " + (r.uncertain === 1 ? "it" : "them") + " out." : "";
+}
+
+/* ---------- goals ---------- */
+function stepBox(g) {
+  if (editing === g.id) return `<form class="edit" data-form="${esc(g.id)}"><label class="faint" for="st-${esc(g.id)}">Next step</label>
+    <input class="ds-input" id="st-${esc(g.id)}" maxlength="200" value="${esc(g.next_step)}" placeholder="What's the very next thing to do?">
+    <div class="btns"><button class="ds-btn primary sm">Save</button><button type="button" class="ds-btn ghost sm" data-act="cancel">Cancel</button></div></form>`;
+  return `<button type="button" class="step${g.next_step ? "" : " none"}" data-act="edit" data-id="${esc(g.id)}" aria-label="Edit the next step for ${esc(g.name)}">
+    <span class="lbl">Next step</span><span class="val">${g.next_step ? esc(g.next_step) : "None yet. Tap to add one."}</span></button>`;
+}
+function goalCard(g) {
+  return `<article class="ds-card" data-goal="${esc(g.id)}"><div class="row"><span class="title grow">${esc(g.goal)}</span></div>
+    ${g.why ? `<p class="sub">Why: ${esc(g.why)}</p>` : ""}${stepBox(g)}
+    <div class="btns"><button class="ds-btn sm" data-act="done" data-id="${esc(g.id)}">Mark done</button>
+    <button class="ds-btn ghost sm" data-act="drop" data-id="${esc(g.id)}">Drop</button></div></article>`;
+}
+function proposedCard(g) {
+  return `<article class="ds-card proposed" data-goal="${esc(g.id)}"><div class="row"><span class="ds-badge warn">Suggested</span><span class="title grow">${esc(g.goal)}</span></div>
+    ${g.why ? `<p class="sub">${esc(g.why)}</p>` : ""}${g.next_step ? `<p class="sub">Next step: ${esc(g.next_step)}</p>` : ""}
+    <div class="btns"><button class="ds-btn primary" data-act="activate" data-id="${esc(g.id)}">Yes, that's a goal</button>
+    <button class="ds-btn" data-act="drop" data-id="${esc(g.id)}">Not a goal</button></div></article>`;
+}
+function closedCard(g) {
+  const label = g.state === "done" ? `<span class="ds-badge ok">Done</span>` : `<span class="ds-badge">Dropped</span>`;
+  return `<article class="ds-card closed ${esc(g.state)}"><div class="row">${label}<span class="title grow">${esc(g.goal)}</span>
+    <button class="ds-btn ghost sm" data-act="undo" data-id="${esc(g.id)}">Undo</button></div>
+    ${g.closed ? `<p class="faint">${g.state === "done" ? "Finished" : "Dropped"} ${esc(ago(g.closed, data.now))}</p>` : ""}</article>`;
+}
+function renderGoals() {
+  const G = data.goals || {}, act = G.active || [], prop = G.proposed || [], closed = G.closed || [];
+  $("#goalsSec").hidden = false;
+  $("#goalsN").textContent = act.length ? act.length + " active" : "";
+  $("#proposedWrap").hidden = !prop.length;
+  $("#proposed").innerHTML = prop.map(proposedCard).join("");
+  $("#active").innerHTML = act.length ? act.map(goalCard).join("")
+    : `<div class="empty">${prop.length ? "No active goals yet. Answer the suggestions above, or add your own." : "No goals yet. Add one below, or tell Jarvis “my goal is …”."}</div>`;
+  $("#closedWrap").hidden = !closed.length;
+  $("#closedN").textContent = closed.length ? "(" + closed.length + ")" : "";
+  $("#closed").innerHTML = closed.map(closedCard).join("");
+  if (editing) { const i = document.getElementById("st-" + editing); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+}
+
+/* ---------- what I owe you ---------- */
+function owedBadge(c) {
+  if (c.state === "in_progress" && c.waiting_on_you) return `<span class="ds-badge warn">Waiting on you</span>`;
+  if (c.overdue) return `<span class="ds-badge danger">Overdue</span>`;
+  if (c.state === "in_progress") return `<span class="ds-badge accent">In progress</span>`;
+  if (c.kind === "reminder" || c.detail === "set") return `<span class="ds-badge accent">Scheduled</span>`;
+  return `<span class="ds-badge">Not started</span>`;
+}
+function owedCard(c) {
+  const when = until(c.due, data.now);
+  const status = cap(c.state === "in_progress" ? (c.detail || "under way") : c.overdue ? "Not started, and it's past when I said"
+    : (c.kind === "reminder" || c.detail === "set") ? "Reminder set" : (c.detail || "Not started yet"));
+  return `<article class="ds-card owed"><div class="row">${owedBadge(c)}<span class="faint grow">took it on ${esc(ago(c.created, data.now))}${when && !c.overdue ? " · due " + esc(when) : ""}</span></div>
+    <p class="what">${esc(c.what)}</p><p class="sub">${esc(status)}</p></article>`;
+}
+function recentCard(c) {
+  const ok = c.outcome === "done";
+  return `<article class="ds-card owed ${ok ? "" : "failed"}"><div class="row">${ok ? `<span class="ds-badge ok">Done</span>` : `<span class="ds-badge danger">Not done</span>`}
+    <span class="faint grow">${esc(ago(c.resolved || c.created, data.now))}</span></div>
+    <p class="what">${esc(c.what)}</p>${!ok ? `<p class="sub">${esc(cap(c.detail || "it failed"))}</p>` : ""}</article>`;
+}
+function renderOwed() {
+  const O = data.owed || {}, open = O.open || [], recent = O.recent || [];
+  $("#owedSec").hidden = false;
+  $("#owedN").textContent = open.length ? open.length + " open" : "";
+  $("#owedOpen").innerHTML = open.length ? open.map(owedCard).join("") : `<div class="empty">Nothing open. I haven't taken anything on for you that's still unfinished.</div>`;
+  $("#recentWrap").hidden = !recent.length;
+  $("#recentN").textContent = recent.length ? "(" + recent.length + ")" : "";
+  $("#owedRecent").innerHTML = recent.map(recentCard).join("");
+}
+
+function render() { $("#loading").hidden = true; renderReport(); renderReview(); renderGoals(); renderOwed(); }
+
+async function load() {
+  if (!token) { $("#loading").hidden = true; say("Link this phone in the Jarvis app first."); return; }
+  try { data = await api("/api/partner"); say(""); render(); }
+  catch (e) { $("#loading").hidden = true; say(e.message); }
+}
+async function act(body, btn) {
+  if (busy) return; busy = true; if (btn) btn.disabled = true;
+  try { const r = await api("/api/partner/goal", body); data = r.data; editing = null; render(); toast(r.message, "ok"); return true; }
+  catch (e) { toast(e.message, "danger"); return false; }
+  finally { busy = false; if (btn) btn.disabled = false; }
+}
+
+document.addEventListener("click", e => {
+  const seg = e.target.closest("#reportSeg button"); if (seg) { reportView = seg.dataset.view; renderReport(); return; }
+  if (e.target.closest("#reportMore")) { reportOpen = !reportOpen; renderReport(); return; }
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const a = b.dataset.act, id = b.dataset.id;
+  if (a === "edit") { editing = id; renderGoals(); return; }
+  if (a === "cancel") { editing = null; renderGoals(); return; }
+  act({ action: a, id }, b);
+});
+document.addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target;
+  if (f.id === "addForm") {
+    const text = $("#addText").value.trim(), next_step = $("#addStep").value.trim(); if (!text) return;
+    if (await act({ action: "add", text, next_step }, $("#addBtn"))) { $("#addText").value = ""; $("#addStep").value = ""; }
+    return;
+  }
+  if (f.dataset.form) act({ action: "next_step", id: f.dataset.form, next_step: f.querySelector("input").value.trim() }, f.querySelector("button"));
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && editing) { editing = null; renderGoals(); } });
+$("#refresh").onclick = load;
+document.addEventListener("visibilitychange", () => { if (!document.hidden && !editing) load(); });
+load();
+</script>
+</body>
+</html>

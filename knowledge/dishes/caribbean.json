@@ -1,0 +1,6661 @@
+[
+  {
+    "id": "jerk-chicken",
+    "name": "Jerk Chicken",
+    "english": "Oven-roasted jerk-marinated chicken",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 pieces (about 1 thigh + 1 drumstick); toddler 1 plain drumstick",
+    "active_min": 15,
+    "total_min": 65,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.06,
+    "ingredients": [
+      {
+        "item": "chicken thighs and drumsticks, bone-in, skin-on",
+        "qty": "3.3 lb",
+        "grams": 1500,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "jerk seasoning paste",
+        "qty": "4 tbsp",
+        "grams": 60,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground allspice",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Mix jerk paste, lime juice, sliced scallions, sugar, soy, oil and allspice. Rub it under and over the chicken. Marinate 30 minutes, or overnight for the real flavour.",
+      "Set aside 2 drumsticks for the toddler and wipe the marinade off them. Season only with garlic powder.",
+      "Roast skin-side up on a foil-lined sheet pan at 425F for 40 to 45 minutes until the thickest piece reads 175F.",
+      "Broil 3 minutes to char the edges, then rest 5 minutes before serving."
+    ],
+    "batch_tip": "Marinate 3 lb on Sunday and roast once: dinner tonight, jerk rice bowls tomorrow, 4 portions frozen.",
+    "leftovers": "Pull the meat off the bones for jerk chicken rice bowls or a jerk wrap.",
+    "macros": {
+      "kcal": 505,
+      "protein_g": 48,
+      "carbs_g": 8,
+      "fat_g": 31,
+      "fiber_g": 1,
+      "sodium_mg": 840
+    },
+    "tags": [
+      "batch",
+      "toddler-ok",
+      "training-day",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Cook 1 or 2 drumsticks with the marinade wiped off, no jerk paste, no pepper heat. Pull the meat off the bone and cut small.",
+    "swap": "Pull the skin off before eating to save about 6 g fat per portion; use boneless thighs for 10 g more protein per ounce of cooked meat.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage",
+      "festival"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of glossy dark mahogany-red jerk chicken thighs and drumsticks with charred crisp edges, flecks of scallion and lime wedges served family-style in a large rustic ceramic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jamaican-rice-and-peas",
+    "name": "Rice and Peas",
+    "english": "Coconut rice cooked with red kidney beans",
+    "cuisine": "Jamaican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/3 cup",
+    "active_min": 10,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.54,
+    "ingredients": [
+      {
+        "item": "long-grain white rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned red kidney beans, drained",
+        "qty": "1 can (15 oz)",
+        "grams": 240,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "3/4 can",
+        "grams": 300,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "scallions, bruised",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic, crushed",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole allspice berries",
+        "qty": "6",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Rinse the rice. In a pot combine coconut milk, 2 1/2 cups water, beans, scallions, thyme, garlic, allspice, salt.",
+      "Bring to a boil, stir in the rice, and lay the whole scotch bonnet on top without breaking it.",
+      "Cover tight, turn to the lowest heat and cook 20 minutes. Do not lift the lid.",
+      "Rest 10 minutes. Lift out the pepper and thyme stems and fluff."
+    ],
+    "batch_tip": "Cook a double pot: it freezes flat in bags for 3 months and reheats in the microwave with a splash of water.",
+    "leftovers": "Fry in a skillet with an egg on top for breakfast, or fold into a bean soup.",
+    "macros": {
+      "kcal": 520,
+      "protein_g": 12,
+      "carbs_g": 82,
+      "fat_g": 16,
+      "fiber_g": 5,
+      "sodium_mg": 440
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "budget"
+    ],
+    "toddler": "Plain portion before the scotch bonnet goes in; mash a few beans into the rice. No added salt on the toddler plate.",
+    "swap": "Use 1/2 light and 1/2 full-fat coconut milk to drop about 100 kcal per portion, or swap in brown rice and cook 10 minutes longer.",
+    "pairs_with": [
+      "jerk-chicken",
+      "brown-stew-chicken",
+      "curry-goat",
+      "escovitch-fish"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of fluffy white rice speckled with dark red kidney beans, a sprig of thyme and a few scallion pieces served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "curry-goat",
+    "name": "Curry Goat",
+    "english": "Jamaican slow-cooked goat curry with potatoes",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1.5 cups with rice; toddler 1/2 cup",
+    "active_min": 25,
+    "total_min": 110,
+    "difficulty": 2,
+    "cost_per_serving_usd": 4.4,
+    "ingredients": [
+      {
+        "item": "goat meat, bone-in, cut small",
+        "qty": "3 lb",
+        "grams": 1400,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "Jamaican curry powder",
+        "qty": "3 tbsp",
+        "grams": 30,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "potatoes, cubed",
+        "qty": "3 medium",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, chopped",
+        "qty": "1 large",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 1/2 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "3/4 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Toss goat with 2 tbsp curry powder, garlic, ginger, thyme, salt. Marinate while you chop (or overnight).",
+      "Heat oil in a heavy pot (or pressure cooker) and fry the remaining curry powder 30 seconds. Add the meat and brown 8 minutes.",
+      "Add onion, scallions and 3 cups water. Pressure cook 40 minutes, or simmer covered 1 hour 30 minutes.",
+      "Add potatoes and the whole scotch bonnet and cook 20 minutes more until the meat is tender and the gravy has thickened.",
+      "Lift out the pepper and serve."
+    ],
+    "batch_tip": "Cook a double batch in the pressure cooker; it tastes better on day 2 and freezes in portions.",
+    "leftovers": "Shred leftovers into a curry goat roti wrap with cabbage.",
+    "macros": {
+      "kcal": 435,
+      "protein_g": 50,
+      "carbs_g": 27,
+      "fat_g": 14,
+      "fiber_g": 6,
+      "sodium_mg": 590
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "freezer",
+      "high-protein"
+    ],
+    "toddler": "Take the toddler portion of meat and potato out before the scotch bonnet goes in. Pull the meat off the bone, mash potato into the gravy.",
+    "swap": "Use half goat and half lean beef chuck if goat is hard to find or too pricey, and skim fat off the cooled pot before reheating.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage",
+      "festival"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of deep golden-yellow curry goat with chunks of bone-in meat and soft potatoes in a thick turmeric-gold gravy served family-style in a deep enamel bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jamaican-oxtail",
+    "name": "Oxtail and Butter Beans",
+    "english": "Braised oxtail stew with butter beans",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 3 pieces oxtail with 1/2 cup gravy and beans; toddler: shredded meat, 1/3 cup",
+    "active_min": 25,
+    "total_min": 120,
+    "difficulty": 2,
+    "cost_per_serving_usd": 5.39,
+    "ingredients": [
+      {
+        "item": "oxtail, cut in pieces",
+        "qty": "3.3 lb",
+        "grams": 1500,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "canned butter beans, drained",
+        "qty": "1 large can",
+        "grams": 400,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "carrots, chunked",
+        "qty": "3",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole allspice berries",
+        "qty": "8",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "soy sauce (browning)",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Season oxtail with soy sauce, garlic, thyme, allspice. Marinate while you chop.",
+      "Heat oil and sugar in the pot until amber, add the oxtail and brown 8 minutes.",
+      "Add onion, scallions and 3 cups water. Pressure cook 50 minutes (or simmer 2 hours 30 minutes).",
+      "Add carrots and beans and the whole scotch bonnet, simmer 15 minutes uncovered until the gravy thickens.",
+      "Skim the fat from the top and serve."
+    ],
+    "batch_tip": "Cook once on a Sunday; chill overnight so the fat sets on top and lifts right off.",
+    "leftovers": "Pick the meat off the bones and stir into rice and peas or a leftover-stew pot.",
+    "macros": {
+      "kcal": 630,
+      "protein_g": 51,
+      "carbs_g": 28,
+      "fat_g": 35,
+      "fiber_g": 7,
+      "sodium_mg": 740
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "training-day",
+      "high-protein"
+    ],
+    "toddler": "Offer shredded meat and soft butter beans from before the pepper goes in. Watch for small bones.",
+    "swap": "Skim all the fat off the chilled pot; that alone saves about 8 g fat per portion with no loss of flavour.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of dark glossy braised oxtail pieces on the bone with creamy white butter beans and orange carrot chunks in a rich brown gravy served family-style in a wide shallow ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ackee-and-saltfish",
+    "name": "Ackee and Saltfish",
+    "english": "Ackee sauteed with salt cod, peppers and tomato",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 heaping cup; toddler 1/3 cup (flaked fish only, no ackee seeds)",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.63,
+    "ingredients": [
+      {
+        "item": "salt cod, soaked overnight and boiled twice",
+        "qty": "1/2 lb dry",
+        "grams": 250,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "canned ackee, drained",
+        "qty": "2 cans (19 oz)",
+        "grams": 500,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1 large",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "2 cloves",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 2,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, minced",
+        "qty": "1/2",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "The night before: soak the salt cod in cold water, change the water twice. Next day boil 15 minutes, drain, flake and pick out bones.",
+      "Heat oil and cook onion, pepper, scallions, garlic and thyme 5 minutes until soft.",
+      "Add tomato and the flaked fish, cook 3 minutes.",
+      "Fold in the ackee very gently so it stays in pieces. Heat through 4 minutes, scotch bonnet last. Black pepper to taste."
+    ],
+    "batch_tip": "Soak and boil a double amount of salt cod; the flaked fish keeps 3 days in the fridge for fish cakes or a second breakfast.",
+    "leftovers": "Stuff into a warm tortilla or eat on toast the next morning.",
+    "macros": {
+      "kcal": 425,
+      "protein_g": 40,
+      "carbs_g": 8,
+      "fat_g": 26,
+      "fiber_g": 5,
+      "sodium_mg": 960
+    },
+    "tags": [
+      "rest-day",
+      "toddler-ok",
+      "high-protein",
+      "quick"
+    ],
+    "toddler": "Serve the flaked fish with a spoon of well-cooked ackee and tomato. Skip scotch bonnet. Only canned ackee, never fresh.",
+    "swap": "Rinse the salt cod through 3 changes of water to cut sodium by roughly half; serve with boiled green banana instead of fried dumpling.",
+    "pairs_with": [
+      "festival",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Jamaican ackee and saltfish: soft buttery-yellow ackee fruit that looks like scrambled eggs, folded with flaked white salt cod, sautéed onions, red and green bell pepper strips, tomato and thyme, in an enamel plate, with fried dumplings and boiled green bananas on the side"
+  },
+  {
+    "id": "jamaican-callaloo",
+    "name": "Steamed Callaloo",
+    "english": "Callaloo greens steamed with onion, tomato and thyme",
+    "cuisine": "Jamaican",
+    "category": "side",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 3/4 cup; toddler 1/4 cup finely chopped",
+    "active_min": 10,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.21,
+    "ingredients": [
+      {
+        "item": "callaloo, or fresh spinach, chopped",
+        "qty": "2 lb (two big bunches)",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "2",
+        "grams": 150,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 2,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, whole",
+        "qty": "1",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat oil and cook onion, garlic, scallions and thyme 3 minutes.",
+      "Add tomato and cook 3 minutes until soft.",
+      "Pile in the greens, add the whole scotch bonnet, cover and steam on medium 8 to 10 minutes, stirring once.",
+      "Salt, discard the pepper, serve."
+    ],
+    "batch_tip": "Double it, it reheats well and goes into eggs, wraps or beside any stew.",
+    "leftovers": "Chop into a frittata or egg muffins.",
+    "macros": {
+      "kcal": 150,
+      "protein_g": 7,
+      "carbs_g": 12,
+      "fat_g": 8,
+      "fiber_g": 6,
+      "sodium_mg": 340
+    },
+    "tags": [
+      "rest-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Scoop out the toddler portion before the scotch bonnet goes in, chop fine, no salt.",
+    "swap": "Add 1 cup flaked saltfish or 4 beaten eggs near the end to turn it into a protein-rich breakfast.",
+    "pairs_with": [
+      "ackee-and-saltfish",
+      "festival",
+      "jamaican-rice-and-peas"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bright dark-green steamed callaloo greens glistening with oil, flecks of red tomato and white onion served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "brown-stew-chicken",
+    "name": "Brown Stew Chicken",
+    "english": "Chicken seared in caramelised sugar and stewed with vegetables",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 pieces with gravy and vegetables; toddler 1 small piece, de-boned",
+    "active_min": 20,
+    "total_min": 55,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.22,
+    "ingredients": [
+      {
+        "item": "chicken thighs and drumsticks, bone-in",
+        "qty": "3.3 lb",
+        "grams": 1500,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1 large",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots, sliced",
+        "qty": "3",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "ketchup",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, whole",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground allspice",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Season chicken with soy sauce, garlic, thyme, allspice, scallions. Marinate while you chop.",
+      "Caramelise the sugar in hot oil until dark amber (30 seconds), add chicken and sear 4 minutes a side.",
+      "Add onion, carrots, pepper, ketchup and 1 1/2 cups water, whole scotch bonnet on top.",
+      "Cover and simmer 30 minutes until the gravy thickens and the chicken is tender. Remove the pepper."
+    ],
+    "batch_tip": "Double the chicken; it reheats better than almost any dinner and makes lunch for three days.",
+    "leftovers": "Shred the meat into rice, or into a wrap with steamed cabbage.",
+    "macros": {
+      "kcal": 565,
+      "protein_g": 50,
+      "carbs_g": 19,
+      "fat_g": 32,
+      "fiber_g": 3,
+      "sodium_mg": 620
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "toddler-ok",
+      "training-day",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Take a drumstick and vegetables out before the scotch bonnet goes in, pull the meat off the bone and cut small.",
+    "swap": "Use skinless thighs and skim the gravy; same flavour with roughly 8 g less fat per portion.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of chicken pieces in glossy mahogany-brown gravy with orange carrot slices, red and green bell pepper and onion served family-style in a deep ceramic dish on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "escovitch-fish",
+    "name": "Escovitch Fish",
+    "english": "Fried fish topped with spicy pickled vegetables",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 large fillet piece with a big spoon of pickle; toddler 1 small piece, no pickle",
+    "active_min": 25,
+    "total_min": 40,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.31,
+    "ingredients": [
+      {
+        "item": "tilapia fillets (whole snapper if you can)",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "all-purpose flour for dredging",
+        "qty": "1/3 cup (what sticks)",
+        "grams": 40,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "vegetable oil (about 3 tbsp absorbed)",
+        "qty": "1/2 cup in the pan",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrot, julienned",
+        "qty": "1",
+        "grams": 100,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "3/4 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet, sliced thin",
+        "qty": "1/2",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole allspice berries",
+        "qty": "8",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "sugar",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "3/4 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Pickle first: simmer vinegar, 1/2 cup water, allspice, sugar and a pinch of salt 3 minutes, pour over onion, carrot, pepper and scotch bonnet.",
+      "Pat the fish dry, season with salt and pepper, dust lightly in flour.",
+      "Pan-fry in 1/4 inch hot oil 3 to 4 minutes per side until crisp and golden.",
+      "Pile the pickle on the hot fish and let sit 10 minutes."
+    ],
+    "batch_tip": "The pickle keeps 2 weeks in the fridge; fry fish fresh on the day.",
+    "leftovers": "Flake leftover fish and pickle into a wrap or over rice.",
+    "macros": {
+      "kcal": 355,
+      "protein_g": 43,
+      "carbs_g": 16,
+      "fat_g": 13,
+      "fiber_g": 2,
+      "sodium_mg": 390
+    },
+    "tags": [
+      "training-day",
+      "high-protein"
+    ],
+    "toddler": "Give a small plain piece of fish (no pickle, no pepper). Check for bones.",
+    "swap": "Bake the dredged fish at 450F for 12 minutes with a spoon of oil instead of pan-frying: about 90 kcal less per portion.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "festival",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of crisp golden fried fish fillets buried under a colourful pickle of red and orange bell peppers, carrot ribbons and sliced onion served family-style in a large oval ceramic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "festival",
+    "name": "Festival",
+    "english": "Sweet fried cornmeal dumplings",
+    "cuisine": "Jamaican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 to 3 festivals; toddler 1 small",
+    "active_min": 20,
+    "total_min": 40,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.18,
+    "ingredients": [
+      {
+        "item": "all-purpose flour",
+        "qty": "2 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "fine cornmeal",
+        "qty": "3/4 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "sugar",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "baking powder",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "milk",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "vegetable oil (about 1/4 cup absorbed)",
+        "qty": "1 1/2 cups in the pan",
+        "grams": 50,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Mix flour, cornmeal, sugar, baking powder and salt. Stir in milk and 1/4 cup water to a soft dough. Rest 10 minutes.",
+      "Roll into 11 finger-length logs, taper the ends.",
+      "Fry in 1 inch of oil at 350F, 3 minutes per side, until deep gold. Drain on paper."
+    ],
+    "batch_tip": "Roll a double batch and freeze the raw logs on a tray; fry from frozen, add 1 minute.",
+    "leftovers": "Reheat in a 350F oven for 8 minutes so it crisps again.",
+    "macros": {
+      "kcal": 470,
+      "protein_g": 9,
+      "carbs_g": 77,
+      "fat_g": 14,
+      "fiber_g": 3,
+      "sodium_mg": 400
+    },
+    "tags": [
+      "toddler-ok",
+      "training-day",
+      "budget"
+    ],
+    "toddler": "Offer 1 small piece, cooled, torn apart; no added salt on top.",
+    "swap": "Air-fry at 380F, 12 minutes, brushed with 1 tbsp oil: about 100 kcal less per portion.",
+    "pairs_with": [
+      "ackee-and-saltfish",
+      "escovitch-fish",
+      "jerk-chicken"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden-brown finger-shaped fried festival dumplings with crisp ends piled together served family-style in a simple ceramic plate lined with parchment on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "steamed-cabbage",
+    "name": "Steamed Cabbage",
+    "english": "Cabbage and carrot steamed with thyme and peppers",
+    "cuisine": "Jamaican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup; toddler 1/3 cup",
+    "active_min": 10,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.54,
+    "ingredients": [
+      {
+        "item": "green cabbage, shredded",
+        "qty": "1 small head",
+        "grams": 900,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots, grated",
+        "qty": "2",
+        "grams": 150,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 2,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "2",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 1/2 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground allspice",
+        "qty": "pinch",
+        "grams": 1,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat oil and cook onion, garlic, scallions and pepper 3 minutes.",
+      "Add tomato and thyme and cook 2 minutes.",
+      "Add cabbage and carrots with 1/4 cup water, cover and steam 8 to 10 minutes, stirring once, until just tender.",
+      "Season with salt and allspice."
+    ],
+    "batch_tip": "Cook a double pan: it is the fast side for the whole week.",
+    "leftovers": "Stuff into a wrap with leftover jerk chicken.",
+    "macros": {
+      "kcal": 145,
+      "protein_g": 4,
+      "carbs_g": 21,
+      "fat_g": 5,
+      "fiber_g": 7,
+      "sodium_mg": 330
+    },
+    "tags": [
+      "rest-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Cook until very soft, chop fine and skip the added salt.",
+    "swap": "Add a handful of shredded rotisserie chicken or saltfish to make it a main.",
+    "pairs_with": [
+      "jerk-chicken",
+      "curry-goat",
+      "jamaican-oxtail",
+      "brown-stew-chicken"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of softly steamed pale-green cabbage ribbons with orange carrot strands, red tomato and flecks of thyme served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jamaican-beef-patty",
+    "name": "Jamaican Beef Patty",
+    "english": "Flaky turmeric pastry filled with spiced beef",
+    "cuisine": "Jamaican",
+    "category": "snack",
+    "meals": [
+      "lunch",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 patties; toddler 1 small patty (mild filling)",
+    "active_min": 35,
+    "total_min": 65,
+    "difficulty": 3,
+    "cost_per_serving_usd": 1.37,
+    "ingredients": [
+      {
+        "item": "all-purpose flour",
+        "qty": "3 cups",
+        "grams": 350,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "cold butter, cubed",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "curry powder",
+        "qty": "1 tbsp (2 in crust, 1 in meat)",
+        "grams": 15,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "lean ground beef",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "onion, minced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "plain breadcrumbs",
+        "qty": "1/3 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 2,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "1 tbsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "scotch bonnet, minced (omit for toddler)",
+        "qty": "1/4",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "egg for wash",
+        "qty": "1",
+        "grams": 50,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "salt",
+        "qty": "3/4 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Pulse flour, 2 tsp curry powder, salt and cold butter to crumbs. Add 1/2 cup ice water to make a dough, chill 20 minutes.",
+      "Cook beef with onion, garlic, thyme, 2 tsp curry, soy, scotch bonnet 8 minutes. Stir in breadcrumbs and 1/2 cup water, cool.",
+      "Roll the dough thin, cut 9 circles, fill, fold and crimp with a fork.",
+      "Brush with beaten egg and bake at 400F for 25 minutes until golden."
+    ],
+    "batch_tip": "Make 18 and freeze unbaked on a tray; bake from frozen 5 minutes longer. A patty is also a great school-run lunch.",
+    "leftovers": "Cold patties reheat in a 350F oven, 12 minutes.",
+    "macros": {
+      "kcal": 750,
+      "protein_g": 33,
+      "carbs_g": 76,
+      "fat_g": 35,
+      "fiber_g": 4,
+      "sodium_mg": 660
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "training-day",
+      "budget"
+    ],
+    "toddler": "Make one mini patty with beef filling that has no scotch bonnet; cool well and cut in quarters.",
+    "swap": "Use ground turkey in the filling and 1/2 the butter with Greek yogurt in the crust: about 80 kcal less per patty.",
+    "pairs_with": [
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Jamaican beef patties: golden-yellow turmeric pastry half-moon turnovers with crimped fork edges, flaky, one cut open showing spiced minced beef filling, on parchment on a baking tray"
+  },
+  {
+    "id": "run-down",
+    "name": "Run Down",
+    "english": "Mackerel simmered down in coconut milk with yuca",
+    "cuisine": "Jamaican",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups fish sauce with 1 cup yuca; toddler 1/3 cup fish and yuca, pepper-free",
+    "active_min": 20,
+    "total_min": 40,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.08,
+    "ingredients": [
+      {
+        "item": "canned jack mackerel, drained, flaked",
+        "qty": "2 cans (15 oz)",
+        "grams": 600,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "1 can",
+        "grams": 400,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "yuca, peeled and cubed",
+        "qty": "1 1/4 lb",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground allspice",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Boil the yuca in salted water 15 minutes until just tender; drain.",
+      "Meanwhile, simmer coconut milk with onion, garlic, scallions, thyme, allspice and scotch bonnet 12 minutes until it breaks and looks oily (the run down).",
+      "Add tomato, pepper and flaked mackerel and cook 5 more minutes.",
+      "Serve over the boiled yuca. Lift out the pepper first."
+    ],
+    "batch_tip": "The sauce keeps 3 days and gets better; boil the yuca fresh or swap for leftover rice.",
+    "leftovers": "Spread on toast or fold into a wrap for lunch.",
+    "macros": {
+      "kcal": 645,
+      "protein_g": 35,
+      "carbs_g": 54,
+      "fat_g": 32,
+      "fiber_g": 4,
+      "sodium_mg": 480
+    },
+    "tags": [
+      "training-day",
+      "high-protein"
+    ],
+    "toddler": "Scoop mackerel and yuca out before the scotch bonnet goes in, mash with some coconut sauce.",
+    "swap": "Use light coconut milk for 60 fewer kcal per portion; the sauce still coats.",
+    "pairs_with": [
+      "steamed-cabbage",
+      "jamaican-callaloo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of chunks of pale mackerel in a creamy orange-yellow coconut sauce with red tomato and green scallion over boiled white yuca served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jamaican-red-pea-soup",
+    "name": "Red Pea Soup",
+    "english": "Kidney bean and beef soup with spinners",
+    "cuisine": "Jamaican",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups with 3 spinners; toddler 3/4 cup",
+    "active_min": 25,
+    "total_min": 65,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.67,
+    "ingredients": [
+      {
+        "item": "canned red kidney beans, with liquid",
+        "qty": "3 cans (15 oz)",
+        "grams": 720,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "beef chuck, cubed small",
+        "qty": "14 oz",
+        "grams": 400,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "calabaza or butternut pumpkin, cubed",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "potatoes, cubed",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots, sliced",
+        "qty": "2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "1/2 can",
+        "grams": 200,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "all-purpose flour (for spinners)",
+        "qty": "1 cup",
+        "grams": 120,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole allspice berries",
+        "qty": "6",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Brown the beef 5 minutes in a large pot. Add 8 cups water, garlic, scallions, thyme, allspice. Simmer 30 minutes (or pressure cook 15).",
+      "Add beans and their liquid, pumpkin, potato, carrots and whole scotch bonnet, simmer 15 minutes.",
+      "Mix flour with salt and enough water to make a stiff dough; roll into thin spinner dumplings, drop in and cook 10 minutes.",
+      "Stir in coconut milk, simmer 5 minutes, remove the pepper."
+    ],
+    "batch_tip": "A giant freezer pot: freeze in single bowls without the spinners and add fresh dumplings on reheat.",
+    "leftovers": "Blend leftover soup smooth as a dip, or pour over rice.",
+    "macros": {
+      "kcal": 615,
+      "protein_g": 36,
+      "carbs_g": 75,
+      "fat_g": 19,
+      "fiber_g": 15,
+      "sodium_mg": 860
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "training-day",
+      "toddler-ok",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Scoop out before the scotch bonnet goes in, mash the beans and potato, no added salt.",
+    "swap": "Skip the coconut milk and spinners on rest days to cut roughly 200 kcal; the beans still thicken it.",
+    "pairs_with": [
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of thick rust-red kidney bean soup with chunks of beef, orange pumpkin, carrots and small twisted flour dumplings served family-style in a big enamel pot bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "curry-chicken-roti",
+    "name": "Curry Chicken and Roti",
+    "english": "Trini curry chicken and potato with quick griddle roti",
+    "cuisine": "Trinidadian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/2 cups curry with 2 roti; toddler 1/2 cup curry with 1 small roti",
+    "active_min": 30,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.48,
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken thighs, cubed",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "curry powder",
+        "qty": "3 tbsp",
+        "grams": 30,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "potatoes, cubed",
+        "qty": "3 medium",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "all-purpose flour (roti)",
+        "qty": "3 cups",
+        "grams": 350,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "onion, chopped",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/2 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, minced",
+        "qty": "1/2",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Toss chicken with 2 tbsp curry, garlic, half the cilantro and 1/2 tsp salt.",
+      "Fry the remaining curry powder in 1 tbsp oil 30 seconds, add onion and the chicken and brown 6 minutes.",
+      "Add potatoes and 1 1/2 cups water, cover and simmer 25 minutes until thick; stir in scotch bonnet last.",
+      "Roti: mix flour, 1/2 tsp salt, 1 tbsp oil and about 1 cup warm water into a soft dough, rest 15 minutes, divide into 8 balls and roll thin.",
+      "Cook each roti on a dry hot skillet 1 minute a side, brush with a little oil, stack under a towel."
+    ],
+    "batch_tip": "Roll and cook 16 roti: they freeze with parchment between and warm in 20 seconds.",
+    "leftovers": "Shred the curry into a roti wrap with cabbage the next day.",
+    "macros": {
+      "kcal": 720,
+      "protein_g": 52,
+      "carbs_g": 85,
+      "fat_g": 19,
+      "fiber_g": 7,
+      "sodium_mg": 740
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "freezer",
+      "toddler-ok",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Take the toddler share before the pepper goes in; tear roti small and dip in the gravy.",
+    "swap": "Use whole-wheat flour for half of the roti (adds 3 g fibre per portion), skim extra oil.",
+    "pairs_with": [
+      "trini-callaloo",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden curry chicken with yellow-brown gravy and soft potato cubes next to a stack of soft folded roti flatbreads served family-style in a ceramic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "doubles",
+    "name": "Doubles",
+    "english": "Fried bara flatbreads with curried chickpeas",
+    "cuisine": "Trinidadian",
+    "category": "snack",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 3 doubles (6 bara total halves); toddler 1 double, mild",
+    "active_min": 30,
+    "total_min": 70,
+    "difficulty": 3,
+    "cost_per_serving_usd": 0.54,
+    "ingredients": [
+      {
+        "item": "all-purpose flour (bara)",
+        "qty": "2 1/4 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned chickpeas, drained",
+        "qty": "2 cans",
+        "grams": 480,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "instant yeast",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "curry powder",
+        "qty": "1 1/2 tbsp",
+        "grams": 15,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "ground turmeric and cumin",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, minced",
+        "qty": "1/2",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cucumber, grated (chutney)",
+        "qty": "1",
+        "grams": 120,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/2 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet pepper sauce, optional",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil (about 3 tbsp absorbed)",
+        "qty": "1 cup in the pan",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Bara: mix flour, yeast, turmeric, salt and about 3/4 cup warm water into a soft dough. Knead 3 minutes, rest 40 minutes covered.",
+      "Channa: cook onion and garlic 3 minutes, add curry powder and cumin, then chickpeas and 1 cup water. Mash a third of them and simmer 15 minutes until saucy.",
+      "Shape the dough into 12 small flat rounds and fry in 1/2 inch hot oil 30 seconds a side, until puffed and just golden.",
+      "Sandwich 2 bara with a big spoon of channa, top with grated cucumber and cilantro."
+    ],
+    "batch_tip": "Fry the bara and freeze: re-crisp 5 minutes in a 350F oven. The channa freezes in tubs.",
+    "leftovers": "Spoon cold channa on a tortilla with yogurt for lunch.",
+    "macros": {
+      "kcal": 495,
+      "protein_g": 15,
+      "carbs_g": 79,
+      "fat_g": 13,
+      "fiber_g": 11,
+      "sodium_mg": 530
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "training-day",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Leave out pepper sauce; use soft, well-mashed channa on one bara.",
+    "swap": "Use half whole-wheat flour in the bara and brush air-fried bara with oil instead of deep frying (about 80 kcal less per portion).",
+    "pairs_with": [
+      "trini-callaloo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of soft golden doubles: two puffy fried flatbreads sandwiching yellow curried chickpeas topped with green chutney and cucumber served family-style in a paper-lined enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "trini-pelau",
+    "name": "Pelau",
+    "english": "Caramelised chicken and rice with pigeon peas and coconut",
+    "cuisine": "Trinidadian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 25,
+    "total_min": 60,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.24,
+    "ingredients": [
+      {
+        "item": "chicken thighs and drumsticks, bone-in, cut up",
+        "qty": "2 1/4 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "long-grain rice",
+        "qty": "1 1/2 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned pigeon peas, drained",
+        "qty": "1 can",
+        "grams": 400,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "1/3 can",
+        "grams": 130,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "carrots, diced",
+        "qty": "2",
+        "grams": 120,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/2 bunch",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ketchup",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Season chicken with soy, garlic, thyme, half the cilantro. Marinate while you chop.",
+      "Caramelise the sugar in oil in a heavy pot until dark amber, add chicken and turn to coat, 5 minutes.",
+      "Add onion, carrots, pepper, scallions, ketchup, rice and pigeon peas, stir 2 minutes.",
+      "Pour in coconut milk and 1 3/4 cups water, add the whole scotch bonnet, bring to a boil, cover, lowest heat 25 minutes.",
+      "Rest 10 minutes, remove the pepper, fluff and top with cilantro."
+    ],
+    "batch_tip": "A one-pot batch dinner that makes a full lunch row of containers.",
+    "leftovers": "Reheat with a splash of water, or crisp in a skillet with an egg.",
+    "macros": {
+      "kcal": 800,
+      "protein_g": 45,
+      "carbs_g": 87,
+      "fat_g": 30,
+      "fiber_g": 8,
+      "sodium_mg": 710
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Take a portion of rice, peas and chicken before the scotch bonnet goes in; shred the chicken off the bone.",
+    "swap": "Use boneless thighs and light coconut milk for about 120 fewer kcal per portion.",
+    "pairs_with": [
+      "steamed-cabbage",
+      "trini-callaloo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of deep amber-brown one-pot pelau rice with chicken pieces, pigeon peas, orange carrot cubes and fresh cilantro served family-style in a heavy cast-iron pot on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "buss-up-shut",
+    "name": "Buss Up Shut with Curry Channa",
+    "english": "Torn paratha roti with curried chickpeas and potato",
+    "cuisine": "Trinidadian",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 torn roti with 1 cup channa and aloo; toddler 1/2 roti and 1/3 cup",
+    "active_min": 30,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.68,
+    "ingredients": [
+      {
+        "item": "all-purpose flour",
+        "qty": "3 cups",
+        "grams": 360,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "melted butter or ghee (dough and brushing)",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "baking powder",
+        "qty": "1 1/2 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "canned chickpeas, drained",
+        "qty": "2 cans",
+        "grams": 480,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "potatoes, cubed small",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "curry powder",
+        "qty": "2 tbsp",
+        "grams": 20,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "onion, minced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, minced",
+        "qty": "1/2",
+        "grams": 8,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Dough: mix flour, baking powder, salt, 2 tbsp butter and about 1 cup water. Knead 3 minutes, rest 20 minutes covered.",
+      "Channa and aloo: fry onion and garlic in oil 3 minutes, add curry powder, then potato, chickpeas and 1 1/2 cups water. Simmer 20 minutes until thick.",
+      "Divide dough into 4 balls, roll thin, brush with butter, roll up, coil and roll flat again.",
+      "Cook on a hot dry skillet 2 minutes a side, brushing with butter. Clap or tear the hot rotis to fluff them (buss up shut).",
+      "Serve torn pieces with the curry."
+    ],
+    "batch_tip": "Rest the dough overnight: roti cooks in 10 minutes on a weeknight. Freeze cooked rotis between parchment.",
+    "leftovers": "Wrap leftover channa in warm roti for lunch.",
+    "macros": {
+      "kcal": 630,
+      "protein_g": 19,
+      "carbs_g": 105,
+      "fat_g": 15,
+      "fiber_g": 13,
+      "sodium_mg": 950
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "budget"
+    ],
+    "toddler": "Mild portion, very soft potato and mashed channa; skip the pepper.",
+    "swap": "Add 3 beaten eggs or a cup of shredded chicken to the curry for about 12 g more protein per portion.",
+    "pairs_with": [
+      "trini-callaloo",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of torn pieces of golden buttery paratha roti beside a bowl of turmeric-yellow curried chickpeas and potato served family-style in a round ceramic bowl and plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "trini-callaloo",
+    "name": "Trini Callaloo",
+    "english": "Silky pureed greens with okra, pumpkin and coconut milk",
+    "cuisine": "Trinidadian",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups; toddler 1/2 cup",
+    "active_min": 15,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.38,
+    "ingredients": [
+      {
+        "item": "callaloo or fresh spinach",
+        "qty": "1 1/2 lb",
+        "grams": 700,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "okra, sliced",
+        "qty": "10 pods",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "pumpkin, cubed",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "3/4 can",
+        "grams": 300,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion, chopped",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "butter",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Melt butter in a pot, cook onion, garlic and scallions 3 minutes.",
+      "Add pumpkin, okra, greens, thyme, scotch bonnet and 3 cups water. Cover and simmer 20 minutes.",
+      "Pour in the coconut milk, remove the pepper, then blend smooth with an immersion blender.",
+      "Season and simmer 5 minutes."
+    ],
+    "batch_tip": "Freezes beautifully in cups; reheat with a splash of water.",
+    "leftovers": "Spoon over rice for a second creamy side, or thin with broth.",
+    "macros": {
+      "kcal": 275,
+      "protein_g": 8,
+      "carbs_g": 20,
+      "fat_g": 18,
+      "fiber_g": 6,
+      "sodium_mg": 410
+    },
+    "tags": [
+      "rest-day",
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "one-pot",
+      "budget"
+    ],
+    "toddler": "Take the toddler share out before the scotch bonnet goes in; blend very smooth.",
+    "swap": "Stir in 2 cups of shredded cooked chicken or 12 oz crab meat: the traditional Sunday upgrade, about 20 g protein more per portion.",
+    "pairs_with": [
+      "curry-chicken-roti",
+      "buss-up-shut"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of silky bright-green blended callaloo soup with a swirl of white coconut cream served family-style in a wide white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "la-bandera-dominicana",
+    "name": "La Bandera Dominicana",
+    "english": "White rice, stewed red beans and stewed chicken",
+    "cuisine": "Dominican",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup rice, 3/4 cup beans, 2 pieces chicken; toddler 1/3 of each",
+    "active_min": 30,
+    "total_min": 65,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.33,
+    "ingredients": [
+      {
+        "item": "chicken thighs and drumsticks, bone-in",
+        "qty": "2 3/4 lb",
+        "grams": 1200,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "long-grain white rice",
+        "qty": "1 1/2 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned red kidney beans, with liquid",
+        "qty": "2 cans",
+        "grams": 480,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "sofrito (onion, pepper, cilantro, garlic blended)",
+        "qty": "1 cup",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1 can (8 oz)",
+        "grams": 230,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "pumpkin, small cubes",
+        "qty": "1 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "green olives",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "adobo seasoning",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Rub chicken with adobo and vinegar. Marinate while you do the rest.",
+      "Chicken: brown in 2 tbsp oil 5 minutes a side, add 1/2 the sofrito, tomato sauce, olives and 3/4 cup water. Simmer covered 30 minutes.",
+      "Beans: in a second pot, soften the remaining sofrito in 1 tbsp oil, add beans with their liquid, pumpkin and 1/2 cup water and simmer 20 minutes; mash a few beans against the side to thicken.",
+      "Rice: rinse, combine with 2 1/4 cups water and a splash of oil, boil uncovered until the water reaches the rice, then cover and cook on lowest heat 18 minutes.",
+      "Plate rice on one side, beans over it, chicken beside. Cilantro on top."
+    ],
+    "batch_tip": "Cook all three on Sunday and plate each night: 3 dinners, all better reheated.",
+    "leftovers": "Chop the chicken into the rice and beans for a Dominican bowl.",
+    "macros": {
+      "kcal": 825,
+      "protein_g": 52,
+      "carbs_g": 80,
+      "fat_g": 33,
+      "fiber_g": 10,
+      "sodium_mg": 970
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Beans mashed into rice; shred chicken off the bone. No added salt, no pepper.",
+    "swap": "Use boneless skinless chicken thighs and brown rice for about 120 fewer kcal and 3 g more fibre per portion.",
+    "pairs_with": [
+      "dominican-habichuelas-guisadas",
+      "mangu-tres-golpes"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a Dominican plate with white rice, red-brown stewed beans over rice and stewed chicken pieces in tomato sauce with green olives, three sections side by side served family-style in a large enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "mangu-tres-golpes",
+    "name": "Mangu con los Tres Golpes",
+    "english": "Mashed green plantain with fried egg, cheese and salami",
+    "cuisine": "Dominican",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup mangu, 2 eggs, 2 slices salami and cheese; toddler 1/3 cup mangu and 1 egg",
+    "active_min": 25,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.4,
+    "ingredients": [
+      {
+        "item": "green plantains, peeled",
+        "qty": "4 large",
+        "grams": 700,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "eggs",
+        "qty": "8",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "Dominican salami or turkey salami",
+        "qty": "2 1/2 oz",
+        "grams": 70,
+        "key": true,
+        "aisle": "deli"
+      },
+      {
+        "item": "queso para freir (frying cheese)",
+        "qty": "3 oz",
+        "grams": 90,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "butter",
+        "qty": "2 tbsp",
+        "grams": 28,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "red onion, sliced thin",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Pickle: toss sliced onion with vinegar, a pinch of salt and 1/4 cup hot water. Leave while you cook.",
+      "Boil plantain chunks in salted water 15 minutes until very soft. Save 1 cup cooking water.",
+      "Mash with butter and enough cooking water to make a soft, scoopable puree.",
+      "Fry the salami and cheese slices in oil 2 minutes a side until browned, then fry the eggs in the same pan.",
+      "Plate the mangu, top with pickled onion, salami, cheese and eggs."
+    ],
+    "batch_tip": "Boil double plantain and refrigerate; reheat with a splash of milk.",
+    "leftovers": "Mangu patties pan-fried in a skillet next day, with a fried egg.",
+    "macros": {
+      "kcal": 550,
+      "protein_g": 22,
+      "carbs_g": 55,
+      "fat_g": 27,
+      "fiber_g": 4,
+      "sodium_mg": 920
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "budget"
+    ],
+    "toddler": "Soft mangu with a scrambled or soft egg; skip salami and cheese slices (salty). No pickled onion.",
+    "swap": "Use turkey salami and a single egg per adult plus a cup of black beans for about 300 mg less sodium and more fibre.",
+    "pairs_with": [
+      "dominican-habichuelas-guisadas"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a soft cream-yellow mound of mashed green plantain topped with pink-pickled red onion, beside fried eggs, browned salami and golden fried cheese served family-style in a white enamel plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sancocho-dominicano",
+    "name": "Sancocho",
+    "english": "Dominican chicken and beef root-vegetable stew",
+    "cuisine": "Dominican",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups with roots; toddler 3/4 cup",
+    "active_min": 30,
+    "total_min": 95,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.01,
+    "ingredients": [
+      {
+        "item": "chicken thighs, bone-in",
+        "qty": "1 1/2 lb",
+        "grams": 700,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "beef chuck or stew meat, cubed",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "yuca, peeled and chunked",
+        "qty": "3/4 lb",
+        "grams": 350,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "green plantain, peeled",
+        "qty": "1/2",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "potatoes, chunked",
+        "qty": "1 1/2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "calabaza or butternut pumpkin",
+        "qty": "1 1/2 cups",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "corn on the cob, cut in rounds",
+        "qty": "1 1/2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1 bunch",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "adobo or oregano seasoning",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 1/2 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Season meats with adobo and lime. Brown beef in oil in a big pot 6 minutes.",
+      "Add chicken, onion, garlic, half the cilantro and 10 cups water. Simmer 45 minutes (or pressure cook 25).",
+      "Add yuca, plantain, potatoes, pumpkin and corn. Simmer 25 more minutes; mash some pumpkin into the broth to thicken it.",
+      "Finish with the rest of the cilantro, lime and salt to taste."
+    ],
+    "batch_tip": "Makes a huge pot; freeze it without the plantain and corn, which go mushy.",
+    "leftovers": "Shred the meat into a thick rice-and-stew bowl.",
+    "macros": {
+      "kcal": 685,
+      "protein_g": 47,
+      "carbs_g": 64,
+      "fat_g": 27,
+      "fiber_g": 5,
+      "sodium_mg": 460
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Mash yuca and potato into the broth; shred meat off the bone, cut it small. Skip added salt.",
+    "swap": "Cut the beef in half and use 1 more pound of chicken: leaner by about 4 g fat per portion, and cheaper.",
+    "pairs_with": [
+      "la-bandera-dominicana"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a thick brothy sancocho with chunks of chicken and beef, cut corn on the cob, orange pumpkin, yuca and plantain, bright green cilantro on top served family-style in a deep ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "dominican-habichuelas-guisadas",
+    "name": "Habichuelas Guisadas",
+    "english": "Dominican stewed beans with pumpkin",
+    "cuisine": "Dominican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 3/4 cup over rice; toddler 1/3 cup mashed",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.59,
+    "ingredients": [
+      {
+        "item": "canned red kidney or pink beans, with liquid",
+        "qty": "3 cans",
+        "grams": 720,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "pumpkin, small cubes",
+        "qty": "1 1/2 cups",
+        "grams": 250,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "sofrito",
+        "qty": "3/4 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1/2 can",
+        "grams": 120,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "adobo seasoning",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 1/2 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Soften the sofrito in oil 3 minutes, stir in tomato sauce, adobo and vinegar.",
+      "Add beans with their liquid, pumpkin and 1 cup water.",
+      "Simmer 20 minutes, mashing a few beans and pumpkin against the pot to make it creamy. Cilantro on top."
+    ],
+    "batch_tip": "Cook with dried beans in the pressure cooker on Sunday (35 minutes unsoaked) if you prefer; freeze in pint tubs.",
+    "leftovers": "Layer into a burrito with rice and cheese.",
+    "macros": {
+      "kcal": 260,
+      "protein_g": 13,
+      "carbs_g": 38,
+      "fat_g": 6,
+      "fiber_g": 12,
+      "sodium_mg": 760
+    },
+    "tags": [
+      "rest-day",
+      "one-pot",
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Mash well, no added salt, no pepper.",
+    "swap": "Use dry-cooked beans and low-sodium canned tomatoes to cut sodium by about 200 mg per portion.",
+    "pairs_with": [
+      "la-bandera-dominicana",
+      "mangu-tres-golpes"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a pot of thick reddish-brown stewed beans with orange pumpkin cubes and a scatter of fresh cilantro served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "arroz-con-gandules",
+    "name": "Arroz con Gandules",
+    "english": "Puerto Rican rice with pigeon peas and sofrito",
+    "cuisine": "Puerto Rican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups; toddler 1/2 cup",
+    "active_min": 15,
+    "total_min": 50,
+    "difficulty": 2,
+    "cost_per_serving_usd": 0.76,
+    "ingredients": [
+      {
+        "item": "long-grain rice",
+        "qty": "2 1/2 cups",
+        "grams": 450,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned pigeon peas (gandules), drained",
+        "qty": "1 can",
+        "grams": 400,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "sofrito",
+        "qty": "1/2 cup",
+        "grams": 150,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cooked ham, diced",
+        "qty": "3 oz",
+        "grams": 80,
+        "key": false,
+        "aisle": "deli"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "3 tbsp",
+        "grams": 60,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "green olives, sliced",
+        "qty": "2 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "adobo seasoning",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat oil in a caldero or heavy pot, add ham and cook 2 minutes, then sofrito and tomato sauce 3 minutes.",
+      "Stir in rice, adobo, pigeon peas and olives, toast 2 minutes.",
+      "Add 3 1/2 cups water, boil uncovered until it reaches the rice, then stir once, cover and lowest heat 20 minutes.",
+      "Rest 10 minutes and fluff, scraping up the crispy bottom (pegao) for the family."
+    ],
+    "batch_tip": "Cook a double pot; it freezes in single portions.",
+    "leftovers": "Fry in a skillet with an egg, or stuff in a wrap with ham.",
+    "macros": {
+      "kcal": 590,
+      "protein_g": 17,
+      "carbs_g": 104,
+      "fat_g": 12,
+      "fiber_g": 7,
+      "sodium_mg": 780
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "budget"
+    ],
+    "toddler": "No added salt or olives; mash a few peas into the rice.",
+    "swap": "Stir 2 cups of shredded chicken or turkey in after fluffing: about 15 g more protein per portion.",
+    "pairs_with": [
+      "pernil",
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of yellow-orange rice with green pigeon peas, slices of olive and flecks of ham, with a crisp golden bottom crust served family-style in a heavy dark pot on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pernil",
+    "name": "Pernil",
+    "english": "Garlic and oregano slow-roasted pork shoulder",
+    "cuisine": "Puerto Rican",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 to 7 oz sliced meat; toddler 1 oz, shredded",
+    "active_min": 20,
+    "total_min": 270,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.45,
+    "ingredients": [
+      {
+        "item": "bone-in pork shoulder, skin removed",
+        "qty": "3 lb",
+        "grams": 1400,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "garlic cloves, crushed",
+        "qty": "10 cloves",
+        "grams": 40,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "adobo seasoning",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "dried oregano, ground cumin",
+        "qty": "1 tbsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "orange juice",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "2 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Mash garlic, adobo, oregano, cumin, citrus juices and olive oil into a paste.",
+      "Cut deep slits in the pork and stuff the paste in. Rub the rest over everything. Cover and marinate overnight (or 2 hours).",
+      "Roast covered at 325F for 3 hours 30 minutes.",
+      "Uncover and roast 30 minutes at 425F until the top is crisp and browned. Rest 15 minutes then pull apart."
+    ],
+    "batch_tip": "One big roast covers 3 meals: pulled pork bowls, tacos and fried rice.",
+    "leftovers": "Pulled pernil in tostones, wraps, or over rice.",
+    "macros": {
+      "kcal": 545,
+      "protein_g": 50,
+      "carbs_g": 7,
+      "fat_g": 35,
+      "fiber_g": 1,
+      "sodium_mg": 670
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "rest-day",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Shredded, juicy pieces from the middle; no added salt.",
+    "swap": "Trim the fat cap before roasting to cut about 10 g fat per portion; the garlic and citrus carry the flavour.",
+    "pairs_with": [
+      "arroz-con-gandules",
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a deeply browned roast pork shoulder with crackly top, pulled apart into juicy shreds with whole garlic cloves served family-style in a rustic platter on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "tostones",
+    "name": "Tostones",
+    "english": "Twice-fried green plantain discs",
+    "cuisine": "Puerto Rican",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 6 tostones; toddler 2 pieces",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.48,
+    "ingredients": [
+      {
+        "item": "green plantains, peeled",
+        "qty": "4 large",
+        "grams": 750,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil (about 4 tbsp absorbed)",
+        "qty": "1 cup in the pan",
+        "grams": 50,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cut plantains in 1-inch rounds. Fry in 350F oil 3 minutes until pale gold.",
+      "Smash each to a 1/2-inch disc with a flat plate. Dip briefly in garlic-lime-salt water.",
+      "Fry again 2 to 3 minutes a side until crisp and golden. Drain and salt."
+    ],
+    "batch_tip": "First fry and smash a double batch; freeze the flat discs and fry from frozen.",
+    "leftovers": "Crisp in the oven at 400F, 6 minutes.",
+    "macros": {
+      "kcal": 340,
+      "protein_g": 2,
+      "carbs_g": 56,
+      "fat_g": 12,
+      "fiber_g": 4,
+      "sodium_mg": 360
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Offer 2 small, softer discs, cooled; no extra salt.",
+    "swap": "Air-fry the smashed discs with a spoon of oil at 400F for 8 minutes: about 120 kcal less per portion.",
+    "pairs_with": [
+      "pernil",
+      "arroz-con-gandules",
+      "mofongo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of flat golden-brown crisp tostones plantain discs stacked and scattered with coarse salt next to a small bowl of garlic dip served family-style in a lined wooden board on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "mofongo",
+    "name": "Mofongo con Pollo",
+    "english": "Mashed fried plantain with garlic and stewed chicken",
+    "cuisine": "Puerto Rican",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 mound of mofongo with 1 cup chicken; toddler 1/3 of each",
+    "active_min": 30,
+    "total_min": 55,
+    "difficulty": 2,
+    "cost_per_serving_usd": 1.55,
+    "ingredients": [
+      {
+        "item": "green plantains, peeled",
+        "qty": "3 large",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "chicken breast, cubed",
+        "qty": "1 1/2 lb",
+        "grams": 700,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "vegetable oil (about 3 tbsp absorbed frying)",
+        "qty": "3/4 cup in the pan",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic, mashed",
+        "qty": "8 cloves",
+        "grams": 25,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil (mash and sear)",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "chicken broth, low sodium",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "sofrito",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1/2 can",
+        "grams": 110,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "adobo seasoning",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Cook the chicken: season with adobo, sear in 1 tbsp olive oil 5 minutes, add sofrito, tomato sauce and 1/2 cup water. Simmer 15 minutes.",
+      "Plantains: cut in 1-inch rounds and fry in 350F oil 5 minutes until golden and soft (not crisp).",
+      "In a bowl mash the hot plantain with garlic, 1 tbsp olive oil and 1/2 cup warm broth to a firm, moist mash. Pack in a cup to mould.",
+      "Plate the mofongo mounds with the chicken stew spooned over and around, finish with cilantro."
+    ],
+    "batch_tip": "Fry the plantain rounds ahead and mash fresh, or cook the chicken for 3 days of bowls.",
+    "leftovers": "Cube cold mofongo into a hash with eggs.",
+    "macros": {
+      "kcal": 540,
+      "protein_g": 39,
+      "carbs_g": 49,
+      "fat_g": 21,
+      "fiber_g": 4,
+      "sodium_mg": 550
+    },
+    "tags": [
+      "training-day",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Soft mash with a little broth and shredded chicken; no added salt.",
+    "swap": "Use half the oil by air-frying the plantain rounds at 400F, 10 minutes: about 110 kcal less per portion.",
+    "pairs_with": [
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a rounded mound of garlicky golden mashed mofongo next to chicken breast stew in tomato sauce, bright green cilantro on top served family-style in a wide ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "ropa-vieja",
+    "name": "Ropa Vieja",
+    "english": "Shredded Cuban beef in tomato and pepper sauce",
+    "cuisine": "Cuban",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups; toddler 1/3 cup",
+    "active_min": 25,
+    "total_min": 150,
+    "difficulty": 2,
+    "cost_per_serving_usd": 3.27,
+    "ingredients": [
+      {
+        "item": "flank steak",
+        "qty": "2 1/4 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1 large",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell peppers, sliced",
+        "qty": "2 large",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1 can (8 oz)",
+        "grams": 230,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "green olives",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "ground cumin and oregano",
+        "qty": "2 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "beef broth",
+        "qty": "3/4 cup",
+        "grams": 180,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Season the steak with salt, cumin, and oregano. Sear in oil 3 minutes a side.",
+      "Put in a pot or slow cooker with broth and 1 cup water, cover and cook until fork tender: 2 hours simmering, 8 hours low, or 45 minutes pressure cooker.",
+      "Shred the meat with two forks, return it to the pot.",
+      "Add onion, peppers, garlic, tomato sauce, paste, vinegar and olives, and simmer 20 minutes until the sauce clings."
+    ],
+    "batch_tip": "Cook two steaks at once; the sauce freezes well and reheats faster than anything else.",
+    "leftovers": "Cold ropa vieja in a tortilla with black beans is lunch tomorrow.",
+    "macros": {
+      "kcal": 445,
+      "protein_g": 50,
+      "carbs_g": 16,
+      "fat_g": 20,
+      "fiber_g": 4,
+      "sodium_mg": 840
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "one-pot",
+      "high-protein"
+    ],
+    "toddler": "Shredded beef and soft peppers with sauce; no olives.",
+    "swap": "Ropa vieja is already lean (flank); use low-sodium tomato products and 2 tbsp fewer olives to cut about 250 mg sodium per portion.",
+    "pairs_with": [
+      "moros-y-cristianos",
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of shredded dark-red beef in a chunky tomato sauce with ribbons of red and green bell pepper and sliced green olives served family-style in a deep ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "cuban-picadillo",
+    "name": "Picadillo",
+    "english": "Cuban ground beef hash with olives and raisins",
+    "cuisine": "Cuban",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups over rice or in a taco; toddler 1/3 cup",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.99,
+    "ingredients": [
+      {
+        "item": "lean ground beef",
+        "qty": "1 3/4 lb",
+        "grams": 800,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "potatoes, small diced",
+        "qty": "2",
+        "grams": 300,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1 can (8 oz)",
+        "grams": 230,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1 large",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "green olives",
+        "qty": "1/4 cup",
+        "grams": 50,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "raisins",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "ground cumin",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Brown the beef in a wide pan 6 minutes, breaking it up. Spoon off excess fat.",
+      "Add onion, pepper and garlic, cook 4 minutes.",
+      "Stir in tomato sauce, potatoes, cumin, vinegar, salt and 1/2 cup water. Cover and simmer 15 minutes until the potato is tender.",
+      "Stir in the olives and raisins and cook uncovered 3 minutes."
+    ],
+    "batch_tip": "Cooks in one pan; make a 4 lb batch and freeze in tubs.",
+    "leftovers": "Fill empanadas, taco shells or a baked potato.",
+    "macros": {
+      "kcal": 490,
+      "protein_g": 40,
+      "carbs_g": 31,
+      "fat_g": 23,
+      "fiber_g": 5,
+      "sodium_mg": 780
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "toddler-ok",
+      "freezer",
+      "high-protein"
+    ],
+    "toddler": "Skip the olives; let the raisins stay, they like the sweetness. Soft potato mashed into the beef.",
+    "swap": "Use 93% lean turkey for roughly 10 g less fat per portion (see Turkey Picadillo Rice Bowls).",
+    "pairs_with": [
+      "moros-y-cristianos",
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of glossy red-brown picadillo ground beef with small cubes of potato, green olives and dark raisins served family-style in a ceramic skillet on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "moros-y-cristianos",
+    "name": "Moros y Cristianos",
+    "english": "Cuban black beans cooked with rice",
+    "cuisine": "Cuban",
+    "category": "side",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups; toddler 1/2 cup",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.74,
+    "ingredients": [
+      {
+        "item": "long-grain rice",
+        "qty": "2 cups",
+        "grams": 370,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned black beans, with liquid",
+        "qty": "2 cans",
+        "grams": 480,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "green bell pepper, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "5 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "low-sodium chicken broth",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground cumin and dried oregano",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "white vinegar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Sauté onion, pepper and garlic in oil 5 minutes in a heavy pot.",
+      "Stir in the rice, cumin and oregano, toast 1 minute.",
+      "Add black beans with their liquid, broth, vinegar and salt. Bring to a boil, cover, lowest heat 20 minutes.",
+      "Rest 10 minutes and fluff."
+    ],
+    "batch_tip": "A giant pot reheats for 4 lunches; freezes flat in bags.",
+    "leftovers": "Press into a skillet with an egg, or into a burrito.",
+    "macros": {
+      "kcal": 500,
+      "protein_g": 15,
+      "carbs_g": 94,
+      "fat_g": 7,
+      "fiber_g": 9,
+      "sodium_mg": 650
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "budget"
+    ],
+    "toddler": "Cooked soft, mash a few beans in; no added salt, add a touch of lime.",
+    "swap": "Make with brown rice (add 10 minutes) for 3 g more fibre, or serve beside ropa vieja for a complete protein plate.",
+    "pairs_with": [
+      "ropa-vieja",
+      "cuban-picadillo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of speckled rice mixed through with shiny black beans, flecks of green pepper and onion, a lime wedge on the side served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "bahamian-conch-salad",
+    "name": "Bahamian Conch Salad",
+    "english": "Raw conch cured in lime and sour orange with peppers and tomato",
+    "cuisine": "Bahamian",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups; toddler: skip, give cooked chicken or fish instead",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 3.92,
+    "ingredients": [
+      {
+        "item": "cleaned conch (fresh or frozen thawed), diced small",
+        "qty": "1 1/3 lb",
+        "grams": 600,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomatoes, diced",
+        "qty": "3",
+        "grams": 250,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "red onion, diced",
+        "qty": "1 medium",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "green bell pepper, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cucumber, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "5 limes",
+        "grams": 100,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "orange juice (sour orange stand-in)",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet or goat pepper, minced",
+        "qty": "1/2",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Dice the conch very small. Toss with the lime and orange juice and refrigerate 15 minutes to 'cook' it.",
+      "Add tomato, onion, pepper, cucumber and salt. Toss together.",
+      "Add the minced hot pepper last. Serve cold within 1 hour, with crackers or tostones."
+    ],
+    "batch_tip": "Cure the conch an hour ahead; add the vegetables at serving so it stays crisp.",
+    "leftovers": "Best same day; shrimp or fish can stretch it.",
+    "macros": {
+      "kcal": 200,
+      "protein_g": 32,
+      "carbs_g": 16,
+      "fat_g": 1,
+      "fiber_g": 2,
+      "sodium_mg": 480
+    },
+    "tags": [
+      "no-cook",
+      "rest-day",
+      "pre-workout"
+    ],
+    "toddler": "Raw seafood: skip it for the toddler. Offer sliced tomato and cucumber with cooked fish or egg instead.",
+    "swap": "If conch is hard to find or costly, use raw-safe cooked shrimp or cooked cod, same lime cure; about the same protein.",
+    "pairs_with": [
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a colourful raw conch salad of white diced conch with red tomato, red onion, green pepper and cucumber glistening with lime juice served family-style in a simple ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "guyanese-pepperpot",
+    "name": "Guyanese Pepperpot",
+    "english": "Slow-cooked beef and oxtail stew with cassareep and cinnamon",
+    "cuisine": "Guyanese",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 1/4 cups with 2 thick slices of bread; toddler 1/3 cup, de-boned",
+    "active_min": 25,
+    "total_min": 150,
+    "difficulty": 2,
+    "cost_per_serving_usd": 4.14,
+    "ingredients": [
+      {
+        "item": "beef chuck, cubed",
+        "qty": "1 1/2 lb",
+        "grams": 700,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "oxtail, cut in pieces",
+        "qty": "1 1/3 lb",
+        "grams": 600,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "cassareep",
+        "qty": "1/3 cup",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "crusty white bread",
+        "qty": "4 thick slices (per adult 2)",
+        "grams": 200,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "brown sugar",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cinnamon stick, cloves, whole allspice",
+        "qty": "1 stick, 3 cloves, 6 berries",
+        "grams": 5,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Put beef and oxtail in a heavy pot with onion, garlic, ginger, thyme, spices, scotch bonnet and 5 cups water. Bring to a boil.",
+      "Stir in the cassareep and brown sugar, cover and simmer on low 2 hours (or pressure cook 50 minutes) until very tender and the gravy is thick and dark.",
+      "Skim the fat, remove the pepper and cinnamon, season.",
+      "Serve with thick slices of bread to mop up."
+    ],
+    "batch_tip": "Traditionally kept going all week and reheated daily: make it Sunday, eat it Mon/Tue.",
+    "leftovers": "Shred into a hearty bread-bowl lunch.",
+    "macros": {
+      "kcal": 645,
+      "protein_g": 54,
+      "carbs_g": 44,
+      "fat_g": 28,
+      "fiber_g": 2,
+      "sodium_mg": 960
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "training-day",
+      "high-protein"
+    ],
+    "toddler": "Take shredded meat and gravy out before the scotch bonnet goes in; cassareep is sweet, they usually like it.",
+    "swap": "Chill and lift off the fat cap; use all chuck (no oxtail) for about 8 g less fat per portion.",
+    "pairs_with": [
+      "moros-y-cristianos"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of very dark brown pepperpot beef and oxtail stew in glossy thick gravy with a cinnamon stick, next to thick slices of white bread served family-style in a deep earthenware bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "cou-cou-flying-fish",
+    "name": "Cou-Cou and Flying Fish",
+    "english": "Bajan cornmeal and okra with steamed fish in tomato gravy",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 cup cou-cou with 2 fillets and gravy; toddler 1/3 cup cou-cou, small fish piece",
+    "active_min": 25,
+    "total_min": 50,
+    "difficulty": 2,
+    "cost_per_serving_usd": 2.64,
+    "ingredients": [
+      {
+        "item": "fine cornmeal",
+        "qty": "1 1/2 cups",
+        "grams": 250,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "okra, sliced",
+        "qty": "20 pods",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "butter",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "flying fish, or tilapia or cod fillets",
+        "qty": "1 3/4 lb",
+        "grams": 800,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "tomatoes, diced",
+        "qty": "3",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, sliced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, minced",
+        "qty": "1/4",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Season the fish with lime juice, salt, garlic and thyme and set aside 10 minutes.",
+      "Gravy: cook onion, pepper, scallions in oil 4 minutes, add tomato and 1/2 cup water and simmer 8 minutes. Lay the fish in, cover and steam 6 minutes. Add scotch bonnet last.",
+      "Cou-cou: boil okra in 3 cups salted water 8 minutes until soft. Mix cornmeal with 1 cup cold water, pour into the okra water.",
+      "Stir hard with a wooden spoon over low heat 8 minutes until stiff and smooth, add butter, mould in a buttered bowl and flip onto a plate.",
+      "Serve the fish and gravy beside the cou-cou."
+    ],
+    "batch_tip": "Fish and gravy keep 2 days; make cou-cou fresh (it sets firm).",
+    "leftovers": "Sliced cold cou-cou can be pan-fried the next day.",
+    "macros": {
+      "kcal": 580,
+      "protein_g": 44,
+      "carbs_g": 58,
+      "fat_g": 19,
+      "fiber_g": 9,
+      "sodium_mg": 660
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Soft cou-cou and a small flaked fish piece with the gravy; no scotch bonnet.",
+    "swap": "Use 2 tbsp butter instead of 3 and olive oil spray in the gravy: about 35 kcal less per portion.",
+    "pairs_with": [
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a smooth yellow moulded dome of cornmeal cou-cou with okra, beside steamed white fish fillets in a bright red tomato and pepper gravy served family-style in a white ceramic plate on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jerk-chicken-rice-bowls",
+    "name": "Jerk Chicken Rice Bowls",
+    "english": "Meal-prep bowls: jerk chicken thigh, rice, pineapple and slaw",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 bowl (about 2 cups); toddler 1/3 bowl, no jerk",
+    "active_min": 25,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.73,
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken thighs",
+        "qty": "2 1/4 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "jerk seasoning paste",
+        "qty": "3 tbsp",
+        "grams": 45,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "long-grain white rice",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "pineapple chunks",
+        "qty": "2 cups",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cabbage, shredded (slaw)",
+        "qty": "2 cups",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Toss chicken with jerk paste and 1 tbsp lime juice. Marinate 20 minutes or overnight.",
+      "Cook the rice on the stove with a pinch of salt (20 minutes).",
+      "Sheet-pan the chicken, bell pepper and pineapple at 425F for 22 to 25 minutes until charred at the edges.",
+      "Toss cabbage with lime juice and cilantro for slaw. Slice the chicken, divide rice, chicken, pineapple, peppers and slaw into 5 containers."
+    ],
+    "batch_tip": "Sunday prep for the week: 5 containers last 4 days in the fridge, and the chicken freezes well.",
+    "leftovers": "Rice and chicken reheats; add fresh slaw each day.",
+    "macros": {
+      "kcal": 610,
+      "protein_g": 51,
+      "carbs_g": 70,
+      "fat_g": 14,
+      "fiber_g": 4,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "post-workout",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Plain unseasoned chicken thigh cooked separately in a pan, with rice and pineapple.",
+    "swap": "Swap half of the rice for black beans or lentils to add 5 g fibre and 6 g protein per portion.",
+    "pairs_with": [
+      "jerk-chicken",
+      "jamaican-rice-and-peas"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a meal-prep style bowl of sliced glossy jerk chicken thigh over white rice with orange pineapple chunks, red peppers and green-and-purple cabbage slaw served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sheet-pan-curry-chicken-thighs",
+    "name": "Sheet-Pan Curry Chicken Thighs",
+    "english": "Curried chicken thighs roasted with sweet potato and coconut",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 thighs with 1 cup vegetables; toddler 1 small thigh, shredded",
+    "active_min": 15,
+    "total_min": 45,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.83,
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken thighs",
+        "qty": "2 1/4 lb",
+        "grams": 1000,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sweet potatoes, cubed",
+        "qty": "1 1/3 lb",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell peppers, chunked",
+        "qty": "2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, wedges",
+        "qty": "1 large",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "curry powder",
+        "qty": "2 1/2 tbsp",
+        "grams": 25,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "full-fat coconut milk",
+        "qty": "1/4 can",
+        "grams": 100,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Heat oven to 425F. Toss chicken, sweet potato, pepper and onion with curry, garlic, oil and salt on a large sheet pan.",
+      "Roast 25 minutes.",
+      "Drizzle coconut milk over everything, toss, and roast 10 more minutes until the chicken reads 175F.",
+      "Squeeze lime over and scatter cilantro."
+    ],
+    "batch_tip": "Double on two pans; the sweet potato and chicken reheat as lunch for 3 days.",
+    "leftovers": "Chop into a curry wrap, or over rice with spinach.",
+    "macros": {
+      "kcal": 545,
+      "protein_g": 49,
+      "carbs_g": 40,
+      "fat_g": 21,
+      "fiber_g": 8,
+      "sodium_mg": 570
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "high-protein"
+    ],
+    "toddler": "Soft sweet potato and chicken, shredded; no extra salt.",
+    "swap": "Use light coconut milk and 1 tbsp less oil for about 60 fewer kcal per portion.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden-orange curry-roasted chicken thighs with caramelised sweet potato cubes, red pepper and onion wedges on a sheet pan, cilantro on top served family-style in a lined baking sheet on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "turkey-picadillo-rice-bowls",
+    "name": "Turkey Picadillo Rice Bowls",
+    "english": "Lean turkey picadillo over rice and black beans",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 bowl (about 2 cups); toddler 1/3 bowl",
+    "active_min": 20,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.08,
+    "ingredients": [
+      {
+        "item": "93% lean ground turkey",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "long-grain white rice",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned black beans, drained",
+        "qty": "1 can",
+        "grams": 240,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "tomato sauce",
+        "qty": "1 can (8 oz)",
+        "grams": 230,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, diced",
+        "qty": "2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrot, grated",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "raisins",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "green olives",
+        "qty": "2 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cumin and oregano",
+        "qty": "2 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Start the rice with 3 cups water and a pinch of salt, cover, lowest heat 20 minutes.",
+      "Meanwhile brown the turkey in oil 6 minutes, breaking it small. Add onion, pepper, carrot and garlic, cook 4 minutes.",
+      "Stir in tomato sauce, cumin, oregano, raisins, olives, black beans and 1/2 cup water. Simmer 10 minutes.",
+      "Build bowls of rice topped with picadillo; portion into 5 containers for the week."
+    ],
+    "batch_tip": "Cook once, portion into 5 containers on Sunday: bowls, tacos, stuffed peppers.",
+    "leftovers": "Stuffed in a tortilla with cheese for a quesadilla.",
+    "macros": {
+      "kcal": 710,
+      "protein_g": 49,
+      "carbs_g": 81,
+      "fat_g": 21,
+      "fiber_g": 8,
+      "sodium_mg": 880
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "toddler-ok",
+      "freezer",
+      "post-workout",
+      "high-protein"
+    ],
+    "toddler": "Soft rice with picadillo, no olives; mash a few beans in.",
+    "swap": "Replace 1 cup of the rice with cauliflower rice on rest days for about 150 fewer kcal.",
+    "pairs_with": [
+      "cuban-picadillo",
+      "moros-y-cristianos"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a bowl of fluffy white rice topped with dark red turkey picadillo, black beans, a few green olives and orange carrot served family-style in a rustic ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "caribbean-tuna-sardine-wraps",
+    "name": "Caribbean Tuna-Sardine Salad Wraps",
+    "english": "Mango, chickpea, tuna and sardine salad in a tortilla",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "1 wrap (about 12 oz); toddler: tuna and mango only, no sardine",
+    "active_min": 15,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.27,
+    "ingredients": [
+      {
+        "item": "canned tuna in water, drained",
+        "qty": "3 cans (5 oz)",
+        "grams": 300,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "canned sardines in oil, drained",
+        "qty": "2 tins (3.75 oz)",
+        "grams": 150,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "canned chickpeas, drained",
+        "qty": "1 can",
+        "grams": 240,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "ripe mango, diced",
+        "qty": "1",
+        "grams": 200,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "cucumber, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "red onion, minced",
+        "qty": "1/2",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "avocado",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole-wheat tortillas (10 inch)",
+        "qty": "4 large",
+        "grams": 280,
+        "key": false,
+        "aisle": "bakery"
+      }
+    ],
+    "steps": [
+      "Flake the tuna and break sardines into chunks in a big bowl.",
+      "Fold in chickpeas, mango, cucumber, pepper, onion and cilantro.",
+      "Mash half the avocado with lime juice and olive oil and stir through as the dressing. Salt lightly (the fish are salty already).",
+      "Spoon into warm tortillas with the rest of the avocado sliced on top, or serve as a salad bowl."
+    ],
+    "batch_tip": "Mix the salad on Sunday without the avocado; it holds 3 days in the fridge.",
+    "leftovers": "Stir in cooked rice for a second-day lunch bowl.",
+    "macros": {
+      "kcal": 560,
+      "protein_g": 37,
+      "carbs_g": 58,
+      "fat_g": 20,
+      "fiber_g": 11,
+      "sodium_mg": 820
+    },
+    "tags": [
+      "no-cook",
+      "pre-workout",
+      "training-day",
+      "high-protein",
+      "quick"
+    ],
+    "toddler": "Offer tuna, mango and soft tortilla pieces. Sardines are a bone and salt concern; skip for the toddler.",
+    "swap": "Drop the tortilla and serve over lettuce on a rest day to lose about 180 kcal and 35 g carbs.",
+    "pairs_with": [
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a colourful salad of flaked tuna and sardine with orange mango cubes, chickpeas, green avocado and cucumber rolled up in a whole-wheat tortilla served family-style in a wooden board on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "egg-plantain-breakfast-burrito",
+    "name": "Egg, Plantain and Turkey Breakfast Burrito",
+    "english": "Scrambled eggs, sweet plantain, turkey sausage and black beans in a tortilla",
+    "cuisine": "Caribbean",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "1 burrito; toddler 1/3, cut in strips",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.81,
+    "ingredients": [
+      {
+        "item": "large eggs",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "ripe plantain, peeled and sliced",
+        "qty": "2 small",
+        "grams": 350,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "ground turkey, seasoned like breakfast sausage",
+        "qty": "1/2 lb",
+        "grams": 250,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "canned black beans, drained",
+        "qty": "1 can",
+        "grams": 240,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "shredded cheddar",
+        "qty": "1/3 cup",
+        "grams": 40,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "whole-wheat tortillas (10 inch)",
+        "qty": "4 large",
+        "grams": 280,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp (about 1 tbsp absorbed)",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "thyme, allspice, black pepper",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Fry the plantain slices in oil, 2 minutes a side, until caramelised. Set aside.",
+      "Cook the turkey with thyme, allspice, pepper and salt 6 minutes in the same pan.",
+      "Push turkey aside, scramble the beaten eggs in the pan until just set. Stir the beans in to warm.",
+      "Fill warm tortillas with eggs, turkey, plantain, cheese, tomato and scallion, fold and roll.",
+      "Wrap in foil and freeze, or serve at once."
+    ],
+    "batch_tip": "Make 8 and freeze wrapped in foil: reheat 2 minutes in the microwave, then 1 minute in a skillet.",
+    "leftovers": "Wrapped burritos keep 2 days in the fridge.",
+    "macros": {
+      "kcal": 675,
+      "protein_g": 38,
+      "carbs_g": 68,
+      "fat_g": 28,
+      "fiber_g": 9,
+      "sodium_mg": 1100
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "toddler-ok",
+      "training-day",
+      "pre-workout",
+      "high-protein",
+      "quick"
+    ],
+    "toddler": "Offer scrambled egg, plantain and beans in strips, no cheese if sodium is a concern.",
+    "swap": "Use 4 whole eggs plus 4 whites per batch to lower cholesterol; or skip the cheese for 70 fewer kcal and 130 mg less sodium.",
+    "pairs_with": [
+      "sorrel-yogurt-parfait"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a foil-wrapped breakfast burrito cut open showing yellow scrambled egg, dark turkey, caramelised plantain slices, black beans and melted cheese served family-style in a wooden board on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "sorrel-yogurt-parfait",
+    "name": "Sorrel Yogurt Parfait",
+    "english": "Greek yogurt layered with sorrel-ginger syrup, oats and banana",
+    "cuisine": "Caribbean",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "snack",
+      "pre-workout",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 tall cup (about 1 1/2 cups); toddler 1/3 cup yogurt and banana",
+    "active_min": 15,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.34,
+    "ingredients": [
+      {
+        "item": "plain nonfat Greek yogurt",
+        "qty": "4 cups",
+        "grams": 900,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "dried sorrel (hibiscus) flowers",
+        "qty": "1/2 cup",
+        "grams": 25,
+        "key": true,
+        "aisle": "spices"
+      },
+      {
+        "item": "fresh ginger, sliced",
+        "qty": "1 inch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "rolled oats, toasted",
+        "qty": "1 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "ripe bananas, sliced",
+        "qty": "3",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "unsweetened shredded coconut, toasted",
+        "qty": "1/3 cup",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Simmer sorrel, ginger and 1 1/2 cups water 8 minutes. Strain, stir in honey, cool; it thickens to a ruby syrup.",
+      "Toast oats and coconut in a dry skillet 3 minutes.",
+      "Layer yogurt, banana, oats and a spoon of syrup in cups. Repeat.",
+      "Chill or eat right away."
+    ],
+    "batch_tip": "Syrup keeps 10 days in the fridge; assemble 5 cups at a time (oats added on top just before eating).",
+    "leftovers": "Leftover syrup is a drink diluted with sparkling water.",
+    "macros": {
+      "kcal": 355,
+      "protein_g": 25,
+      "carbs_g": 48,
+      "fat_g": 7,
+      "fiber_g": 6,
+      "sodium_mg": 80
+    },
+    "tags": [
+      "pre-workout",
+      "post-workout",
+      "toddler-ok",
+      "rest-day",
+      "batch",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Plain yogurt with banana and a swirl of syrup; skip the toasted oats if they choke easily.",
+    "swap": "Add a scoop of protein powder or cottage cheese layer for 10 g more protein per cup.",
+    "pairs_with": [
+      "egg-plantain-breakfast-burrito",
+      "coconut-banana-overnight-oats"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of glass cups layered with white Greek yogurt, ruby-red sorrel syrup, sliced banana and toasted oats with coconut flakes served family-style in a wooden board with tall glass cups on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "black-bean-chicken-power-bowl",
+    "name": "Black Bean and Chicken Power Bowl",
+    "english": "Lime chicken breast, brown rice, black beans, avocado and salsa",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "1 bowl (about 2 1/2 cups); toddler 1/3 bowl, plain",
+    "active_min": 25,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.18,
+    "ingredients": [
+      {
+        "item": "chicken breast, sliced thin",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "brown rice",
+        "qty": "1 1/2 cups",
+        "grams": 280,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "canned black beans, drained",
+        "qty": "2 cans",
+        "grams": 480,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "avocado",
+        "qty": "1 1/2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomatoes, diced (salsa)",
+        "qty": "3",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, sliced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "red onion",
+        "qty": "1/2",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "3 limes",
+        "grams": 90,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "ground cumin and garlic powder",
+        "qty": "2 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Cook the brown rice (40 minutes on the stove, covered, 1 3/4 cups water per cup rice).",
+      "Toss chicken with half the lime juice, cumin, garlic powder and salt. Sear in oil 3 minutes a side.",
+      "Salsa: mix tomatoes, half the onion, cilantro and the remaining lime juice with a pinch of salt.",
+      "Warm the beans with a splash of water. Build bowls of rice, beans, chicken, salsa, pepper and avocado."
+    ],
+    "batch_tip": "Prep rice, beans and chicken Sunday; salsa and avocado fresh each day.",
+    "leftovers": "Over greens for tomorrow lunch, or stuffed in a wrap.",
+    "macros": {
+      "kcal": 725,
+      "protein_g": 61,
+      "carbs_g": 80,
+      "fat_g": 18,
+      "fiber_g": 14,
+      "sodium_mg": 740
+    },
+    "tags": [
+      "batch",
+      "training-day",
+      "toddler-ok",
+      "post-workout",
+      "high-protein"
+    ],
+    "toddler": "Plain chicken cut small, rice and mashed beans with avocado; no salsa.",
+    "swap": "Use half the rice and double the beans on rest days: about 140 fewer kcal and 5 g more fibre.",
+    "pairs_with": [
+      "moros-y-cristianos",
+      "tostones"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a colourful grain bowl with sliced seared chicken breast, brown rice, black beans, red salsa, green avocado fans and fresh cilantro served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "salmon-mango-salsa",
+    "name": "Sheet-Pan Salmon with Mango Salsa",
+    "english": "Roasted salmon and sweet potato with fresh mango salsa",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 fillet (about 6 oz) with 1 cup sweet potato and salsa; toddler 1 small flaked piece",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 4.19,
+    "ingredients": [
+      {
+        "item": "salmon fillets, skin on",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "seafood"
+      },
+      {
+        "item": "sweet potatoes, cubed",
+        "qty": "1 1/4 lb",
+        "grams": 500,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "ripe mango, diced",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "red bell pepper, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "red onion, minced",
+        "qty": "1/4",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "2 limes",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scotch bonnet, minced (salsa only)",
+        "qty": "1/4",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "allspice, paprika and garlic powder",
+        "qty": "2 tsp",
+        "grams": 6,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "olive oil",
+        "qty": "1 tbsp",
+        "grams": 14,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Roast sweet potato cubes tossed in oil at 425F for 15 minutes.",
+      "Season salmon with spices and salt; add to the pan and roast 12 minutes until it flakes.",
+      "Salsa: toss mango, pepper, onion, cilantro, lime and scotch bonnet.",
+      "Spoon the salsa over the fish; keep the toddler's portion pepper-free."
+    ],
+    "batch_tip": "Double the fish for next day lunch: flake into rice.",
+    "leftovers": "Cold flaked salmon in a salad or wrap.",
+    "macros": {
+      "kcal": 610,
+      "protein_g": 45,
+      "carbs_g": 38,
+      "fat_g": 31,
+      "fiber_g": 6,
+      "sodium_mg": 450
+    },
+    "tags": [
+      "training-day",
+      "toddler-ok",
+      "high-protein",
+      "quick"
+    ],
+    "toddler": "Flake a piece of salmon without salsa (or with plain mango); check for bones.",
+    "swap": "Use canned wild salmon for 2 portions at half the cost; same protein.",
+    "pairs_with": [
+      "jamaican-rice-and-peas",
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of pink-orange roasted salmon fillets topped with a chunky salsa of yellow mango, red pepper and cilantro, beside roasted orange sweet potato cubes served family-style in a lined sheet pan on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "lentil-beef-stew",
+    "name": "Lentil and Beef Stew",
+    "english": "Hearty beef, lentil and root-vegetable stew with allspice and thyme",
+    "cuisine": "Caribbean",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 20,
+    "total_min": 55,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.89,
+    "ingredients": [
+      {
+        "item": "brown lentils, rinsed",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "lean ground beef",
+        "qty": "1 lb",
+        "grams": 450,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "potatoes, cubed",
+        "qty": "3",
+        "grams": 400,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "carrots, sliced",
+        "qty": "4",
+        "grams": 250,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1 large",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "baby spinach",
+        "qty": "4 handfuls",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "4 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "ground allspice",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "low-sodium beef or chicken broth",
+        "qty": "4 cups",
+        "grams": 960,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Brown the beef in oil 5 minutes in a large pot. Add onion, garlic and tomato paste, cook 3 minutes.",
+      "Add lentils, potatoes, carrots, broth, 2 cups water, thyme, allspice, soy and the whole scotch bonnet.",
+      "Simmer 30 minutes until lentils and potatoes are tender.",
+      "Remove the pepper, stir in spinach to wilt 2 minutes, season."
+    ],
+    "batch_tip": "The best freezer meal in the house: 8 portions from 1 pot.",
+    "leftovers": "Thicker on day 2; ladle over rice or thin with broth.",
+    "macros": {
+      "kcal": 595,
+      "protein_g": 44,
+      "carbs_g": 73,
+      "fat_g": 14,
+      "fiber_g": 13,
+      "sodium_mg": 570
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "freezer",
+      "training-day",
+      "toddler-ok",
+      "high-protein"
+    ],
+    "toddler": "Scoop out before the scotch bonnet goes in; mash lentils and potato slightly.",
+    "swap": "Swap half the beef for a second cup of lentils on rest days: about 6 g less saturated fat.",
+    "pairs_with": [
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a thick brown stew of lentils, ground beef, orange carrots, potato cubes and dark green spinach in a rich tomato-brown broth served family-style in a deep ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "coconut-banana-overnight-oats",
+    "name": "Coconut-Banana Overnight Oats",
+    "english": "Rolled oats soaked overnight with coconut, banana and yogurt",
+    "cuisine": "Caribbean",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "pre-workout",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "1 jar (about 1 1/2 cups); toddler 1/3 jar",
+    "active_min": 10,
+    "total_min": 10,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.92,
+    "ingredients": [
+      {
+        "item": "rolled oats",
+        "qty": "2 cups",
+        "grams": 180,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "milk",
+        "qty": "2 cups",
+        "grams": 480,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "plain nonfat Greek yogurt",
+        "qty": "1 1/4 cups",
+        "grams": 300,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "chia seeds",
+        "qty": "3 tbsp",
+        "grams": 35,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "unsweetened shredded coconut",
+        "qty": "1/3 cup",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ripe bananas, mashed and sliced",
+        "qty": "3",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground cinnamon",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Mash one banana into the milk and yogurt, stir in oats, chia, coconut, honey and cinnamon.",
+      "Divide into 5 jars, cover and refrigerate overnight (or at least 4 hours).",
+      "Top with sliced banana and eat cold, or microwave 90 seconds."
+    ],
+    "batch_tip": "Make 5 jars on Sunday; they keep 4 days, eaten from the jar on the way to PT.",
+    "leftovers": "Fold the last jar into pancake batter.",
+    "macros": {
+      "kcal": 460,
+      "protein_g": 19,
+      "carbs_g": 64,
+      "fat_g": 14,
+      "fiber_g": 10,
+      "sodium_mg": 80
+    },
+    "tags": [
+      "batch",
+      "no-cook",
+      "pre-workout",
+      "toddler-ok",
+      "training-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Serve a little spoonful mashed; skip honey for under age 1.",
+    "swap": "Use whole-wheat milk powder or protein powder in place of 1/4 cup oats for about 8 g more protein.",
+    "pairs_with": [
+      "sorrel-yogurt-parfait",
+      "island-egg-muffins"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of glass jars of creamy overnight oats speckled with chia seeds topped with banana slices, toasted coconut flakes and a drizzle of honey served family-style in a wooden table with a few jars on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "peanut-banana-recovery-shake",
+    "name": "Peanut Banana Recovery Shake",
+    "english": "Milk, banana, peanut butter, oats and yogurt blended thick",
+    "cuisine": "Caribbean",
+    "category": "shake",
+    "meals": [
+      "post-workout",
+      "snack",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 tall glass (about 20 oz); toddler 4 oz",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.99,
+    "ingredients": [
+      {
+        "item": "milk",
+        "qty": "3 cups",
+        "grams": 700,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "plain nonfat Greek yogurt",
+        "qty": "1 3/4 cups",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "ripe bananas",
+        "qty": "3",
+        "grams": 340,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "peanut butter",
+        "qty": "5 tbsp",
+        "grams": 80,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "nonfat dry milk powder",
+        "qty": "1/2 cup",
+        "grams": 80,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "rolled oats",
+        "qty": "3 tbsp",
+        "grams": 25,
+        "key": false,
+        "aisle": "grains"
+      },
+      {
+        "item": "honey",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Blend everything except ice until smooth, 1 minute.",
+      "Add ice and blend again.",
+      "Pour into glasses; drink within 30 minutes of the workout."
+    ],
+    "batch_tip": "Pre-bag dry ingredients (oats + milk powder + frozen banana) in 5 bags for a 90-second shake.",
+    "leftovers": "Keeps 1 day in the fridge; shake before drinking.",
+    "macros": {
+      "kcal": 440,
+      "protein_g": 27,
+      "carbs_g": 49,
+      "fat_g": 15,
+      "fiber_g": 4,
+      "sodium_mg": 270
+    },
+    "tags": [
+      "no-cook",
+      "post-workout",
+      "toddler-ok",
+      "training-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "A small glass of just milk, banana and a little yogurt; skip the honey and peanut butter pieces if nut-averse.",
+    "swap": "Replace the peanut butter with 2 tbsp cocoa and a frozen banana for about 130 fewer kcal.",
+    "pairs_with": [
+      "coconut-banana-overnight-oats"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of tall glasses of thick creamy beige-tan peanut banana shake with a slice of banana and a sprinkle of oats on top served family-style in tall glasses on a tray on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "pb-banana-honey-toast",
+    "name": "Peanut Butter, Banana and Honey Toast",
+    "english": "Whole-wheat toast with peanut butter, banana, honey and cinnamon",
+    "cuisine": "Caribbean",
+    "category": "snack",
+    "meals": [
+      "pre-workout",
+      "breakfast",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "2 slices; toddler 1/2 slice with only banana and a thin spread",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.62,
+    "ingredients": [
+      {
+        "item": "whole-wheat bread",
+        "qty": "9 slices",
+        "grams": 270,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "peanut butter",
+        "qty": "6 tbsp",
+        "grams": 100,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ripe bananas, sliced",
+        "qty": "4",
+        "grams": 400,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "honey",
+        "qty": "2 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "ground cinnamon",
+        "qty": "1 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "spices"
+      }
+    ],
+    "steps": [
+      "Toast the bread.",
+      "Spread peanut butter, layer banana slices, drizzle honey, sprinkle cinnamon.",
+      "Eat 45 to 60 minutes before training."
+    ],
+    "batch_tip": "Slice bananas in the morning with a squeeze of lime so they do not brown in the lunchbox.",
+    "leftovers": "Make extra slices for a snack or toast for the toddler.",
+    "macros": {
+      "kcal": 420,
+      "protein_g": 14,
+      "carbs_g": 60,
+      "fat_g": 14,
+      "fiber_g": 8,
+      "sodium_mg": 370
+    },
+    "tags": [
+      "no-cook",
+      "pre-workout",
+      "toddler-ok",
+      "training-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Thin spread of peanut butter (or sunflower seed butter), 1/2 slice, banana in thin rounds. Introduce peanut earlier per pediatrician.",
+    "swap": "Use 1 slice with 1 tbsp peanut butter and a banana for a lighter pre-workout of about 220 kcal.",
+    "pairs_with": [
+      "sorrel-yogurt-parfait",
+      "peanut-banana-recovery-shake"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden whole-wheat toast slices spread with peanut butter, topped with banana coins and a honey drizzle dusted with cinnamon served family-style in a wooden board on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "jerk-turkey-sweet-potato-skillet",
+    "name": "Jerk Turkey and Sweet Potato Skillet",
+    "english": "One-pan ground turkey, sweet potato and black beans with jerk spice",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "post-workout"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 3/4 cups; toddler 1/2 cup, no jerk",
+    "active_min": 15,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 2.16,
+    "ingredients": [
+      {
+        "item": "93% lean ground turkey",
+        "qty": "2 lb",
+        "grams": 900,
+        "key": true,
+        "aisle": "meat"
+      },
+      {
+        "item": "sweet potatoes, small cubes",
+        "qty": "1 1/2 lb",
+        "grams": 700,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "canned black beans, drained",
+        "qty": "1 can",
+        "grams": 240,
+        "key": true,
+        "aisle": "canned"
+      },
+      {
+        "item": "jerk seasoning paste",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": true,
+        "aisle": "pantry"
+      },
+      {
+        "item": "bell peppers, diced",
+        "qty": "2",
+        "grams": 200,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime juice",
+        "qty": "1 lime",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "cilantro",
+        "qty": "1/4 bunch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/4 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Microwave the sweet potato cubes 5 minutes to jump-start them.",
+      "Brown turkey in oil in a wide skillet 6 minutes. Add onion, pepper and jerk paste, cook 4 minutes.",
+      "Add sweet potato, black beans, scallions and 1/2 cup water. Cover and cook 10 minutes, stirring once.",
+      "Finish with lime and cilantro."
+    ],
+    "batch_tip": "Cook a double skillet and freeze in 5 portions.",
+    "leftovers": "Wrap in a tortilla with a fried egg.",
+    "macros": {
+      "kcal": 580,
+      "protein_g": 46,
+      "carbs_g": 50,
+      "fat_g": 22,
+      "fiber_g": 10,
+      "sodium_mg": 700
+    },
+    "tags": [
+      "batch",
+      "one-pot",
+      "training-day",
+      "freezer",
+      "toddler-ok",
+      "high-protein",
+      "quick"
+    ],
+    "toddler": "Take a portion out before the jerk paste goes in; season with garlic and lime instead.",
+    "swap": "Add a second can of beans and skip the oil on rest days for about 60 fewer kcal.",
+    "pairs_with": [
+      "steamed-cabbage"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a cast-iron skillet of deep-brown jerk-spiced ground turkey with orange sweet potato cubes, black beans, red peppers and green scallion served family-style in a cast-iron skillet on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "cottage-cheese-pineapple-bowl",
+    "name": "Cottage Cheese and Pineapple Bowl",
+    "english": "Cottage cheese with pineapple, coconut and lime",
+    "cuisine": "Caribbean",
+    "category": "snack",
+    "meals": [
+      "post-workout",
+      "snack",
+      "breakfast"
+    ],
+    "servings": 5,
+    "portion": "1 bowl (about 1 1/4 cups); toddler 1/4 cup with pineapple",
+    "active_min": 5,
+    "total_min": 5,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.15,
+    "ingredients": [
+      {
+        "item": "low-fat cottage cheese",
+        "qty": "4 cups",
+        "grams": 900,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "fresh or canned-in-juice pineapple chunks",
+        "qty": "4 cups",
+        "grams": 600,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "unsweetened shredded coconut, toasted",
+        "qty": "1/4 cup",
+        "grams": 25,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "honey",
+        "qty": "1 tbsp",
+        "grams": 20,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "lime",
+        "qty": "1",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "mint or cilantro leaves",
+        "qty": "a few",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Divide cottage cheese into bowls.",
+      "Top with pineapple, coconut, honey and a squeeze of lime.",
+      "Add mint. Eat cold."
+    ],
+    "batch_tip": "Portion cottage cheese and pineapple into 5 cups on Sunday; add coconut at serving.",
+    "leftovers": "Mixed into a smoothie for a second recovery drink.",
+    "macros": {
+      "kcal": 335,
+      "protein_g": 24,
+      "carbs_g": 31,
+      "fat_g": 13,
+      "fiber_g": 3,
+      "sodium_mg": 750
+    },
+    "tags": [
+      "no-cook",
+      "post-workout",
+      "toddler-ok",
+      "rest-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Plain cottage cheese with pineapple chunks cut small; skip honey if under 1 year.",
+    "swap": "Choose a no-salt-added or lower-sodium cottage cheese to save about 250 mg sodium per bowl.",
+    "pairs_with": [
+      "sorrel-yogurt-parfait",
+      "coconut-banana-overnight-oats"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of bowls of white cottage cheese curds heaped with golden pineapple chunks, toasted coconut flakes, a honey drizzle and fresh mint served family-style in a white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "island-egg-muffins",
+    "name": "Island Egg Muffins",
+    "english": "Baked egg cups with spinach, pepper, ham and cheddar",
+    "cuisine": "Caribbean",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "snack",
+      "pre-workout"
+    ],
+    "servings": 5,
+    "portion": "3 muffins; toddler 1 muffin, cut up",
+    "active_min": 15,
+    "total_min": 35,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.48,
+    "ingredients": [
+      {
+        "item": "large eggs",
+        "qty": "12",
+        "grams": 600,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "baby spinach, chopped",
+        "qty": "2 cups",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "bell pepper, diced",
+        "qty": "1",
+        "grams": 150,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "onion, minced",
+        "qty": "1/2",
+        "grams": 60,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "sharp cheddar, shredded",
+        "qty": "3/4 cup",
+        "grams": 100,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "cooked ham or turkey ham, diced",
+        "qty": "1/2 cup",
+        "grams": 120,
+        "key": true,
+        "aisle": "deli"
+      },
+      {
+        "item": "milk",
+        "qty": "1/4 cup",
+        "grams": 60,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 20,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "2 sprigs",
+        "grams": 1,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/4 tsp",
+        "grams": 1,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "cooking spray",
+        "qty": "light",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat oven to 375F and spray a 12-cup muffin tin.",
+      "Whisk eggs, milk, thyme and salt. Divide ham, spinach, pepper, onion, scallions and cheese among the cups.",
+      "Pour in the egg, filling 3/4 full.",
+      "Bake 20 minutes until puffed and set."
+    ],
+    "batch_tip": "Bake 24 on Sunday, freeze, and microwave 45 seconds from frozen.",
+    "leftovers": "Cold muffin in a wrap or on toast.",
+    "macros": {
+      "kcal": 355,
+      "protein_g": 29,
+      "carbs_g": 8,
+      "fat_g": 23,
+      "fiber_g": 2,
+      "sodium_mg": 790
+    },
+    "tags": [
+      "batch",
+      "freezer",
+      "pre-workout",
+      "toddler-ok",
+      "rest-day",
+      "budget"
+    ],
+    "toddler": "One muffin cut into strips; skip the ham for lower salt.",
+    "swap": "Use 8 eggs plus 4 whites to cut about 35 kcal per portion while keeping protein.",
+    "pairs_with": [
+      "sorrel-yogurt-parfait",
+      "coconut-banana-overnight-oats"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a golden muffin tin of puffed baked egg cups flecked with green spinach, red pepper, ham and melted cheddar served family-style in a muffin tin lined with parchment on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-fried-rice",
+    "name": "Scraps Fried Rice",
+    "english": "Fried rice from any leftover rice, meat and vegetables",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 20,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.97,
+    "ingredients": [
+      {
+        "item": "cold cooked rice (any, 1 to 3 days old)",
+        "qty": "6 cups",
+        "grams": 900,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "leftover cooked chicken, pork or beef, diced",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "eggs",
+        "qty": "4",
+        "grams": 200,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "frozen peas and carrots, or any veg ends, diced",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "frozen"
+      },
+      {
+        "item": "scallions",
+        "qty": "4",
+        "grams": 40,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "soy sauce",
+        "qty": "3 tbsp",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat 1 tbsp oil in the widest skillet or wok on high. Scramble the eggs, set aside.",
+      "Heat the remaining oil, fry garlic, ginger, vegetables and meat 3 minutes.",
+      "Add the cold rice, press and let it crisp 2 minutes before stirring; repeat twice.",
+      "Add soy, scallions and the eggs, toss and serve."
+    ],
+    "batch_tip": "Always cook rice 1 day ahead: day-old rice is the secret.",
+    "leftovers": "Great cold in a lunchbox.",
+    "macros": {
+      "kcal": 555,
+      "protein_g": 33,
+      "carbs_g": 68,
+      "fat_g": 17,
+      "fiber_g": 4,
+      "sodium_mg": 660
+    },
+    "tags": [
+      "scraps",
+      "toddler-ok",
+      "training-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Take a portion out before the soy goes in and skip the pepper heat; small pieces.",
+    "swap": "Use brown or cauliflower rice, or add an extra egg per person, to push protein up.",
+    "pairs_with": [
+      "scraps-vegetable-fritters"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden-brown fried rice with scrambled egg pieces, diced chicken, orange carrot cubes and green peas and scallion rings served family-style in a wok-shaped enamel pan on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-vegetable-fritters",
+    "name": "Vegetable-End Fritters",
+    "english": "Fritters from grated vegetable ends, herbs and eggs",
+    "cuisine": "Caribbean",
+    "category": "snack",
+    "meals": [
+      "lunch",
+      "snack",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 4 fritters with 2 tbsp yogurt dip; toddler 1 small",
+    "active_min": 20,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.59,
+    "ingredients": [
+      {
+        "item": "grated vegetable ends (carrot, cabbage core, zucchini, potato, onion), squeezed",
+        "qty": "4 cups",
+        "grams": 500,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "all-purpose flour",
+        "qty": "1 1/4 cups",
+        "grams": 150,
+        "key": true,
+        "aisle": "grains"
+      },
+      {
+        "item": "eggs",
+        "qty": "3",
+        "grams": 150,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "scallions or herb stems",
+        "qty": "4",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "curry powder or allspice",
+        "qty": "1 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "spices"
+      },
+      {
+        "item": "baking powder",
+        "qty": "1 tsp",
+        "grams": 4,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil (about 3 tbsp absorbed)",
+        "qty": "1/2 cup in the pan",
+        "grams": 40,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "plain Greek yogurt dip with lime",
+        "qty": "3/4 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "dairy"
+      }
+    ],
+    "steps": [
+      "Mix grated vegetables with eggs, scallions, curry, salt and baking powder, then stir in the flour. Let it stand 5 minutes.",
+      "Heat 1/4 inch of oil on medium-high.",
+      "Drop heaping spoonfuls, flatten, and fry 3 minutes a side until golden and crisp.",
+      "Drain on paper and serve with the yogurt dip."
+    ],
+    "batch_tip": "Make double and freeze: reheat in a toaster oven.",
+    "leftovers": "Stuff in a wrap with leftover meat.",
+    "macros": {
+      "kcal": 320,
+      "protein_g": 13,
+      "carbs_g": 38,
+      "fat_g": 13,
+      "fiber_g": 4,
+      "sodium_mg": 470
+    },
+    "tags": [
+      "scraps",
+      "toddler-ok",
+      "rest-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Offer 1 fritter broken apart, no pepper.",
+    "swap": "Bake at 425F, 15 minutes, instead of frying: about 80 kcal less per portion.",
+    "pairs_with": [
+      "scraps-fried-rice",
+      "scraps-frittata"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of crisp golden vegetable fritters flecked with orange carrot and green scallion, stacked beside a bowl of white yogurt dip served family-style in a ceramic plate lined with paper on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-frittata",
+    "name": "Scraps Frittata",
+    "english": "One-pan egg bake from leftover cooked vegetables, meat and cheese",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1/4 of a 12-inch pan; toddler 1 thin wedge",
+    "active_min": 10,
+    "total_min": 25,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.13,
+    "ingredients": [
+      {
+        "item": "eggs",
+        "qty": "10",
+        "grams": 500,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "any leftover cooked vegetables, chopped",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "leftover cooked chicken, ham or sausage, diced",
+        "qty": "1 1/2 cups",
+        "grams": 200,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "shredded cheese (any, odds and ends)",
+        "qty": "3/4 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "milk",
+        "qty": "1/3 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Heat oven to 400F. Warm oil in an oven-safe skillet.",
+      "Cook the vegetables and meat 3 minutes to warm through.",
+      "Whisk eggs, milk and salt; pour over, scatter cheese.",
+      "Cook on the stove 2 minutes, then bake 12 to 14 minutes until set and puffy."
+    ],
+    "batch_tip": "Cut into wedges and refrigerate for 4 breakfasts.",
+    "leftovers": "Cold wedge in a pita or tortilla.",
+    "macros": {
+      "kcal": 405,
+      "protein_g": 34,
+      "carbs_g": 9,
+      "fat_g": 26,
+      "fiber_g": 2,
+      "sodium_mg": 560
+    },
+    "tags": [
+      "scraps",
+      "toddler-ok",
+      "rest-day",
+      "budget",
+      "quick"
+    ],
+    "toddler": "A thin soft wedge; omit salty ham.",
+    "swap": "Use 6 eggs plus 6 whites for about 40 kcal less per portion while keeping protein.",
+    "pairs_with": [
+      "scraps-vegetable-fritters",
+      "jamaican-callaloo"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a golden-top frittata cut into wedges showing colourful chunks of vegetables, chicken and melted cheese served family-style in a cast-iron skillet on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-pot-stew",
+    "name": "Odds-and-Ends Stew",
+    "english": "Stew from leftover meat, beans and any vegetables in the fridge",
+    "cuisine": "Caribbean",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 40,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.15,
+    "ingredients": [
+      {
+        "item": "leftover cooked meat (any), shredded or diced",
+        "qty": "1 1/2 cups",
+        "grams": 400,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "leftover or canned beans",
+        "qty": "1 1/4 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "potatoes or sweet potato, cubed",
+        "qty": "2",
+        "grams": 300,
+        "key": true,
+        "aisle": "produce"
+      },
+      {
+        "item": "any vegetable bits (carrot, cabbage, peppers, greens)",
+        "qty": "3 cups",
+        "grams": 500,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "tomato paste",
+        "qty": "2 tbsp",
+        "grams": 30,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "low-sodium broth or water",
+        "qty": "5 cups",
+        "grams": 1000,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Soften onion and garlic in oil 3 minutes; stir in the tomato paste.",
+      "Add potatoes, vegetables, broth, thyme and the whole scotch bonnet.",
+      "Simmer 20 minutes until the potatoes are soft.",
+      "Add the meat and beans, heat 5 minutes, remove the pepper and season."
+    ],
+    "batch_tip": "Bank every bit of meat and vegetable in a freezer tub during the week; one pot on Friday.",
+    "leftovers": "Thicken with a handful of leftover rice for a second meal.",
+    "macros": {
+      "kcal": 400,
+      "protein_g": 35,
+      "carbs_g": 40,
+      "fat_g": 11,
+      "fiber_g": 9,
+      "sodium_mg": 510
+    },
+    "tags": [
+      "scraps",
+      "one-pot",
+      "toddler-ok",
+      "batch",
+      "freezer",
+      "high-protein",
+      "budget"
+    ],
+    "toddler": "Take the toddler share before the scotch bonnet goes in; mash the beans.",
+    "swap": "Add a handful of lentils with the broth to boost protein and fibre.",
+    "pairs_with": [
+      "scraps-bean-soup"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a rustic stew of shredded meat, beans, potato cubes, carrots and greens in a reddish-brown broth served family-style in a deep enamel bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-leftover-wrap",
+    "name": "Leftover Meat Quesadilla Wrap",
+    "english": "Pan-crisped tortilla filled with leftover meat, beans and cheese",
+    "cuisine": "Caribbean",
+    "category": "main",
+    "meals": [
+      "lunch",
+      "dinner",
+      "snack"
+    ],
+    "servings": 5,
+    "portion": "Adults 1 big folded tortilla; toddler 1/4",
+    "active_min": 10,
+    "total_min": 15,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.18,
+    "ingredients": [
+      {
+        "item": "whole-wheat tortillas (10 inch)",
+        "qty": "4 large",
+        "grams": 280,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "leftover cooked meat (jerk, curry, picadillo, pork), shredded",
+        "qty": "2 cups",
+        "grams": 400,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "leftover or canned beans",
+        "qty": "1 cup",
+        "grams": 240,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "shredded cheese",
+        "qty": "1 cup",
+        "grams": 140,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "onion or pepper odds and ends, diced",
+        "qty": "1 cup",
+        "grams": 150,
+        "key": false,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "tomato, diced",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "2 tsp",
+        "grams": 10,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Mix meat, beans, vegetables and tomato.",
+      "Lay a tortilla flat, cover half with filling and cheese, fold over.",
+      "Crisp in an oiled skillet, 3 minutes a side, until golden and the cheese melts.",
+      "Cut in wedges."
+    ],
+    "batch_tip": "Assemble 8 and freeze before cooking; crisp from thawed.",
+    "leftovers": "Cold wedge is a lunchbox filler.",
+    "macros": {
+      "kcal": 580,
+      "protein_g": 43,
+      "carbs_g": 46,
+      "fat_g": 25,
+      "fiber_g": 8,
+      "sodium_mg": 850
+    },
+    "tags": [
+      "scraps",
+      "toddler-ok",
+      "training-day",
+      "high-protein",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Cut in small strips, no pepper.",
+    "swap": "Use a smaller tortilla and 1/2 cup cheese for about 110 kcal less per portion.",
+    "pairs_with": [
+      "scraps-bean-soup"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of golden crisp folded tortilla quesadillas cut into wedges oozing melted cheese, shredded meat and black beans, next to diced tomato served family-style in a wooden board on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-bean-soup",
+    "name": "Leftover Bean Soup",
+    "english": "Quick bean and rice soup from cooked beans, rice and vegetable bits",
+    "cuisine": "Caribbean",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 10,
+    "total_min": 30,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.01,
+    "ingredients": [
+      {
+        "item": "cooked beans (any) with their liquid",
+        "qty": "3 1/2 cups",
+        "grams": 800,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "cold cooked rice",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "any vegetable bits, diced",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "cooked ham, diced, or leftover meat",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "deli"
+      },
+      {
+        "item": "onion",
+        "qty": "1",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "3 cloves",
+        "grams": 12,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "canned diced tomatoes",
+        "qty": "1/2 can",
+        "grams": 200,
+        "key": false,
+        "aisle": "canned"
+      },
+      {
+        "item": "low-sodium broth",
+        "qty": "4 cups",
+        "grams": 1000,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "vegetable oil",
+        "qty": "1 tbsp",
+        "grams": 15,
+        "key": false,
+        "aisle": "pantry"
+      }
+    ],
+    "steps": [
+      "Soften onion and garlic in oil 3 minutes.",
+      "Add vegetables, tomatoes, broth, thyme and the whole scotch bonnet. Simmer 10 minutes.",
+      "Add beans, ham and rice, simmer 8 minutes, mash some beans against the pot to thicken.",
+      "Remove the pepper and season."
+    ],
+    "batch_tip": "Freezes in pints; a perfect rainy-day pot.",
+    "leftovers": "Blend smooth, thin with milk for a creamy soup.",
+    "macros": {
+      "kcal": 425,
+      "protein_g": 24,
+      "carbs_g": 67,
+      "fat_g": 7,
+      "fiber_g": 14,
+      "sodium_mg": 990
+    },
+    "tags": [
+      "scraps",
+      "one-pot",
+      "toddler-ok",
+      "batch",
+      "freezer",
+      "budget",
+      "quick"
+    ],
+    "toddler": "Scoop the toddler share before the scotch bonnet goes in; mash the beans.",
+    "swap": "Add a handful of spinach and a squeeze of lime at the end for fibre and brightness.",
+    "pairs_with": [
+      "scraps-leftover-wrap"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a thick bean soup with whole beans, rice, diced carrot and red tomato, steaming, with a sprig of thyme on top served family-style in a deep ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-bread-egg-bake",
+    "name": "Stale Bread and Egg Bake",
+    "english": "Savory baked bread pudding from stale bread, eggs and odds and ends",
+    "cuisine": "Caribbean",
+    "category": "breakfast",
+    "meals": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 1/4 of the dish; toddler 1 small square",
+    "active_min": 15,
+    "total_min": 50,
+    "difficulty": 1,
+    "cost_per_serving_usd": 1.19,
+    "ingredients": [
+      {
+        "item": "stale whole-wheat bread, cubed",
+        "qty": "10 slices",
+        "grams": 300,
+        "key": true,
+        "aisle": "bakery"
+      },
+      {
+        "item": "eggs",
+        "qty": "6",
+        "grams": 300,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "milk",
+        "qty": "1 3/4 cups",
+        "grams": 400,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "shredded cheese",
+        "qty": "1 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "dairy"
+      },
+      {
+        "item": "leftover vegetables (peppers, greens), chopped",
+        "qty": "1 1/2 cups",
+        "grams": 200,
+        "key": false,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "ham, sausage or leftover meat, diced",
+        "qty": "1/2 cup",
+        "grams": 100,
+        "key": false,
+        "aisle": "deli"
+      },
+      {
+        "item": "scallions",
+        "qty": "3",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "2 sprigs",
+        "grams": 1,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 2,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "butter, to grease",
+        "qty": "1 tsp",
+        "grams": 5,
+        "key": false,
+        "aisle": "dairy"
+      }
+    ],
+    "steps": [
+      "Heat oven to 350F and butter a 9x13 dish.",
+      "Whisk eggs, milk, salt and thyme.",
+      "Layer bread, vegetables, meat and cheese, pour the custard over and press down; rest 10 minutes.",
+      "Bake 35 minutes until set and golden."
+    ],
+    "batch_tip": "Assemble the night before, refrigerate, bake in the morning.",
+    "leftovers": "Cut in squares and reheat; good cold too.",
+    "macros": {
+      "kcal": 475,
+      "protein_g": 30,
+      "carbs_g": 39,
+      "fat_g": 22,
+      "fiber_g": 5,
+      "sodium_mg": 1060
+    },
+    "tags": [
+      "scraps",
+      "toddler-ok",
+      "batch",
+      "rest-day",
+      "budget"
+    ],
+    "toddler": "A soft square, no ham.",
+    "swap": "Add 4 extra egg whites to bump protein by about 6 g per portion.",
+    "pairs_with": [
+      "scraps-frittata"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a golden-brown savory bread pudding cut into squares showing egg custard, cubes of bread, ham and melted cheese served family-style in a rustic baking dish on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  },
+  {
+    "id": "scraps-chicken-bone-broth-soup",
+    "name": "Bone-Broth Chicken Soup",
+    "english": "Soup from roast chicken bones, leftover meat and vegetable ends",
+    "cuisine": "Caribbean",
+    "category": "soup",
+    "meals": [
+      "lunch",
+      "dinner"
+    ],
+    "servings": 5,
+    "portion": "Adults 2 cups; toddler 3/4 cup",
+    "active_min": 15,
+    "total_min": 60,
+    "difficulty": 1,
+    "cost_per_serving_usd": 0.79,
+    "ingredients": [
+      {
+        "item": "leftover cooked chicken pulled from the bones",
+        "qty": "1 1/2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "cooked rice or noodles",
+        "qty": "1 1/2 cups",
+        "grams": 400,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "carrot, celery and onion ends, diced",
+        "qty": "2 cups",
+        "grams": 300,
+        "key": true,
+        "aisle": "leftovers"
+      },
+      {
+        "item": "eggs, beaten (stirred in)",
+        "qty": "2",
+        "grams": 100,
+        "key": true,
+        "aisle": "dairy"
+      },
+      {
+        "item": "baby spinach",
+        "qty": "2 handfuls",
+        "grams": 100,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "garlic",
+        "qty": "4 cloves",
+        "grams": 15,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh ginger",
+        "qty": "1 inch",
+        "grams": 10,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "fresh thyme",
+        "qty": "3 sprigs",
+        "grams": 3,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "lime",
+        "qty": "1",
+        "grams": 30,
+        "key": false,
+        "aisle": "produce"
+      },
+      {
+        "item": "salt",
+        "qty": "1/2 tsp",
+        "grams": 3,
+        "key": false,
+        "aisle": "pantry"
+      },
+      {
+        "item": "whole scotch bonnet",
+        "qty": "1",
+        "grams": 5,
+        "key": false,
+        "aisle": "produce"
+      }
+    ],
+    "steps": [
+      "Cover the carcass, vegetable ends, garlic, ginger and thyme with 8 cups water and the whole scotch bonnet. Simmer covered 45 minutes (or pressure cook 20).",
+      "Strain, discard bones and pepper, keep the broth.",
+      "Return the broth to the pot with the chicken, rice and diced vegetables and cook 8 minutes.",
+      "Stir the beaten egg in a thin stream, then wilt the spinach and finish with lime and salt."
+    ],
+    "batch_tip": "Keep a bag of bones and vegetable ends in the freezer for this; make 3 quarts for the freezer.",
+    "leftovers": "Even better the next day; add leftover rice.",
+    "macros": {
+      "kcal": 305,
+      "protein_g": 26,
+      "carbs_g": 34,
+      "fat_g": 7,
+      "fiber_g": 3,
+      "sodium_mg": 400
+    },
+    "tags": [
+      "scraps",
+      "one-pot",
+      "toddler-ok",
+      "batch",
+      "freezer",
+      "post-workout",
+      "budget"
+    ],
+    "toddler": "Scoop the toddler share before adding the pepper to the pot; strain the bones and check for small pieces.",
+    "swap": "Chill and skim the fat for about 2 g fat less per portion; add a can of white beans for more fibre.",
+    "pairs_with": [
+      "scraps-bean-soup"
+    ],
+    "photo_prompt": "Appetizing overhead food photograph of a clear golden chicken soup with pulled chicken, rice, diced carrots, ribbons of beaten egg and green spinach served family-style in a deep white ceramic bowl on a warm wooden table, soft natural window light, shallow depth of field, editorial cookbook style, no text, no hands, no logos."
+  }
+]

@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Jarvis</title>
+<meta name="theme-color" content="#06080C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jarvis">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="stylesheet" href="/design-system.css">
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; background:var(--bg-0); color:var(--text-1);
+    font:400 var(--fs-md)/1.5 var(--font-ui); overflow:hidden; -webkit-font-smoothing:antialiased; }
+  body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:radial-gradient(120% 70% at 50% -10%, rgba(92,198,230,.07), transparent 60%), var(--bg-0); }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+  .screen { position:fixed; inset:0; display:flex; flex-direction:column; }
+  .hidden { display:none !important; }
+
+  /* pairing */
+  #pair { align-items:center; justify-content:center; gap:20px; padding:24px; text-align:center; }
+  #pair h1 { letter-spacing:.3em; color:var(--text-1); font:600 var(--fs-xl)/var(--lh-xl) var(--font-display); }
+  #pair p { color:var(--text-2); max-width:300px; }
+  #code { width:230px; font-size:34px; letter-spacing:.35em; text-align:center; padding:14px; border-radius:var(--r-3);
+    background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-1); outline:none; }
+  #code:focus { border-color:var(--accent); }
+  .btn { min-height:var(--tap); padding:0 var(--s-5); border-radius:var(--r-2); background:var(--accent); color:var(--accent-ink); font-weight:600; font-size:var(--fs-sm); transition:transform var(--dur-instant) var(--ease-out); }
+  .btn:active { transform:scale(.98); }
+  .err { color:var(--danger); min-height:1.4em; font-size:14px; }
+
+  /* app shell */
+  #app { display:flex; flex-direction:column; }
+  header { display:flex; align-items:center; gap:12px; padding:calc(10px + var(--safe-t)) 18px 10px; position:relative; z-index:3; }
+  header canvas { width:42px; height:42px; flex:none; }
+  header .t { flex:1; min-width:0; }
+  header .t b { display:block; letter-spacing:.18em; color:var(--text-1); font:600 var(--fs-sm)/var(--lh-sm) var(--font-display); }
+  header .t span { font-size:12px; color:var(--text-2); display:flex; align-items:center; gap:6px; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--ok); }
+  .dot.off { background:var(--danger); }
+  .iconbtn { width:var(--tap); height:var(--tap); border-radius:50%; display:grid; place-items:center; flex:none; background:var(--bg-2); border:1px solid var(--line-1); color:var(--text-1); }
+  .iconbtn svg { width:20px; height:20px; }
+
+  nav#tabs { display:flex; gap:6px; padding:8px 14px calc(8px + var(--safe-b)); background:color-mix(in srgb, var(--bg-1) 82%, transparent);
+    backdrop-filter:blur(6px) saturate(120%); border-top:1px solid var(--line-1); z-index:3; }
+  nav#tabs button { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 0;
+    color:var(--text-3); font-size:var(--fs-xs); font-weight:500; border-radius:var(--r-2); min-height:var(--tap); transition:color var(--dur-fast) var(--ease-out); }
+  nav#tabs button svg { width:23px; height:23px; }
+  nav#tabs button.on { color:var(--accent); }
+  nav#tabs button.live-tab.on { color:var(--accent); }
+
+  main { flex:1; min-height:0; display:flex; flex-direction:column; }
+  section.page { display:none; flex:1; min-height:0; flex-direction:column; }
+  section.page.on { display:flex; animation:fade var(--dur-base) var(--ease-out); }
+  @keyframes fade { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  /* home */
+  #home { padding:4px 16px 20px; overflow-y:auto; }
+  #home > * { flex-shrink:0; }   /* a scrolling flex column must not squash the stats strip to a sliver */
+  .hello { margin:var(--s-2) 2px var(--s-5); }
+  .hello h2 { font:600 var(--fs-2xl)/var(--lh-2xl) var(--font-display); letter-spacing:-.01em; }
+  .hello p { color:var(--text-2); font-size:var(--fs-sm); line-height:var(--lh-sm); margin-top:2px; }
+  .strip { display:flex; gap:10px; overflow-x:auto; padding:2px 2px 8px; margin:0 -2px; scrollbar-width:none; }
+  .strip::-webkit-scrollbar { display:none; }
+  .chip-stat { flex:none; min-width:124px; background:var(--bg-2); border:1px solid var(--line-1); border-radius:var(--r-3); padding:var(--s-3) var(--s-4); }
+  .chip-stat .k { font-size:var(--fs-xs); font-weight:500; color:var(--text-3); text-transform:uppercase; letter-spacing:.08em; }
+  .chip-stat .v { font:600 var(--fs-lg)/var(--lh-lg) var(--font-display); font-variant-numeric:tabular-nums; margin-top:2px; }
+  .chip-stat .s { font-size:var(--fs-xs); color:var(--text-2); }
+  .sec-h { font-size:var(--fs-xs); letter-spacing:.08em; color:var(--text-3); text-transform:uppercase; font-weight:500; margin:var(--s-5) 4px var(--s-3); }
+  .tiles { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .tile { position:relative; border-radius:var(--r-3); padding:var(--s-4); min-height:112px; display:flex; flex-direction:column;
+    justify-content:flex-start; background:var(--bg-2); border:1px solid var(--line-1); overflow:hidden; text-align:left; transition:transform var(--dur-instant) var(--ease-out), background var(--dur-fast) var(--ease-out); }
+  .tile:active { transform:scale(.98); background:var(--bg-3); }
+  .tile .ic { width:40px; height:40px; border-radius:var(--r-2); display:grid; place-items:center; background:var(--accent-soft); color:var(--accent); }
+    .tile.green .ic { background:var(--ok-soft); color:var(--ok); }
+  .tile.amber .ic { background:var(--warn-soft); color:var(--warn); }
+  .tile .ic svg { width:22px; height:22px; }
+  .tile b { font-size:var(--fs-md); font-weight:600; margin-top:var(--s-3); }
+  .tile small { color:var(--text-2); font-size:var(--fs-xs); line-height:var(--lh-xs); margin-top:2px; }
+  .tile.wide { grid-column:1 / -1; min-height:auto; flex-direction:row; align-items:center; gap:14px; }
+  .tile.wide b { margin-top:0; }
+  .tile .chev { margin-left:auto; color:var(--text-2); font-size:22px; line-height:1; }
+  .tile.wide .ic { flex:none; }
+  .qa { display:flex; gap:8px; flex-wrap:wrap; }
+  .qa button { min-height:40px; padding:0 var(--s-4); border-radius:var(--r-pill); background:var(--bg-2); border:1px solid var(--line-1); font-size:var(--fs-sm); color:var(--text-1); }
+  .qa button:active { background:var(--accent-soft); }
+
+  /* chat */
+  #log { flex:1; overflow-y:auto; padding:14px 16px 6px; display:flex; flex-direction:column; gap:10px; }
+  #log::-webkit-scrollbar { width:0; }
+  .msg { max-width:86%; padding:var(--s-3) var(--s-4); border-radius:var(--r-3); white-space:pre-wrap; word-wrap:break-word; animation:in var(--dur-base) var(--ease-out); font-size:var(--fs-md); line-height:var(--lh-md); }
+  .msg.you { align-self:flex-end; background:var(--accent-soft); color:var(--text-1); border:1px solid rgba(92,198,230,.22); border-bottom-right-radius:var(--r-1); }
+  .msg.jarvis { align-self:flex-start; background:var(--bg-2); border:1px solid var(--line-1); border-bottom-left-radius:var(--r-1); }
+  .msg img { display:block; width:100%; max-width:300px; border-radius:12px; margin-top:8px; }
+  .msg .boardlink { display:block; margin-top:8px; padding:6px 12px; border-radius:var(--r-2); border:1px solid var(--line-1); background:var(--accent-soft); color:var(--text-1); font:inherit; font-size:13px; }
+  .msg .cap { font-size:12px; color:var(--text-2); margin-top:4px; }
+  .msg .heard { font-size:12px; opacity:.75; margin-bottom:3px; }
+  .typing { align-self:flex-start; padding:13px 16px; border-radius:var(--r-3); background:var(--bg-2); border:1px solid var(--line-1); display:flex; gap:4px; }
+  .typing i { width:7px; height:7px; border-radius:50%; background:var(--text-2); animation:bob 1.2s infinite; }
+  .typing i:nth-child(2){animation-delay:.15s} .typing i:nth-child(3){animation-delay:.3s}
+  @keyframes bob { 0%,60%,100%{opacity:.3;transform:translateY(0)} 30%{opacity:1;transform:translateY(-4px)} }
+  @keyframes in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  #empty { margin:auto; text-align:center; color:var(--text-2); font-size:var(--fs-sm); line-height:var(--lh-sm); max-width:280px; padding:var(--s-5); }
+  #empty canvas { width:120px; height:120px; margin:0 auto 14px; display:block; }
+
+  footer { padding:8px 12px calc(10px + var(--safe-b)); background:color-mix(in srgb, var(--bg-1) 82%, transparent); border-top:1px solid var(--line-1); }
+  #qchips { display:flex; gap:8px; overflow-x:auto; padding:2px 2px 8px; scrollbar-width:none; }
+  #qchips::-webkit-scrollbar { display:none; }
+  #qchips button { flex:none; min-height:36px; padding:0 var(--s-3); border-radius:var(--r-pill); background:var(--bg-2); border:1px solid var(--line-1); font-size:var(--fs-sm); color:var(--text-1); white-space:nowrap; }
+  #preview { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  #preview img { height:60px; border-radius:10px; }
+  .composer { display:flex; align-items:flex-end; gap:8px; }
+  #text { flex:1; resize:none; max-height:120px; padding:11px var(--s-4); border-radius:var(--r-4); border:1px solid var(--line-2);
+    background:var(--bg-3); color:var(--text-1); outline:none; font:inherit; }
+  #text::placeholder { color:var(--text-3); }
+  #text:focus { border-color:var(--accent); }
+  .cicon { width:46px; height:46px; border-radius:50%; display:grid; place-items:center; flex:none; background:var(--bg-2); border:1px solid var(--line-1); color:var(--text-1); }
+  .cicon svg { width:22px; height:22px; }
+  #send { background:var(--accent); border:0; color:var(--accent-ink); }
+  #mic { width:52px; height:52px; background:var(--accent); border:0; color:var(--accent-ink); position:relative; transition:transform .1s; }
+  #mic:active { transform:scale(.94); }
+  #mic.rec { background:var(--danger); color:#fff; }
+  #mic.rec::after { content:""; position:absolute; inset:-5px; border-radius:50%; border:2px solid var(--danger); animation:ring 1.2s infinite; }
+  @keyframes ring { from{opacity:.7;transform:scale(1)} to{opacity:0;transform:scale(1.5)} }
+  #recbar { display:none; align-items:center; gap:12px; padding:6px 4px; }
+  #recbar.on { display:flex; }
+  #recbar .wave { flex:1; display:flex; align-items:center; gap:3px; height:40px; }
+  #recbar .wave i { flex:1; background:var(--danger); border-radius:3px; height:20%; transition:height .08s; }
+  #recbar .rt { font-variant-numeric:tabular-nums; font-weight:700; color:var(--danger); min-width:42px; }
+  #recbar .stopbtn { padding:12px 20px; border-radius:24px; background:var(--danger); color:#fff; font-weight:700; }
+  #recbar .x { color:var(--text-2); font-size:18px; padding:6px 10px; }
+
+  /* live */
+  #live { align-items:center; justify-content:space-between; padding:calc(16px + var(--safe-t)) 20px calc(26px + var(--safe-b)); text-align:center; }
+  #live .top { width:100%; display:flex; justify-content:space-between; align-items:center; }
+  #live .top b { letter-spacing:.08em; color:var(--text-2); font-size:var(--fs-xs); font-weight:500; text-transform:uppercase; }
+  #live .orbwrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; width:100%; }
+  #live canvas { width:220px; height:220px; }
+  #live .cap { min-height:3.2em; max-width:340px; font-size:var(--fs-lg); line-height:var(--lh-lg); font-weight:500; }
+  #live .you-said { color:var(--text-2); font-size:14px; min-height:1.4em; }
+  #live .hint { color:var(--text-2); font-size:13px; }
+  #live .controls { display:flex; gap:14px; align-items:center; }
+  .lbtn { width:58px; height:58px; border-radius:50%; display:grid; place-items:center; background:var(--bg-2); border:1px solid var(--line-1); color:var(--text-1); }
+  .lbtn svg { width:24px; height:24px; }
+  .lbtn.end { background:var(--danger); border:0; color:#fff; width:66px; height:66px; }
+  .lbtn.end svg { width:26px; height:26px; }
+
+  /* settings sheet */
+  .scrim { position:fixed; inset:0; background:var(--scrim); z-index:9; animation:fade var(--dur-base) var(--ease-out); }
+  #sheet { position:fixed; inset:auto 0 0 0; background:var(--bg-2); border-top:1px solid var(--line-1);
+    border-radius:var(--r-4) var(--r-4) 0 0; padding:var(--s-4) var(--s-4) calc(var(--s-5) + var(--safe-b)); z-index:10; max-height:90vh; overflow-y:auto; box-shadow:var(--e-3); animation:up var(--dur-base) var(--ease-out); }
+  @keyframes up { from{transform:translateY(100%)} to{transform:none} }
+  #sheet .grab { width:36px; height:4px; border-radius:2px; background:var(--line-2); margin:0 auto var(--s-4); }
+  #sheet h2 { font:600 var(--fs-lg)/var(--lh-lg) var(--font-ui); letter-spacing:-.01em; margin-bottom:var(--s-2); }
+  .opt { display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--line-1); gap:12px; }
+  .opt small { display:block; color:var(--text-2); font-size:13px; margin-top:2px; }
+  .linkbtn { color:var(--accent); font-weight:600; font-size:var(--fs-sm); white-space:nowrap; min-height:var(--tap); }
+  .sw { width:48px; height:28px; border-radius:var(--r-pill); background:var(--bg-3); box-shadow:inset 0 0 0 1px var(--line-2); position:relative; flex:none; transition:background var(--dur-fast) var(--ease-out); }
+  .sw::after { content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:var(--text-2); transition:left var(--dur-fast) var(--ease-out); }
+  .sw.on { background:var(--accent); box-shadow:none; } .sw.on::after { left:23px; background:var(--accent-ink); }
+  .belldot { position:absolute; top:4px; right:3px; min-width:17px; height:17px; padding:0 4px; border-radius:9px; background:var(--danger);
+    color:#fff; font-size:10.5px; font-weight:700; line-height:17px; text-align:center; box-shadow:0 0 0 2px var(--bg-0); }
+  .nlist { max-height:62vh; overflow-y:auto; margin:4px -4px 0; padding:0 4px; }
+  .ngroup { font-size:11px; letter-spacing:.14em; color:var(--text-2); text-transform:uppercase; font-weight:700; margin:12px 0 4px; }
+  .nitem { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--line-1); }
+  .nitem .ni { width:34px; height:34px; border-radius:11px; display:grid; place-items:center; flex:none; color:var(--accent); background:var(--accent-soft); }
+  .nitem.new .nt::after { content:""; display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--accent); margin-left:7px; vertical-align:2px; }
+  .nitem .nt { font-weight:600; font-size:14.5px; } .nitem .nb { color:var(--text-2); font-size:13.5px; margin-top:1px; white-space:pre-wrap; }
+  .nitem .nw { color:var(--text-2); font-size:11.5px; white-space:nowrap; margin-left:auto; padding-left:8px; }
+  .nset .opt:last-of-type { border-bottom:0; }
+  .tm { background:var(--bg-2); color:var(--text-1); border:1px solid var(--line-1); border-radius:10px; padding:6px 8px; font:inherit; font-size:14px; }
+  #install { margin:10px 16px 0; padding:11px 14px; border-radius:14px; background:var(--accent-soft); border:1px solid var(--line-1); font-size:13.5px; color:var(--text-2); }
+  #toast { position:fixed; left:50%; bottom:calc(84px + var(--safe-b)); transform:translateX(-50%); background:var(--bg-3);
+    border:1px solid var(--line-2); padding:var(--s-3) var(--s-4); border-radius:var(--r-2); font-size:var(--fs-sm); font-weight:500; display:none; z-index:20; box-shadow:var(--e-2); max-width:88vw; text-align:center; }
+  #lock { position:fixed; inset:0; z-index:40; background:var(--bg-0); display:none; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:24px; text-align:center; }
+  #lock.on { display:flex; }
+  #lock canvas { width:120px; height:120px; }
+  #lock h1 { letter-spacing:.3em; color:var(--text-1); font:600 var(--fs-lg)/var(--lh-lg) var(--font-display); }
+  #lock p { color:var(--text-2); max-width:280px; }
+  #lock .fp { width:84px; height:84px; border-radius:50%; display:grid; place-items:center; background:var(--bg-2); border:1px solid var(--line-1); color:var(--accent); }
+  #lock .fp svg { width:40px; height:40px; }
+</style>
+</head>
+<body>
+
+<section id="pair" class="screen hidden">
+  <canvas id="orb-big" width="260" height="260" style="width:130px;height:130px"></canvas>
+  <h1>J.A.R.V.I.S.</h1>
+  <p>On your PC, say <b>"Hey Jarvis, pair my phone"</b> and enter the code below.</p>
+  <input id="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••">
+  <button class="btn" id="pair-btn">Link this phone</button>
+  <div class="err" id="pair-err"></div>
+</section>
+
+<section id="app" class="screen hidden">
+  <header>
+    <canvas id="orb" width="84" height="84"></canvas>
+    <div class="t"><b>J.A.R.V.I.S.</b><span id="who"><span class="dot" id="statusdot"></span>Online</span></div>
+    <button class="iconbtn" id="bell" aria-label="Notifications" style="position:relative">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <span id="bell-dot" class="belldot" style="display:none"></span></button>
+    <button class="iconbtn" id="gear" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </header>
+  <div id="install" class="hidden"></div>
+
+  <main>
+    <section id="home" class="page on">
+      <div class="hello"><h2 id="greet">Hello</h2><p id="subgreet">Here's your home at a glance.</p></div>
+      <div class="strip" id="stats"></div>
+      <div class="sec-h">Jump in</div>
+      <div class="qa" id="homeqa"></div>
+      <div class="sec-h">Your spaces</div>
+      <div class="tiles">
+        <button class="tile violet" onclick="location.href='/games.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10a4 4 0 0 1 4 4v2a3 3 0 0 1-3 3h-1l-2-2H9l-2 2H6a3 3 0 0 1-3-3v-2a4 4 0 0 1 4-4z"/><path d="M8 12h3M9.5 10.5v3M16 12h.01M18 11h.01"/></svg></div><b>Playhouse</b><small>Family stories &amp; game night</small></button>
+        <button class="tile" onclick="location.href='/learning.html'"><div class="ic"><svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div><b>Teach Jarvis</b><small>Learning Library · sources and evidence</small></button>
+        <button class="tile violet" onclick="go('live')"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><b>Live talk</b><small>Hands-free conversation</small></button>
+        <button class="tile" onclick="go('chat')"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><b>Chat</b><small>Type, talk or send a photo</small></button>
+        <button class="tile green" onclick="location.href='/partner.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div><b>Partner</b><small>Goals &amp; what I owe you</small></button>
+        <button class="tile" onclick="location.href='/house.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/></svg></div><b>House</b><small>Home cameras · live &amp; recordings</small></button>
+        <button class="tile violet" onclick="location.href='/eyes.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><b>Eyes</b><small>Live camera — show Jarvis anything</small></button>
+        <button class="tile amber" onclick="location.href='/fitness.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg></div><b>Trainer</b><small>AFT &amp; physique</small></button>
+        <button class="tile amber" onclick="location.href='/captain.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg></div><b>Captain America</b><small>12-week program</small></button>
+        <button class="tile" onclick="location.href='/study.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></svg></div><b>Study</b><small>Quizzes &amp; flashcards</small></button>
+        <button class="tile" onclick="location.href='/languages.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/></svg></div><b>Languages</b><small>Spoken lessons</small></button>
+        <button class="tile amber" onclick="location.href='/voice-record.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><b>Record my voice</b><small>Teach Jarvis your Creole</small></button>
+        <button class="tile" onclick="location.href='/calendar.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></div><b>Calendar</b><small>Link Google Calendar</small></button>
+        <button class="tile green" onclick="location.href='/kitchen.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 3-3 6s1 4 3 4v8"/></svg></div><b>Kitchen</b><small>Meals &amp; shopping</small></button>
+        <button class="tile violet" onclick="location.href='/wardrobe.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3 7 6v3l-4 2 2 9h14l2-9-4-2V6z"/><path d="M9 6a3 3 0 0 0 6 0"/></svg></div><b>Wardrobe</b><small>3D dressing room</small></button>
+        <button class="tile wide" onclick="location.href='/memory.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></div><div><b>Memory</b><br><small>Record &amp; recall anything — "remember this"</small></div><span class="chev" aria-hidden="true">›</span></button>
+        <button class="tile wide" onclick="location.href='/pc.html'"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><b>PC control</b><br><small>Open apps, see your screen, stop a task</small></div><span class="chev" aria-hidden="true">›</span></button>
+      </div>
+      <div class="sec-h" id="waiting-h" style="display:none">Waiting for your OK</div>
+      <div id="waiting"></div>
+      <div class="sec-h" id="activity-h" style="display:none">Right now</div>
+      <div id="activity"></div>
+      <div style="height:16px"></div>
+    </section>
+
+    <section id="chat" class="page">
+      <div id="log"><div id="empty"><canvas width="240" height="240" id="orb-empty"></canvas><div>Ask me anything — type, tap the mic to talk, or send a photo.</div></div></div>
+      <footer>
+        <div id="preview" class="hidden"><img id="preview-img" alt=""><button class="linkbtn" id="preview-x">Remove</button></div>
+        <div id="qchips"></div>
+        <div id="recbar">
+          <button class="x" id="rec-cancel" aria-label="Cancel"><svg class="ds-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          <div class="wave" id="wave"></div>
+          <span class="rt" id="rt">0:00</span>
+          <button class="stopbtn" id="rec-stop">Send</button>
+        </div>
+        <div class="composer" id="composer">
+          <button class="cicon" id="cam" aria-label="Photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
+          <input type="file" id="file" accept="image/*" class="hidden">
+          <textarea id="text" rows="1" placeholder="Message Jarvis"></textarea>
+          <button class="cicon hidden" id="send" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button class="cicon" id="mic" aria-label="Tap to talk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg></button>
+        </div>
+      </footer>
+    </section>
+
+    <section id="house" class="page"><iframe id="house-frame" title="House cameras" allow="fullscreen; autoplay; microphone" allowfullscreen style="flex:1;width:100%;border:0;background:var(--bg-0)"></iframe></section>
+    <section id="live" class="page">
+      <div class="top"><b><span class="dot" style="display:inline-block;background:var(--danger);margin-right:8px"></span>Live</b><span class="hint" id="live-hint">hands-free</span></div>
+      <div class="orbwrap">
+        <canvas id="orb-live" width="440" height="440"></canvas>
+        <div class="you-said" id="live-you"></div>
+        <div class="cap" id="live-cap">Tap the orb and just talk.</div>
+      </div>
+      <div class="controls">
+        <button class="lbtn" id="live-mute" aria-label="Pause"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+        <button class="lbtn end" id="live-end" aria-label="End"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+    </section>
+  </main>
+
+  <nav id="tabs">
+    <button data-tab="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg>Home</button>
+    <button data-tab="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Chat</button>
+    <button data-tab="house"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><circle cx="12" cy="15" r="2.5"/></svg>House</button>
+    <button data-tab="live" class="live-tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Live</button>
+  </nav>
+</section>
+
+<div id="lock">
+  <canvas id="orb-lock" width="240" height="240"></canvas>
+  <h1>J.A.R.V.I.S.</h1>
+  <p>Locked. Unlock with your fingerprint.</p>
+  <button class="fp" id="fp-btn" aria-label="Unlock with fingerprint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 11v3M8.5 8.5a5 5 0 0 1 7 0M6 11a8 8 0 0 1 12 0M9 15a3 3 0 0 1 6 0v2M7.5 17.5c0-1 .3-2 .8-3M16.5 17.5c.2-1 .2-2 0-3"/></svg></button>
+  <div class="err" id="lock-err" style="min-height:1.2em"></div>
+</div>
+<div id="toast"></div>
+<audio id="player" playsinline></audio>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// Icons: Lucide (lucide.dev, ISC licence), 24 grid, drawn with .ds-icon from design-system.css.
+const ICONS = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  dumbbell: '<path d="M6.5 6.5v11"/><path d="M17.5 6.5v11"/><path d="M3 9.5v5"/><path d="M21 9.5v5"/><path d="M6.5 12h11"/>',
+  chart: '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M8 17v-5"/><path d="M13 17V7"/><path d="M18 17v-8"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  sparkles: '<path d="M12 4l1.8 4.7L18.5 10.5l-4.7 1.8L12 17l-1.8-4.7L5.5 10.5l4.7-1.8z"/><path d="M19 3v4"/><path d="M17 5h4"/><path d="M5 17v4"/><path d="M3 19h4"/>',
+  mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>',
+};
+const icon = (name, size = "") => `<svg class="ds-icon ${size}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.sparkles}</svg>`;
+// Confirm / prompt as a design-system sheet (.ds-sheet) instead of the browser's native dialog.
+// Resolves true or false; with `input` set it resolves the typed text, or null when cancelled.
+function dsDialog({ title, body = "", ok = "OK", cancel = "Cancel", danger = false, input = null }) {
+  return new Promise(resolve => {
+    const e = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `<div class="ds-scrim"></div><div class="ds-sheet" role="alertdialog" aria-modal="true" aria-labelledby="ds-dlg-t"><h2 id="ds-dlg-t">${e(title)}</h2>${body ? `<p>${e(body)}</p>` : ""}${input !== null ? `<input class="ds-input" aria-labelledby="ds-dlg-t" value="${e(input)}">` : ""}<div class="ds-sheet-actions"><button type="button" class="ds-btn" data-a="no">${e(cancel)}</button><button type="button" class="ds-btn ${danger ? "danger solid" : "primary"}" data-a="yes">${e(ok)}</button></div></div>`;
+    document.body.append(wrap);
+    const field = wrap.querySelector("input"), prev = document.activeElement;
+    const done = yes => {
+      document.removeEventListener("keydown", key, true); wrap.remove();
+      try { prev && prev.focus && prev.focus(); } catch (x) {}
+      resolve(input !== null ? (yes ? field.value : null) : yes);
+    };
+    const key = ev => {
+      if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); done(false); }
+      else if (ev.key === "Enter" && field && document.activeElement === field) { ev.preventDefault(); done(true); }
+    };
+    document.addEventListener("keydown", key, true);
+    wrap.querySelector(".ds-scrim").onclick = () => done(false);
+    wrap.querySelector('[data-a="no"]').onclick = () => done(false);
+    wrap.querySelector('[data-a="yes"]').onclick = () => done(true);
+    if (field) { field.focus(); field.select(); } else wrap.querySelector(danger ? '[data-a="no"]' : '[data-a="yes"]').focus();
+  });
+}
+if (location.hash.startsWith("#t=")) { try { localStorage.setItem("jarvis_token", decodeURIComponent(location.hash.slice(3))); } catch (e) {} history.replaceState(null, "", location.pathname); }
+let token = null; try { token = localStorage.getItem("jarvis_token"); } catch (e) {}
+const state = { me: null, busy: false, image: null, rec: null, mode: "idle", tab: "home", live: false };
+const voiceOn = () => { try { return localStorage.getItem("jarvis_voice") !== "off"; } catch (e) { return true; } };
+const player = $("#player");
+function toast(t) { const el = $("#toast"); el.textContent = t; el.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.display = "none", 2800); }
+
+/* orb */
+const COLORS = { idle:[79,195,247], listening:[94,224,138], thinking:[255,194,74], speaking:[157,123,255] };
+const orbs = []; let micLevel = 0;
+function orb(canvas) { if (canvas) orbs.push({ canvas, ctx: canvas.getContext("2d") }); }
+(function loop(now) {
+  const t = now / 1000;
+  for (const o of orbs) {
+    if (!o.canvas.isConnected) continue;
+    const W = o.canvas.width, c = W / 2, ctx = o.ctx;
+    const [r, g, b] = COLORS[state.mode] || COLORS.idle, col = a => `rgba(${r},${g},${b},${a})`;
+    const act = state.mode !== "idle", lvl = state.mode === "listening" ? micLevel : 0;
+    const pulse = act ? 0.22 + 0.18 * Math.abs(Math.sin(t * 3.2)) + lvl * 0.5 : 0.1 + 0.05 * Math.sin(t * 1.6);
+    ctx.clearRect(0, 0, W, W);
+    const glow = ctx.createRadialGradient(c, c, 2, c, c, c);
+    glow.addColorStop(0, col(0.55 + pulse)); glow.addColorStop(0.4, col(0.18 + pulse / 2)); glow.addColorStop(1, col(0));
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(c, c, c, 0, 7); ctx.fill();
+    ctx.fillStyle = "rgba(255,255,255,.92)"; ctx.beginPath(); ctx.arc(c, c, W * (0.055 + lvl * 0.04) + pulse * W * 0.045, 0, 7); ctx.fill();
+    const speed = state.mode === "thinking" ? 3 : act ? 1.4 : 0.45;
+    [[0.24, 6, 1], [0.34, 10, -0.6], [0.44, 3, 0.4]].forEach(([rad, segs, dir]) => {
+      ctx.strokeStyle = col(0.6); ctx.lineWidth = W * 0.022;
+      for (let s = 0; s < segs; s++) { const a0 = t * dir * speed + s / segs * 6.283;
+        ctx.beginPath(); ctx.arc(c, c, W * rad, a0, a0 + 6.283 / segs * 0.6); ctx.stroke(); }
+    });
+  }
+  requestAnimationFrame(loop);
+})(0);
+["#orb", "#orb-big", "#orb-live", "#orb-empty", "#orb-lock"].forEach(s => orb($(s)));
+function setMode(m) { state.mode = m; }
+
+/* ---------- fingerprint lock (local WebAuthn gate; convenience over the already-paired token) ---------- */
+const bioOn = () => { try { return !!localStorage.getItem("jarvis_bio"); } catch (e) { return false; } };
+const rnd = n => crypto.getRandomValues(new Uint8Array(n));
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function bioSupported() { try { return window.PublicKeyCredential && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable(); } catch (e) { return false; } }
+async function bioEnable() {
+  if (!await bioSupported()) { toast("This phone has no fingerprint/face unlock set up."); return false; }
+  const cred = await navigator.credentials.create({ publicKey: {
+    challenge: rnd(32), rp: { name: "Jarvis", id: location.hostname },
+    user: { id: rnd(16), name: "jarvis", displayName: "Jarvis" },
+    pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
+    authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required", residentKey: "preferred" },
+    timeout: 60000, attestation: "none" } });
+  try { localStorage.setItem("jarvis_bio", b64(cred.rawId)); } catch (e) {}
+  return true;
+}
+function bioDisable() { try { localStorage.removeItem("jarvis_bio"); } catch (e) {} }
+async function bioUnlock() {
+  const id = (() => { try { return localStorage.getItem("jarvis_bio"); } catch (e) { return null; } })();
+  if (!id) return true;
+  await navigator.credentials.get({ publicKey: {
+    challenge: rnd(32), allowCredentials: [{ type: "public-key", id: unb64(id) }],
+    userVerification: "required", timeout: 60000 } });  // throws if cancelled / failed
+  return true;
+}
+async function tryUnlock() {
+  $("#lock-err").textContent = "";
+  try { await bioUnlock(); $("#lock").classList.remove("on"); }
+  catch (e) { $("#lock-err").textContent = "Didn't match — tap to try again."; }
+}
+$("#fp-btn").onclick = tryUnlock;
+async function gateOpen() {
+  if (!bioOn()) return true;
+  $("#lock").classList.add("on");
+  await tryUnlock();
+  return !$("#lock").classList.contains("on");
+}
+
+/* api */
+async function api(path, opts = {}) {
+  const res = await fetch(path, { ...opts, headers: { ...(opts.headers || {}), Authorization: `Bearer ${token}` } });
+  if (res.status === 401) { try { localStorage.removeItem("jarvis_token"); } catch (e) {} token = null; show("pair"); throw new Error("unlinked"); }
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).detail || `Error ${res.status}`);
+  return res.json();
+}
+function show(which) { $("#pair").classList.toggle("hidden", which !== "pair"); $("#app").classList.toggle("hidden", which !== "app"); }
+
+/* pairing */
+$("#pair-btn").onclick = async () => {
+  const code = $("#code").value.trim(); $("#pair-err").textContent = "";
+  const device = /iPhone|iPad/.test(navigator.userAgent) ? "iPhone" : /Android/.test(navigator.userAgent) ? "Android phone" : "device";
+  try {
+    const res = await fetch("/api/pair", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, device }) });
+    const data = await res.json(); if (!res.ok) throw new Error(data.detail || "Couldn't link");
+    token = data.token; try { localStorage.setItem("jarvis_token", data.token); } catch (e) {}
+    start();
+  } catch (e) { $("#pair-err").textContent = e.message; }
+};
+
+/* tabs */
+function go(tab) {
+  if (state.live && tab !== "live") endLive();
+  state.tab = tab;
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
+  document.querySelectorAll("section.page").forEach(p => p.classList.toggle("on", p.id === tab));
+  if (tab === "live") startLive();
+  if (tab === "home") loadHome();
+  const hf = $("#house-frame");                 // the House tab streams only while it is open
+  if (tab === "house") { if (!hf.src.includes("house.html")) hf.src = "/house.html"; }
+  else if (hf && hf.src.includes("house.html")) hf.src = "about:blank";
+}
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => go(b.dataset.tab));
+window.go = go;
+
+/* messages */
+function add(who, text, extra = {}) {
+  $("#empty")?.remove();
+  const div = document.createElement("div"); div.className = `msg ${who}`;
+  if (extra.heard) { const h = document.createElement("div"); h.className = "heard"; h.innerHTML = icon("mic", "sm") + " " + esc(extra.heard); div.append(h); }
+  if (text) div.append(document.createTextNode(text));
+  if (extra.photo) { const img = document.createElement("img"); img.src = extra.photo; div.append(img); }
+  for (const im of extra.images || []) {
+    const img = document.createElement("img"); img.src = `${im.url}?t=${encodeURIComponent(token)}`; img.loading = "lazy";
+    img.onclick = () => window.open(img.src, "_blank"); div.append(img);
+    if (im.caption) { const c = document.createElement("div"); c.className = "cap"; c.textContent = im.caption; div.append(c); }
+  }
+  if (extra.board) {          // the explanation just given has a whiteboard: one tap to the rung it is on
+    const a = document.createElement("button"); a.type = "button"; a.className = "boardlink";
+    a.textContent = "Whiteboard: " + (extra.board.label || extra.board.topic || "open");
+    a.onclick = () => { location.href = "/" + (extra.board.page || "study.html?board=last"); }; div.append(a);
+  }
+  if (extra.link && /^[a-z0-9_-]+\.html(?:\?[a-z0-9_=&-]*)?$/i.test(String(extra.link.page || ""))) {   // "show me my house": one tap to the live page
+    const a = document.createElement("button"); a.type = "button"; a.className = "boardlink";
+    a.textContent = String(extra.link.label || "Open"); a.onclick = () => { location.href = "/" + extra.link.page; }; div.append(a);
+  }
+  $("#log").append(div); $("#log").scrollTop = $("#log").scrollHeight; return div;
+}
+function typing(on) {
+  $("#typing")?.remove();
+  if (on) { const t = document.createElement("div"); t.id = "typing"; t.className = "typing"; t.innerHTML = "<i></i><i></i><i></i>"; $("#log").append(t); $("#log").scrollTop = $("#log").scrollHeight; }
+}
+function handleReply(data) {
+  typing(false); add("jarvis", data.reply, { images: data.images, board: data.board, link: data.link });
+  if (data.audio && voiceOn()) { setMode("speaking"); player.src = data.audio; player.play().catch(() => setMode("idle")); }
+  else setMode("idle");
+}
+player.onended = () => setMode("idle");
+$("#orb").onclick = () => { player.pause(); setMode("idle"); };
+document.addEventListener("touchend", function unlock() {
+  player.src = "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA//////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//tQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
+  player.play().then(() => player.pause()).catch(() => {}); document.removeEventListener("touchend", unlock);
+}, { once: true });
+
+/* text send */
+async function sendText(preset) {
+  const text = preset || $("#text").value.trim();
+  if (state.busy && /^(?:(?:hey )?jarvis[, ]+)?(?:stop|cancel|nevermind|never mind)(?: (?:the )?(?:pc|computer)(?: (?:task|control))?)?[.!]?$/i.test(text)) {
+    if (!preset) { $("#text").value = ""; autoSize(); toggleSend(); }
+    add("you", text);
+    try { const r = await api("/api/pc/cancel", {method:"POST"}); add("jarvis", r.detail || "Stop requested for the PC task."); }
+    catch (e) { add("jarvis", e.message); }
+    return;
+  }
+  if (state.busy && /^(?:pc status|task status|what'?s the hold ?up|what are you doing)[?!.]?$/i.test(text)) {
+    try { const r = await api("/api/pc/status"); add("jarvis", r.active?.detail || "No remote PC task is running."); }
+    catch (e) { add("jarvis", e.message); }
+    return;
+  }
+  if ((!text && !state.image) || state.busy) return;
+  state.busy = true; add("you", text, { photo: state.image });
+  const body = { text, image: state.image, speak: voiceOn() };
+  if (!preset) { $("#text").value = ""; autoSize(); } clearImage(); toggleSend();
+  setMode("thinking"); typing(true);
+  try { handleReply(await api("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })); }
+  catch (e) { typing(false); add("jarvis", e.message); setMode("idle"); }
+  state.busy = false;
+}
+$("#send").onclick = () => sendText();
+$("#text").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !/Mobi/.test(navigator.userAgent)) { e.preventDefault(); sendText(); } });
+function autoSize() { const t = $("#text"); t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 120) + "px"; }
+function toggleSend() { const has = $("#text").value.trim() || state.image; $("#send").classList.toggle("hidden", !has); $("#mic").classList.toggle("hidden", !!has); }
+$("#text").addEventListener("input", () => { autoSize(); toggleSend(); });
+
+/* photos */
+$("#cam").onclick = () => $("#file").click();
+$("#file").onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  const bmp = await createImageBitmap(f), scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  const cv = document.createElement("canvas"); cv.width = bmp.width * scale; cv.height = bmp.height * scale;
+  cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+  state.image = cv.toDataURL("image/jpeg", 0.85);
+  $("#preview-img").src = state.image; $("#preview").classList.remove("hidden"); toggleSend(); e.target.value = "";
+};
+function clearImage() { state.image = null; $("#preview").classList.add("hidden"); }
+$("#preview-x").onclick = () => { clearImage(); toggleSend(); };
+
+/* mic level meter */
+let audioCtx = null;
+function levelMeter(stream, onLevel) {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const src = audioCtx.createMediaStreamSource(stream), an = audioCtx.createAnalyser();
+    an.fftSize = 512; src.connect(an); const buf = new Uint8Array(an.frequencyBinCount); let raf;
+    (function tick() { an.getByteTimeDomainData(buf); let sum = 0;
+      for (const v of buf) { const d = (v - 128) / 128; sum += d * d; }
+      onLevel(Math.min(1, Math.sqrt(sum / buf.length) * 3.4)); raf = requestAnimationFrame(tick); })();
+    return () => { cancelAnimationFrame(raf); try { src.disconnect(); } catch (e) {} };
+  } catch (e) { return () => {}; }
+}
+function pickType() { return ["audio/webm;codecs=opus", "audio/mp4", "audio/webm"].find(t => MediaRecorder.isTypeSupported(t)) || ""; }
+const WAVE_BARS = 22;
+$("#wave").innerHTML = Array(WAVE_BARS).fill("<i></i>").join("");
+const waveBars = [...document.querySelectorAll("#wave i")];
+
+/* CHAT mic: tap to record, tap again (or Send) to stop & send */
+async function startMic() {
+  if (state.rec || state.busy) return; player.pause();
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+  catch { toast("I need microphone permission — allow it for this app in your phone settings."); return; }
+  const rec = new MediaRecorder(stream, pickType() ? { mimeType: pickType() } : undefined);
+  const chunks = []; let started = Date.now(), timer, cancelled = false;
+  const stopMeter = levelMeter(stream, l => { const n = Math.floor(l * WAVE_BARS * 1.4);
+    waveBars.forEach((b, i) => b.style.height = (i < n ? 25 + Math.random() * 70 : 12) + "%"); });
+  rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+  rec.onstop = async () => {
+    clearInterval(timer); stopMeter(); stream.getTracks().forEach(t => t.stop()); state.rec = null;
+    $("#mic").classList.remove("rec"); $("#recbar").classList.remove("on"); $("#composer").style.display = "";
+    if (cancelled || Date.now() - started < 400) { setMode("idle"); return; }
+    state.busy = true; setMode("thinking"); typing(true);
+    const form = new FormData();
+    form.append("audio", new Blob(chunks, { type: rec.mimeType }), rec.mimeType.includes("mp4") ? "voice.m4a" : "voice.webm");
+    form.append("speak", voiceOn() ? "1" : "0");
+    try { const data = await api("/api/voice", { method: "POST", body: form }); typing(false); if (data.heard) add("you", data.heard); handleReply(data); }
+    catch (e) { typing(false); add("jarvis", e.message); setMode("idle"); }
+    state.busy = false;
+  };
+  rec.start(); state.rec = rec; setMode("listening");
+  $("#mic").classList.add("rec"); $("#composer").style.display = "none"; $("#recbar").classList.add("on");
+  timer = setInterval(() => { const s = Math.floor((Date.now() - started) / 1000); $("#rt").textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; if (s >= 120) rec.stop(); }, 200);
+  $("#rec-stop").onclick = () => rec.stop();
+  $("#rec-cancel").onclick = () => { cancelled = true; rec.stop(); };
+}
+$("#mic").onclick = startMic;
+
+/* LIVE hands-free mode */
+let liveStream = null, liveRec = null, liveMeterStop = null, liveMuted = false, liveSilence = 0, liveSpoke = false;
+const SILENCE = 0.06, SILENCE_MS = 1200, MIN_SPEECH_MS = 400, MAX_MS = 20000;
+function liveCap(t) { $("#live-cap").textContent = t; }
+async function startLive() {
+  if (state.live) return; state.live = true; liveMuted = false;
+  $("#live-mute").style.opacity = "1"; liveCap("Listening… just talk."); $("#live-you").textContent = "";
+  try { liveStream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); }
+  catch { liveCap("I need microphone access for live mode."); state.live = false; return; }
+  liveMeterStop = levelMeter(liveStream, l => { micLevel = l; });
+  listenTurn();
+}
+function listenTurn() {
+  if (!state.live || liveMuted) return;
+  setMode("listening"); liveSpoke = false; liveSilence = 0;
+  const rec = new MediaRecorder(liveStream, pickType() ? { mimeType: pickType() } : undefined);
+  liveRec = rec; const chunks = []; const started = Date.now();
+  rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+  const vad = setInterval(() => {
+    if (!state.live) { clearInterval(vad); try { rec.stop(); } catch (e) {} return; }
+    if (micLevel > SILENCE) { liveSpoke = true; liveSilence = 0; } else if (liveSpoke) liveSilence += 120;
+    const dur = Date.now() - started;
+    if ((liveSpoke && liveSilence >= SILENCE_MS && dur > MIN_SPEECH_MS) || dur > MAX_MS) { clearInterval(vad); try { rec.stop(); } catch (e) {} }
+  }, 120);
+  rec.onstop = async () => {
+    clearInterval(vad); liveRec = null;
+    if (!state.live) return;
+    if (!liveSpoke) { listenTurn(); return; }
+    setMode("thinking"); liveCap("…");
+    const form = new FormData();
+    form.append("audio", new Blob(chunks, { type: rec.mimeType }), rec.mimeType.includes("mp4") ? "voice.m4a" : "voice.webm");
+    form.append("speak", "1");
+    try {
+      const data = await api("/api/voice", { method: "POST", body: form });
+      if (!state.live) return;
+      $("#live-you").textContent = data.heard ? "“" + data.heard + "”" : "";
+      if (data.heard) add("you", data.heard); if (data.reply) add("jarvis", data.reply, { images: data.images });
+      liveCap(data.reply || "…");
+      if (data.audio) { setMode("speaking"); player.src = data.audio;
+        player.onended = () => { if (state.live) listenTurn(); else setMode("idle"); };
+        player.play().catch(() => { if (state.live) listenTurn(); }); }
+      else listenTurn();
+    } catch (e) { liveCap(e.message); setMode("idle"); if (state.live) setTimeout(listenTurn, 1500); }
+  };
+  rec.start();
+}
+function endLive() {
+  state.live = false; setMode("idle"); micLevel = 0;
+  try { liveRec && liveRec.stop(); } catch (e) {}
+  try { liveMeterStop && liveMeterStop(); } catch (e) {}
+  try { liveStream && liveStream.getTracks().forEach(t => t.stop()); } catch (e) {}
+  liveStream = null; player.onended = () => setMode("idle");
+}
+$("#orb-live").onclick = () => { if (state.mode === "speaking") { player.pause(); listenTurn(); } };
+$("#live-end").onclick = () => go("home");
+$("#live-mute").onclick = () => {
+  liveMuted = !liveMuted; $("#live-mute").style.opacity = liveMuted ? ".45" : "1";
+  if (liveMuted) { try { liveRec && liveRec.stop(); } catch (e) {} setMode("idle"); liveCap("Paused — tap resume."); }
+  else { liveCap("Listening…"); listenTurn(); }
+};
+
+/* home */
+const QUICK = ["What's on my PC screen?", "What's for dinner tonight?", "Today's workout", "How's the homelab?", "What's on my schedule?", "How was my week?"];
+function renderQuick(container, items) {
+  container.innerHTML = "";
+  items.forEach(q => { const b = document.createElement("button"); b.textContent = q;
+    b.onclick = () => { go("chat"); if (q.endsWith(":")) { $("#text").value = q + " "; $("#text").focus(); autoSize(); toggleSend(); } else sendText(q); };
+    container.append(b); });
+}
+async function loadHome() {
+  const name = (state.me && state.me.name) || ""; const h = new Date().getHours();
+  $("#greet").textContent = (h < 5 ? "Hello" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 22 ? "Good evening" : "Hello") + (name ? ", " + name.split(" ")[0] : "");
+  try {
+    const d = await api("/api/dashboard");
+    $("#subgreet").textContent = d.date || "Here's your home at a glance.";
+    const stats = [];
+    if (d.weather && d.weather.now) stats.push({ k: "Weather", v: (d.weather.now.match(/-?\d+°F/) || ["Now"])[0], s: (d.weather.now.split(":")[1] || "").split(",")[0].trim() });
+    const next = (d.today || [])[0];
+    stats.push({ k: "Next up", v: next ? next.slice(0, 5) : "Clear", s: next ? next.slice(6, 26) : "Nothing scheduled" });
+    const probs = (d.problems || []).length;
+    stats.push({ k: "Homelab", v: probs ? probs + " issue" + (probs > 1 ? "s" : "") : "Healthy", s: probs ? "needs a look" : "all systems go", bad: probs > 0 });
+    if (d.playing && d.playing[0]) stats.push({ k: "Playing", v: "On", s: d.playing[0].title || d.playing[0].series || "" });
+    $("#stats").innerHTML = stats.map(s => `<div class="chip-stat"><div class="k">${esc(s.k)}</div><div class="v" style="${s.bad ? "color:var(--danger)" : ""}">${esc(s.v)}</div><div class="s">${esc(s.s || "")}</div></div>`).join("");
+    const acts = [];
+    (d.today || []).slice(0, 4).forEach(r => acts.push(`<div class="chip-stat" style="min-width:auto;width:100%;margin-bottom:8px"><div class="k">${icon("clock", "sm")} Reminder</div><div class="s" style="color:var(--text-1);font-size:14px;margin-top:3px">${esc(r)}</div></div>`));
+    (d.problems || []).slice(0, 3).forEach(p => acts.push(`<div class="chip-stat" style="min-width:auto;width:100%;margin-bottom:8px;border-color:var(--danger)"><div class="k" style="color:var(--danger)">${icon("alert", "sm")} ${/^Jarvis link:/.test(p) ? "Jarvis link" : "Homelab"}</div><div class="s" style="color:var(--text-1);font-size:14px;margin-top:3px">${esc(String(p).replace(/^Jarvis link:\s*/, ""))}</div></div>`));
+    $("#activity").innerHTML = acts.join(""); $("#activity-h").style.display = acts.length ? "block" : "none";
+  } catch (e) { $("#subgreet").textContent = "Here's your home at a glance."; }
+  loadWaiting();
+}
+
+/* ---------- missions (Mark VI C4, 2026-11-10): a step waiting for his OK, approve or deny ---------- */
+// A waiting step stays visible here even when quiet hours held its push back (no answer is never a yes).
+async function loadWaiting() {
+  let items = [];
+  try { items = ((await api("/api/missions?active=1")).missions || []).filter(m => m.state === "waiting_approval"); } catch (e) {}
+  $("#waiting").innerHTML = items.map(m => `<button class="chip-stat" data-mission="${esc(m.id)}" style="min-width:auto;width:100%;margin-bottom:8px;text-align:left;border-color:var(--warn)">
+      <div class="k" style="color:var(--warn)">${icon("target", "sm")} Needs your OK · ${esc(ago((m.approval || {}).asked || m.updated))}</div>
+      <div class="s" style="color:var(--text-1);font-size:14px;margin-top:3px">${esc((m.approval || {}).preview || m.goal)}</div></button>`).join("");
+  $("#waiting-h").style.display = items.length ? "block" : "none";
+  $("#waiting").querySelectorAll("[data-mission]").forEach(b => b.onclick = () => openMission(b.dataset.mission));
+}
+function stepSummary(step) {
+  if (!step || typeof step !== "object") return "";
+  const name = step.tool || step.verb || step.action || step.name || "step";
+  const args = step.arguments || step.args || {};
+  const bits = Object.entries(args).slice(0, 4).map(([k, v]) => `${k}: ${typeof v === "object" ? JSON.stringify(v) : v}`.slice(0, 80));
+  return name + (bits.length ? " (" + bits.join(", ") + ")" : "");
+}
+function missionLink(url) {
+  const m = /#mission=([0-9a-f]{12})(?:&do=(approve|deny))?$/.exec(String(url || ""));
+  return m ? { id: m[1], preselect: m[2] || "" } : null;
+}
+// preselect (from the notification's Approve/Deny button) only HIGHLIGHTS a button; he still taps it, behind the
+// fingerprint lock. Nothing is ever answered without that tap.
+async function openMission(id, preselect = "") {
+  let m = null;
+  try { m = ((await api("/api/missions?active=1")).missions || []).find(x => x.id === id); }
+  catch (e) { toast(e.message); return; }
+  if (!m) { toast("That mission isn't active any more."); loadWaiting(); return; }
+  const a = m.approval || {}, waiting = m.state === "waiting_approval";
+  const ring = "box-shadow:0 0 0 3px var(--accent)", when = ago(a.asked || m.updated), asked = when === "now" ? "just now" : when + " ago";
+  const { wrap, close } = sheetShell(`<h2>${waiting ? "Needs your OK" : "Mission"}</h2>
+    <div class="opt" style="display:block"><small class="muted">The mission</small><div>${esc(m.goal)}</div></div>
+    ${waiting ? `<div class="opt" style="display:block"><small class="muted">The step · asked ${esc(asked)}</small>
+      <div style="font-weight:700;margin-top:3px">${esc(a.preview || "")}</div>
+      <div class="muted" style="font-size:12px;margin-top:4px;word-break:break-word">${esc(stepSummary(a.step))}</div></div>`
+      : `<div class="opt" style="display:block"><small class="muted">Now</small><div>${esc(m.state.replace("_", " "))}${m.note ? " · " + esc(m.note) : ""}</div></div>`}
+    <div id="m-img"></div>
+    <div class="opt" style="border:0;padding-top:14px;gap:10px">
+      ${waiting ? `<button class="linkbtn" id="m-deny" style="color:var(--danger);padding:10px 14px;border-radius:12px;${preselect === "deny" ? ring : ""}">Deny</button>
+      <button class="btn" id="m-approve" style="${preselect === "approve" ? ring : ""}">Approve this step</button>` : `<span></span><button class="btn" id="m-done">Done</button>`}</div>`);
+  if (m.result_image) {   // fetched with the token in the header, never in a URL
+    fetch(`/api/file/u/missions/${encodeURIComponent(m.result_image)}`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.ok ? r.blob() : null).then(b => { if (b) { const img = document.createElement("img"); img.src = URL.createObjectURL(b);
+        img.style.cssText = "width:100%;border-radius:12px;margin-top:10px"; wrap.querySelector("#m-img")?.append(img); } }).catch(() => {});
+  }
+  if (!waiting) { wrap.querySelector("#m-done").onclick = close; return; }
+  const answer = async approved => {
+    if (!(await gateOpen())) return;            // the fingerprint lock stands in front of every yes and no
+    try {
+      await api(`/api/missions/${id}/answer`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ approved, fp: a.fp || "" }) });
+      toast(approved ? "Approved. The mission continues from that step." : "Denied. That step won't run.");
+      close(); loadWaiting();
+    } catch (e) { toast(e.message); }
+  };
+  wrap.querySelector("#m-approve").onclick = () => answer(true);
+  wrap.querySelector("#m-deny").onclick = () => answer(false);
+}
+
+/* settings */
+function openSheet() {
+  const sheet = document.createElement("div"); sheet.id = "sheet-wrap";
+  const on = voiceOn(), pushOn = state.me && state.me.push;
+  sheet.innerHTML = `<div class="scrim"></div><div id="sheet"><div class="grab"></div><h2>Settings</h2>
+    <div class="opt"><div>Speak replies aloud<small>Jarvis answers with his voice</small></div><div class="sw ${on ? "on" : ""}" id="sw-voice"></div></div>
+    <div class="opt"><div>Notifications<small id="push-note">${pushOn ? "On for this phone · choose what and when" : "Reminders, timers, alerts, training, weekly report"}</small></div><button class="linkbtn" id="push-btn">${pushOn ? "Settings ›" : "Turn on"}</button></div>
+    <div class="opt"><div>Share my location<small id="loc-note">${locOn() ? "On: Jarvis knows your town for local answers" : "So he can answer 'near me' questions (only your town is used)"}</small></div><div class="sw ${locOn() ? "on" : ""}" id="sw-loc"></div></div>
+    <div class="opt"><div>Fingerprint lock<small>Require your fingerprint to open Jarvis</small></div><div class="sw ${bioOn() ? "on" : ""}" id="sw-bio"></div></div>
+    <div class="opt"><div>Unlink this phone<small>You'll need a new code to link again</small></div><button class="linkbtn" id="unlink" style="color:var(--danger)">Unlink</button></div>
+    <div class="opt" style="border:0;padding-top:16px"><span style="color:var(--text-2);font-size:12px">J.A.R.V.I.S.${state.me && state.me.name ? " · linked to " + esc(state.me.name) : ""}</span><button class="btn" id="sheet-close">Done</button></div></div>`;
+  document.body.append(sheet);
+  const close = () => sheet.remove();
+  sheet.querySelector(".scrim").onclick = close; sheet.querySelector("#sheet-close").onclick = close;
+  sheet.querySelector("#sw-voice").onclick = e => { const n = !voiceOn(); try { localStorage.setItem("jarvis_voice", n ? "on" : "off"); } catch (x) {} e.currentTarget.classList.toggle("on", n); };
+  sheet.querySelector("#sw-loc").onclick = async e => {
+    const el = e.currentTarget, turnOn = !locOn();
+    try { localStorage.setItem("jarvis_loc", turnOn ? "on" : "off"); } catch (x) {}
+    el.classList.toggle("on", turnOn);
+    const note = sheet.querySelector("#loc-note");
+    if (turnOn) { const ok = await sendLocation(true); if (!ok) { try { localStorage.setItem("jarvis_loc", "off"); } catch (x) {} el.classList.remove("on"); if (note) note.textContent = "The phone didn't allow location. Allow it for this app in the browser or phone settings."; } else if (note) note.textContent = "On: Jarvis knows your town for local answers"; }
+  };
+  sheet.querySelector("#unlink").onclick = async () => { if (await dsDialog({ title: "Unlink this phone from Jarvis?", ok: "Unlink", danger: true })) { try { localStorage.clear(); } catch (e) {} location.reload(); } };
+  sheet.querySelector("#push-btn").onclick = () => { close(); openNotiSettings(); };
+  sheet.querySelector("#sw-bio").onclick = async e => {
+    const sw = e.currentTarget;
+    if (bioOn()) { bioDisable(); sw.classList.remove("on"); toast("Fingerprint lock off."); }
+    else { try { if (await bioEnable()) { sw.classList.add("on"); toast("Fingerprint lock on."); } } catch (x) { toast("Couldn't set up fingerprint — is it enabled on your phone?"); } }
+  };
+}
+$("#gear").onclick = openSheet;
+
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+const isIOS = /iPhone|iPad/.test(navigator.userAgent);
+function b64ToBytes(s) { const p = "=".repeat((4 - s.length % 4) % 4); const raw = atob((s + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(raw, c => c.charCodeAt(0)); }
+async function subscribePush() {
+  const note = $("#push-note");
+  if (isIOS && !standalone) { note.textContent = "On iPhone, add Jarvis to your Home Screen first, then open it from there."; return; }
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) { note.textContent = "This browser doesn't support notifications."; return; }
+  const perm = await Notification.requestPermission();
+  if (perm !== "granted") { note.textContent = "Notifications are blocked in your phone settings."; return; }
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(state.me.vapid) });
+  await api("/api/push", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ subscription: sub.toJSON() }) });
+  if (state.me) state.me.push = true;
+  note.textContent = "On for this phone. Sending a test…";
+  try { await api("/api/notifications/test", { method: "POST" }); } catch (e) {}
+  return true;
+}
+
+/* ---------- notifications: the bell, the center, the settings ---------- */
+let NOTI = { items: [], prefs: null, push: false, categories: [] };
+const NICON = { reminders: "clock", alerts: "alert", training: "dumbbell", weekly: "chart", missions: "target", jarvis: "sparkles" };
+const seenAt = () => { try { return +(localStorage.getItem("jarvis_noti_seen") || 0); } catch (e) { return 0; } };
+async function loadNoti() { if (!token) return; try { NOTI = await api("/api/notifications"); paintBell(); } catch (e) {} }
+function paintBell() {
+  const n = NOTI.items.filter(x => x.t > seenAt()).length, dot = $("#bell-dot");
+  dot.style.display = n ? "" : "none"; dot.textContent = n > 9 ? "9+" : String(n);
+}
+function ago(t) {
+  const s = Date.now() / 1000 - t;
+  if (s < 60) return "now"; if (s < 3600) return Math.floor(s / 60) + " min"; if (s < 86400) return Math.floor(s / 3600) + " h";
+  return new Date(t * 1000).toLocaleDateString([], { month: "short", day: "numeric" });
+}
+function sheetShell(html) {
+  document.getElementById("sheet-wrap")?.remove();
+  const wrap = document.createElement("div"); wrap.id = "sheet-wrap";
+  wrap.innerHTML = `<div class="scrim"></div><div id="sheet"><div class="grab"></div>${html}</div>`;
+  document.body.append(wrap);
+  const close = () => wrap.remove();
+  wrap.querySelector(".scrim").onclick = close;
+  return { wrap, close };
+}
+async function openNotifications() {
+  await loadNoti();
+  const seen = seenAt(), today = new Date().toDateString();
+  const groups = {};
+  NOTI.items.forEach(n => { const k = new Date(n.t * 1000).toDateString() === today ? "Today" : "Earlier"; (groups[k] = groups[k] || []).push(n); });
+  const list = NOTI.items.length ? Object.entries(groups).map(([g, rows]) => `<div class="ngroup">${g}</div>` + rows.map(n =>
+      `<div class="nitem ${n.t > seen ? "new" : ""}"><span class="ni">${icon(NICON[n.category] || "sparkles")}</span><div style="flex:1;min-width:0"><div class="nt">${esc(n.title)}</div><div class="nb">${esc(n.body)}</div></div><span class="nw">${ago(n.t)}</span></div>`).join("")).join("")
+    : `<div class="muted" style="padding:26px 0;text-align:center">Nothing yet. Reminders, timers, alerts and your weekly report land here.</div>`;
+  const { wrap, close } = sheetShell(`<div style="display:flex;align-items:center;gap:10px"><h2 style="flex:1;margin:0">Notifications</h2>
+      <button class="linkbtn" id="n-set">Settings</button></div>
+    ${NOTI.push ? "" : `<div class="opt" style="border:0"><div>Get these on your phone<small>Reminders and alerts even when the app is closed</small></div><button class="linkbtn" id="n-on">Turn on</button></div>`}
+    <div class="nlist">${list}</div>
+    <div class="opt" style="border:0;padding-top:14px"><span></span><button class="btn" id="n-done">Done</button></div>`);
+  try { localStorage.setItem("jarvis_noti_seen", String(Date.now() / 1000)); } catch (e) {}
+  paintBell();
+  wrap.querySelector("#n-done").onclick = close;
+  wrap.querySelector("#n-set").onclick = () => { close(); openNotiSettings(); };
+  if (wrap.querySelector("#n-on")) wrap.querySelector("#n-on").onclick = () => { close(); openNotiSettings(); };
+}
+async function openNotiSettings() {
+  await loadNoti();
+  const p = NOTI.prefs || { categories: {}, quiet: { on: true, start: "22:00", end: "07:00" } };
+  const { wrap, close } = sheetShell(`<h2>Notification settings</h2>
+    <div class="nset">
+      <div class="opt"><div>This phone<small id="push-note">${NOTI.push ? "Notifications are on" : "Off: nothing reaches this phone yet"}</small></div>
+        <button class="linkbtn" id="ns-push">${NOTI.push ? "Send test" : "Turn on"}</button></div>
+      ${(NOTI.categories || []).map(c => `<div class="opt"><div>${esc(c.label)}<small>${esc(c.desc)}${c.urgent ? " · always delivered" : ""}</small></div>
+        <div class="sw ${p.categories[c.id] !== false ? "on" : ""}" data-cat="${c.id}" role="switch" aria-label="${esc(c.label)}"></div></div>`).join("")}
+      <div class="opt"><div>Quiet hours<small>Hold everything except reminders and timers overnight</small></div><div class="sw ${p.quiet.on ? "on" : ""}" id="ns-quiet" role="switch" aria-label="Quiet hours"></div></div>
+      <div class="opt" id="ns-times" style="${p.quiet.on ? "" : "display:none"}"><div>From<small>to the morning</small></div>
+        <div style="display:flex;gap:6px;align-items:center"><input class="tm" type="time" id="ns-start" value="${p.quiet.start}"><span class="muted">–</span><input class="tm" type="time" id="ns-end" value="${p.quiet.end}"></div></div>
+    </div>
+    <div class="opt" style="border:0;padding-top:14px"><button class="linkbtn" id="ns-history">History</button><button class="btn" id="ns-done">Done</button></div>`);
+  const save = body => api("/api/notifications/prefs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).then(r => { NOTI.prefs = r.prefs; }).catch(() => toast("Couldn't save that."));
+  wrap.querySelectorAll("[data-cat]").forEach(sw => sw.onclick = () => { const on = !sw.classList.contains("on"); sw.classList.toggle("on", on); save({ categories: { [sw.dataset.cat]: on } }); });
+  wrap.querySelector("#ns-quiet").onclick = e => { const on = !e.currentTarget.classList.contains("on"); e.currentTarget.classList.toggle("on", on);
+    wrap.querySelector("#ns-times").style.display = on ? "" : "none"; save({ quiet: { on } }); };
+  wrap.querySelector("#ns-start").onchange = e => save({ quiet: { start: e.target.value } });
+  wrap.querySelector("#ns-end").onchange = e => save({ quiet: { end: e.target.value } });
+  wrap.querySelector("#ns-push").onclick = async e => {
+    const btn = e.currentTarget, note = wrap.querySelector("#push-note");
+    if (!NOTI.push) { try { if (await subscribePush()) { NOTI.push = true; btn.textContent = "Send test"; note.textContent = "On. A test is on its way."; } } catch (x) { note.textContent = "Couldn't turn them on: " + x.message; } return; }
+    try { await api("/api/notifications/test", { method: "POST" }); note.textContent = "Test sent. It should pop up in a few seconds."; } catch (x) { note.textContent = x.message; }
+  };
+  wrap.querySelector("#ns-done").onclick = close;
+  wrap.querySelector("#ns-history").onclick = () => { close(); openNotifications(); };
+}
+$("#bell").onclick = openNotifications;
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => {
+  if (!e.data) return;
+  if (e.data.type === "notification") { loadNoti(); if (e.data.data && e.data.data.category === "missions") loadWaiting(); }
+  if (e.data.type === "open" && String(e.data.url).includes("#notifications")) openNotifications();
+  const ml = e.data.type === "open" && missionLink(e.data.url);
+  if (ml) openMission(ml.id, ml.preselect);
+});
+setInterval(() => { if (!document.hidden) loadNoti(); }, 60000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) loadNoti(); });
+
+let installEvent = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvent = e; showInstall(); });
+function showInstall() {
+  if (standalone) return; const box = $("#install"); box.classList.remove("hidden");
+  if (installEvent) { box.innerHTML = "<svg class='i' style='width:16px;height:16px;vertical-align:-3px;margin-right:6px;color:var(--accent)' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 3v12M7 10l5 5 5-5M5 21h14'/></svg>Install Jarvis as an app — <button class='linkbtn' id='inst'>Install</button>"; $("#inst").onclick = () => installEvent.prompt(); }
+  else if (isIOS) box.textContent = "Install: tap Share, then \"Add to Home Screen\".";
+  else box.textContent = "Install: open the browser menu, then \"Install app\".";
+}
+
+/* location: only when he turned it on; the server keeps a town, not a street */
+const locOn = () => { try { return localStorage.getItem("jarvis_loc") === "on"; } catch (e) { return false; } };
+let locAt = 0;
+function sendLocation(force) {
+  return new Promise(resolve => {
+    if (!navigator.geolocation || !token || (!force && (!locOn() || Date.now() - locAt < 10 * 60 * 1000))) return resolve(false);
+    locAt = Date.now();
+    navigator.geolocation.getCurrentPosition(async p => {
+      try { await api("/api/location", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lat: p.coords.latitude, lon: p.coords.longitude, accuracy: Math.round(p.coords.accuracy || 0) }) }); resolve(true); }
+      catch (e) { resolve(false); }
+    }, () => resolve(false), { enableHighAccuracy: false, maximumAge: 5 * 60 * 1000, timeout: 15000 });
+  });
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) sendLocation(false); });
+setInterval(() => { if (!document.hidden) sendLocation(false); }, 10 * 60 * 1000);
+
+/* start */
+async function start() {
+  if (!token) return show("pair");
+  try {
+    state.me = await api("/api/me");
+    $("#who").innerHTML = `<span class="dot" id="statusdot"></span>${esc(state.me.name ? state.me.name.split(" ")[0] + " · online" : "Online")}`;
+    renderQuick($("#homeqa"), QUICK); renderQuick($("#qchips"), QUICK.slice(0, 4));
+    show("app"); gateOpen(); loadHome();
+    if (!standalone) setTimeout(showInstall, 1000);
+    if (location.hash === "#listen" || location.hash === "#live") { history.replaceState(null, "", location.pathname); go("live"); }
+    loadNoti(); sendLocation(false);
+    if (location.hash === "#notifications") { history.replaceState(null, "", location.pathname); openNotifications(); }
+    const ml = missionLink(location.hash);
+    if (ml) { history.replaceState(null, "", location.pathname); openMission(ml.id, ml.preselect); }
+  } catch (e) { if (e.message !== "unlinked") { show("app"); $("#statusdot")?.classList.add("off"); toast("Can't reach Jarvis. Is the server on?"); } }
+}
+// Re-lock when the app is reopened after being sent to the background.
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) hiddenAt = Date.now();
+  else if (bioOn() && !$("#app").classList.contains("hidden") && Date.now() - hiddenAt > 8000 && !$("#lock").classList.contains("on")) gateOpen();
+});
+
+if ("serviceWorker" in navigator) {
+  // updateViaCache:"none" => the SW script itself is never HTTP-cached, so new versions are always found.
+  navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then(reg => {
+    reg.update();
+    reg.addEventListener("updatefound", () => {
+      const w = reg.installing;
+      w && w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) w.postMessage("skipWaiting"); });
+    });
+  }).catch(() => {});
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (!reloaded) { reloaded = true; location.reload(); } });
+}
+start();
+</script>
+</body>
+</html>

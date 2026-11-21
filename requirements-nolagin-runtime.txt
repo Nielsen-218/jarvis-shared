@@ -1,0 +1,8 @@
+# Separate local Windows CPU-coaching environment. No paid APIs.
+numpy>=1.26,<3
+Pillow>=10,<13
+opencv-python>=4.8,<5
+onnxruntime>=1.20,<2
+dxcam>=0.0.5
+psutil>=5.9,<8
+pyttsx3>=2.90,<3

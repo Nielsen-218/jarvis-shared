@@ -1,0 +1,618 @@
+{
+  "version": 1,
+  "id": "lantern-mystery",
+  "title": {
+    "ht": "Mistè Lantèn ki Disparèt la",
+    "en": "The Missing Lantern"
+  },
+  "intro": {
+    "ht": "Gwo lantèn fèt la disparèt jis anvan parad la. Lapli ap vini, epi gen moun ki deja ap akize youn lòt. Nou gen sis desizyon pou nou pran ansanm. Chak moun ap li endis pa li an prive. Pran anviwon de minit pou nou diskite anvan chak vòt. Se pou tout moun pale epi vote.",
+    "en": "The festival lantern has vanished just before the parade. A storm is coming, and people are already blaming each other. You have six decisions to make together. Each player reads their own clues privately. Give everyone a chance to speak, then take about two minutes to discuss each decision before voting."
+  },
+  "flags": [
+    "west-case",
+    "east-case",
+    "witness",
+    "crank",
+    "west",
+    "east",
+    "ledger",
+    "safe",
+    "proof",
+    "opened",
+    "recovered",
+    "delay"
+  ],
+  "roles": [
+    {
+      "ht": "Moun ki gade kat la",
+      "en": "Map keeper"
+    },
+    {
+      "ht": "Moun ki tande klòch la",
+      "en": "Bell listener"
+    },
+    {
+      "ht": "Mekanisyen",
+      "en": "Mechanic"
+    },
+    {
+      "ht": "Moun ki pale ak machann yo",
+      "en": "Market liaison"
+    },
+    {
+      "ht": "Moun ki gade mare a",
+      "en": "Tide watcher"
+    },
+    {
+      "ht": "Moun ki tcheke rejis la",
+      "en": "Records keeper"
+    },
+    {
+      "ht": "Moun ki pote kòd la",
+      "en": "Rope keeper"
+    },
+    {
+      "ht": "Moun ki gide parad la",
+      "en": "Parade guide"
+    }
+  ],
+  "cases": [
+    {
+      "flags": [
+        "west-case"
+      ],
+      "clues": [
+        {
+          "ht": "Sou kat la, tinèl bò solèy kouche a mennen anba depo a. Pasaj bò solèy leve a fini nan yon basen.",
+          "en": "On the map, the west tunnel leads beneath the warehouse. The east passage ends at a basin."
+        },
+        {
+          "ht": "Ou tande twa kou klòch bò solèy kouche. Se siyal pou di yon moun mete yon bagay an sekirite, se pa siyal pou di gen yon vòl.",
+          "en": "You heard three bells in the west. That means someone moved something to safety. It is not the theft alarm."
+        },
+        {
+          "ht": "Krank ki nan atelye a ka louvri ti pòt depo a. Yon kòd poukont li pa ka leve pòt sa a.",
+          "en": "The workshop crank can open the warehouse hatch. A rope alone cannot lift it."
+        },
+        {
+          "ht": "Machann yo ka sèvi kòm temwen si nou pale avè yo bonè. Y ap kite mache a lè lapli a kòmanse.",
+          "en": "The stallholders can serve as witnesses if you speak to them early. They leave the market when it starts raining."
+        },
+        {
+          "ht": "Dlo a ap monte nan basen an. Si nou tann devan depo a twò lontan, n ap bezwen voye yon moun chèche èd.",
+          "en": "Water is rising in the basin. If you linger at the warehouse, you will need to send for help."
+        },
+        {
+          "ht": "Chèche so ble a nan rejis la. Li pwouve se responsab fèt la ki te bay lòd deplase lantèn nan.",
+          "en": "Look for the blue seal in the ledger. It proves the festival steward authorized moving the lantern."
+        },
+        {
+          "ht": "Kòd la bon pou mare ti bato a ak waf la. Nou ka sèvi avè l pou pwoteje moun yo menm si nou pa jwenn lantèn nan.",
+          "en": "The rope can tie the skiff to the dock. You can use it to protect people even if you never find the lantern."
+        },
+        {
+          "ht": "Nou ka fè yon ti parad sou plas la si nou pwoteje moun yo. Nou bezwen lantèn nan pou nou fè gwo parad bò lanmè a.",
+          "en": "You can hold a small parade in the square if everyone is safe. The waterfront procession needs the lantern."
+        }
+      ]
+    },
+    {
+      "flags": [
+        "east-case"
+      ],
+      "clues": [
+        {
+          "ht": "Sou kat la, se pasaj bò solèy leve a ki mennen anba depo a. Tinèl bò solèy kouche a se yon ansyen kanal.",
+          "en": "On the map, the east passage leads beneath the warehouse. The west tunnel is an old drain."
+        },
+        {
+          "ht": "Twa kou klòch soti bò solèy leve. Se siyal yo bay lè yo deplase yon bagay pou mete l an sekirite.",
+          "en": "Three bells came from the east. That is the signal for moving something to safety."
+        },
+        {
+          "ht": "Krank ki nan atelye a ka louvri ti pòt depo a. Yon kòd poukont li pa ka leve pòt sa a.",
+          "en": "The workshop crank can open the warehouse hatch. A rope alone cannot lift it."
+        },
+        {
+          "ht": "Machann yo ka sèvi kòm temwen si nou pale avè yo bonè. Y ap kite mache a lè lapli a kòmanse.",
+          "en": "The stallholders can serve as witnesses if you speak to them early. They leave the market when it starts raining."
+        },
+        {
+          "ht": "Dlo a ap monte nan basen an. Si nou tann devan depo a twò lontan, n ap bezwen voye yon moun chèche èd.",
+          "en": "Water is rising in the basin. If you linger at the warehouse, you will need to send for help."
+        },
+        {
+          "ht": "Chèche so ble a nan rejis la. Li pwouve se responsab fèt la ki te bay lòd deplase lantèn nan.",
+          "en": "Look for the blue seal in the ledger. It proves the festival steward authorized moving the lantern."
+        },
+        {
+          "ht": "Kòd la bon pou mare ti bato a ak waf la. Nou ka sèvi avè l pou pwoteje moun yo menm si nou pa jwenn lantèn nan.",
+          "en": "The rope can tie the skiff to the dock. You can use it to protect people even if you never find the lantern."
+        },
+        {
+          "ht": "Nou ka fè yon ti parad sou plas la si nou pwoteje moun yo. Nou bezwen lantèn nan pou nou fè gwo parad bò lanmè a.",
+          "en": "You can hold a small parade in the square if everyone is safe. The waterfront procession needs the lantern."
+        }
+      ]
+    }
+  ],
+  "rounds": [
+    {
+      "title": {
+        "ht": "Mache a ap fèmen",
+        "en": "The market is closing"
+      },
+      "body": {
+        "ht": "Nou jwenn yon ti moso twal ble bò kote lantèn nan te ye a. Premye gout lapli yo tonbe. Nou gen tan pou nou fè yon sèl arè anvan mache a fèmen.",
+        "en": "You find a scrap of blue cloth where the lantern stood. The first drops fall. You have time for one stop before the market closes."
+      },
+      "discussion": {
+        "ht": "Ki moun ki gen yon endis sou sa nou ka jwenn kounye a, epi ki sa nou riske pèdi?",
+        "en": "Who has a clue about what you can get now, and what might you lose by choosing it?"
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Pale ak machann yo",
+            "en": "Talk to the stallholders"
+          },
+          "result": {
+            "ht": "De machann dakò rete pou yo temwaye. Atelye a fèmen anvan nou rive.",
+            "en": "Two stallholders agree to stay and testify. The workshop closes before you reach it."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "witness"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Pran krank nan atelye a",
+            "en": "Borrow the workshop crank"
+          },
+          "result": {
+            "ht": "Mekanisyen an ban nou krank la. Lè nou tounen, machann yo gentan ale.",
+            "en": "The mechanic lends you the crank. The stallholders have left by the time you return."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "crank"
+          ]
+        }
+      ]
+    },
+    {
+      "title": {
+        "ht": "De pasaj",
+        "en": "Two passages"
+      },
+      "body": {
+        "ht": "Pasaj yo kòmanse menm kote, men yo vire nan de direksyon. Yon tras dlo efase mak ki te atè yo.",
+        "en": "Both passages start here but curve in opposite directions. Water washes away the tracks on the ground."
+      },
+      "discussion": {
+        "ht": "Mande moun ki gen kat la ak moun ki tande klòch la pou yo konpare sa yo konnen.",
+        "en": "Ask the map keeper and bell listener to compare what they know."
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Pran pasaj bò solèy kouche a",
+            "en": "Take the west passage"
+          },
+          "result": {
+            "ht": "Nou pran pasaj bò solèy kouche a. Se chemen sa a n ap gen pou nou sèvi lè nou tounen.",
+            "en": "You take the west passage. This will also be your route back."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "west"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Pran pasaj bò solèy leve a",
+            "en": "Take the east passage"
+          },
+          "result": {
+            "ht": "Nou pran pasaj bò solèy leve a. Se chemen sa a n ap gen pou nou sèvi lè nou tounen.",
+            "en": "You take the east passage. This will also be your route back."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "east"
+          ]
+        }
+      ]
+    },
+    {
+      "title": {
+        "ht": "Dlo bò waf la",
+        "en": "Water at the dock"
+      },
+      "body": {
+        "ht": "Gen yon ti bato k ap frape waf la. Nan kabin gad la, gen yon rejis ki louvri anba yon fenèt. Yon lòt vag ap rive.",
+        "en": "A skiff knocks against the dock. In the guard booth, an open ledger lies beneath a window. Another wave is coming."
+      },
+      "discussion": {
+        "ht": "Moun ki gade mare a ak moun ki pote kòd la, ki sa nou ka pwoteje an premye?",
+        "en": "Tide watcher and rope keeper, what should you protect first?"
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Mare bato a epi gide moun yo sou plas la",
+            "en": "Secure the skiff and guide people to the square"
+          },
+          "result": {
+            "ht": "Bato a byen mare. Moun yo ka tann sou plas la san danje.",
+            "en": "The skiff is secured. The crowd can wait safely in the square."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "safe"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Sove rejis la anvan dlo a mouye l",
+            "en": "Rescue the ledger before it gets soaked"
+          },
+          "result": {
+            "ht": "Nou jwenn so ble a. Rejis la montre yo te deplase lantèn nan pou pwoteje l kont lapli.",
+            "en": "You find the blue seal. The ledger shows the lantern was moved to shelter it from the rain."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "ledger"
+          ]
+        }
+      ]
+    },
+    {
+      "title": {
+        "ht": "Ki sa nou ka pwouve?",
+        "en": "What can you prove?"
+      },
+      "body": {
+        "ht": "Yon vwazen di li wè yon moun k ap kouri ak yon bagay nan men l. Sa li wè a pa sifi pou di se yon vòl.",
+        "en": "A neighbor saw someone running with something in their hands. That alone does not prove a theft."
+      },
+      "discussion": {
+        "ht": "Chak moun di ki enfòmasyon li sèten li genyen. Ki prèv nou ka prezante?",
+        "en": "Each player names one thing they know for sure. What evidence can you present?"
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Prezante temwayaj machann yo",
+            "en": "Present the stallholders’ testimony"
+          },
+          "result": {
+            "ht": "Temwen yo konfime responsab la te bay lòd mete lantèn nan an sekirite.",
+            "en": "The witnesses confirm the steward ordered the lantern moved to safety."
+          },
+          "when": {
+            "all": [
+              "witness"
+            ],
+            "none": []
+          },
+          "add": [
+            "proof"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Montre so ble ki nan rejis la",
+            "en": "Show the blue seal in the ledger"
+          },
+          "result": {
+            "ht": "So a konfime se responsab fèt la ki te bay lòd la.",
+            "en": "The seal confirms the festival steward authorized the move."
+          },
+          "when": {
+            "all": [
+              "ledger"
+            ],
+            "none": []
+          },
+          "add": [
+            "proof"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Mande foul la tann, san nou pa akize pèsonn",
+            "en": "Ask the crowd to wait without blaming anyone"
+          },
+          "result": {
+            "ht": "Nou evite gaye yon rimè. Dosye a poko klè.",
+            "en": "You stop the rumor from spreading. The case is still unproven."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": []
+        },
+        {
+          "label": {
+            "ht": "Voye yon moun chèche gad la",
+            "en": "Send someone to fetch the guard"
+          },
+          "result": {
+          "ht": "Gad la ede mennen dènye moun yo sou plas la. Moun yo an sekirite, men gwo parad la gentan anile.",
+          "en": "The guard helps the last people reach the square. Everyone is safe, but the main procession has already been called off."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "safe",
+            "delay"
+          ]
+        }
+      ]
+    },
+    {
+      "title": {
+        "ht": "Dènye tantativ la",
+        "en": "The last attempt"
+      },
+      "body": {
+        "ht": "Gen yon pòt metal anba depo a. Si nou te pran move pasaj la, nou sèlman wè l lòt bò basen an. Dlo a twò wo pou nou travèse.",
+        "en": "A metal hatch sits beneath the warehouse. If you chose the wrong passage, you can only see it across the basin. The water is too high to cross."
+      },
+      "discussion": {
+        "ht": "Konpare chemen nou te pran an ak sa kat la te montre. Ki ekipman nou genyen?",
+        "en": "Compare your route to the map. What equipment did you bring?"
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Louvri pòt depo a ak krank la",
+            "en": "Open the warehouse hatch with the crank"
+          },
+          "result": {
+            "ht": "Pòt la leve. Nou jwenn lantèn nan sèk sou yon etajè. Nou louvri pòt dèyè a tou, epi gad la gide moun yo sou plas la.",
+            "en": "The hatch rises. The lantern sits dry on a shelf. You also open the back door, letting the guard lead everyone safely to the square."
+          },
+          "when": {
+            "all": [
+              "crank",
+              "west",
+              "west-case"
+            ],
+            "none": []
+          },
+          "add": [
+            "opened",
+            "safe"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Louvri pòt depo a ak krank la",
+            "en": "Open the warehouse hatch with the crank"
+          },
+          "result": {
+            "ht": "Pòt la leve. Nou jwenn lantèn nan sèk sou yon etajè. Nou louvri pòt dèyè a tou, epi gad la gide moun yo sou plas la.",
+            "en": "The hatch rises. The lantern sits dry on a shelf. You also open the back door, letting the guard lead everyone safely to the square."
+          },
+          "when": {
+            "all": [
+              "crank",
+              "east",
+              "east-case"
+            ],
+            "none": []
+          },
+          "add": [
+            "opened",
+            "safe"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Retounen sou plas la epi ede moun yo",
+            "en": "Return to the square and help the crowd"
+          },
+          "result": {
+            "ht": "Nou ede moun yo mete yo an sekirite. Nou kite depo a fèmen.",
+            "en": "You help the crowd get to safety. The warehouse stays closed."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "safe"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Make pòt la pou ekip demen an",
+            "en": "Mark the hatch for tomorrow’s crew"
+          },
+          "result": {
+            "ht": "Nou make kote pou ekip la rekòmanse rechèch la demen.",
+            "en": "You mark where the crew should resume the search tomorrow."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": []
+        }
+      ]
+    },
+    {
+      "title": {
+        "ht": "Fèt la ap tann nou",
+        "en": "The festival is waiting"
+      },
+      "body": {
+        "ht": "Moun yo rasanble sou plas la. Nou dwe deside ki jan pou nou fini sware a, dapre sa nou jwenn ak sa nou pwoteje.",
+        "en": "People gather in the square. Decide how to end the evening based on what you found and whom you protected."
+      },
+      "discussion": {
+        "ht": "Moun ki gide parad la, ki fèt nou ka fè san nou pa pran risk ni bay manti?",
+        "en": "Parade guide, what can you celebrate without taking risks or making claims you cannot back up?"
+      },
+      "choices": [
+        {
+          "label": {
+            "ht": "Pote lantèn nan sou plas la epi rakonte sa nou pwouve",
+            "en": "Bring the lantern to the square and share the proof"
+          },
+          "result": {
+            "ht": "Nou pote lantèn nan sou plas la. Nou esplike poukisa yo te deplase l.",
+            "en": "You carry the lantern into the square and explain why it was moved."
+          },
+          "when": {
+            "all": [
+              "opened",
+              "proof",
+              "safe"
+            ],
+            "none": [
+              "delay"
+            ]
+          },
+          "add": [
+            "recovered"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Fè yon ti parad sou plas la",
+            "en": "Hold a small parade in the square"
+          },
+          "result": {
+            "ht": "Nou fè fèt la ansanm sou plas la, kote tout moun an sekirite.",
+            "en": "You celebrate together in the square, where everyone is safe."
+          },
+          "when": {
+            "all": [
+              "safe"
+            ],
+            "none": []
+          },
+          "add": [
+            "safe"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Fèmen fèt la epi prepare rechèch demen an",
+            "en": "Close the festival and prepare tomorrow’s search"
+          },
+          "result": {
+            "ht": "Nou bay moun yo enfòmasyon nou genyen epi nou ranje sa nou pral tcheke demen.",
+            "en": "You share what you know and plan what to check tomorrow."
+          },
+          "when": {
+            "all": [],
+            "none": []
+          },
+          "add": [
+            "delay"
+          ]
+        },
+        {
+          "label": {
+            "ht": "Mennen moun yo lwen waf la",
+            "en": "Lead the crowd away from the dock"
+          },
+          "result": {
+            "ht": "Nou fè yon dènye wonn pou nou asire tout moun rive sou plas la.",
+            "en": "You make a final sweep to get everyone safely to the square."
+          },
+          "when": {
+            "all": [],
+            "none": [
+              "safe"
+            ]
+          },
+          "add": [
+            "safe"
+          ]
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "title": {
+        "ht": "Lantèn nan klere ankò",
+        "en": "The lantern shines again"
+      },
+      "body": {
+        "ht": "Nou jwenn lantèn nan, nou esplike sa ki te rive ak prèv, epi nou fè fèt la sou plas la san danje.",
+        "en": "You recovered the lantern, backed up your explanation with evidence, and celebrated safely in the square."
+      },
+      "when": {
+        "all": [
+          "recovered"
+        ],
+        "none": []
+      }
+    },
+    {
+      "title": {
+        "ht": "Yon fèt anba lapli",
+        "en": "A festival in the rain"
+      },
+      "body": {
+        "ht": "Nou mete moun yo an sekirite. Nou rakonte sa nou konnen. Pou kesyon ki poko gen repons yo, n a tann demen.",
+        "en": "You got everyone to safety. You shared what you knew and left the unanswered questions for tomorrow."
+      },
+      "when": {
+        "all": [
+          "safe"
+        ],
+        "none": [
+          "recovered"
+        ]
+      }
+    },
+    {
+      "title": {
+        "ht": "N ap rekòmanse demen",
+        "en": "The search resumes tomorrow"
+      },
+      "body": {
+        "ht": "Nou sispann rechèch la lè lapli a vin pi fò. Lantèn nan poko retounen nan fèt la. Ekip demen an gen nòt nou yo pou li kontinye.",
+        "en": "You stopped the search as the rain got worse. The lantern has yet to return to the festival. Tomorrow’s crew has your notes to continue."
+      },
+      "when": {
+        "all": [],
+        "none": [
+          "safe",
+          "recovered"
+        ]
+      }
+    }
+  ]
+}
